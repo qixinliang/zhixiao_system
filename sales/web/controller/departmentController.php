@@ -43,6 +43,30 @@ class departmentController extends baseController{
 		}
 		return $html;
 	}
+
+	private function _exportSelectedTree($tree,$deep = 0,$pid){
+		static $html = '';
+    	foreach ($tree as $k => $v) {
+        	$tmpName = sprintf("%s%s", str_repeat('——', $deep), $v['department_name']);
+			/*
+			if($v['department_id'] == $pid){
+				$html .= "<option value=$k selected=\"selected\">" . $tmpName . "</option>";
+			}else{
+				$html .= "<option value=$k>" . $tmpName . "</option>";
+			}*/
+            $html .= '<option value='.$k;
+            if($v['department_id'] == $pid){
+                $html.=' selected="selected" ';
+            }
+            $html .= '>';
+            $html .= $tmpName . '</option>';
+
+        	if (isset($v['son']) && !empty($v['son'])) {
+            	$this->_exportSelectedTree($v['son'], $deep + 1,$pid);
+        	}
+		}
+		return $html;
+	}
 	
 	/******************************************************/
 
@@ -138,9 +162,18 @@ class departmentController extends baseController{
             exit(json_encode(array('status' => 0, 'message' => '未发现此条数据！')));
 		}
 		//TODO 列举出现有系统出的所有部门信息。
+		//获取出上级部门ID
+		$pNode = $this->departmentService->getParentNodeById($departmentId);
+		if(!isset($pNode) || empty($pNode)){
+            exit(json_encode(array('status' => 0, 'message' => '未发现上级节点！')));
+		}
+		$id = $pNode['department_id'];
+
         $list2 = $this->departmentService->getDepartmentList2();
         $tree2 = $this->_generateTree2($list2);
-        $html = $this->_exportTree($tree2);
+        //$html = $this->_exportTree($tree2);
+        $html = $this->_exportSelectedTree($tree2,$id);
+
         $this->view->assign('html', $html);
 		
 		$this->view->assign('data',$data);

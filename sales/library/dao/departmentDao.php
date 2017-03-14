@@ -4,6 +4,8 @@ if (!defined('IS_INITPHP')) exit('Access Denied!');
  * 部门管理模型 by qixinliang 2013.3.13
  */
 class departmentDao extends Dao{
+	const DEPARTMENT_STATUS_NORMAL = 0;
+	const DEPARTMENT_STATUS_ERROR = 1;
     
     public $tableName = 'zx_department';
 
@@ -58,4 +60,47 @@ class departmentDao extends Dao{
     public function del($id){
        return $this->dao->db->delete_by_field(array('department_id' => $id), $this->tableName);
     }
+
+	//根据父节点添加子节点
+	public function addNodes($pid,$name){
+		//先检查父节点存在不存在
+		$sql = sprintf("SELECT `department_id` FROM %s WHERE department_id=%s",$this->tableName,$pid);
+		$ret = $this->dao->db->get_one_sql($sql);
+		if(!isset($ret) || empty($ret)){
+			return -1;
+		}
+
+		$data = array(
+			'p_dpt_id' 			=> $pid,
+			'department_name' 	=> $name,
+			'status' 			=> self::DEPARTMENT_STATUS_NORMAL,
+			'create_time' 		=> time(),
+			'update_time' 		=> time()
+		);
+		return $this->addSave($data);
+	}
+	//合并节点。。。
+	//删除节点。。。
+	public function deleteNodes($id){
+		$sql = sprintf("SELECT `department_id` FROM %s WHERE p_dpt_id=%s",$this->tableName,$id);
+		$ret = $this->dao->db->get_all_sql($sql);
+		if(isset($ret) && !empty($ret)){
+			//还有子节点，请勿删除。
+			return -1;
+		}
+       return $this->dao->db->delete_by_field(array('department_id' => $id), $this->tableName);
+	}
+
+	public function getParentNodeById($id){
+		$sql = sprintf("SELECT `p_dpt_id` FROM %s WHERE department_id=%s",$this->tableName,$id);
+		$ret = $this->dao->db->get_one_sql($sql);
+		if(!isset($ret) || empty($ret)){
+			return -1;	
+		}
+		$pid = $ret['p_dpt_id'];
+
+		$sql = sprintf("SELECT * FROM %s WHERE department_id=%s",$this->tableName,$pid);
+		$ret = $this->dao->db->get_one_sql($sql);
+		return $ret;
+	}
 }

@@ -115,11 +115,12 @@ _departmentDao	library/service/departmentService.php	/^	private $_departmentDao 
 _departmentDao	library/service/departmentService.php	/^        $this->_departmentDao = InitPHP::getDao("department");$/;"	v
 _errorLogFileName	initphp/core/util/log.init.php	/^	private function _errorLogFileName(){$/;"	f
 _error_page	initphp/initphp.php	/^	private static function _error_page($msg) {$/;"	f
+_exportSelectedTree	web/controller/departmentController.php	/^	private function _exportSelectedTree($tree,$deep = 0,$pDptId){$/;"	f
+_exportTree	web/controller/departmentController.php	/^	private function _exportTree($tree,$deep = 0){$/;"	f
 _filter	initphp/init/run.init.php	/^	private function _filter($str) {$/;"	f
 _generateTree	web/controller/departmentController.php	/^	private function _generateTree($items){$/;"	f
 _generateTree2	web/controller/departmentController.php	/^	private function _generateTree2($items){$/;"	f
 _getPid	initphp/library/tree.init.php	/^	private function _getPid($id)$/;"	f
-_getTreeData	web/controller/departmentController.php	/^	private function _getTreeData($tree){$/;"	f
 _hook	initphp/initphp.php	/^	private static function _hook($class, $function, $data = '') {$/;"	f
 _key	initphp/library/ip.init.php	/^                $_key =     auto_charset($key,$from,$to);$/;"	v
 _key	initphp/library/sms.init.php	/^				$_key = auto_charset($key,$from,$to);$/;"	v
@@ -149,10 +150,12 @@ add	web/controller/adminController.php	/^    public function add()$/;"	f
 add	web/controller/admingroupController.php	/^    public function add()$/;"	f
 add	web/controller/companyController.php	/^    public function add(){$/;"	f
 add	web/controller/departmentController.php	/^	public function add(){$/;"	f
+add2	web/controller/departmentController.php	/^	public function add2(){$/;"	f
 addEvent	static/js/datetime.js	/^	function addEvent(element,event,handler){$/;"	f
 addEventForSelect	static/js/datetime.js	/^	function addEventForSelect(type){$/;"	f
 addEventForSelect.changeInner	static/js/datetime.js	/^		function changeInner(){$/;"	f
 addFile	initphp/library/zip.init.php	/^	private function addFile($data, $name, $time = 0) {$/;"	f
+addNodes	library/dao/departmentDao.php	/^	public function addNodes($pid,$name){$/;"	f
 addRow	initphp/library/excel.init.php	/^	public function addRow($data){$/;"	f
 addSave	library/dao/departmentDao.php	/^    public function addSave($data){$/;"	f
 addSave	library/service/departmentService.php	/^    public function addSave($data){$/;"	f
@@ -230,7 +233,6 @@ allowExts	initphp/library/upload.init.php	/^        $this->allowExts = $allowExt
 allowExts	initphp/library/upload.init.php	/^        $this->allowExts = array_map('strtolower', $this->allowExts);$/;"	v
 allowExts	initphp/library/upload.init.php	/^    public $allowExts = array();	\/\/允许的文件后缀$/;"	v
 allowExts	initphp/library/upload.init.php	/^    public function __construct($savePath="public\/uploads\/", $allowExts = array('gif','jpg','jpeg','bmp','png'), $maxSize = 10485760) {$/;"	v
-alls	b.php	/^	$alls = array($/;"	v
 apcInit	initphp/core/dao/cache/driver/apc.init.php	/^class apcInit {$/;"	c
 area	initphp/library/ip.init.php	/^                $area = "";$/;"	v
 area	initphp/library/ip.init.php	/^                $area = $this->getstring($byte);$/;"	v
@@ -566,6 +568,7 @@ data	library/dao/adminDao.php	/^	   $data = array('user'=>$user,'password'=>$pas
 data	library/dao/adminGroupDao.php	/^        $data = array('id'=>$gid);$/;"	v
 data	library/dao/adminLogDao.php	/^        $data =  $this->dao->db->get_all_sql($sql);$/;"	v
 data	library/dao/adminLogDao.php	/^        $data = array('uid'=>$admin_id,'text'=>$text,'time'=>time(),'ip'=>$ip);$/;"	v
+data	library/dao/departmentDao.php	/^		$data = array($/;"	v
 data	library/dao/user_yaoqingma_listDao.php	/^        $data = $this->dao->db->get_all_sql($sql);$/;"	v
 data	library/dao/user_yaoqingma_listDao.php	/^        $data = $this->dao->db->get_one_sql($sql);$/;"	v
 data	library/service/adminGroupService.php	/^        $data=$this->data_save($data);$/;"	v
@@ -659,6 +662,7 @@ del_file	initphp/library/file.init.php	/^	public function del_file($filename) {$
 del_file	initphp/library/ftp.init.php	/^	public function del_file($file) {$/;"	f
 delete	initphp/core/dao/db/db.init.php	/^	public function delete($ids, $table_name, $id_key = 'id') {$/;"	f
 delete	initphp/core/dao/nosql/driver/redis.init.php	/^	public function delete($key) {$/;"	f
+deleteNodes	library/dao/departmentDao.php	/^	public function deleteNodes($id){$/;"	f
 delete_by_field	initphp/core/dao/db/db.init.php	/^	public function delete_by_field($field, $table_name) {$/;"	f
 delete_sql	initphp/core/dao/cache/driver/mysqlcache.init.php	/^			$delete_sql = sprintf("DELETE FROM initphp_mysqlcache WHERE k = %s ", $this->sql->build_escape($key));$/;"	v
 departmentController	web/controller/departmentController.php	/^class departmentController extends baseController{$/;"	c
@@ -712,6 +716,7 @@ edit	web/controller/adminController.php	/^    public function edit()$/;"	f
 edit	web/controller/admingroupController.php	/^    public function edit()$/;"	f
 edit	web/controller/companyController.php	/^    public function edit(){$/;"	f
 edit	web/controller/departmentController.php	/^	public function edit(){$/;"	f
+edit2	web/controller/departmentController.php	/^	public function edit2(){$/;"	f
 editSave	library/dao/departmentDao.php	/^    public function editSave($data){$/;"	f
 editSave	library/service/departmentService.php	/^    public function editSave($data){$/;"	f
 editSave	web/controller/departmentController.php	/^	public function editSave(){$/;"	f
@@ -769,6 +774,7 @@ exists	initphp/core/dao/nosql/driver/redis.init.php	/^	public function exists($k
 expire	initphp/core/util/cookie.init.php	/^		$expire = (empty($expire)) ? time() + $this->expire : $expire; \/\/cookie时间$/;"	v
 expire	initphp/core/util/cookie.init.php	/^	private $expire = 2592000; \/\/cookie时间$/;"	v
 expire	initphp/core/util/cookie.init.php	/^	public function set($name, $val, $expire = '', $path = '', $domain = '') {$/;"	v
+exportTree	library/service/departmentService.php	/^    public function exportTree($tree,$deep = 0){$/;"	f
 extension	initphp/library/email.init.php	/^		$extension=substr($image_tag,strrpos($image_tag,"."),strlen($image_tag)-strrpos($image_tag,"."));$/;"	v
 f	static/js/datetime.js	/^	var f=window.frames['sangcalender'];$/;"	v
 fd	initphp/library/zip.init.php	/^            		$fd = fopen ($filename, "r");$/;"	v
@@ -848,7 +854,6 @@ filter_script	initphp/core/controller/filter.init.php	/^	public function filter_
 filter_slashes	initphp/core/controller/filter.init.php	/^	public static function filter_slashes(&$value) {$/;"	f
 filter_sql	initphp/core/controller/filter.init.php	/^	public function filter_sql($value) {$/;"	f
 filter_str	initphp/core/controller/filter.init.php	/^	public function filter_str($value) {$/;"	f
-finalArr	b.php	/^	$finalArr = array();$/;"	v
 find	initphp/core/dao/nosql/driver/mongo.init.php	/^	public function find($query, $sort = array(), $skip = 0, $limit = 0, $fields = array()) {$/;"	f
 findOne	initphp/core/dao/nosql/driver/mongo.init.php	/^	public function findOne($query, $fields = array()) {$/;"	f
 findip	initphp/library/ip.init.php	/^                    $findip = $this->firstip + $i * 7;$/;"	v
@@ -896,9 +901,9 @@ functionInit	initphp/library/function.init.php	/^class functionInit {$/;"	c
 g	initphp/library/image.init.php	/^        $g = array(225,236,237,255);$/;"	v
 generateHtmlOptions	initphp/library/function.init.php	/^	function generateHtmlOptions($arr, $default = null){$/;"	f
 generateTree	a.php	/^function generateTree($items){$/;"	f
+generateTree	library/service/departmentService.php	/^	public function generateTree($items){$/;"	f
 generateTree2	a.php	/^function generateTree2($items){$/;"	f
-generateTree2	b.php	/^function generateTree2($items){$/;"	f
-generateTree23	b.php	/^function generateTree23($items){$/;"	f
+generateTree2	library/service/departmentService.php	/^    public function generateTree2($items){$/;"	f
 generate_captcha	initphp/library/captcha.init.php	/^    private function generate_captcha($length = 6) {$/;"	f
 gerenyongjinDao	library/dao/gerenyongjinDao.php	/^class gerenyongjinDao extends Dao$/;"	c
 gerenyongjin_count	library/dao/gerenyongjinDao.php	/^    public function gerenyongjin_count($uid,$sqlwhere=null,$limit=null){$/;"	f
@@ -943,6 +948,8 @@ getM	initphp/init/core.init.php	/^	public static function getM() {$/;"	f
 getMongo	initphp/init/core.init.php	/^	public function getMongo($server = 'default') {$/;"	f
 getNosql	initphp/init/core.init.php	/^	public function getNosql() {$/;"	f
 getObj	static/js/datetime.js	/^	function getObj(className){$/;"	f
+getParentNodeById	library/dao/departmentDao.php	/^	public function getParentNodeById($id){$/;"	f
+getParentNodeById	library/service/departmentService.php	/^	public function getParentNodeById($id){$/;"	f
 getPath	initphp/library/tree.init.php	/^	public function getPath($data,$id){$/;"	f
 getRedis	initphp/init/core.init.php	/^	public function getRedis($server = 'default') {$/;"	f
 getRemoteService	initphp/initphp.php	/^	public static function getRemoteService($class, $method, $args = array(), $group = "default",  $path = "", $timeout = 5) {$/;"	f
@@ -1078,7 +1085,10 @@ html	initphp/library/html.init.php	/^	private function html() {$/;"	f
 html	initphp/library/pager.init.php	/^		$html = '&nbsp;&nbsp;<select name="select" onchange="javascript:window.location.href=this.options[this.selectedIndex].value">';$/;"	v
 html	initphp/library/pager.init.php	/^		$html = '';$/;"	v
 html	initphp/library/pager.init.php	/^        $html = "<div class='pagelist'>";$/;"	v
-html	web/controller/departmentController.php	/^		static $html;$/;"	v
+html	library/service/departmentService.php	/^        static $html = '';$/;"	v
+html	web/controller/departmentController.php	/^		$html = $this->_exportTree($tree2);$/;"	v
+html	web/controller/departmentController.php	/^		static $html = '';$/;"	v
+html	web/controller/departmentController.php	/^        $html = $this->_exportTree($tree2);$/;"	v
 htmlInit	initphp/library/html.init.php	/^class htmlInit {$/;"	c
 html_code	initphp/initphp.php	/^		$html_code = array("&amp;", "&quot;", "&#039;", "&lt;", "&gt;", "&lt;", "&gt;");$/;"	v
 html_path	initphp/library/html.init.php	/^	private $html_path = 'data\/html\/'; \/\/静态页面目录$/;"	v
@@ -1283,8 +1293,6 @@ js_unescape	initphp/library/function.init.php	/^    public function js_unescape(
 json	initphp/initphp.php	/^			$json = $curl->post($url, array("params" => $params), null, $timeout);$/;"	v
 json_data	initphp/core/controller/controller.init.php	/^            $json_data = json_encode($return_data);$/;"	v
 k	a.php	/^    foreach($tree as $k => $v){$/;"	v
-k	data/template_c/department/add.tpl.php	/^                <?php foreach ($department_info as $k =>$v) { ?>$/;"	v
-k	data/template_c/department/edit.tpl.php	/^                <?php foreach ($department_info as $k =>$v) { ?>$/;"	v
 k	data/template_c/department/run.tpl.php	/^	<?php foreach ($list as $k => $v) { ?>$/;"	v
 k	initphp/core/controller/filter.init.php	/^			foreach ($_SERVER as $k => $v) {$/;"	v
 k	initphp/core/controller/filter.init.php	/^			foreach ($value as $k => $v) {$/;"	v
@@ -1302,7 +1310,8 @@ k	initphp/init/interceptor.init.php	/^			foreach ($interceptor['rule'] as $k => 
 k	initphp/initphp.php	/^					foreach ($params as $k => $v) {$/;"	v
 k	initphp/library/function.init.php	/^		foreach($array as $k => $v){$/;"	v
 k	initphp/library/function.init.php	/^		foreach($string as $k => $v){$/;"	v
-k	web/controller/departmentController.php	/^		foreach($tree as $k => $v){$/;"	v
+k	library/service/departmentService.php	/^        foreach ($tree as $k => $v) {$/;"	v
+k	web/controller/departmentController.php	/^    	foreach ($tree as $k => $v) {$/;"	v
 key	data/template_c/admin/addinfo.tpl.php	/^				<?php foreach ($user_group as $key=>$vo) { ?>$/;"	v
 key	data/template_c/admin/editinfo.tpl.php	/^				<?php foreach ($user_group as $key=>$vo) { ?>$/;"	v
 key	data/template_c/admin/run.tpl.php	/^   <?php foreach ($list as $key=>$vo) { ?>$/;"	v
@@ -1398,6 +1407,7 @@ list	web/controller/departmentController.php	/^        $list = $this->department
 list	web/controller/editpasswordController.php	/^        $list = $this->adminService->admin_list();$/;"	v
 list	web/controller/indexController.php	/^        $list = $this->adminService->current_user();$/;"	v
 list2	web/controller/departmentController.php	/^		$list2 = $this->departmentService->getDepartmentList2();	$/;"	v
+list2	web/controller/departmentController.php	/^        $list2 = $this->departmentService->getDepartmentList2();$/;"	v
 listRet	library/dao/departmentDao.php	/^		$listRet = array();$/;"	v
 lists	web/controller/departmentController.php	/^		$lists = $this->departmentService->getDepartmentList();$/;"	v
 load	initphp/init/core.init.php	/^	public function load($class_name, $type) {$/;"	f
@@ -1803,6 +1813,7 @@ ret	initphp/library/function.init.php	/^        $ret = null;$/;"	v
 ret	initphp/library/upload.init.php	/^                    $ret = $this->localSave($file['tmp_name'], $file['savepath'] . $file['savename']);$/;"	v
 ret	initphp/library/upload.init.php	/^                    $ret = $this->saeSave($file['tmp_name'], $file['savepath'] . $file['savename']);$/;"	v
 ret	library/dao/departmentDao.php	/^		$ret = $this->dao->db->get_all_sql($sql);$/;"	v
+ret	library/dao/departmentDao.php	/^		$ret = $this->dao->db->get_one_sql($sql);$/;"	v
 ret	web/controller/departmentController.php	/^		$ret = $this->departmentService->del($departmentId);$/;"	v
 ret	web/controller/departmentController.php	/^        $ret = $this->departmentService->addSave($data);$/;"	v
 retRes	initphp/core/dao/nosql/driver/redis.init.php	/^		$retRes = $this->redis->set($key, $value);$/;"	v
@@ -1981,6 +1992,9 @@ sql	library/dao/adminLogDao.php	/^        $sql=sprintf("select * from %s a left 
 sql	library/dao/companyDao.php	/^        $sql=sprintf("select * from %s  order by id desc",$this->table_name);$/;"	v
 sql	library/dao/companyDao.php	/^        $sql=sprintf("select * from %s where id=%s ",$this->table_name,$id);$/;"	v
 sql	library/dao/departmentDao.php	/^		$sql = sprintf("SELECT * FROM %s",$this->tableName);$/;"	v
+sql	library/dao/departmentDao.php	/^		$sql = sprintf("SELECT `department_id` FROM %s WHERE department_id=%s",$this->tableName,$pid);$/;"	v
+sql	library/dao/departmentDao.php	/^		$sql = sprintf("SELECT `department_id` FROM %s WHERE p_dpt_id=%s",$this->tableName,$id);$/;"	v
+sql	library/dao/departmentDao.php	/^		$sql = sprintf("SELECT `p_dpt_id` FROM %s WHERE department_id=%s",$this->tableName,$id);$/;"	v
 sql	library/dao/departmentDao.php	/^        $sql = sprintf("SELECT * FROM %s WHERE department_id=%s ",$this->tableName,$id);$/;"	v
 sql	library/dao/departmentDao.php	/^        $sql = sprintf("SELECT * FROM %s WHERE p_dpt_id=%s",$this->tableName,$pid);$/;"	v
 sql	library/dao/departmentDao.php	/^        $sql = sprintf("SELECT * FROM %s",$this->tableName);$/;"	v
@@ -2232,6 +2246,8 @@ tmp	initphp/initphp.php	/^			$tmp = $tmp[$item];$/;"	v
 tmp	initphp/initphp.php	/^		$tmp = $InitPHP_conf;$/;"	v
 tmp	initphp/library/function.init.php	/^            $tmp = $box [$a];$/;"	v
 tmp	initphp/library/function.init.php	/^            $tmp = $box [$i];$/;"	v
+tmpName	library/service/departmentService.php	/^            $tmpName = sprintf("%s%s", str_repeat('——', $deep), $v['department_name']);$/;"	v
+tmpName	web/controller/departmentController.php	/^        	$tmpName = sprintf("%s%s", str_repeat('——', $deep), $v['department_name']);$/;"	v
 tmpname	initphp/core/controller/filter.init.php	/^		$tmpname = strtolower($fileName);$/;"	v
 tmpstr	initphp/initphp.php	/^            $tmpstr = '';$/;"	v
 tn	initphp/library/function.init.php	/^					$tn = 1; $n++; $noc++;$/;"	v
@@ -2262,10 +2278,12 @@ transaction_rollback	initphp/core/dao/db/db.init.php	/^	public function transact
 transaction_start	initphp/core/dao/db/db.init.php	/^	public function transaction_start() {$/;"	f
 tree	a.php	/^    $tree = array();$/;"	v
 tree	a.php	/^$tree = generateTree($items);$/;"	v
-tree	b.php	/^$tree = generateTree2($alls);$/;"	v
+tree	library/service/departmentService.php	/^        $tree = array();$/;"	v
 tree	web/controller/departmentController.php	/^		$tree = $this->_generateTree2($items);$/;"	v
 tree	web/controller/departmentController.php	/^		$tree = $this->departmentService->getDepartmentTree();$/;"	v
 tree	web/controller/departmentController.php	/^    	$tree = array();$/;"	v
+tree2	web/controller/departmentController.php	/^		$tree2 = $this->_generateTree2($list2);$/;"	v
+tree2	web/controller/departmentController.php	/^        $tree2 = $this->_generateTree2($list2);$/;"	v
 treeData	web/controller/departmentController.php	/^		$treeData = $this->_getTreeData($tree);$/;"	v
 treeInit	initphp/library/tree.init.php	/^class treeInit $/;"	c
 trim	initphp/library/function.init.php	/^	public function array_remove_empty(&$arr, $trim = true) {$/;"	v
@@ -2318,7 +2336,7 @@ url	initphp/initphp.php	/^		$url = "http:\/\/" . $host ."\/" . ltrim($file, "\/"
 url	initphp/initphp.php	/^	public static function url($action, $params = array(), $baseUrl = '') {$/;"	f
 url	initphp/library/pager.init.php	/^		$url      = (strpos($url, '?') === false) ? $url . '?' : $url;$/;"	v
 url	initphp/library/sms.init.php	/^		$url = 'http:\/\/sdk999ws.eucp.b2m.cn:8080\/sdkproxy\/'.$t.'.action?cdkey='.$this->cdkey.'&password='.$this->password.$d;$/;"	v
-url	library/service/adminService.php	/^				$url = "http:\/\/api.baihedai.com.cn\/yeWuXiTong\/register\/?t=".json_encode($data);$/;"	v
+url	library/service/adminService.php	/^				$url = "http:\/\/api.baihedai.com.cn\/zhiXiaoXiTong\/register\/?t=".json_encode($data);$/;"	v
 url	library/service/agentService.php	/^		$url = "http:\/\/api.baihedai.com.cn\/yeWuXiTong\/register\/?t=".json_encode($data);$/;"	v
 urlArr	initphp/init/dispatcher.init.php	/^    	$urlArr = parse_url($InitPHP_conf['url']);$/;"	v
 use_memory	initphp/core/util/debug.init.php	/^	public function use_memory($name) {$/;"	f

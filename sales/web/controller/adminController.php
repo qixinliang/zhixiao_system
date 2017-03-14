@@ -34,7 +34,14 @@ class adminController extends baseController
     public function add()
     {
         $this->authService->checkauth("1024");
+        $departmentService = InitPHP::getService("department");//上级列表
         $user_group = $this->adminGroupService->adminList();
+        
+        $list2 = $departmentService->getDepartmentList2();
+        $tree2 = $this->_generateTree2($list2);
+        $html = $this->_exportTree($tree2);
+        $this->view->assign('html', $html);
+        
         $this->view->assign('action_name', '添加');
         $this->view->assign('action', 'add');
         $this->view->assign('user_group', $user_group);
@@ -64,6 +71,12 @@ class adminController extends baseController
 		$data['phone'] = $this->controller->get_gp('phone');
 		$data['password'] = $this->controller->get_gp('password');
 		$data['password2'] = $this->controller->get_gp('password2');
+		
+		$data['department_id'] = $this->controller->get_gp('department_id');
+		$data['level_id'] = $this->controller->get_gp('level_id');
+		$data['gender'] = $this->controller->get_gp('gender');
+		
+		
 		$data['status'] = $this->controller->get_gp('status');
 		
         $arr = $this->adminService->add_save($data,$admin['id']);
@@ -104,7 +117,12 @@ class adminController extends baseController
         {
             exit(json_encode(array('status' => 4, 'message' => '越权操作!')));
         }
-
+        $departmentService = InitPHP::getService("department");//上级列表
+        $list2 = $departmentService->getDepartmentList2();
+        $tree2 = $this->_generateTree2($list2);
+        $department_id = $arr['info']['department_id'];
+        $html = $this->_exportTree($tree2,$department_id);
+        $this->view->assign('html', $html);
         $this->view->assign('user_group', $arr['user_group']);
         $this->view->assign('info', $arr['info']);
         $this->view->assign('user', $arr['user']);
@@ -131,6 +149,10 @@ class adminController extends baseController
 		$data['phone'] = $this->controller->get_gp('phone');
 		$data['password'] = $this->controller->get_gp('password');
 		$data['password2'] = $this->controller->get_gp('password2');
+		$data['department_id'] = $this->controller->get_gp('department_id');
+		$data['level_id'] = $this->controller->get_gp('level_id');
+		$data['gender'] = $this->controller->get_gp('gender');
+		
 		$data['status'] = $this->controller->get_gp('status');
 		
         $arr = $this->adminService->edit_save($data);
@@ -171,5 +193,28 @@ class adminController extends baseController
         {
             exit(json_encode(array('status' => 11, 'message' => '越权操作!')));
         }
+    }
+    private function _generateTree2($items){
+        foreach($items as $item)
+            $items[$item['p_dpt_id']]['son'][$item['department_id']] = &$items[$item['department_id']];
+        return isset($items[0]['son']) ? $items[0]['son'] : array();
+    }
+    
+    private function _exportTree($tree,$department_id=0,$deep = 0){
+        static $html = '';
+        foreach ($tree as $k => $v) {
+            $tmpName = sprintf("%s%s", str_repeat('——', $deep), $v['department_name']);
+            $html .= '<option value='.$k;
+            if($v['department_id']==$department_id){
+                $html.=' selected="selected" ';
+            }
+            $html .= '>';
+            $html .= $tmpName . '</option>';
+            
+            if (isset($v['son']) && !empty($v['son'])) {
+                $this->_exportTree($v['son'],$department_id, $deep + 1);
+            }
+        }
+        return $html;
     }
 }

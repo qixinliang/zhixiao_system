@@ -86,4 +86,8 @@ ment_id']];
         }
         return $html;
     }
+	
+	public function getParentNodeById($id){
+		return $this->_departmentDao->getParentNodeById($id);
+	}
 }
