@@ -32,20 +32,6 @@ class departmentController extends baseController{
     	return isset($items[0]['son']) ? $items[0]['son'] : array();
 	}
 
-	private function _getTreeData($tree){
-		static $html;
-		$html .= "<ul>";
-		foreach($tree as $k => $v){
-			var_dump($k);
-			$html .= "<li><a href=\"#\" ref=$k>" . $v['name'] . "</a></li>";
-			if(isset($v['son'])){
-				$this->_getTreeData($v['son']);
-			}
-		}
-		$html .= "</ul>";
-		return $html;
-	}
-
 	private function _exportTree($tree,$deep = 0){
 		static $html = '';
     	foreach ($tree as $k => $v) {

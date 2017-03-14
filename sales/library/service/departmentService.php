@@ -53,4 +53,37 @@ class departmentService extends Service{
     public function del($id){
         return  $this->_departmentDao->del($id);
     }
+
+	//树相关...
+
+	public function generateTree($items){
+        $tree = array();
+        foreach($items as $item){
+            if(isset($items[$item['p_dpt_id']])){
+                $items[$item['p_dpt_id']]['son'][] = &$items[$item['department_id']];
+            }else{
+                $tree[] = &$items[$item['department_id']];
+            }
+        }
+        return $tree;
+    }
+
+    public function generateTree2($items){
+        foreach($items as $item)
+            $items[$item['p_dpt_id']]['son'][$item['department_id']] = &$items[$item['depart
+ment_id']];
+        return isset($items[0]['son']) ? $items[0]['son'] : array();
+    }
+	
+    public function exportTree($tree,$deep = 0){
+        static $html = '';
+        foreach ($tree as $k => $v) {
+            $tmpName = sprintf("%s%s", str_repeat('——', $deep), $v['department_name']);
+            $html .= "<option value=$k>" . $tmpName . "</option>";
+            if (isset($v['son']) && !empty($v['son'])) {
+                $this->_exportTree($v['son'], $deep + 1);
+            }
+        }
+        return $html;
+    }
 }
