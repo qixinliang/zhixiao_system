@@ -85,7 +85,6 @@ class adminService extends Service
      */
     public function add_save($data,$admin_id)
     {
-		if($data['password']<>$data['password2']) return 1;
         $data['password']=md5($data['password']);
         unset($data['password2']);
 		$data['regtime']  = time();
