@@ -115,8 +115,9 @@ class departmentController extends baseController{
         $list2 = $this->departmentService->getDepartmentList2();
         $tree2 = $this->_generateTree2($list2);
         $html = $this->_exportTree($tree2);
-        $this->view->assign('list', $list);
         $this->view->assign('html', $html);
+		$this->view->assign('action_name','添加');
+        $this->view->assign('action', 'add');
         $this->view->display("department/add"); //使用模板
 	}
 	
