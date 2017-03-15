@@ -10,3 +10,5 @@ CREATE TABLE `zx_department` (
 PRIMARY KEY (`department_id`),
 KEY `idx_department_name` (`department_name`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='部门管理表';
+
+ALTER TABLE `cp_zjingjiren_admin_group` DROP COLUMN `privilege`, ADD COLUMN `privilege` int(11) COMMENT '角色权限' AFTER `keep`;
