@@ -54,10 +54,10 @@ class adminService extends Service
     /**
      * 获取用户列表
      */
-    public function admin_list()
+    public function admin_list($where="")
     {
         $user=$this->current_user();
-        return $this->adminDao->admin_list($user['grade']);
+        return $this->adminDao->admin_list($user['grade'],$where);
     }
     /*
      *  根据用户名、手机、信箱检测用户是否存在

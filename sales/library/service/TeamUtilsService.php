@@ -188,4 +188,29 @@ class TeamUtilsService extends Service{
         }
         return $tmp;
     }
+    
+    /************************************************************
+     * @copyright(c): 2017年3月21日
+     * @Author:  cxd
+     * @Create Time: 下午3:30:52
+     * @年化收益额计算
+     * @$data 标的订单列表
+     *************************************************************/
+    public function yongJinJiSuan($data){
+        $tmparray = array();
+        if(empty($data)){
+            return $tmparray;
+        }
+        foreach ($data as $key=>$val){
+            if(!empty($val['order_money']) && $val['order_money']>0){
+                if($val['expires_type']==1){
+                    $val['nhsyl']=$val['order_money']/360*$val['expires'];  //按天计算年化收益额
+                }else{
+                    $val['nhsyl']=$val['order_money']/12*$val['expires'];    //按月计算年化收益额
+                }
+            }
+            $tmparray[] = $val;
+        }
+        return $tmparray;
+    }
 }
