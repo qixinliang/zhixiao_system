@@ -13,11 +13,23 @@ class customerController extends baseController{
 	}
 	
 	public function run($salesId){
+		$adminService   = InitPHP::getService('admin');
+		$userInfo       = $adminService->current_user();
+		if(!isset($userInfo)){
+			exit(json_encode(array('status' => -1,'message' => '参数错误！')));
+		}
+		$salesId        = $userInfo['id'];
+		$salesId		= 26;
+		$ret 			= $this->customerService->addCustomer($salesId);
+       	echo '<pre>';
+       	print_r($ret);
+       	echo '</pre>';
+
 		$uName 			= $this->controller->get_gp('user_name');
         $uDepartment	= $this->controller->get_gp('user_department');
         $uRole 		 	= $this->controller->get_gp('user_role');
 
-		$where = '1=1';
+		$where = 'WHERE 1=1';
 		if(isset($uName) && !empty($uName)){
 			$where .= ' AND inviter_name="'. $uName. '"';
 			$this->view->assign('user_name',$uName);
@@ -33,19 +45,9 @@ class customerController extends baseController{
 			$this->view->assign('user_role',$uRole);
 		}
 		$list = $this->customerService->getCustomers($where);
+		var_dump($list);
 		$this->view->assign('list',$list);
 		$this->view->display('customer/run');
 
-		/*
-		if(!isset($salesId) || empty($salesId)){
-			exit(json_encode(array('status' => -1,'message' => '参数错误！')));
-		}
-		//写死，模拟测试。
-		$salesId = 26;
-		//先入库
-		$ret = $this->customerService->addCustomer($salesId);
-		var_dump($ret);
-		//再取出来展示
-		*/
 	}
 }

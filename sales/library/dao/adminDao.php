@@ -19,7 +19,7 @@ class adminDao extends Dao
      */
     public function adminInfo($admin_id)
     {
-        $sql=sprintf("select a.*,b.name as gname from %s a , %s b  where a.gid=b.id and a.id=%s ",$this->table_name,'cp_zjingjiren_admin_group',$admin_id);
+        $sql=sprintf("SELECT a.*,b.name as gnname from %s as a LEFT JOIN  %s b ON a.gid=b.id where a.id=%s ",$this->table_name,'cp_zjingjiren_admin_group',$admin_id);
         return  $this->dao->db->get_one_sql($sql);
     }
 
@@ -46,10 +46,9 @@ class adminDao extends Dao
      * 获取用户列表
      * @param $data array()
      */
-    public function admin_list($grade,$where)
+    public function admin_list($grade)
     {
-        $sql=sprintf("select a.*,b.name as gname,d.department_name from %s a left join cp_zjingjiren_admin_group b on a.gid=b.id left JOIN zx_department d on d.department_id = a.department_id where b.grade>=%s and a.vaild =1  %s order by id desc",$this->table_name,$grade,$where);
-//        echo $sql;exit;
+        $sql=sprintf("select a.*,b.name as gname from %s a left join cp_zjingjiren_admin_group b on a.gid=b.id where b.grade>=%s order by id desc",$this->table_name,$grade);
         return  $this->dao->db->get_all_sql($sql);
     }
     /**
@@ -84,7 +83,7 @@ class adminDao extends Dao
      */
     public function del($id)
     {
-        return $this->dao->db->update_by_field(array('vaild'=>0),array('id'=>$id), $this->table_name);
+        return $this->dao->db->delete_by_field(array('id'=>$id), $this->table_name);
     }
 	
     //根据手机号获取详细信息
@@ -152,6 +151,19 @@ class adminDao extends Dao
     public function GetToZiXiTongUserId($admin_id){
         $sql=sprintf("SELECT b.id from %s as a LEFT JOIN cp_user as b on b.username=a.user where a.id='%s'",$this->table_name,$admin_id);
         return  $this->dao->db->get_one_sql($sql);
+    }
+    
+    /************************************************************
+     * @copyright(c): 2017年1月17日
+     * @Author:  yuwen
+     * @Create Time: 下午2:02:58
+     * @通过业务账号的id查询投资系统内注册的账号id
+     * @这个id可以查询当前登录业务系统账号自己的投资账号id，通过id可以查询他自己的订单
+     *************************************************************/
+    public function GetToZiXiTongAdminId($uid){
+        $sql=sprintf("SELECT a.id from %s as a LEFT JOIN cp_user as b on b.username=a.user where b.id='%s'",$this->table_name,$uid);
+        $data= $this->dao->db->get_one_sql($sql);
+        return $data['id'];
     }
     /************************************************************
      * @copyright(c): 2016年12月16日
