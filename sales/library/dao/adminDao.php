@@ -7,6 +7,11 @@ if (!defined('IS_INITPHP')) exit('Access Denied!');
 class adminDao extends Dao
 {
     public $table_name = 'cp_zjingjiren_admin';
+	
+	public function adminInfoEx($adminId){
+        $sql=sprintf("SELECT UsrName,department_id,gid FROM %s WHERE id=%s",$this->table_name,$adminId);
+		return $this->dao->db->get_one_sql($sql);
+	}
 
     /**
      * 根据管理员id查详细资料

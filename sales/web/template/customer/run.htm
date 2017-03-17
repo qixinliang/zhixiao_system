@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="renderer" content="webkit">
+    <title>直销管理系统</title>
+	<base href="<?php echo InitPHP::getConfig('url');?>"/>
+    <link rel="stylesheet" href="/static/css/base.css">
+    <link rel="stylesheet" href="/static/css/css.css">
+    <link rel="stylesheet" href="/static/css/simpleTree.css">
+    <script src="/static/js/jquery.js"></script>
+    <script src="/static/js/simpleTree.js"></script>
+</head>
+<body>
+<div class="panel admin-panel">
+  <div class="panel-head"><strong class="icon-reorder">客户分配</strong></div>
+  <div class="padding border-bottom">
+      <form action="/customer/run" method="post">
+        	员工姓名：
+			<input type="text" name="user_name" style="width: 160px;height: 25px;margin-right: 30px;" value="<!--{$user_name}-->" placeholder="员工姓名">
+        	部门 ：
+			<select name="user_department" style="width: 130px;height: 25px;margin-right: 30px;">
+					<option value="1" selected="selected">volvo</option>
+					<option value="2">card</option>
+					<option value="3">audi</option>
+					<option value="4">benz</option>
+			</select>
+			角色 ：
+			<select name="user_role" style="width: 130px;height: 25px;margin-right: 30px;">
+					<option value="1" selected="selected">总监</option>
+					<option value="2">副总监</option>
+					<option value="3">总经理</option>
+					<option value="4">县区级总经理</option>
+			</select>
+        <input type="hidden" name ="page" value="<!--{$page}-->">
+      	<input type="submit" class="button border-yellow" value="搜索">
+      </form>
+  </div>
+  <table class="table table-hover text-center">
+    <tr>
+      <th width="5%">会员ID</th>     
+      <th>用户名</th>  
+      <th>投资人姓名</th>     
+      <th>手机号</th>     
+      <th>创建时间</th>
+      <th>邀请人</th> 
+      <th>邀请人所属部门</th> 
+      <th>角色</th>
+      <th>离职日期</th>
+	  <th>是否投资</th>
+	  <th>操作</th>
+    </tr>
+	
+	<!--{foreach($list as $k => $v)}-->
+    <tr>
+      <td><!--{$v['investor_id']}--></td>
+      <td><!--{$v['investor_login_name']}--></td> 
+      <td><!--{$v['investor_real_name']}--></td>
+      <td><!--{$v['investor_cellphone']}--></td>
+      <td><!--{$v['create_time']}--></td>
+      <td><!--{$v['inviter_name']}--></td>
+      <td><!--{$v['inviter_department_id']}--></td>
+      <td><!--{$v['inviter_role_id']}--></td>
+      <td><!--{$v['inviter_off_time']}--></td>
+      <td>
+		<!--{if($v['invest_status'] == 0)}-->
+      		否	
+      	<!--{else}-->
+      		是
+      	<!--{/if}-->
+	  </td>
+      <td>
+      <div class="button-group">
+      <a type="button" class="button border-main" href="/customer/edit/customer_id/<!--{$v['customer_id']}-->"><span class="icon-edit"></span>重新分配</a>
+      </div>
+      </td>
+    </tr> 
+	<!--{/foreach}-->
+
+  </table>
+</div>
+</body>
+</html>

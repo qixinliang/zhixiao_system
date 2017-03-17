@@ -35,4 +35,19 @@ class user_yaoqingma_listDao extends Dao
         $data = $this->dao->db->get_all_sql($sql);
         return $data;
     }
+
+	public function getInvestorList($salesId){
+		$sql = "SELECT 
+					a.uid,
+					a.create_time,
+					b.username,
+					c.phone,
+					d.UsrName 
+				FROM cp_user_yaoqingma_list a
+				LEFT JOIN cp_user b ON b.id=a.uid
+				LEFT JOIN cp_user_info c ON c.uid=b.id
+				LEFT JOIN cp_user_huifu d ON d.uid=b.id
+				WHERE a.friends=$saleId";
+		return $this->dao->db->get_all_sql($sql);
+	}
 }
