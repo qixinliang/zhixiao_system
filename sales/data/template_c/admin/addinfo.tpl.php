@@ -1,4 +1,4 @@
-<?php  if (!defined("IS_INITPHP")) exit("Access Denied!");  /* INITPHP Version 1.0 ,Create on 2017-03-14 10:53:13, compiled from ./web/template/admin/addinfo.htm */ ?>
+<?php  if (!defined("IS_INITPHP")) exit("Access Denied!");  /* INITPHP Version 1.0 ,Create on 2017-03-18 19:44:28, compiled from ./web/template/admin/addinfo.htm */ ?>
 <!DOCTYPE html>
 <html lang="zh-cn">
 <head>
@@ -18,20 +18,8 @@
   <div class="body-content">
 	<form id="form" class="form-x" >
 	
-		<div class="form-group">
-		  <div class="label">
-			<label>职务类型：</label>
-		  </div>
-		  <div class="field">
-			<select name="gid" id="gid" class="input w50">
-				<?php foreach ($user_group as $key=>$vo) { ?>
-				<option value="<?php echo $vo['id'];?>" <?php if ($info['gid']==$vo['id']) { ?> selected="selected" <?php } ?> ><?php echo $vo['name'];?></option>
-				<?php } ?>
-			</select>
-		  </div>
-		</div>
-
-      <div class="form-group">
+		
+		 <div class="form-group">
         <div class="label">
           <label>用户名：</label>
         </div>
@@ -44,8 +32,28 @@
           <div class="tips_user" style="float: left;padding-left: 10px;color: #888;line-height: 42px;"></div>
         </div>
       </div> 
-    
-      <div class="form-group">
+      
+		<div class="form-group">
+        <div class="label">
+          <label>登录密码：</label>
+        </div>
+        <div class="field">
+		  <input name="password" type="password" class="input w50" id="password"  onblur="chekPassWord()"/> 
+		  <div class="tips_Password" style="float: left;padding-left: 10px;color: #888;line-height: 42px;"></div>		  
+        </div>
+      </div> 
+      
+       <div class="form-group">
+        <div class="label">
+          <label>手机号：</label>
+        </div>
+        <div class="field">
+		  <input name="phone" type="text" class="input w50" id="phone" value="<?php echo $info['phone'];?>" onblur="chekPhone()"/>       
+          <div class="tips_Phone" style="float: left;padding-left: 10px;color: #888;line-height: 42px;"></div>
+        </div>
+      </div> 
+      
+       <div class="form-group">
         <div class="label">
           <label>真实姓名：</label>
         </div>
@@ -54,6 +62,40 @@
           <div class="tips_UsrName" style="float: left;padding-left: 10px;color: #888;line-height: 42px;"></div>
         </div>
       </div> 
+      
+		
+		<div class="form-group">
+		  <div class="label">
+			<label>角色类型：</label>
+		  </div>
+		  <div class="field">
+			<select name="gid" id="gid" class="input w50">
+				<?php foreach ($user_group as $key=>$vo) { ?>
+				<option value="<?php echo $vo['id'];?>" <?php if ($info['gid']==$vo['id']) { ?> selected="selected" <?php } ?> ><?php echo $vo['name'];?></option>
+				<?php } ?>
+			</select>
+			 <div class="tips_jiaose" style="float: left;padding-left: 10px;color: #888;line-height: 42px;"></div>
+		  </div>
+		</div>
+		
+		
+		<div class="form-group">
+		  <div class="label">
+			<label>所属部门：</label>
+		  </div>
+		  <div class="field">
+			<select name=department_id id="department_id" class="input w50">
+                <?php echo $html;?>
+			</select>
+			<div class="tips_bumen" style="float: left;padding-left: 10px;color: #888;line-height: 42px;"></div>
+		  </div>
+		</div>
+		
+		
+
+     
+    
+     
 	  
       <div class="form-group">
         <div class="label">
@@ -65,36 +107,41 @@
         </div>
       </div> 
 	  
-      <div class="form-group">
+     
+      
+	  
+	  
+	   <div class="form-group">
         <div class="label">
-          <label>手机号：</label>
+          <label>级别：</label>
         </div>
         <div class="field">
-		  <input name="phone" type="text" class="input w50" id="phone" value="<?php echo $info['phone'];?>" onblur="chekPhone()"/>       
-          <div class="tips_Phone" style="float: left;padding-left: 10px;color: #888;line-height: 42px;"></div>
+          <div class="button-group radio">
+			<input name="level_id" type="radio" value="0"  <?php if ($info['status']==0) { ?> checked="checked" <?php } ?> />实习&nbsp;&nbsp;
+			<input name="level_id" type="radio" value="1" <?php if ($info['status']==1) { ?> checked="checked" <?php } ?> />初级&nbsp;&nbsp;
+			<input name="level_id" type="radio" value="2" <?php if ($info['status']==2) { ?> checked="checked" <?php } ?> />中级&nbsp;&nbsp;
+			<input name="level_id" type="radio" value="3" <?php if ($info['status']==3) { ?> checked="checked" <?php } ?> />高级&nbsp;&nbsp;
+			<span class="tips" style="padding-left: 10px;color: #888;line-height: 42px;"></span>				
+           </div>  
         </div>
-      </div> 
+     </div>
 	  
-      <div class="form-group">
+	  
+	  
+	  <div class="form-group">
         <div class="label">
-          <label>密码：</label>
+          <label>性别：</label>
         </div>
         <div class="field">
-		  <input name="password" type="password" class="input w50" id="password"  onblur="chekPassWord()"/> 
-		  <div class="tips_Password" style="float: left;padding-left: 10px;color: #888;line-height: 42px;"></div>		  
+          <div class="button-group radio">
+			<input name="gender" type="radio" value="1"  <?php if ($info['status']==0) { ?> checked="checked" <?php } ?> />男&nbsp;&nbsp;
+			<input name="gender" type="radio" value="2" <?php if ($info['status']==1) { ?> checked="checked" <?php } ?> />女&nbsp;&nbsp;
+			<span class="tips" style="padding-left: 10px;color: #888;line-height: 42px;"></span>				
+           </div>  
         </div>
-      </div> 
-	  
-      <div class="form-group">
-        <div class="label">
-          <label>确认密码：</label>
-        </div>
-        <div class="field">
-		  <input name="password2" type="password" class="input w50" id="password2"  onblur="chekRePassWord()"/>   
-		  <div class="tips_RePassword" style="float: left;padding-left: 10px;color: #888;line-height: 42px;"></div>	
-        </div>
-      </div> 
-	  
+     </div>
+     
+     
      <div class="form-group">
         <div class="label">
           <label>状态：</label>
@@ -134,6 +181,21 @@ function chekUsName()
 		user = 1;
     }else{
         $(".tips_user").html("<font color=\"red\">角色名必须要6-16位字母、数字和下划线！</font>").show();
+		return false;
+	}
+}
+function chekJiaose(){
+	 var gid = $("#gid").val();
+	if(gid <0){
+		$(".tips_jiaose").html("<font color=\"red\">请选择角色类型</font>").show();
+		return false;
+	}
+}
+
+function chekBumen(){
+	 var department_id = $("#department_id").val();
+	if(department_id <0){
+		$(".tips_bumen").html("<font color=\"red\">请选择所属部门</font>").show();
 		return false;
 	}
 }
@@ -188,26 +250,20 @@ function chekPassWord()
 	}
 }
 
-function chekRePassWord()
-{
-    if ($("#password").val() == $("#password2").val())
-    {
-        $(".tips_RePassword").html("").show();
-        rpassword = 1;
-    } else {
-		$('.tips_RePassword').html('<font color="red">两次输入的密码不一致！</font>').show();
-    }
-}
 
 function sub(obj){
 
-	chekUsName();
-	chekUsrName();
-	chekIdNo();
-	chekPhone();
-	chekPassWord();
-	chekRePassWord();
-	if(user == 1 && UsrName == 1 && IdNo == 1 && Phone == 1 && password == 1 && rpassword == 1)
+	chekUsName();//用户名
+	chekPassWord();//登录密码
+	chekPhone();//手机号
+	chekUsrName();//真实姓名 
+	chekJiaose();//角色类型
+	chekBumen();//所属部门
+	chekIdNo();//身份证号
+	
+	
+	
+	if(user == 1 && UsrName == 1 && IdNo == 1 && Phone == 1 && password == 1)
 	{
 		$.ajax({
 			url: '/admin/<?php echo $action;?>_save',

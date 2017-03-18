@@ -27,6 +27,8 @@ Filename	initphp/library/sms.init.php	/^	private $Filename="\/home\/wwwlogs\/pho
 GetCompanyList	library/dao/companyDao.php	/^    public function GetCompanyList(){$/;"	f
 GetCompanyList	library/service/CompanyService.php	/^    public function GetCompanyList(){$/;"	f
 GetFileList	initphp/library/zip.init.php	/^	private function GetFileList($dir) {$/;"	f
+GetToZiXiTongAdminId	library/dao/adminDao.php	/^    public function GetToZiXiTongAdminId($uid){$/;"	f
+GetToZiXiTongAdminId	library/service/adminService.php	/^    public function GetToZiXiTongAdminId($uid){$/;"	f
 GetToZiXiTongUserId	library/dao/adminDao.php	/^    public function GetToZiXiTongUserId($admin_id){$/;"	f
 GetToZiXiTongUserId	library/service/adminService.php	/^    public function GetToZiXiTongUserId($admin_id){$/;"	f
 Handle	initphp/library/sms.init.php	/^		$this->Handle = fopen($this->Filename, 'a');$/;"	v
@@ -58,13 +60,26 @@ InitPHP_conf	initphp/initphp.php	/^			$InitPHP_conf = InitPHP::getConfig();$/;"	
 InitPHP_conf	initphp/initphp.php	/^		$InitPHP_conf = InitPHP::getConfig();$/;"	v
 Init_class	initphp/initphp.php	/^			$Init_class = new $classname;$/;"	v
 IpInit	initphp/library/ip.init.php	/^class IpInit {$/;"	c
+IsUserWhethertoinvest	library/dao/customerDao.php	/^	public function IsUserWhethertoinvest($uid){$/;"	f
+Key	library/service/myResultsService.php	/^        foreach ($data as $Key=>$val){$/;"	v
+Key	web/controller/myResultsController.php	/^           foreach ($res['data'] as $Key=>$val){$/;"	v
 LoanTerms	initphp/library/function.init.php	/^    function LoanTerms($tenderCompletedDate=null, $period=null, $dueDate=null, $periodType='d', $amortized = true)$/;"	f
+MonthlyPersonalDetail	library/service/myResultsService.php	/^    public function MonthlyPersonalDetail($uid,$val){$/;"	f
+ReceivableOrderMoney	library/service/myResultsService.php	/^    public function ReceivableOrderMoney($data){$/;"	f
+ResultsList	library/service/myResultsService.php	/^    public function ResultsList($userinfo){$/;"	f
 Service	initphp/initphp.php	/^class Service extends coreInit {$/;"	c
-TJHZService	web/controller/indexController.php	/^        $this->TJHZService = InitPHP::getService("TJHZ");         \/\/获取Service$/;"	v
+SumAnnualTrading	library/service/TeamUtilsService.php	/^    public function SumAnnualTrading($data){$/;"	f
 TO	initphp/library/email.init.php	/^		$TO = array_merge($TO, explode(",", $this->strip_comment($bcc)));$/;"	v
 TO	initphp/library/email.init.php	/^		$TO = array_merge($TO, explode(",", $this->strip_comment($cc)));$/;"	v
 TO	initphp/library/email.init.php	/^		$TO = explode(",", $this->strip_comment($to));$/;"	v
+TeamUtilsService	library/service/TeamUtilsService.php	/^class TeamUtilsService extends Service{$/;"	c
+TeamUtilsService	web/controller/customerController.php	/^		$TeamUtilsService = InitPHP::getService("TeamUtils");$/;"	v
+TeamUtilsService	web/controller/myClientsController.php	/^        $this->TeamUtilsService = InitPHP::getService("TeamUtils");$/;"	v
+UserReceivabe	library/service/myResultsService.php	/^        $UserReceivabe = $this->ReceivableOrderMoney($UserReceivabeOrderList);$/;"	v
+UserReceivabeOrderList	library/service/myResultsService.php	/^        $UserReceivabeOrderList = $this->getUserReceivableOrderList($data,$val);$/;"	v
+Userarr	library/service/myResultsService.php	/^        $Userarr = $this->calculateData($userlist);$/;"	v
 WARN	initphp/initphp.php	/^define("WARN", "WARN");$/;"	d
+YaoQingUserarr	library/service/myResultsService.php	/^        $YaoQingUserarr = $this->calculateData($yaoqingUserOrderList);$/;"	v
 ZeroClipboard.Client	static/js/ZeroClipboard.js	/^ZeroClipboard.Client.prototype = {$/;"	c
 ZeroClipboard.Client.addEventListener	static/js/ZeroClipboard.js	/^	addEventListener: function(eventName, func) {$/;"	m
 ZeroClipboard.Client.clipText	static/js/ZeroClipboard.js	/^	clipText: '', \/\/ text to copy to clipboard$/;"	p
@@ -97,28 +112,39 @@ __construct	initphp/library/ip.init.php	/^    public function __construct($filen
 __construct	initphp/library/sms.init.php	/^	public function __construct()$/;"	f
 __construct	initphp/library/tree.init.php	/^		 public function __construct($field=array())$/;"	f
 __construct	initphp/library/upload.init.php	/^    public function __construct($savePath="public\/uploads\/", $allowExts = array('gif','jpg','jpeg','bmp','png'), $maxSize = 10485760) {$/;"	f
+__construct	library/dao/customerDao.php	/^	public function __construct(){$/;"	f
+__construct	library/dao/recordDao.php	/^	public function __construct(){$/;"	f
 __construct	library/service/CompanyService.php	/^    public function __construct(){$/;"	f
 __construct	library/service/adminGroupService.php	/^    public function __construct()$/;"	f
 __construct	library/service/adminService.php	/^    public function __construct()$/;"	f
 __construct	library/service/agentService.php	/^    public function __construct(){$/;"	f
 __construct	library/service/authService.php	/^    public function __construct()$/;"	f
+__construct	library/service/customerService.php	/^	public function __construct(){$/;"	f
 __construct	library/service/departmentService.php	/^    public function __construct(){$/;"	f
+__construct	library/service/myClientsService.php	/^    public function __construct()$/;"	f
+__construct	library/service/myResultsService.php	/^    public function __construct(){$/;"	f
 __construct	web/controller/adminController.php	/^    public function __construct()$/;"	f
 __construct	web/controller/admingroupController.php	/^    public function __construct()$/;"	f
 __construct	web/controller/agentController.php	/^    public function __construct(){$/;"	f
 __construct	web/controller/companyController.php	/^    public function __construct(){$/;"	f
+__construct	web/controller/customerController.php	/^	public function __construct(){$/;"	f
 __construct	web/controller/departmentController.php	/^	public function __construct(){$/;"	f
 __construct	web/controller/editpasswordController.php	/^    public function __construct()$/;"	f
 __construct	web/controller/indexController.php	/^    public function __construct(){$/;"	f
+__construct	web/controller/myClientsController.php	/^    public function __construct()$/;"	f
+__construct	web/controller/myResultsController.php	/^    public function __construct(){$/;"	f
+__construct	web/controller/testController.php	/^    public function __construct(){$/;"	f
 __destruct	initphp/library/ip.init.php	/^    public function __destruct() {$/;"	f
 _departmentDao	library/service/departmentService.php	/^	private $_departmentDao = NULL;$/;"	v
 _departmentDao	library/service/departmentService.php	/^        $this->_departmentDao = InitPHP::getDao("department");$/;"	v
 _errorLogFileName	initphp/core/util/log.init.php	/^	private function _errorLogFileName(){$/;"	f
 _error_page	initphp/initphp.php	/^	private static function _error_page($msg) {$/;"	f
-_exportSelectedTree	web/controller/departmentController.php	/^	private function _exportSelectedTree($tree,$deep = 0,$pDptId){$/;"	f
+_exportSelectedTree	web/controller/departmentController.php	/^	private function _exportSelectedTree($tree,$deep = 0,$pid){$/;"	f
+_exportTree	web/controller/adminController.php	/^    private function _exportTree($tree,$department_id=0,$deep = 0){$/;"	f
 _exportTree	web/controller/departmentController.php	/^	private function _exportTree($tree,$deep = 0){$/;"	f
 _filter	initphp/init/run.init.php	/^	private function _filter($str) {$/;"	f
 _generateTree	web/controller/departmentController.php	/^	private function _generateTree($items){$/;"	f
+_generateTree2	web/controller/adminController.php	/^    private function _generateTree2($items){$/;"	f
 _generateTree2	web/controller/departmentController.php	/^	private function _generateTree2($items){$/;"	f
 _getPid	initphp/library/tree.init.php	/^	private function _getPid($id)$/;"	f
 _hook	initphp/initphp.php	/^	private static function _hook($class, $function, $data = '') {$/;"	f
@@ -132,6 +158,7 @@ a	initphp/init/interceptor.init.php	/^	private $a;$/;"	v
 a	initphp/initphp.php	/^		$a = ($_GET['a']) ? $_GET['a'] : $InitPHP_conf['controller']['default_action'];$/;"	v
 a	initphp/library/code.init.php	/^		$a = imagepng($im); $/;"	v
 a	initphp/library/function.init.php	/^            $a = ($a + 1) % 256;$/;"	v
+aLlOrderCombined	library/service/TeamUtilsService.php	/^    public function aLlOrderCombined($data){$/;"	f
 acl	initphp/initphp.php	/^	public static function acl($config = array()) {$/;"	f
 action	initphp/init/run.init.php	/^				$action = $_GET['a'] = $this->default_action;$/;"	v
 action	initphp/init/run.init.php	/^			if ($controller == "" && $action == "") {$/;"	v
@@ -146,18 +173,24 @@ actionStr	initphp/initphp.php	/^				$actionStr = implode('-', $action);$/;"	v
 actionStr	initphp/initphp.php	/^				$actionStr = implode('\/', $action);$/;"	v
 action_postfix	initphp/init/run.init.php	/^		$this->action_postfix = $params['action_postfix'];$/;"	v
 action_postfix	initphp/init/run.init.php	/^	private $action_postfix         = ''; \/\/动作后缀$/;"	v
+add	library/dao/customerDao.php	/^	public function add($adminId){$/;"	f
 add	web/controller/adminController.php	/^    public function add()$/;"	f
 add	web/controller/admingroupController.php	/^    public function add()$/;"	f
 add	web/controller/companyController.php	/^    public function add(){$/;"	f
 add	web/controller/departmentController.php	/^	public function add(){$/;"	f
+add2	library/dao/customerDao.php	/^	public function add2($adminId){$/;"	f
 add2	web/controller/departmentController.php	/^	public function add2(){$/;"	f
+addCustomer	library/service/customerService.php	/^	public function addCustomer($salesId){$/;"	f
 addEvent	static/js/datetime.js	/^	function addEvent(element,event,handler){$/;"	f
 addEventForSelect	static/js/datetime.js	/^	function addEventForSelect(type){$/;"	f
 addEventForSelect.changeInner	static/js/datetime.js	/^		function changeInner(){$/;"	f
 addFile	initphp/library/zip.init.php	/^	private function addFile($data, $name, $time = 0) {$/;"	f
 addNodes	library/dao/departmentDao.php	/^	public function addNodes($pid,$name){$/;"	f
+addNodes	library/service/departmentService.php	/^	public function addNodes($pid,$name){$/;"	f
 addRow	initphp/library/excel.init.php	/^	public function addRow($data){$/;"	f
+addSave	library/dao/customerDao.php	/^    public function addSave($data){$/;"	f
 addSave	library/dao/departmentDao.php	/^    public function addSave($data){$/;"	f
+addSave	library/dao/recordDao.php	/^	public function addSave($data){$/;"	f
 addSave	library/service/departmentService.php	/^    public function addSave($data){$/;"	f
 addSave	web/controller/departmentController.php	/^	public function addSave(){$/;"	f
 add_data	initphp/core/util/unittesting.init.php	/^	public function add_data($function_param, $forecast_result, $type = '=') {$/;"	f
@@ -185,6 +218,9 @@ admin	library/service/loginService.php	/^        $admin = $this->adminDao->admin
 admin	web/controller/adminController.php	/^        $admin = $this->loginService->isLogin();$/;"	v
 adminController	web/controller/adminController.php	/^class adminController extends baseController$/;"	c
 adminDao	library/dao/adminDao.php	/^class adminDao extends Dao$/;"	c
+adminDao	library/dao/customerDao.php	/^		$adminDao = InitPHP::getDao('admin');$/;"	v
+adminDao	library/dao/customerDao.php	/^	    $adminDao 		= InitPHP::getDao('admin');$/;"	v
+adminDao	library/dao/customerDao.php	/^	    $adminDao = InitPHP::getDao('admin');$/;"	v
 adminDao	library/service/adminService.php	/^        $this->adminDao = InitPHP::getDao("admin");\/\/获取管理员信息$/;"	v
 adminDao	library/service/loginService.php	/^        $this->adminDao = InitPHP::getDao("admin");\/\/获取管理员信息$/;"	v
 adminGroupDao	library/dao/adminGroupDao.php	/^class adminGroupDao extends Dao$/;"	c
@@ -198,25 +234,32 @@ adminGroupService	web/controller/admingroupController.php	/^        $this->admin
 adminGroupService	web/controller/editpasswordController.php	/^        $this->adminGroupService = InitPHP::getService("adminGroup");\/\/获取Service$/;"	v
 adminInfo	library/dao/adminDao.php	/^    public function adminInfo($admin_id)$/;"	f
 adminInfo	library/service/adminService.php	/^    public function adminInfo($admin_id)$/;"	f
+adminInfoEx	library/dao/adminDao.php	/^	public function adminInfoEx($adminId){$/;"	f
 adminInfoUpdate	library/dao/adminDao.php	/^    public function adminInfoUpdate($id,$data)$/;"	f
 adminList	library/dao/adminGroupDao.php	/^    public function adminList($user)$/;"	f
 adminList	library/service/adminGroupService.php	/^    public function adminList()$/;"	f
+adminList	web/controller/adminController.php	/^        $adminList = $this->adminGroupService->adminList(); \/\/获取角色列表$/;"	v
 adminLogDao	library/dao/adminLogDao.php	/^class adminLogDao extends Dao$/;"	c
 adminNamePassWord	library/dao/adminDao.php	/^    public function adminNamePassWord($user,$password)$/;"	f
 adminService	library/service/adminGroupService.php	/^        $this->adminService = InitPHP::getService("admin");\/\/获取管理员Service$/;"	v
 adminService	library/service/adminService.php	/^        $this->adminService = InitPHP::getService("admin");\/\/获取Service$/;"	v
 adminService	library/service/adminService.php	/^class adminService extends Service$/;"	c
 adminService	library/service/authService.php	/^		$this->adminService = InitPHP::getService("admin");\/\/获取管理员信息$/;"	v
+adminService	library/service/myResultsService.php	/^        $adminService = InitPHP::getService("admin");\/\/获取管理员信息$/;"	v
 adminService	web/controller/adminController.php	/^        $this->adminService = InitPHP::getService("admin");\/\/获取Service$/;"	v
 adminService	web/controller/admingroupController.php	/^        $this->adminService = InitPHP::getService("admin");                 \/\/获取Service$/;"	v
 adminService	web/controller/agentController.php	/^        $this->adminService = InitPHP::getService("admin");     \/\/获取Service$/;"	v
 adminService	web/controller/companyController.php	/^        $this->adminService = InitPHP::getService("admin");\/\/获取Service$/;"	v
+adminService	web/controller/customerController.php	/^		$adminService   = InitPHP::getService('admin');$/;"	v
 adminService	web/controller/editpasswordController.php	/^        $this->adminService = InitPHP::getService("admin");\/\/获取Service$/;"	v
 adminService	web/controller/indexController.php	/^        $this->adminService = InitPHP::getService("admin");         \/\/获取Service$/;"	v
+adminService	web/controller/myClientsController.php	/^        $this->adminService = InitPHP::getService("admin");\/\/获取管理员信息$/;"	v
+adminService	web/controller/myResultsController.php	/^        $adminService = InitPHP::getService("admin");\/\/获取管理员信息$/;"	v
+adminService	web/controller/testController.php	/^       $adminService = InitPHP::getService('admin');$/;"	v
 admin_id	library/service/adminService.php	/^        $admin_id = $session->get('admin_id');$/;"	v
 admin_id	library/service/loginService.php	/^        $admin_id = $session->get('admin_id');$/;"	v
-admin_list	library/dao/adminDao.php	/^    public function admin_list($grade)$/;"	f
-admin_list	library/service/adminService.php	/^    public function admin_list()$/;"	f
+admin_list	library/dao/adminDao.php	/^    public function admin_list($grade,$where)$/;"	f
+admin_list	library/service/adminService.php	/^    public function admin_list($where="")$/;"	f
 admingroupController	web/controller/admingroupController.php	/^class admingroupController extends baseController$/;"	c
 affected_rows	initphp/core/dao/db/db.init.php	/^	public function affected_rows($db = "") {$/;"	f
 affected_rows	initphp/core/dao/db/driver/dbbase.init.php	/^	abstract protected function affected_rows();$/;"	f
@@ -242,12 +285,14 @@ args	initphp/initphp.php	/^		$args = $params['args'];  \/\/参数数组$/;"	v
 args	initphp/initphp.php	/^	public static function getRemoteService($class, $method, $args = array(), $group = "default",  $path = "", $timeout = 5) {$/;"	v
 arr	initphp/core/dao/db/driver/mysqli.init.php	/^			$arr = explode(":", $host);$/;"	v
 arr	initphp/init/exception.init.php	/^			$arr = array('status' => 0, 'message' => $msg, 'data' => array('code' => $e->code));$/;"	v
+arr	library/dao/customerDao.php	/^	        $arr = $this->getUserinfo(intval($val['uid']));$/;"	v
 arr	library/service/adminService.php	/^				$arr = $curl->get($url);$/;"	v
 arr	library/service/adminService.php	/^				$arr = $this->adminDao->add_save($data);$/;"	v
 arr	library/service/adminService.php	/^        $arr = $this->adminDao->del($id);$/;"	v
 arr	library/service/adminService.php	/^        $arr = $this->adminDao->edit_save($data);$/;"	v
 arr	library/service/authService.php	/^		$arr=explode(",",$menu_power);$/;"	v
 arr	library/service/authService.php	/^	    $arr=explode(",",$menu_power);$/;"	v
+arr	library/service/myResultsService.php	/^            $arr = $dealRecordDao->getUserReceivableOrderList($uid,$where);$/;"	v
 arr	web/controller/adminController.php	/^        $arr = $this->adminService->add_save($data,$admin['id']);$/;"	v
 arr	web/controller/adminController.php	/^        $arr = $this->adminService->edit_save($data);$/;"	v
 arr	web/controller/adminController.php	/^        $arr= $this->adminService->del($id);$/;"	v
@@ -260,10 +305,15 @@ arr	web/controller/companyController.php	/^        $arr = $this->companyService-
 arr	web/controller/companyController.php	/^        $arr = $this->companyService->EditSave($_POST);$/;"	v
 arr	web/controller/departmentController.php	/^        $arr = $this->departmentService->editSave($_POST);$/;"	v
 arr	web/controller/editpasswordController.php	/^        $arr = $this->adminService->edit_save($data);$/;"	v
+arrWhereUrl	web/controller/customerController.php	/^		$arrWhereUrl 	= $this->joinWhereUrl($uName,$uDepartment,$uRole); $/;"	v
+arrange_where_url	library/service/myClientsService.php	/^    public function arrange_where_url($uname='',$phone='',$start_date='',$end_date=''){$/;"	f
+arrange_where_url	web/controller/myClientsController.php	/^        $arrange_where_url = $this->myClientsService->arrange_where_url($uname,$phone,$start_date,$end_date);$/;"	v
 array_remove_empty	initphp/library/function.init.php	/^	public function array_remove_empty(&$arr, $trim = true) {$/;"	f
+arraysereachdate	library/service/TeamUtilsService.php	/^    public function arraysereachdate($data,$username,$phone){$/;"	f
 assign	initphp/core/view/view.init.php	/^	public function assign($key, $value) {$/;"	f
 auth	initphp/library/email.init.php	/^		$this->auth = $auth;\/\/auth$/;"	v
 auth	initphp/library/email.init.php	/^	var $auth;$/;"	v
+authService	library/service/TeamUtilsService.php	/^        $authService = InitPHP::getService("auth");\/\/权限逻辑层引入$/;"	v
 authService	library/service/authService.php	/^class authService extends Service$/;"	c
 authService	web/controller/adminController.php	/^		$this->authService = InitPHP::getService("auth");\/\/获取权限Service$/;"	v
 authService	web/controller/admingroupController.php	/^		$this->authService = InitPHP::getService("auth");                   \/\/获取权限Service$/;"	v
@@ -293,7 +343,7 @@ baseUrl	initphp/initphp.php	/^		$baseUrl = ($baseUrl == '') ? rtrim($InitPHP_con
 batchInsert	initphp/core/dao/nosql/driver/mongo.init.php	/^	public function batchInsert($data, $option = array()) {$/;"	f
 before_action	initphp/init/run.init.php	/^		$before_action = $this->default_before_action . $this->action_postfix;$/;"	v
 beginip	initphp/library/ip.init.php	/^            $beginip = strrev(fread($this->fp, 4));     \/\/ 获取中间记录的开始IP地址$/;"	v
-beginrest	web/controller/indexController.php	/^        $beginrest = $this->TJHZService->ZuoTianJingJiRenList($userinfo);$/;"	v
+benxi	library/service/myResultsService.php	/^        $benxi = 0;$/;"	v
 bitsize	initphp/library/function.init.php	/^	public function bitsize($num) {$/;"	f
 black	initphp/library/code.init.php	/^		$black = imagecolorallocate($im, 0,0,0); \/\/设定三种颜色$/;"	v
 block	initphp/library/http.init.php	/^	private $block        = true;\/\/读取网络流 是否阻塞，true|阻塞，false|不阻塞$/;"	v
@@ -329,6 +379,7 @@ cache_path	initphp/core/dao/cache/driver/filecache.init.php	/^		return $this->ca
 cache_path	initphp/core/dao/cache/driver/filecache.init.php	/^	private $cache_path = '.'; \/\/缓存路径$/;"	v
 cache_type	initphp/core/dao/cache/cache.init.php	/^	private $cache_type = array('FILE','MEM', 'MYSQL', 'APC', 'XCACHE', 'WINCACHE'); $/;"	v
 cachetime	initphp/core/dao/cache/driver/filecache.init.php	/^		$cachetime = substr($data, 24, $pos - 24);$/;"	v
+calculateData	library/service/myResultsService.php	/^    public function calculateData($data){$/;"	f
 callback	initphp/core/controller/controller.init.php	/^			$callback = $this->get_gp('callback');$/;"	v
 captcha	initphp/library/captcha.init.php	/^        $captcha = $this->generate_captcha($this->length);$/;"	v
 captcha	initphp/library/captcha.init.php	/^        $captcha = '';$/;"	v
@@ -363,11 +414,19 @@ check_token	initphp/core/controller/controller.init.php	/^	public function check
 checkauth	library/service/authService.php	/^  	public function checkauth($auth)$/;"	f
 checkauthUser	library/service/authService.php	/^	public function checkauthUser($auth){$/;"	f
 checkpath	initphp/library/ftp.init.php	/^	private function checkpath($path) {$/;"	f
+chekBumen	data/template_c/admin/addinfo.tpl.php	/^function chekBumen(){$/;"	f
+chekBumen	data/template_c/admin/editinfo.tpl.php	/^function chekBumen(){$/;"	f
+chekBumen	web/template/admin/addinfo.htm	/^function chekBumen(){$/;"	f
+chekBumen	web/template/admin/editinfo.htm	/^function chekBumen(){$/;"	f
 chekIdNo	data/template_c/admin/addinfo.tpl.php	/^function chekIdNo()$/;"	f
 chekIdNo	data/template_c/admin/editinfo.tpl.php	/^function chekIdNo()$/;"	f
 chekIdNo	data/template_c/friends/zongjian_addinfo.tpl.php	/^function chekIdNo()$/;"	f
 chekIdNo	web/template/admin/addinfo.htm	/^function chekIdNo()$/;"	f
 chekIdNo	web/template/admin/editinfo.htm	/^function chekIdNo()$/;"	f
+chekJiaose	data/template_c/admin/addinfo.tpl.php	/^function chekJiaose(){$/;"	f
+chekJiaose	data/template_c/admin/editinfo.tpl.php	/^function chekJiaose(){$/;"	f
+chekJiaose	web/template/admin/addinfo.htm	/^function chekJiaose(){$/;"	f
+chekJiaose	web/template/admin/editinfo.htm	/^function chekJiaose(){$/;"	f
 chekPassWord	data/template_c/admin/addinfo.tpl.php	/^function chekPassWord()$/;"	f
 chekPassWord	data/template_c/agent/addshow.tpl.php	/^function chekPassWord()$/;"	f
 chekPassWord	data/template_c/editpassword/run.tpl.php	/^function chekPassWord()$/;"	f
@@ -382,12 +441,10 @@ chekPhone	data/template_c/friends/zongjian_addinfo.tpl.php	/^function chekPhone(
 chekPhone	web/template/admin/addinfo.htm	/^function chekPhone()$/;"	f
 chekPhone	web/template/admin/editinfo.htm	/^function chekPhone()$/;"	f
 chekPhone	web/template/agent/addshow.htm	/^function chekPhone()$/;"	f
-chekRePassWord	data/template_c/admin/addinfo.tpl.php	/^function chekRePassWord()$/;"	f
 chekRePassWord	data/template_c/agent/addshow.tpl.php	/^function chekRePassWord()$/;"	f
 chekRePassWord	data/template_c/editpassword/run.tpl.php	/^function chekRePassWord()$/;"	f
 chekRePassWord	data/template_c/friends/zongjian_addinfo.tpl.php	/^function chekRePassWord()$/;"	f
 chekRePassWord	data/template_c/grxx/run.tpl.php	/^function chekRePassWord()$/;"	f
-chekRePassWord	web/template/admin/addinfo.htm	/^function chekRePassWord()$/;"	f
 chekRePassWord	web/template/agent/addshow.htm	/^function chekRePassWord()$/;"	f
 chekUsName	data/template_c/admin/addinfo.tpl.php	/^function chekUsName()$/;"	f
 chekUsName	data/template_c/admin/editinfo.tpl.php	/^function chekUsName()$/;"	f
@@ -464,6 +521,7 @@ collection	initphp/core/dao/nosql/driver/mongo.init.php	/^	private $collection; 
 color	initphp/library/captcha.init.php	/^            $color = imagecolorallocate($img, mt_rand(0, 156), mt_rand(0, 156), mt_rand(0, 156));$/;"	v
 color	initphp/library/captcha.init.php	/^            $color = imagecolorallocate($img, mt_rand(200, 255), mt_rand(200, 255), mt_rand(200, 255));$/;"	v
 color	initphp/library/captcha.init.php	/^        $color = imagecolorallocate($img, mt_rand(157, 255), mt_rand(157, 255), mt_rand(157, 255));$/;"	v
+combinedTurnoverAnAnnualByThePost	library/service/TeamUtilsService.php	/^    public function combinedTurnoverAnAnnualByThePost($data){$/;"	f
 comment	initphp/library/email.init.php	/^		$comment = "\/\\\\([^()]*\\\\)\/";$/;"	v
 company	library/service/CompanyService.php	/^        $this->company = InitPHP::getDao("company"); \/\/获取标的分类$/;"	v
 companyController	web/controller/companyController.php	/^class companyController extends baseController{$/;"	c
@@ -517,7 +575,13 @@ count	initphp/core/dao/nosql/driver/mongo.init.php	/^	public function count() {$
 count	initphp/core/util/queue.init.php	/^	public function count() {$/;"	f
 count	initphp/library/pager.init.php	/^		$count    = (int) $count;$/;"	v
 count	library/dao/adminLogDao.php	/^    public function count()$/;"	f
+count	web/controller/customerController.php	/^			$count = 1;                               $/;"	v
+count	web/controller/customerController.php	/^		$count = $this->customerService->getCustomers2Count($arrWhereUrl['where']);$/;"	v
+count	web/controller/customerController.php	/^		if(!$count or $count==0){    \/\/增加个判断用于页面分页样式显示$/;"	v
+count	web/controller/customerController.php	/^        $count    = count($list);    \/\/数据总条数$/;"	v
 countryOffset	initphp/library/ip.init.php	/^                $countryOffset = $this->getlong3();         \/\/ 重定向地址$/;"	v
+cpUserId	library/dao/customerDao.php	/^		$cpUserId = $adminDao->GetToZiXiTongUserId($adminId); $/;"	v
+cpUserId	library/dao/customerDao.php	/^		$cpUserId = 3;$/;"	v
 crc	initphp/library/zip.init.php	/^		$crc = crc32($data);$/;"	v
 createFun	initphp/library/image.init.php	/^            $createFun = 'ImageCreateFrom'.($type=='jpg'?'jpeg':$type);$/;"	v
 createOption	static/js/datetime.js	/^	function createOption(type,v){$/;"	f
@@ -537,9 +601,20 @@ curlInit	initphp/library/curl.init.php	/^class curlInit {$/;"	c
 curl_errno	initphp/library/curl.init.php	/^		$curl_errno = curl_errno($curl);$/;"	v
 current_user	library/service/adminService.php	/^    public function current_user()$/;"	f
 cursor	initphp/core/dao/nosql/driver/mongo.init.php	/^		$cursor = $this->collection->find($query, $fields);$/;"	v
+customerController	web/controller/customerController.php	/^class customerController extends baseController{$/;"	c
+customerDao	library/dao/customerDao.php	/^class customerDao extends Dao{$/;"	c
+customerDao	library/service/customerService.php	/^		$this->customerDao = InitPHP::getDao("customer");$/;"	v
+customerDao	library/service/customerService.php	/^	public $customerDao = NULL;$/;"	v
+customerDao	web/controller/testController.php	/^       $customerDao = InitPHP::getDao('customer');$/;"	v
+customerRecordService	web/controller/customerController.php	/^	public $customerRecordService = NULL;$/;"	v
+customerService	library/service/customerService.php	/^class customerService extends Service{$/;"	c
+customerService	web/controller/customerController.php	/^		$this->customerService = InitPHP::getService('customer');$/;"	v
 cut_str	initphp/initphp.php	/^    function cut_str($string, $sublen, $start = 0, $code = 'UTF-8'){$/;"	f
+cut_str	library/service/TeamUtilsService.php	/^    function cut_str($string, $sublen, $start = 0, $code = 'UTF-8'){$/;"	f
 cutstr	initphp/library/function.init.php	/^	public function cutstr($string, $length, $dot = '...', $charset = 'utf-8') {$/;"	f
+cuttingDataPage	library/service/TeamUtilsService.php	/^    public function cuttingDataPage($url,$limit,$array){$/;"	f
 d	initphp/library/sms.init.php	/^			$d = '';$/;"	v
+dName	web/controller/departmentController.php	/^		$dName 	= $this->controller->get_gp('name'); $/;"	v
 dao	initphp/init/core.init.php	/^			$dao = $this->load('dao', 'd'); \/\/导入D$/;"	v
 dao	initphp/initphp.php	/^		$this->dao = $this->load('dao', 'd'); \/\/导入D$/;"	v
 dao	initphp/initphp.php	/^	protected $dao;$/;"	v
@@ -565,16 +640,21 @@ data	initphp/library/sms.init.php	/^		$data = file_get_contents($url);$/;"	v
 data	initphp/library/tree.init.php	/^				$data=$this->rawList;$/;"	v
 data	initphp/library/zip.init.php	/^		$data = implode('', $this -> datasec);$/;"	v
 data	library/dao/adminDao.php	/^	   $data = array('user'=>$user,'password'=>$password,'status'=>1);$/;"	v
+data	library/dao/adminDao.php	/^        $data= $this->dao->db->get_one_sql($sql);$/;"	v
 data	library/dao/adminGroupDao.php	/^        $data = array('id'=>$gid);$/;"	v
 data	library/dao/adminLogDao.php	/^        $data =  $this->dao->db->get_all_sql($sql);$/;"	v
 data	library/dao/adminLogDao.php	/^        $data = array('uid'=>$admin_id,'text'=>$text,'time'=>time(),'ip'=>$ip);$/;"	v
+data	library/dao/customerDao.php	/^			$data = array();$/;"	v
 data	library/dao/departmentDao.php	/^		$data = array($/;"	v
 data	library/dao/user_yaoqingma_listDao.php	/^        $data = $this->dao->db->get_all_sql($sql);$/;"	v
 data	library/dao/user_yaoqingma_listDao.php	/^        $data = $this->dao->db->get_one_sql($sql);$/;"	v
 data	library/service/adminGroupService.php	/^        $data=$this->data_save($data);$/;"	v
+data	library/service/adminService.php	/^        $data= $this->adminDao->GetToZiXiTongAdminId($uid);$/;"	v
 data	library/service/loginService.php	/^            $data = array('logintime'=>time(),'ip'=>$ip,'loginnum'=>$admin['loginnum']+1);$/;"	v
+data	library/service/myResultsService.php	/^        $data = array();$/;"	v
 data	web/controller/admingroupController.php	/^        $data=$this->adminGroupService->edit($id);$/;"	v
 data	web/controller/companyController.php	/^        $data=$this->companyService->CompanyInfoOne($id);$/;"	v
+data	web/controller/departmentController.php	/^		$data 		  = $this->departmentService->getDepartmentInfo($departmentId);$/;"	v
 data	web/controller/departmentController.php	/^		$data = $this->departmentService->getDepartmentInfo($departmentId);$/;"	v
 data	web/controller/departmentController.php	/^		$data = array($/;"	v
 data_save	library/service/adminGroupService.php	/^    public function data_save($data)$/;"	f
@@ -605,6 +685,8 @@ db_type	initphp/core/dao/db/dbhandler.init.php	/^		$db_type 	= $InitPHP_conf['db
 db_type	initphp/core/dao/db/dbhandler.init.php	/^		$db_type = $InitPHP_conf['db'][$this->dbModel]['db_type'];$/;"	v
 dbbaseInit	initphp/core/dao/db/driver/dbbase.init.php	/^abstract class dbbaseInit{$/;"	c
 dbhandlerInit	initphp/core/dao/db/dbhandler.init.php	/^class dbhandlerInit {  $/;"	c
+dealRecordDao	library/dao/dealRecordDao.php	/^class dealRecordDao extends Dao{$/;"	c
+dealRecordDao	library/service/myResultsService.php	/^        $dealRecordDao = InitPHP::getDao("dealRecord");$/;"	v
 debug	initphp/library/email.init.php	/^		$this->debug = FALSE;$/;"	v
 debug	initphp/library/email.init.php	/^	var $debug;$/;"	v
 debugInit	initphp/core/util/debug.init.php	/^class debugInit {$/;"	c
@@ -667,11 +749,16 @@ delete_by_field	initphp/core/dao/db/db.init.php	/^	public function delete_by_fie
 delete_sql	initphp/core/dao/cache/driver/mysqlcache.init.php	/^			$delete_sql = sprintf("DELETE FROM initphp_mysqlcache WHERE k = %s ", $this->sql->build_escape($key));$/;"	v
 departmentController	web/controller/departmentController.php	/^class departmentController extends baseController{$/;"	c
 departmentDao	library/dao/departmentDao.php	/^class departmentDao extends Dao{$/;"	c
+departmentId	library/dao/customerDao.php	/^			$departmentId = $infoEx['department_id'];$/;"	v
 departmentId	library/dao/departmentDao.php	/^				$departmentId = $r['department_id'];$/;"	v
 departmentId	web/controller/departmentController.php	/^		$departmentId = $this->controller->get_gp('department_id');$/;"	v
 departmentInfo	web/controller/departmentController.php	/^		$departmentInfo = $this->departmentService->getDefaultDepartmentDict();$/;"	v
 departmentService	library/service/departmentService.php	/^class departmentService extends Service{$/;"	c
+departmentService	web/controller/adminController.php	/^        $departmentService = InitPHP::getService("department"); \/\/上级列表$/;"	v
+departmentService	web/controller/adminController.php	/^        $departmentService = InitPHP::getService("department");\/\/上级列表$/;"	v
 departmentService	web/controller/departmentController.php	/^		$this->departmentService = InitPHP::getService('department');$/;"	v
+department_id	web/controller/adminController.php	/^        $department_id = $arr['info']['department_id'];$/;"	v
+department_id	web/controller/adminController.php	/^        $department_id = $this->controller->get_gp('department_id') ? $this->controller->get_gp('department_id') : '';\/\/获取部门id$/;"	v
 destFileName	initphp/library/upload.init.php	/^        $destFileName = stripslashes($destFileName);$/;"	v
 dh	initphp/library/zip.init.php	/^      		$dh = opendir($dir);$/;"	v
 dir	initphp/library/ftp.init.php	/^		$dir = $this->checkpath($dir);$/;"	v
@@ -708,6 +795,7 @@ dt2	initphp/library/function.init.php	/^                                if ($dt2
 dtime	initphp/library/zip.init.php	/^		$dtime = dechex($this->unix2DosTime($time));$/;"	v
 dueDate	initphp/library/function.init.php	/^                    $dueDate = new DateTime();$/;"	v
 dueDate	initphp/library/function.init.php	/^                $dueDate=$dt;$/;"	v
+duiguinianhuajiaoyie	library/service/TeamUtilsService.php	/^        $duiguinianhuajiaoyie = 0; \/\/递归处理完的年化交易额$/;"	v
 dump	initphp/core/util/debug.init.php	/^	public function dump($data, $isexit = 0) {$/;"	f
 each	static/js/datetime.js	/^	function each(handler){$/;"	f
 edit	library/service/adminGroupService.php	/^    public function edit($id)$/;"	f
@@ -736,6 +824,7 @@ end	initphp/library/html.init.php	/^	public function end($key) {$/;"	f
 end	initphp/library/pager.init.php	/^			$end   = $page - $temp + $this->show_num - 1;$/;"	v
 end	initphp/library/pager.init.php	/^			$end  = $page_num;$/;"	v
 end	initphp/library/pager.init.php	/^			$end = $this->show_num;$/;"	v
+end_date	web/controller/myClientsController.php	/^        $end_date = $this->controller->get_gp('end_date') ? $this->controller->get_gp('end_date') : '';$/;"	v
 endip	initphp/library/ip.init.php	/^                $endip = strrev(fread($this->fp, 4));   \/\/ 获取中间记录的结束IP地址$/;"	v
 eof_ctrl_dir	initphp/library/zip.init.php	/^	var $eof_ctrl_dir = "\\x50\\x4b\\x05\\x06\\x00\\x00\\x00\\x00";$/;"	v
 error	initphp/core/dao/db/db.init.php	/^	public function error($db = "") {$/;"	f
@@ -777,6 +866,7 @@ expire	initphp/core/util/cookie.init.php	/^	public function set($name, $val, $ex
 exportTree	library/service/departmentService.php	/^    public function exportTree($tree,$deep = 0){$/;"	f
 extension	initphp/library/email.init.php	/^		$extension=substr($image_tag,strrpos($image_tag,"."),strlen($image_tag)-strrpos($image_tag,"."));$/;"	v
 f	static/js/datetime.js	/^	var f=window.frames['sangcalender'];$/;"	v
+fData	library/dao/customerDao.php	/^		$fData = array();$/;"	v
 fd	initphp/library/zip.init.php	/^            		$fd = fopen ($filename, "r");$/;"	v
 fd	static/js/datetime.js	/^	var fd=f.document;$/;"	v
 fetch_assoc	initphp/core/dao/db/db.init.php	/^	public function fetch_assoc($result) {$/;"	f
@@ -859,6 +949,7 @@ findOne	initphp/core/dao/nosql/driver/mongo.init.php	/^	public function findOne(
 findip	initphp/library/ip.init.php	/^                    $findip = $this->firstip + $i * 7;$/;"	v
 findip	initphp/library/ip.init.php	/^        $findip = $this->lastip;        \/\/ 如果没有找到就返回最后一条IP记录（QQWry.Dat的版本信息）$/;"	v
 first	initphp/library/pager.init.php	/^		$first = "<a href='{$url}&page=1' class='first'>首页<\/a>";$/;"	v
+firstday	library/service/myResultsService.php	/^        $firstday = date('Y-m-01', strtotime($date));$/;"	v
 firstip	initphp/library/ip.init.php	/^            $this->firstip = $this->getlong();$/;"	v
 firstip	initphp/library/ip.init.php	/^    private $firstip;$/;"	v
 floor	initphp/library/function.init.php	/^			$floor = ceil($n \/ $sublen);$/;"	v
@@ -885,6 +976,14 @@ free_result	initphp/core/dao/db/db.init.php	/^	public function free_result($resu
 free_result	initphp/core/dao/db/driver/dbbase.init.php	/^	abstract protected function free_result($result);$/;"	f
 free_result	initphp/core/dao/db/driver/mysql.init.php	/^	public function free_result($result) {$/;"	f
 free_result	initphp/core/dao/db/driver/mysqli.init.php	/^	public function free_result($result) {$/;"	f
+friednOorder	library/service/myClientsService.php	/^                $friednOorder = $this->myClientsDao->getFriednOorder($val['friends']);$/;"	v
+friendIds	web/controller/myClientsController.php	/^        $friendIds = $this->myClientsService->getfriendsIdList($userid['id'],$status);$/;"	v
+friends	library/service/myClientsService.php	/^            $friends = $this->myClientsDao->getFriendsIdList($uid);$/;"	v
+friends	web/controller/myClientsController.php	/^            $friends = $this->myClientsService->getInvestFriends($friendIds,$page,10,$arrange_where_url['where']);\/\/查询所有数据$/;"	v
+friends	web/controller/myClientsController.php	/^            $friends = $this->myClientsService->getNoInvestFriends($friendIds,$page,10,$arrange_where_url['where']);\/\/查询所有数据$/;"	v
+friendsCount	web/controller/myClientsController.php	/^            $friendsCount = $this->myClientsService->getInvestFriendsCount($friendIds,$arrange_where_url['where']);\/\/统计条数$/;"	v
+friendsCount	web/controller/myClientsController.php	/^            $friendsCount = $this->myClientsService->getNoInvestFriendsCount($friendIds,$arrange_where_url['where']);\/\/统计条数$/;"	v
+friendsList	web/controller/myClientsController.php	/^        $friendsList = $this->TeamUtilsService->yongJinJiSuan($friends);\/\/计算每笔订单的佣金$/;"	v
 friends_count	library/dao/user_yaoqingma_listDao.php	/^    public function friends_count($uid)$/;"	f
 friends_list	library/dao/user_yaoqingma_listDao.php	/^    public function friends_list($uid)$/;"	f
 from	initphp/library/ip.init.php	/^        $from   =  strtoupper($from)=='UTF8'? 'utf-8':$from;$/;"	v
@@ -928,6 +1027,11 @@ getChinaWeek	initphp/library/date.init.php	/^	public static function getChinaWee
 getCollection	initphp/core/dao/nosql/driver/mongo.init.php	/^	public function getCollection() {$/;"	f
 getConfig	initphp/initphp.php	/^	public static function getConfig($path='') {$/;"	f
 getController	initphp/initphp.php	/^	public static function getController($controllerName, $functionName, $params = array(), $controllerPath = '') {$/;"	f
+getCustomers	library/dao/customerDao.php	/^	public function getCustomers($where = ''){$/;"	f
+getCustomers	library/service/customerService.php	/^	public function getCustomers($where){$/;"	f
+getCustomers2	library/dao/customerDao.php	/^	public function getCustomers2($page,$offset,$where){$/;"	f
+getCustomers2	library/service/customerService.php	/^	public function getCustomers2($page,$offset,$where){$/;"	f
+getCustomers2Count	library/service/customerService.php	/^	public function getCustomers2Count($where){$/;"	f
 getDao	initphp/initphp.php	/^	public static function getDao($daoname, $path = '') {$/;"	f
 getDb	initphp/core/dao/nosql/driver/mongo.init.php	/^	public function getDb() {$/;"	f
 getDefaultDepartmentDict	library/service/departmentService.php	/^	public function getDefaultDepartmentDict(){$/;"	f
@@ -939,13 +1043,25 @@ getDepartmentList2	library/service/departmentService.php	/^    public function g
 getDepartmentTree	library/dao/departmentDao.php	/^	public function getDepartmentTree($pid = 0,&$res = array()){$/;"	f
 getDepartmentTree	library/service/departmentService.php	/^	public function getDepartmentTree(){$/;"	f
 getErrorMsg	initphp/library/upload.init.php	/^    public function getErrorMsg() {$/;"	f
+getFriednOorder	library/dao/myClientsDao.php	/^    public function getFriednOorder($friendId){$/;"	f
+getFriendsIdList	library/dao/myClientsDao.php	/^    public function getFriendsIdList($uid){$/;"	f
 getImageInfo	initphp/library/image.init.php	/^    static protected function getImageInfo($img) {$/;"	f
+getInvestFriends	library/dao/myClientsDao.php	/^    public function getInvestFriends($friendIds,$page,$length,$where){$/;"	f
+getInvestFriends	library/service/myClientsService.php	/^    public function getInvestFriends($friendIds,$page,$length,$where){$/;"	f
+getInvestFriendsCount	library/dao/myClientsDao.php	/^    public function getInvestFriendsCount($friendIds,$where){$/;"	f
+getInvestFriendsCount	library/service/myClientsService.php	/^    public function getInvestFriendsCount($id,$where){$/;"	f
+getInvestInfo	library/dao/customerDao.php	/^	public function getInvestInfo($array){$/;"	f
+getInvestorList	library/dao/user_yaoqingma_listDao.php	/^	public function getInvestorList($salesId){$/;"	f
 getIp	initphp/library/ip.init.php	/^    public function getIp()$/;"	f
 getLibrary	initphp/init/core.init.php	/^	public function getLibrary($class) {$/;"	f
 getLibrarys	initphp/initphp.php	/^	public static function getLibrarys($className) {$/;"	f
 getLineCode	initphp/init/exception.init.php	/^	private static function getLineCode($file,$line) {$/;"	f
 getM	initphp/init/core.init.php	/^	public static function getM() {$/;"	f
 getMongo	initphp/init/core.init.php	/^	public function getMongo($server = 'default') {$/;"	f
+getNoInvestFriends	library/dao/myClientsDao.php	/^    public function getNoInvestFriends($friendIds,$page,$length,$where){$/;"	f
+getNoInvestFriends	library/service/myClientsService.php	/^    public function getNoInvestFriends($friendIds,$page,$length,$where){$/;"	f
+getNoInvestFriendsCount	library/dao/myClientsDao.php	/^    public function getNoInvestFriendsCount($friendIds,$where){$/;"	f
+getNoInvestFriendsCount	library/service/myClientsService.php	/^    public function getNoInvestFriendsCount($id,$where){$/;"	f
 getNosql	initphp/init/core.init.php	/^	public function getNosql() {$/;"	f
 getObj	static/js/datetime.js	/^	function getObj(className){$/;"	f
 getParentNodeById	library/dao/departmentDao.php	/^	public function getParentNodeById($id){$/;"	f
@@ -960,12 +1076,23 @@ getTarget	static/js/datetime.js	/^	function getTarget(e){$/;"	f
 getTime	initphp/initphp.php	/^	public static function getTime() {$/;"	f
 getTree	initphp/library/tree.init.php	/^	public function getTree($data,$id=0)$/;"	f
 getTreeData	a.php	/^function getTreeData($tree){$/;"	f
-getUidlist	library/dao/user_yaoqingma_listDao.php	/^    public function getUidlist($uid){$/;"	f
+getUidlist	library/dao/user_yaoqingma_listDao.php	/^    public function getUidlist($uid,$where=null){$/;"	f
 getUploadFileInfo	initphp/library/upload.init.php	/^    public function getUploadFileInfo() {$/;"	f
+getUserId	library/dao/myClientsDao.php	/^    public function getUserId($user){$/;"	f
+getUserId	library/service/myClientsService.php	/^    public function getUserId($user){$/;"	f
+getUserOrderList	library/dao/myResultsDao.php	/^    public function getUserOrderList($uid,$where){$/;"	f
+getUserReceivableOrderList	library/dao/dealRecordDao.php	/^    public function getUserReceivableOrderList($uid,$where){$/;"	f
+getUserReceivableOrderList	library/service/myResultsService.php	/^    public function getUserReceivableOrderList($array,$val){$/;"	f
+getUserinfo	library/dao/customerDao.php	/^	public function getUserinfo($uid){$/;"	f
 getUsrNameAndIdNo	library/dao/adminDao.php	/^    public function getUsrNameAndIdNo($IdNo)$/;"	f
 getUtil	initphp/init/core.init.php	/^	public function getUtil($class) {$/;"	f
 getUtils	initphp/initphp.php	/^	public static function getUtils($className) {$/;"	f
 getVersion	initphp/core/dao/cache/driver/memcached.init.php	/^	public function getVersion() {$/;"	f
+getWhere	library/service/adminService.php	/^    public function getWhere($part_id,$department_id,$unmae,$phone){$/;"	f
+getXiaoShouName	library/dao/customerDao.php	/^	public function getXiaoShouName($uid){$/;"	f
+getYaoQingRenList	library/service/myResultsService.php	/^    public function getYaoQingRenList($uid,$val){$/;"	f
+getYaoQingRenUserInfo	library/dao/customerDao.php	/^	public function getYaoQingRenUserInfo($uid){$/;"	f
+getYaoQingUserOrderList	library/service/myResultsService.php	/^    public function getYaoQingUserOrderList($uidArr,$val){$/;"	f
 get_address	initphp/library/email.init.php	/^	private function get_address($address) {$/;"	f
 get_all	initphp/core/dao/db/db.init.php	/^	public function get_all($table_name, $num = 20, $offest = 0, $field = array(), $id_key = 'id', $sort = 'DESC') {$/;"	f
 get_all_file	initphp/core/util/unittesting.init.php	/^	private function get_all_file() {$/;"	f
@@ -1036,11 +1163,14 @@ get_username	library/dao/adminDao.php	/^    public function get_username($userna
 get_week	initphp/library/date.init.php	/^	public function get_week() {$/;"	f
 getarea	initphp/library/ip.init.php	/^    private function getarea() {$/;"	f
 getcode	initphp/library/code.init.php	/^	public function getcode($key = 'user_') {$/;"	f
+getcustomers2Count	library/dao/customerDao.php	/^	public function getcustomers2Count($where)$/;"	f
 getdate	static/js/datetime.js	/^	function getdate(da){$/;"	f
 getdepartmentInfo	library/dao/departmentDao.php	/^    public function getdepartmentInfo($id){$/;"	f
+getfriendsIdList	library/service/myClientsService.php	/^    public function getfriendsIdList($uid,$status){$/;"	f
 getlong	initphp/library/ip.init.php	/^    private function getlong() {$/;"	f
 getlong3	initphp/library/ip.init.php	/^    private function getlong3() {$/;"	f
 getstring	initphp/library/ip.init.php	/^    private function getstring($data = "") {$/;"	f
+getthemonth	library/service/myResultsService.php	/^    function getthemonth($date){$/;"	f
 gids	static/js/datetime.js	/^	function gids(idArr){$/;"	f
 gray	initphp/library/code.init.php	/^		$gray = imagecolorallocate($im, 200,200,200); $/;"	v
 gzip	initphp/library/function.init.php	/^	public function gzip(&$content) {$/;"	f
@@ -1086,8 +1216,12 @@ html	initphp/library/pager.init.php	/^		$html = '&nbsp;&nbsp;<select name="selec
 html	initphp/library/pager.init.php	/^		$html = '';$/;"	v
 html	initphp/library/pager.init.php	/^        $html = "<div class='pagelist'>";$/;"	v
 html	library/service/departmentService.php	/^        static $html = '';$/;"	v
-html	web/controller/departmentController.php	/^		$html = $this->_exportTree($tree2);$/;"	v
+html	web/controller/adminController.php	/^        $html = $this->_exportTree($tree2);$/;"	v
+html	web/controller/adminController.php	/^        $html = $this->_exportTree($tree2,$department_id);$/;"	v
+html	web/controller/adminController.php	/^        static $html = '';$/;"	v
+html	web/controller/departmentController.php	/^		$html  = $this->_exportTree($tree2);$/;"	v
 html	web/controller/departmentController.php	/^		static $html = '';$/;"	v
+html	web/controller/departmentController.php	/^        $html 	= $this->_exportSelectedTree($tree2,$id);$/;"	v
 html	web/controller/departmentController.php	/^        $html = $this->_exportTree($tree2);$/;"	v
 htmlInit	initphp/library/html.init.php	/^class htmlInit {$/;"	c
 html_code	initphp/initphp.php	/^		$html_code = array("&amp;", "&quot;", "&#039;", "&lt;", "&gt;", "&lt;", "&gt;");$/;"	v
@@ -1101,6 +1235,7 @@ httpInit	initphp/library/http.init.php	/^class httpInit {$/;"	c
 httpPostHeader	initphp/library/http.init.php	/^	private function httpPostHeader($url, $post, $ip, $port=80, $cookie='') {$/;"	f
 httpReturn	initphp/library/http.init.php	/^				$httpReturn =  @fread($httpFp, $freadLen);	$/;"	v
 httpReturn	initphp/library/http.init.php	/^		$httpReturn = $httpHeader = "";$/;"	v
+huikuan	library/service/myResultsService.php	/^        $huikuan = ($yaoqingUserReceivabe+$UserReceivabe);$/;"	v
 i	initphp/core/util/sqlcontrol.init.php	/^			$i = 1;$/;"	v
 i	initphp/init/exception.init.php	/^		$i = 0;$/;"	v
 i	initphp/initphp.php	/^		$i = rand(0,(count($InitPHP_conf['customer'][$group]['host']) - 1));$/;"	v
@@ -1113,10 +1248,12 @@ icon	initphp/library/tree.init.php	/^		private $icon = array('│','├','└');
 id	initphp/core/dao/db/db.init.php	/^		$id = $this->insert_id();$/;"	v
 id	initphp/core/dao/db/db.init.php	/^		$id = (int) $id;$/;"	v
 id	initphp/library/tree.init.php	/^			$id=$this->_getPid($id);$/;"	v
+id	library/dao/customerDao.php	/^	    $id 			= $adminDao->GetToZiXiTongUserId($adminId);$/;"	v
 id	library/service/adminService.php	/^        $id= $this->adminDao->GetToZiXiTongUserId($admin_id);$/;"	v
 id	web/controller/adminController.php	/^        $id = $this->controller->get_gp('id');$/;"	v
 id	web/controller/admingroupController.php	/^        $id = $this->controller->get_gp('id');$/;"	v
 id	web/controller/companyController.php	/^        $id = $this->controller->get_gp('id');$/;"	v
+id	web/controller/departmentController.php	/^		$id 	= $pNode['department_id'];$/;"	v
 id_key	initphp/core/dao/db/db.init.php	/^	 * DAO中使用方法：$this->dao->db->delete($ids, $table_name, $id_key = 'id')$/;"	v
 id_key	initphp/core/dao/db/db.init.php	/^	 * DAO中使用方法：$this->dao->db->get_one($id, $table_name, $id_key = 'id')$/;"	v
 id_key	initphp/core/dao/db/db.init.php	/^	 * DAO中使用方法：$this->dao->db->update($id, $data, $table_name, $id_key = 'id')$/;"	v
@@ -1159,6 +1296,7 @@ info	library/service/adminService.php	/^            $info = $this->adminDao->get
 info	library/service/adminService.php	/^        $info = $this->adminService->adminInfo($id);$/;"	v
 info	library/service/adminService.php	/^        $info=$this->adminService->adminInfo($id);$/;"	v
 info	web/controller/agentController.php	/^		$info = $this->agentService->add_save($POST);$/;"	v
+infoEx	library/dao/customerDao.php	/^			$infoEx = $adminDao->adminInfoEx($adminId);$/;"	v
 info_group	library/service/adminService.php	/^        $info_group = $this->adminGroupService->info($info['gid']);$/;"	v
 init	initphp/core/dao/nosql/driver/mongo.init.php	/^	public function init($config = array()) {$/;"	f
 init	initphp/core/dao/nosql/driver/redis.init.php	/^	public function init($config = array()) {$/;"	f
@@ -1180,10 +1318,14 @@ initphp_list	web/controller/adminController.php	/^    public $initphp_list = arr
 initphp_list	web/controller/admingroupController.php	/^    public $initphp_list = array('add','add_save','edit','edit_save','del'); \/\/Action白名单$/;"	v
 initphp_list	web/controller/agentController.php	/^    public $initphp_list = array('addshow','add_save','edit','edit_save','del'); \/\/Action白名单$/;"	v
 initphp_list	web/controller/companyController.php	/^    public $initphp_list = array('add','AddSave','edit','EditSave','Del'); \/\/Action白名单$/;"	v
+initphp_list	web/controller/customerController.php	/^	public $initphp_list = array('run');$/;"	v
 initphp_list	web/controller/departmentController.php	/^	public $initphp_list = array('add','addSave','edit','editSave','del');$/;"	v
 initphp_list	web/controller/editpasswordController.php	/^    public $initphp_list = array("edit_save"); \/\/Action白名单$/;"	v
 initphp_list	web/controller/indexController.php	/^	public $initphp_list = array('home');$/;"	v
 initphp_list	web/controller/loginController.php	/^	public $initphp_list = array('check','logout'); \/\/Action白名单$/;"	v
+initphp_list	web/controller/myClientsController.php	/^    public $initphp_list = array(''); \/\/Action白名单$/;"	v
+initphp_list	web/controller/myResultsController.php	/^    public $initphp_list = array(); \/\/Action白名单$/;"	v
+initphp_list	web/controller/testController.php	/^    public $initphp_list = array('add','AddSave','edit','EditSave','Del'); \/\/Action白名单$/;"	v
 insert	initphp/core/dao/db/db.init.php	/^	public function insert($data, $table_name) {$/;"	f
 insert	initphp/core/dao/nosql/driver/mongo.init.php	/^	public function insert($data, $option = array()) {$/;"	f
 insertLog	library/dao/adminLogDao.php	/^    public function insertLog($admin_id,$text,$ip)$/;"	f
@@ -1206,6 +1348,11 @@ interceptor	initphp/init/run.init.php	/^	private $interceptor;$/;"	v
 interceptorInit	initphp/init/interceptor.init.php	/^class interceptorInit {$/;"	c
 interceptorInterface	initphp/init/interceptorInterface.init.php	/^interface interceptorInterface {$/;"	i
 interlace	initphp/library/image.init.php	/^            $interlace  =  $interlace? 1:0;$/;"	v
+invest	library/service/myClientsService.php	/^                 $invest = $yesInvest;$/;"	v
+invest	library/service/myClientsService.php	/^                $invest = $noInvest;$/;"	v
+investInfo	library/dao/customerDao.php	/^	    $investInfo		= $this->getInvestInfo($investorUids);$/;"	v
+investorList	library/dao/customerDao.php	/^		$investorList = $yaoqingDao->getInvestorList($cpUserId);$/;"	v
+investorUids	library/dao/customerDao.php	/^	    $investorUids 	= $yaoqingDao->getUidlist($uid);$/;"	v
 ip	initphp/initphp.php	/^		$ip = $ipLib->get_ip();$/;"	v
 ip	initphp/library/function.init.php	/^            $ip = "unknown";$/;"	v
 ip	initphp/library/function.init.php	/^            $ip = $_SERVER['REMOTE_ADDR'];$/;"	v
@@ -1232,6 +1379,7 @@ isDebug	initphp/initphp.php	/^	private static function isDebug() {$/;"	f
 isHttpHeader	initphp/library/http.init.php	/^		$isHttpHeader = $stopFread = false;$/;"	v
 isLogin	initphp/initphp.php	/^        $isLogin = $this->loginService->isLogin();$/;"	v
 isLogin	library/service/loginService.php	/^    public function isLogin()$/;"	f
+isShowInfo	library/service/TeamUtilsService.php	/^    public function isShowInfo($data,$permissions_id) {$/;"	f
 isUser	library/service/adminService.php	/^    public function isUser($data)$/;"	f
 is_ajax	initphp/core/controller/request.init.php	/^	public function is_ajax() {$/;"	f
 is_ajax	initphp/init/exception.init.php	/^	private static function is_ajax() {$/;"	f
@@ -1275,8 +1423,8 @@ iskey	initphp/core/dao/db/sqlbuild.init.php	/^	public function build_implode($va
 iskey	initphp/core/dao/db/sqlbuild.init.php	/^     * DAO中使用方法：$this->dao->db->build_implode($val, $iskey = 0)$/;"	v
 ismd5	initphp/library/html.init.php	/^	private $ismd5 = false; \/\/生成的文件名是否MD5加密$/;"	v
 ismodule	initphp/initphp.php	/^		$ismodule = $InitPHP_conf['ismodule'];$/;"	v
+istrue	library/dao/customerDao.php	/^	            $istrue = $this->IsUserWhethertoinvest(intval($arr['investor_id']));$/;"	v
 items	a.php	/^$items = array($/;"	v
-items	web/controller/departmentController.php	/^		$items = array($/;"	v
 j	initphp/library/captcha.init.php	/^        $j = $this->width \/ $this->length;$/;"	v
 j	initphp/library/function.init.php	/^			$j = ($i * $key_len) % 32;$/;"	v
 j	initphp/library/function.init.php	/^		$j = 0;$/;"	v
@@ -1288,11 +1436,13 @@ jingjireninfo	web/controller/agentController.php	/^        $jingjireninfo = $thi
 jingjirensearch	static/js/comm.js	/^function jingjirensearch(p){$/;"	c
 jingjirentuijianjingjirenserch	static/js/comm.js	/^function jingjirentuijianjingjirenserch(p){$/;"	c
 jingjirentuijianjingjirensereach	library/dao/adminDao.php	/^    public function jingjirentuijianjingjirensereach($tuijianren,$start,$end){$/;"	f
-jingjirenzongshu	web/controller/indexController.php	/^        $jingjirenzongshu = $this->TJHZService->JinRiJingJIRenZongShu($userinfo);$/;"	v
+joinWhereUrl	web/controller/customerController.php	/^	public function joinWhereUrl($uName = '',$uDeparment='',$uRole = ''){$/;"	f
 js_unescape	initphp/library/function.init.php	/^    public function js_unescape($str){  $/;"	f
 json	initphp/initphp.php	/^			$json = $curl->post($url, array("params" => $params), null, $timeout);$/;"	v
 json_data	initphp/core/controller/controller.init.php	/^            $json_data = json_encode($return_data);$/;"	v
 k	a.php	/^    foreach($tree as $k => $v){$/;"	v
+k	data/template_c/admin/run.tpl.php	/^          <?php foreach ($adminList as $k=>$v) { ?>$/;"	v
+k	data/template_c/customer/run.tpl.php	/^	<?php foreach ($list as $k => $v) { ?>$/;"	v
 k	data/template_c/department/run.tpl.php	/^	<?php foreach ($list as $k => $v) { ?>$/;"	v
 k	initphp/core/controller/filter.init.php	/^			foreach ($_SERVER as $k => $v) {$/;"	v
 k	initphp/core/controller/filter.init.php	/^			foreach ($value as $k => $v) {$/;"	v
@@ -1310,7 +1460,11 @@ k	initphp/init/interceptor.init.php	/^			foreach ($interceptor['rule'] as $k => 
 k	initphp/initphp.php	/^					foreach ($params as $k => $v) {$/;"	v
 k	initphp/library/function.init.php	/^		foreach($array as $k => $v){$/;"	v
 k	initphp/library/function.init.php	/^		foreach($string as $k => $v){$/;"	v
+k	library/dao/customerDao.php	/^		foreach($inverstorList as $k => $v){$/;"	v
 k	library/service/departmentService.php	/^        foreach ($tree as $k => $v) {$/;"	v
+k	library/service/myClientsService.php	/^            foreach ($friends as $k=>$val){$/;"	v
+k	web/controller/adminController.php	/^        foreach ($tree as $k => $v) {$/;"	v
+k	web/controller/customerController.php	/^			foreach($list as $k => $v){$/;"	v
 k	web/controller/departmentController.php	/^    	foreach ($tree as $k => $v) {$/;"	v
 key	data/template_c/admin/addinfo.tpl.php	/^				<?php foreach ($user_group as $key=>$vo) { ?>$/;"	v
 key	data/template_c/admin/editinfo.tpl.php	/^				<?php foreach ($user_group as $key=>$vo) { ?>$/;"	v
@@ -1322,6 +1476,7 @@ key	data/template_c/cktjjingjiren/run.tpl.php	/^   <?php foreach ($list as $key=
 key	data/template_c/company/run.tpl.php	/^	<?php foreach ($list as $key=>$vo) { ?>$/;"	v
 key	data/template_c/friends/zongjian_run.tpl.php	/^   <?php foreach ($list as $key=>$vo) { ?>$/;"	v
 key	data/template_c/grjyyjtj/run.tpl.php	/^	  <?php foreach ($list as $key=>$vo) { ?>$/;"	v
+key	data/template_c/myresults/run.tpl.php	/^	<?php foreach ($list as $key=>$vo) { ?>$/;"	v
 key	data/template_c/tjjingjiren/run.tpl.php	/^   <?php foreach ($list as $key=>$vo) { ?>$/;"	v
 key	data/template_c/wdtzmx/run.tpl.php	/^	  <?php foreach ($list as $key=>$vo) { ?>$/;"	v
 key	data/template_c/wodeshouru/run.tpl.php	/^					  	<?php foreach ($yuelist as $key=>$vo) { ?>$/;"	v
@@ -1359,6 +1514,13 @@ key	initphp/library/ip.init.php	/^            foreach ( $fContents as $key => $v
 key	initphp/library/sms.init.php	/^			foreach($fContents as $key=>$val)$/;"	v
 key	initphp/library/tree.init.php	/^		foreach($this->rawList as $key=>$value){$/;"	v
 key	initphp/library/upload.init.php	/^        foreach($files as $key =>$file) {$/;"	v
+key	library/dao/customerDao.php	/^	    foreach ($array as $key => $val){$/;"	v
+key	library/service/TeamUtilsService.php	/^        foreach ($data as $key => $value) {$/;"	v
+key	library/service/TeamUtilsService.php	/^        foreach ($data as $key=>$val){$/;"	v
+key	library/service/myResultsService.php	/^        foreach ($array as $key=>$val){$/;"	v
+key	library/service/myResultsService.php	/^        foreach ($data as $key=>$val){$/;"	v
+key	library/service/myResultsService.php	/^        foreach ($uidArr as $key=>$val){$/;"	v
+key	library/service/myResultsService.php	/^        foreach ($yuefenarr as $key=>$val){$/;"	v
 key_len	initphp/library/function.init.php	/^		$key_len = strlen($key);$/;"	v
 key_length	initphp/library/function.init.php	/^        $key_length = strlen ( $cryptkey );$/;"	v
 key_val	initphp/library/hash.init.php	/^		$key_val = $this->hash_crc($key);$/;"	v
@@ -1376,6 +1538,7 @@ lastU	initphp/library/function.init.php	/^                                $lastU
 lastday	initphp/library/date.init.php	/^			$lastday = $this->is_leapyear($this->year) ? 29 : 28;$/;"	v
 lastday	initphp/library/date.init.php	/^			$lastday = 30;$/;"	v
 lastday	initphp/library/date.init.php	/^			$lastday = 31;$/;"	v
+lastday	library/service/myResultsService.php	/^        $lastday = date('Y-m-d', strtotime("$firstday +1 month -1 day"));$/;"	v
 lastip	initphp/library/ip.init.php	/^            $this->lastip = $this->getlong();$/;"	v
 lastip	initphp/library/ip.init.php	/^    private $lastip;$/;"	v
 layout	initphp/core/view/view.init.php	/^	private function layout($str) {$/;"	f
@@ -1391,6 +1554,7 @@ length	initphp/library/image.init.php	/^        $length=4;$/;"	v
 limit	initphp/core/dao/db/db.init.php	/^		$limit = $this->build_limit($offest, $num);$/;"	v
 limit	initphp/initphp.php	/^        $limit = $startCount.','.$listRows;$/;"	v
 limit	library/dao/gerenyongjinDao.php	/^            $limit = ' limit '.$limit;$/;"	v
+limit	web/controller/customerController.php	/^		$limit    = 10;              \/\/每页显示多少条$/;"	v
 link_id	initphp/core/dao/db/driver/mysql.init.php	/^		$link_id = ($pconnect == 0) ? mysql_connect($host, $user, $password, true) : mysql_pconnect($host, $user, $password);$/;"	v
 link_id	initphp/core/dao/db/driver/mysql.init.php	/^		$this->link_id = NULL;$/;"	v
 link_id	initphp/core/dao/db/driver/mysql.init.php	/^	public $link_id; \/\/链接对象 $/;"	v
@@ -1400,16 +1564,21 @@ link_id	initphp/core/dao/db/driver/mysqli.init.php	/^	public $link_id; \/\/链�
 linkid	initphp/library/ftp.init.php	/^		$this->linkid = ftp_connect($config['service'], $port);$/;"	v
 linkid	initphp/library/ftp.init.php	/^	private $linkid;$/;"	v
 list	initphp/library/hash.init.php	/^			$list = '$hash_list = ' . var_export(self::$hash_list, TRUE);$/;"	v
-list	web/controller/adminController.php	/^        $list = $this->adminService->admin_list();$/;"	v
+list	web/controller/adminController.php	/^        $list = $this->adminService->admin_list($where); \/\/查询列表数据$/;"	v
 list	web/controller/admingroupController.php	/^        $list = $this->adminGroupService->adminList();$/;"	v
 list	web/controller/companyController.php	/^        $list = $this->companyService->GetCompanyList();$/;"	v
+list	web/controller/customerController.php	/^			$list = $tmpArray();$/;"	v
+list	web/controller/customerController.php	/^		$list = $this->customerService->getCustomers2($page,10,$arrWhereUrl['where']);$/;"	v
+list	web/controller/customerController.php	/^        $list     = $TeamUtilsService->cuttingDataPage($url,$limit,$list);\/\/显示数据处理$/;"	v
 list	web/controller/departmentController.php	/^        $list = $this->departmentService->getDepartmentList();$/;"	v
 list	web/controller/editpasswordController.php	/^        $list = $this->adminService->admin_list();$/;"	v
 list	web/controller/indexController.php	/^        $list = $this->adminService->current_user();$/;"	v
+list2	web/controller/adminController.php	/^        $list2 = $departmentService->getDepartmentList2();$/;"	v
+list2	web/controller/adminController.php	/^        $list2 = $departmentService->getDepartmentList2();\/\/获取所属部门列表$/;"	v
 list2	web/controller/departmentController.php	/^		$list2 = $this->departmentService->getDepartmentList2();	$/;"	v
+list2	web/controller/departmentController.php	/^        $list2 	= $this->departmentService->getDepartmentList2();$/;"	v
 list2	web/controller/departmentController.php	/^        $list2 = $this->departmentService->getDepartmentList2();$/;"	v
 listRet	library/dao/departmentDao.php	/^		$listRet = array();$/;"	v
-lists	web/controller/departmentController.php	/^		$lists = $this->departmentService->getDepartmentList();$/;"	v
 load	initphp/init/core.init.php	/^	public function load($class_name, $type) {$/;"	f
 load	initphp/library/function.init.php	/^		function load(){$/;"	f
 load_cache	initphp/core/dao/cache/cache.init.php	/^	private function load_cache($file, $class) {$/;"	f
@@ -1477,6 +1646,7 @@ module	initphp/init/run.init.php	/^			$module = '';$/;"	v
 module_list	initphp/init/run.init.php	/^		$this->module_list = $params['module_list'];$/;"	v
 module_list	initphp/init/run.init.php	/^	private $module_list            = array('index');$/;"	v
 mon	initphp/core/dao/db/dbhandler.init.php	/^			$mon = sprintf ( '%02d', date ( 'm', InitPHP::getTime() ));$/;"	v
+monarr	library/service/myResultsService.php	/^        $monarr = array();$/;"	v
 mongo	initphp/core/dao/nosql/driver/mongo.init.php	/^		$this->mongo = new Mongo($server, $config['option']);$/;"	v
 mongo	initphp/core/dao/nosql/driver/mongo.init.php	/^	private $mongo; \/\/mongo对象$/;"	v
 mongo	initphp/core/dao/nosql/nosql.init.php	/^				$mongo = $this->load_nosql('mongo.init.php', 'mongoInit', $server);$/;"	v
@@ -1493,6 +1663,16 @@ msg	initphp/init/run.init.php	/^	public function handleError($errorCode, $msg = 
 msgshow	data/template_c/index/home.tpl.php	/^		function msgshow(){$/;"	f
 msgshow	web/template/index/home.htm	/^		function msgshow(){$/;"	f
 msm_send	initphp/library/sms.init.php	/^	public function msm_send($phones=array(),$content,$sendTime=0)$/;"	f
+myClientsController	web/controller/myClientsController.php	/^class myClientsController extends baseController$/;"	c
+myClientsDao	library/dao/myClientsDao.php	/^class myClientsDao extends Dao$/;"	c
+myClientsDao	library/service/myClientsService.php	/^        $this->myClientsDao = InitPHP::getDao("myClients");$/;"	v
+myClientsService	library/service/myClientsService.php	/^class myClientsService extends Service$/;"	c
+myClientsService	web/controller/myClientsController.php	/^        $this->myClientsService = InitPHP::getService("myClients");$/;"	v
+myResultsController	web/controller/myResultsController.php	/^class myResultsController extends baseController{$/;"	c
+myResultsDao	library/dao/myResultsDao.php	/^class myResultsDao extends Dao{$/;"	c
+myResultsDao	library/service/myResultsService.php	/^        $myResultsDao = InitPHP::getDao("myResults");$/;"	v
+myResultsService	library/service/myResultsService.php	/^class myResultsService extends Service{$/;"	c
+myResultsService	web/controller/myResultsController.php	/^        $myResultsService = InitPHP::getService("myResults");$/;"	v
 my_mouse_over	data/template_c/index/home.tpl.php	/^		function my_mouse_over(client) {$/;"	f
 my_mouse_over	web/template/index/home.htm	/^		function my_mouse_over(client) {$/;"	f
 mysqlInit	initphp/core/dao/db/driver/mysql.init.php	/^class mysqlInit extends dbbaseInit{$/;"	c
@@ -1512,7 +1692,14 @@ next	initphp/library/pager.init.php	/^		$next = "<a href='{$url}&page={$next_pag
 next	initphp/library/pager.init.php	/^		if ($page == $page_num) $next = '';$/;"	v
 nextU	initphp/library/function.init.php	/^                                $nextU = $lastDT->format('U');$/;"	v
 next_page	initphp/library/pager.init.php	/^		$next_page = $page + 1;$/;"	v
+nianHuaJiaoYiEJiSuan	library/service/TeamUtilsService.php	/^    public function nianHuaJiaoYiEJiSuan($data,$yongjinbili){$/;"	f
+nianhuajiaoyie	library/service/TeamUtilsService.php	/^        $nianhuajiaoyie         = 0;  \/\/年化交易额合计$/;"	v
+nianhuan	library/service/myResultsService.php	/^        $nianhuan = ($Userarr['nianhuan']+$YaoQingUserarr['nianhuan']);$/;"	v
+ninhuajiaoyi	library/service/myResultsService.php	/^        $ninhuajiaoyi =0;$/;"	v
 nlist	initphp/library/ftp.init.php	/^	public function nlist($path = '\/') {$/;"	f
+noInvest	library/service/myClientsService.php	/^                    $noInvest = $noInvest.",".$val['friends'];$/;"	v
+noInvest	library/service/myClientsService.php	/^                $noInvest = substr($noInvest,1);$/;"	v
+noInvest	library/service/myClientsService.php	/^        $noInvest = '';$/;"	v
 nosql	initphp/core/dao/dao.init.php	/^			$this->nosql = InitPHP::loadclass('nosqlInit');	$/;"	v
 nosql	initphp/core/dao/dao.init.php	/^	public $nosql = NULL;$/;"	v
 nosqlInit	initphp/core/dao/nosql/nosql.init.php	/^class nosqlInit {$/;"	c
@@ -1564,6 +1751,7 @@ option	initphp/core/dao/nosql/driver/mongo.init.php	/^	public function insert($d
 option	initphp/core/dao/nosql/driver/mongo.init.php	/^	public function remove($query, $option = array()) {$/;"	v
 option	initphp/core/dao/nosql/driver/mongo.init.php	/^	public function save($data, $option = array()) {$/;"	v
 option	initphp/core/dao/nosql/driver/mongo.init.php	/^	public function update($query, $data, $option = array()) {$/;"	v
+order_money	library/service/myResultsService.php	/^        $order_money  =0;$/;"	v
 out	initphp/library/zip.init.php	/^        	$out = $this->file();$/;"	v
 out_put	initphp/core/view/view.init.php	/^	private function out_put(&$value) {$/;"	f
 output	initphp/core/util/debug.init.php	/^            $output = '<pre>' . $label . htmlspecialchars($output, ENT_QUOTES) . '<\/pre>';$/;"	v
@@ -1573,8 +1761,10 @@ output	initphp/initphp.php	/^	public static function output($string, $type = 'en
 output	initphp/library/image.init.php	/^    static protected function output($im,$type='png',$filename='') {$/;"	f
 p.getRSBlocks	static/js/jquery.qrcode.min.js	/^45,15,67,46,16],[19,148,118,6,149,119],[18,75,47,31,76,48],[34,54,24,34,55,25],[20,45,15,61,46,16]];p.getRSBlocks=function(a,c){var d=p.getRsBlockTable(a,c);if(void 0==d)throw Error("bad rs block @ typeNumber:"+a+"\/errorCorrectLevel:"+c);for(var b=d.length\/3,e=[],f=0;f<b;f++)for(var h=d[3*f+0],g=d[3*f+1],j=d[3*f+2],l=0;l<h;l++)e.push(new p(g,j));return e};p.getRsBlockTable=function(a,c){switch(c){case 1:return p.RS_BLOCK_TABLE[4*(a-1)+0];case 0:return p.RS_BLOCK_TABLE[4*(a-1)+1];case 3:return p.RS_BLOCK_TABLE[4*$/;"	f
 p.getRsBlockTable	static/js/jquery.qrcode.min.js	/^45,15,67,46,16],[19,148,118,6,149,119],[18,75,47,31,76,48],[34,54,24,34,55,25],[20,45,15,61,46,16]];p.getRSBlocks=function(a,c){var d=p.getRsBlockTable(a,c);if(void 0==d)throw Error("bad rs block @ typeNumber:"+a+"\/errorCorrectLevel:"+c);for(var b=d.length\/3,e=[],f=0;f<b;f++)for(var h=d[3*f+0],g=d[3*f+1],j=d[3*f+2],l=0;l<h;l++)e.push(new p(g,j));return e};p.getRsBlockTable=function(a,c){switch(c){case 1:return p.RS_BLOCK_TABLE[4*(a-1)+0];case 0:return p.RS_BLOCK_TABLE[4*(a-1)+1];case 3:return p.RS_BLOCK_TABLE[4*$/;"	f
+pNode	web/controller/departmentController.php	/^		$pNode = $this->departmentService->getParentNodeById($departmentId);$/;"	v
 pa	initphp/initphp.php	/^            $pa = "\/[\\x01-\\x7f]|[\\xc2-\\xdf][\\x80-\\xbf]|\\xe0[\\xa0-\\xbf][\\x80-\\xbf]|[\\xe1-\\xef][\\x80-\\xbf][\\x80-\\xbf]|\\xf0[\\x90-\\xbf][\\x80-\\xbf][\\x80-\\xbf]|[\\xf1-\\xf7][\\x80-\\xbf][\\x80-\\xbf][\\x80-\\xbf]\/";$/;"	v
 pa	initphp/library/function.init.php	/^			$pa ="\/[\\x01-\\x7f]|[\\xc2-\\xdf][\\x80-\\xbf]|\\xe0[\\xa0-\\xbf][\\x80-\\xbf]|[\\xe1-\\xef][\\x80-\\xbf][\\x80-\\xbf]|\\xf0[\\x90-\\xbf][\\x80-\\xbf][\\x80-\\xbf]|[\\xf1-\\xf7][\\x80-\\xbf][\\x80-\\xbf][\\x80-\\xbf]\/";$/;"	v
+pa	library/service/TeamUtilsService.php	/^            $pa = "\/[\\x01-\\x7f]|[\\xc2-\\xdf][\\x80-\\xbf]|\\xe0[\\xa0-\\xbf][\\x80-\\xbf]|[\\xe1-\\xef][\\x80-\\xbf][\\x80-\\xbf]|\\xf0[\\x90-\\xbf][\\x80-\\xbf][\\x80-\\xbf]|[\\xf1-\\xf7][\\x80-\\xbf][\\x80-\\xbf][\\x80-\\xbf]\/";$/;"	v
 packip	initphp/library/ip.init.php	/^    private function packip($ip) {$/;"	f
 pad	initphp/library/tree.init.php	/^					$pad=$space?$this->icon[0]:"";$/;"	v
 pad	initphp/library/tree.init.php	/^				$pad="";$/;"	v
@@ -1583,17 +1773,28 @@ page	initphp/initphp.php	/^            $page=1;$/;"	v
 page	initphp/initphp.php	/^        $page = $this->controller->get_gp('page');$/;"	v
 page	initphp/library/pager.init.php	/^		$page     = ($page > $page_num) ? $page_num : ($page = ($page < 1) ? 1 : $page);$/;"	v
 page	initphp/library/pager.init.php	/^		$page     = (int) $_GET['page'];$/;"	v
+page	web/controller/customerController.php	/^		$page 			= ($page-1)*10 ? ($page-1)*10 : 0;$/;"	v
+page	web/controller/customerController.php	/^        $page 			= $this->controller->get_gp('page') ? $this->controller->get_gp('page') : 1 ;$/;"	v
+page	web/controller/myClientsController.php	/^        $page = $this->controller->get_gp('page') ? $this->controller->get_gp('page') : 1 ; \/\/获取当前页码$/;"	v
+page	web/controller/myClientsController.php	/^        $page = ($page-1)*10 ? ($page-1)*10 : 0;$/;"	v
+pageHtml	web/controller/customerController.php	/^		$pageHtml = $pager->pager($count['count'], 10, $arrWhereUrl['url']);$/;"	v
 page_cache_end	initphp/core/dao/cache/cache.init.php	/^	public function page_cache_end() {$/;"	f
 page_cache_key	initphp/core/dao/cache/cache.init.php	/^		$this->page_cache_key 	= 'initphp_page_cache_' . $key;$/;"	v
 page_cache_start	initphp/core/dao/cache/cache.init.php	/^	public function page_cache_start($key, $time = 0, $type = 'FILE') {$/;"	f
 page_cache_time	initphp/core/dao/cache/cache.init.php	/^		$this->page_cache_time 	= $time;$/;"	v
 page_cache_type	initphp/core/dao/cache/cache.init.php	/^		$this->page_cache_type 	= $type;$/;"	v
+page_html	web/controller/myClientsController.php	/^        $page_html = $pager->pager($friendsCount['count'], 10, $arrange_where_url['url']); \/\/最后一个参数为true则使用默认样式$/;"	v
 page_num	initphp/library/pager.init.php	/^		$page_num = ceil($count \/ $prepage); \/\/总共多少页$/;"	v
 pager	initphp/initphp.php	/^        $pager= $this->getLibrary('pager'); \/\/分页加载$/;"	v
 pager	initphp/library/pager.init.php	/^	public function pager($count, $prepage, $url, $default_style = false) {$/;"	f
+pager	web/controller/customerController.php	/^		$pager 			= $this->getLibrary('pager');$/;"	v
+pager	web/controller/myClientsController.php	/^        $pager= $this->getLibrary('pager'); \/\/分页加载$/;"	v
 pagerInit	initphp/library/pager.init.php	/^class pagerInit {$/;"	c
 pager_html	initphp/library/pager.init.php	/^	private function pager_html($page_num, $url, $page, $default_style) {$/;"	f
 pages	initphp/initphp.php	/^    public function pages($listRows,$url,$count)$/;"	f
+pages	library/service/TeamUtilsService.php	/^        $pages =isset($_GET['page'])?intval($_GET['page']):1;$/;"	v
+pages	web/controller/customerController.php	/^        $pages    = $this->pages($limit, $url,$count);$/;"	v
+pages	web/template/myClient/run.htm	/^function pages(){$/;"	f
 params	initphp/core/controller/validate.init.php	/^			$params = $temp;$/;"	v
 params	initphp/initphp.php	/^			InitPHP::getController($argv[1], $argv[2], $params = array(), $argv[3]);$/;"	v
 params	initphp/initphp.php	/^		$params = json_decode(urldecode($_POST['params']), true);$/;"	v
@@ -1616,6 +1817,7 @@ parseUrlToHost	initphp/library/http.init.php	/^	private function parseUrlToHost(
 parseWhiteList	initphp/init/run.init.php	/^	private function parseWhiteList($initphp_list) {$/;"	f
 parse_data	initphp/core/service/service.init.php	/^	public function parse_data($field, $data) {$/;"	f
 parse_template_arr	initphp/core/view/view.init.php	/^	private function parse_template_arr(array $arr) {$/;"	f
+part_id	web/controller/adminController.php	/^        $part_id = $this->controller->get_gp('part_id') ? $this->controller->get_gp('part_id') : '';    \/\/获取角色id$/;"	v
 parten	initphp/core/controller/filter.init.php	/^			$parten = array($/;"	v
 pass	initphp/library/email.init.php	/^		$this->pass = $pass;$/;"	v
 pass	initphp/library/email.init.php	/^	var $pass;$/;"	v
@@ -1652,7 +1854,11 @@ period	initphp/library/function.init.php	/^    function LoanTerms($tenderComplet
 periodType	initphp/library/function.init.php	/^            $periodType = $periodType ? strtoupper($periodType) : null;$/;"	v
 phone	initphp/library/sms.init.php	/^			$phone = $phones;$/;"	v
 phone	initphp/library/sms.init.php	/^			$phone = trim($phone,',');$/;"	v
+phone	web/controller/adminController.php	/^        $phone = $this->controller->get_gp('phone') ? $this->controller->get_gp('phone') : '';\/\/获取用户手机$/;"	v
+phone	web/controller/myClientsController.php	/^        $phone = $this->controller->get_gp('phone') ? $this->controller->get_gp('phone') : '';$/;"	v
 phpinfoInit	initphp/core/util/phpinfo.init.php	/^class phpinfoInit {$/;"	c
+pid	library/dao/departmentDao.php	/^		$pid = $ret['p_dpt_id'];$/;"	v
+pid	web/controller/departmentController.php	/^		$pid 	= $this->controller->get_gp('p_dpt_id');$/;"	v
 pinyin	initphp/library/pinyin.init.php	/^		$pinyin = '';$/;"	v
 pinyin	initphp/library/pinyin.init.php	/^	public function pinyin($string, $utf8 = true) {$/;"	f
 pinyinArr	initphp/library/pinyin.init.php	/^			$this->pinyinArr = $this->pinyin_code();$/;"	v
@@ -1738,6 +1944,7 @@ realip	initphp/core/controller/request.init.php	/^                $realip = gete
 realip	initphp/core/controller/request.init.php	/^            $realip = reset(explode(',', $realip));$/;"	v
 realip	initphp/core/controller/request.init.php	/^        $realip = filter_var($realip, FILTER_VALIDATE_IP, null);$/;"	v
 realip	initphp/core/controller/request.init.php	/^        static $realip = null;$/;"	v
+recordDao	library/dao/recordDao.php	/^class recordDao extends Dao{$/;"	c
 redata	initphp/library/sms.init.php	/^		$redata = $this->send(1,$data);$/;"	v
 redirect	initphp/core/controller/controller.init.php	/^	public function redirect($url, $time = 0) {$/;"	f
 redis	initphp/core/dao/nosql/driver/redis.init.php	/^		$this->redis = new Redis();$/;"	v
@@ -1753,6 +1960,7 @@ relay_host	initphp/library/email.init.php	/^	var $relay_host;$/;"	v
 remove	initphp/core/dao/nosql/driver/mongo.init.php	/^	public function remove($query, $option = array()) {$/;"	f
 remove_tpl	initphp/core/view/view.init.php	/^	public function remove_tpl($remove_tpl) {$/;"	f
 remove_tpl_arr	initphp/core/view/view.init.php	/^	private $remove_tpl_arr = array(); \/\/待移除$/;"	v
+renshucount	web/controller/myResultsController.php	/^        $renshucount=0;$/;"	v
 replace	initphp/core/controller/filter.init.php	/^            $replace = array("\\\\2", "", "", "");$/;"	v
 replace	initphp/core/dao/cache/driver/memcached.init.php	/^	public function replace($key, $value, $time = 0, $flag = false) {$/;"	f
 replace_tag	initphp/core/view/view.init.php	/^	private function replace_tag($str) {$/;"	f
@@ -1768,8 +1976,10 @@ request	initphp/init/dispatcher.init.php	/^		$request = str_replace('.htm', '', 
 request	initphp/init/dispatcher.init.php	/^		$request = str_replace(trim($urlArr['path'], '\/'),'', $uri);$/;"	v
 request	initphp/init/dispatcher.init.php	/^		$request = trim($request, '\/');$/;"	v
 requestInit	initphp/core/controller/request.init.php	/^class requestInit {$/;"	c
+res	library/dao/customerDao.php	/^	    $res = $this->dao->db->get_one_sql($sql);$/;"	v
+res	web/controller/myResultsController.php	/^        $res = $myResultsService->ResultsList($userinfo);$/;"	v
+res	web/controller/testController.php	/^       $res = $customerDao->add($userinfo['id']);$/;"	v
 response	initphp/library/email.init.php	/^		$response = str_replace("\\r\\n", "", fgets($this->sock, 512));$/;"	v
-rest	web/controller/indexController.php	/^        $rest = $this->TJHZService->JinTianJingJiRenList($userinfo);$/;"	v
 result	initphp/core/dao/cache/driver/mysqlcache.init.php	/^		$result = $this->sql->fetch_assoc($query);$/;"	v
 result	initphp/core/dao/db/db.init.php	/^		$result =  $this->fetch_assoc($result);$/;"	v
 result	initphp/core/dao/db/db.init.php	/^		$result = $this->query($sql, false);$/;"	v
@@ -1812,10 +2022,14 @@ ret	initphp/library/function.init.php	/^        $ret = '';  $/;"	v
 ret	initphp/library/function.init.php	/^        $ret = null;$/;"	v
 ret	initphp/library/upload.init.php	/^                    $ret = $this->localSave($file['tmp_name'], $file['savepath'] . $file['savename']);$/;"	v
 ret	initphp/library/upload.init.php	/^                    $ret = $this->saeSave($file['tmp_name'], $file['savepath'] . $file['savename']);$/;"	v
+ret	library/dao/customerDao.php	/^		$ret = $this->dao->db->get_all_sql($sql);$/;"	v
+ret	library/dao/customerDao.php	/^		$ret = $this->dao->db->get_one_sql($sql);$/;"	v
 ret	library/dao/departmentDao.php	/^		$ret = $this->dao->db->get_all_sql($sql);$/;"	v
 ret	library/dao/departmentDao.php	/^		$ret = $this->dao->db->get_one_sql($sql);$/;"	v
+ret	web/controller/customerController.php	/^		$ret 			= $this->customerService->addCustomer($salesId);$/;"	v
+ret	web/controller/departmentController.php	/^		$ret    = $this->departmentService->addNodes($pid,$dName);$/;"	v
 ret	web/controller/departmentController.php	/^		$ret = $this->departmentService->del($departmentId);$/;"	v
-ret	web/controller/departmentController.php	/^        $ret = $this->departmentService->addSave($data);$/;"	v
+ret	web/controller/departmentController.php	/^        $ret 	= $this->departmentService->addSave($data);$/;"	v
 retRes	initphp/core/dao/nosql/driver/redis.init.php	/^		$retRes = $this->redis->set($key, $value);$/;"	v
 retrun	web/controller/agentController.php	/^		      $retrun = json_encode(array('status' => 1, 'message' => '两次密码输入不同'));$/;"	v
 retrun	web/controller/agentController.php	/^		      $retrun = json_encode(array('status' => 123, 'message' => '用户名必须要6-16位字母、数字和下划线'));$/;"	v
@@ -1837,8 +2051,10 @@ return500	initphp/core/controller/controller.init.php	/^	public function return5
 return500	initphp/initphp.php	/^	public static function return500() {$/;"	f
 return_data	initphp/core/controller/controller.init.php	/^		$return_data = array('status' => $status, 'message' => $message, 'data' => $data);$/;"	v
 return_msg	initphp/core/service/service.init.php	/^	public function return_msg($status, $msg, $data = '') {$/;"	f
+returnnianfen	library/service/myResultsService.php	/^    public function returnnianfen($userinfo){$/;"	f
 rltrim	initphp/library/function.init.php	/^	public function rltrim($string) {$/;"	f
 rndkey	initphp/library/function.init.php	/^        $rndkey = array ();$/;"	v
+roleId	library/dao/customerDao.php	/^			$roleId = $infoEx['gid'];$/;"	v
 rows	initphp/library/excel.init.php	/^        	$rows=$this->addRow($val);$/;"	v
 rows	library/dao/departmentDao.php	/^		$rows = $this->dao->db->get_all_sql($sql);$/;"	v
 rpc_init	initphp/initphp.php	/^	public static function rpc_init() {$/;"	f
@@ -1849,11 +2065,14 @@ run	initphp/initphp.php	/^			$run = InitPHP::loadclass('runInit');$/;"	v
 run	web/controller/adminController.php	/^    public function run()$/;"	f
 run	web/controller/admingroupController.php	/^    public function run()$/;"	f
 run	web/controller/companyController.php	/^    public function run(){$/;"	f
+run	web/controller/customerController.php	/^	public function run($salesId){$/;"	f
 run	web/controller/departmentController.php	/^	public function run(){$/;"	f
 run	web/controller/editpasswordController.php	/^    public function run()$/;"	f
 run	web/controller/indexController.php	/^	public function run()$/;"	f
 run	web/controller/loginController.php	/^	public function run()$/;"	f
-run2	web/controller/departmentController.php	/^	public function run2(){$/;"	f
+run	web/controller/myClientsController.php	/^    public function run(){$/;"	f
+run	web/controller/myResultsController.php	/^    public function run(){$/;"	f
+run	web/controller/testController.php	/^    public function run(){$/;"	f
 runInit	initphp/init/run.init.php	/^class runInit {$/;"	c
 runTrace	initphp/init/exception.init.php	/^			$runTrace = $e->getTrace();$/;"	v
 runTrace	initphp/init/exception.init.php	/^		$runTrace = $e->getTrace();$/;"	v
@@ -1875,6 +2094,11 @@ saeStorage	initphp/library/upload.init.php	/^    protected $saeStorage = NULL;$/
 saeStorage	initphp/library/upload.init.php	/^\/\/            $this->saeStorage = new SaeStorage();$/;"	v
 saeWidth	initphp/library/image.init.php	/^                    $saeWidth  = $width;$/;"	v
 saeWidth	initphp/library/image.init.php	/^                    $saeWidth  = (int)($srcWidth*$scalei);$/;"	v
+salesId	web/controller/customerController.php	/^		$salesId		= 26;$/;"	v
+salesId	web/controller/customerController.php	/^		$salesId        = $userInfo['id'];$/;"	v
+salesInfo	library/dao/customerDao.php	/^	            $salesInfo = $this->getYaoQingRenUserInfo($salesUid);$/;"	v
+salesNameInfo	library/dao/customerDao.php	/^	            $salesNameInfo = $this->getXiaoShouName(intval($arr['friends']));$/;"	v
+salesUid	library/dao/customerDao.php	/^	            $salesUid = $adminDao->GetToZiXiTongAdminId(intval($arr['friends']));$/;"	v
 save	initphp/core/dao/nosql/driver/mongo.init.php	/^	public function save($data, $option = array()) {$/;"	f
 savePath	initphp/library/upload.init.php	/^        $this->savePath = $savePath;$/;"	v
 savePath	initphp/library/upload.init.php	/^    public $savePath ='';	\/\/ 上传文件保存路径$/;"	v
@@ -1928,6 +2152,7 @@ set_token	initphp/core/controller/controller.init.php	/^	private function set_to
 set_tpl	initphp/core/view/view.init.php	/^	public function set_tpl($template_name, $type = '') {$/;"	f
 set_year	initphp/library/date.init.php	/^	private function set_year($year) {$/;"	f
 show	static/js/datetime.js	/^	function show(o){$/;"	f
+show12month	library/service/myResultsService.php	/^    public function show12month($year_monthly){$/;"	f
 show_num	initphp/library/pager.init.php	/^	private $show_num = 9; \/\/分页中显示多少个$/;"	v
 showlog	initphp/library/sms.init.php	/^    private function showlog($log)$/;"	f
 showyue	static/js/comm.js	/^function showyue(nianfen){$/;"	f
@@ -1976,14 +2201,16 @@ sql	initphp/core/dao/db/db.init.php	/^		$sql = sprintf("UPDATE %s %s %s", $table
 sql	initphp/core/dao/db/db.init.php	/^		$sql = trim($sql . ' ' .$this->build_limit(1));$/;"	v
 sql	initphp/core/dao/db/db.init.php	/^		$sql = trim($sql);$/;"	v
 sql	initphp/core/dao/db/dbhandler.init.php	/^		$sql = trim($sql);$/;"	v
+sql	library/dao/adminDao.php	/^        $sql=sprintf("SELECT UsrName,department_id,gid FROM %s WHERE id=%s",$this->table_name,$adminId);$/;"	v
+sql	library/dao/adminDao.php	/^        $sql=sprintf("SELECT a.*,b.name as gnname from %s as a LEFT JOIN  %s b ON a.gid=b.id where a.id=%s ",$this->table_name,'cp_zjingjiren_admin_group',$admin_id);$/;"	v
+sql	library/dao/adminDao.php	/^        $sql=sprintf("SELECT a.id from %s as a LEFT JOIN cp_user as b on b.username=a.user where b.id='%s'",$this->table_name,$uid);$/;"	v
 sql	library/dao/adminDao.php	/^        $sql=sprintf("SELECT b.id from %s as a LEFT JOIN cp_user as b on b.username=a.user where a.id='%s'",$this->table_name,$admin_id);$/;"	v
 sql	library/dao/adminDao.php	/^        $sql=sprintf("select * from %s where IdNo = '%s' ","cp_user_huifu",$IdNo);$/;"	v
 sql	library/dao/adminDao.php	/^        $sql=sprintf("select * from %s where user = '%s' ",$this->table_name,$user);$/;"	v
-sql	library/dao/adminDao.php	/^        $sql=sprintf("select a.*,b.name as gname from %s a , %s b  where a.gid=b.id and a.id=%s ",$this->table_name,'cp_zjingjiren_admin_group',$admin_id);$/;"	v
-sql	library/dao/adminDao.php	/^        $sql=sprintf("select a.*,b.name as gname from %s a left join cp_zjingjiren_admin_group b on a.gid=b.id where b.grade>=%s order by id desc",$this->table_name,$grade);$/;"	v
 sql	library/dao/adminDao.php	/^        $sql=sprintf("select a.*,b.name as gname,c.id as uid from %s a left join cp_zjingjiren_admin_group b on a.gid=b.id left join cp_user c on a.user=c.username where a.tuijianren=%s and a.gid= 2 order by id asc",$this->table_name,$tuijianren);$/;"	v
 sql	library/dao/adminDao.php	/^        $sql=sprintf("select a.*,b.name as gname,c.id as uid from %s a left join cp_zjingjiren_admin_group b on a.gid=b.id left join cp_user c on a.user=c.username where a.tuijianren=%s and a.gid= 3 order by id asc",$this->table_name,$tuijianren);$/;"	v
 sql	library/dao/adminDao.php	/^        $sql=sprintf("select a.*,b.name as gname,c.id as uid from %s a left join cp_zjingjiren_admin_group b on a.gid=b.id left join cp_user c on a.user=c.username where a.tuijianren=%s and a.regtime >=%s and a.regtime <=%s and a.gid= 3 order by id asc",$this->table_name,$tuijianren,$start,$end);$/;"	v
+sql	library/dao/adminDao.php	/^        $sql=sprintf("select a.*,b.name as gname,d.department_name from %s a left join cp_zjingjiren_admin_group b on a.gid=b.id left JOIN zx_department d on d.department_id = a.department_id where b.grade>=%s and a.vaild =1  %s order by id desc",$this->table_name,$grade,$where);$/;"	v
 sql	library/dao/adminDao.php	/^       $sql=sprintf("select a.*,b.name as gname,c.id as uid from %s a ,%s b ,%s c where a.gid=b.id and a.user=c.username and a.tuijianren=%s and a.gid= 3 order by a.id asc",$this->table_name,"cp_zjingjiren_admin_group","cp_user",$tuijianren);$/;"	v
 sql	library/dao/adminGroupDao.php	/^        $sql = sprintf("select * from %s where grade= %s",$this->table_name,$user);$/;"	v
 sql	library/dao/adminLogDao.php	/^            $sql = sprintf("delete from %s order by id asc limit 1",$this->table_name);$/;"	v
@@ -1991,6 +2218,15 @@ sql	library/dao/adminLogDao.php	/^        $sql = sprintf("select count(*) as num
 sql	library/dao/adminLogDao.php	/^        $sql=sprintf("select * from %s a left join cp_admin as b on a.uid=b.id order by a.id desc limit %s",$this->table_name,$limit);$/;"	v
 sql	library/dao/companyDao.php	/^        $sql=sprintf("select * from %s  order by id desc",$this->table_name);$/;"	v
 sql	library/dao/companyDao.php	/^        $sql=sprintf("select * from %s where id=%s ",$this->table_name,$id);$/;"	v
+sql	library/dao/customerDao.php	/^		$sql = sprintf("SELECT * FROM %s %s",$this->tableName,$where);$/;"	v
+sql	library/dao/customerDao.php	/^		$sql = sprintf("SELECT * FROM %s where 1=1 $where limit $page,$offset",$this->tableName);$/;"	v
+sql	library/dao/customerDao.php	/^		$sql = sprintf("SELECT count(*) AS count FROM %s where 1=1 $where",$this->tableName);$/;"	v
+sql	library/dao/customerDao.php	/^	     $sql=sprintf("SELECT a.`user` as sales_login_name,a.department_id as department_id, b.`name`as bumenname,c.department_name from cp_zjingjiren_admin as a LEFT JOIN cp_zjingjiren_admin_group as b ON a.gid=b.id LEFT JOIN zx_department as c ON c.department_id=a.department_id where a.id=%s",$uid);$/;"	v
+sql	library/dao/customerDao.php	/^	    $sql=sprintf("SELECT a.`username` as baihedailoginname,b.UsrName from cp_user as a LEFT join  cp_user_huifu as b ON b.uid=a.id where a.id=%s",$uid);$/;"	v
+sql	library/dao/customerDao.php	/^	    $sql=sprintf("SELECT id from cp_deal_order WHERE id=%s and `status`=2",$uid);$/;"	v
+sql	library/dao/customerDao.php	/^	    $sql=sprintf("select a.`id` as investor_id,a.`username` as investor_login_name,c.`UsrName` as investor_real_name,b.`phone` as investor_cellphone,a.`create_time`,d.`friends` from cp_user as a LEFT JOIN cp_user_info as b ON b.uid=a.id LEFT JOIN cp_user_huifu as c ON c.uid=a.id LEFT JOIN cp_user_yaoqingma_list as d ON d.uid=a.id where a.id=%s",$uid);$/;"	v
+sql	library/dao/dealRecordDao.php	/^        $sql=sprintf("select * from %s where status=2 and uid='%s' % ",$this->table_name,$uid,$where);$/;"	v
+sql	library/dao/departmentDao.php	/^		$sql = sprintf("SELECT * FROM %s WHERE department_id=%s",$this->tableName,$pid);$/;"	v
 sql	library/dao/departmentDao.php	/^		$sql = sprintf("SELECT * FROM %s",$this->tableName);$/;"	v
 sql	library/dao/departmentDao.php	/^		$sql = sprintf("SELECT `department_id` FROM %s WHERE department_id=%s",$this->tableName,$pid);$/;"	v
 sql	library/dao/departmentDao.php	/^		$sql = sprintf("SELECT `department_id` FROM %s WHERE p_dpt_id=%s",$this->tableName,$id);$/;"	v
@@ -2000,8 +2236,17 @@ sql	library/dao/departmentDao.php	/^        $sql = sprintf("SELECT * FROM %s WHE
 sql	library/dao/departmentDao.php	/^        $sql = sprintf("SELECT * FROM %s",$this->tableName);$/;"	v
 sql	library/dao/gerenyongjinDao.php	/^        $sql=sprintf("select a.UsrName as TuiJianName,e.username as TouZiRen,d.uid,e.id as delal_order_id ,e.deal_number,e.order_money,e.`status`,e.create_time,f.jiangli_type,f.tiexi,e.JiaXi,e.VocherAmt,f.title,f.syl from %s as a left JOIN cp_zjingjiren_admin_group as b on a.gid=b.id left JOIN cp_user as c ON c.username=a.`user` left join cp_user_yaoqingma_list as d ON d.friends=c.id left JOIN cp_deal_order as e ON e.uid=d.uid left join cp_deal as f on f.deal_id=e.deal_id WHERE a.id=%s and e.`status`=2 %s %s ",$this->table_name,$uid,$sqlwhere,$limit);$/;"	v
 sql	library/dao/gerenyongjinDao.php	/^        $sql=sprintf("select count(e.deal_number) as number from %s as a left JOIN cp_zjingjiren_admin_group as b on a.gid=b.id left JOIN cp_user as c ON c.username=a.`user` left join cp_user_yaoqingma_list as d ON d.friends=c.id left JOIN cp_deal_order as e ON e.uid=d.uid left join cp_deal as f on f.deal_id=e.deal_id WHERE a.id=%s and e.`status`=2 %s %s ",$this->table_name,$uid,$sqlwhere,$limit);$/;"	v
+sql	library/dao/myClientsDao.php	/^        $sql = "SELECT y.friends FROM cp_user u left join cp_user_yaoqingma_list y on u.id = y.uid where u.id = $uid";$/;"	v
+sql	library/dao/myClientsDao.php	/^        $sql = "select * from cp_deal_order where uid = $friendId";$/;"	v
+sql	library/dao/myClientsDao.php	/^        $sql = "select count(*) as count FROM cp_user_yaoqingma_list y left join cp_deal_order o on y.friends = o.uid left join cp_deal d on o.deal_id = d.deal_id right join cp_user_huifu h on y.friends = h.uid where o.`status`=2 and y.friends in($friendIds) $where";$/;"	v
+sql	library/dao/myClientsDao.php	/^        $sql = "select count(u.id) as count from cp_user u left join cp_user_huifu h on u.id = h.uid where  u.id in($friendIds) $where";$/;"	v
+sql	library/dao/myClientsDao.php	/^        $sql = "select h.uid,d.deal_id,h.UsrName,h.UsrMp,d.title,o.order_money,o.OrdDate,d.start_date,d.end_date,o.`status`,d.expires_type,d.expires FROM cp_user_yaoqingma_list y left join cp_deal_order o on y.friends = o.uid left join cp_deal d on o.deal_id = d.deal_id right join cp_user_huifu h on y.friends = h.uid where o.`status`=2 and y.friends in($friendIds) $where limit $page ,$length";$/;"	v
+sql	library/dao/myClientsDao.php	/^        $sql = "select u.id,u.username from cp_zjingjiren_admin a left join cp_user u on a.`user` = u.username  where a.user = '$user'";$/;"	v
+sql	library/dao/myClientsDao.php	/^        $sql = "select u.id,u.username,h.UsrName,h.UsrMp,u.login_time,h.create_time from cp_user u left join cp_user_huifu h on u.id = h.uid where  u.id in($friendIds) $where limit $page ,$length";$/;"	v
+sql	library/dao/myResultsDao.php	/^        $sql=sprintf("select * from %s as a LEFT JOIN %s as b ON b.deal_id=a.deal_id where a.uid=%s and a.status=2  %s ",$this->table_name,'cp_deal',$uid,$where);$/;"	v
+sql	library/dao/user_yaoqingma_listDao.php	/^		$sql = "SELECT $/;"	v
 sql	library/dao/user_yaoqingma_listDao.php	/^        $sql=sprintf("select * from %s a , %s b where a.uid=b.uid and a.friends='%s'",$this->table_name,'cp_deal_order',$uid);$/;"	v
-sql	library/dao/user_yaoqingma_listDao.php	/^        $sql=sprintf("select `uid` from %s where friends='%s'",$this->table_name,$uid);$/;"	v
+sql	library/dao/user_yaoqingma_listDao.php	/^        $sql=sprintf("select `uid` from %s where friends='%s' %s ",$this->table_name,$uid,$where);$/;"	v
 sql	library/dao/user_yaoqingma_listDao.php	/^        $sql=sprintf("select count(*) as num from %s where friends='%s'",$this->table_name,$uid);$/;"	v
 sqlTraceHtml	initphp/init/exception.init.php	/^				$sqlTraceHtml = '';$/;"	v
 sql_re	initphp/core/controller/filter.init.php	/^		$sql_re = array("","","","","","","","","","","","");$/;"	v
@@ -2026,8 +2271,13 @@ start	initphp/library/html.init.php	/^	public function start() {$/;"	f
 start	initphp/library/pager.init.php	/^			$start = $page - $temp;$/;"	v
 start	initphp/library/pager.init.php	/^			$start = $page_num - $this->show_num + 1;$/;"	v
 start	initphp/library/pager.init.php	/^			$start = 1;$/;"	v
+start	library/service/TeamUtilsService.php	/^            $start = $start*2;$/;"	v
+start	library/service/TeamUtilsService.php	/^        $start=($pages-1)*$limit;$/;"	v
+start	library/service/TeamUtilsService.php	/^    function cut_str($string, $sublen, $start = 0, $code = 'UTF-8'){$/;"	v
 startCount	initphp/initphp.php	/^        $startCount=($page-1)*$listRows; \/\/分页开始$/;"	v
+start_date	web/controller/myClientsController.php	/^        $start_date = $this->controller->get_gp('start_date') ? $this->controller->get_gp('start_date') : '';$/;"	v
 status	initphp/library/http.init.php	/^		$status = @stream_get_meta_data($httpFp);$/;"	v
+status	web/controller/myClientsController.php	/^        $status = $this->controller->get_gp('status') ? $this->controller->get_gp('status') : 0; \/\/null 投资用户 ，1未投资用户列表$/;"	v
 step	initphp/core/dao/cache/driver/memcached.init.php	/^	public function  increment($key, $step = 1) {$/;"	v
 step	initphp/core/dao/cache/driver/memcached.init.php	/^	public function decrement($key, $step = 1) {$/;"	v
 stopFread	initphp/library/http.init.php	/^				(strlen($httpReturn) > $freadLen) && $stopFread = true;$/;"	v
@@ -2074,6 +2324,7 @@ string_len	initphp/library/function.init.php	/^		$string_len = strlen($string);$
 string_length	initphp/library/function.init.php	/^        $string_length = strlen ( $string );$/;"	v
 strip_comment	initphp/library/email.init.php	/^	private function strip_comment($address) {$/;"	f
 strlen	initphp/initphp.php	/^            $strlen = strlen($string);$/;"	v
+strlen	library/service/TeamUtilsService.php	/^            $strlen = strlen($string);$/;"	v
 sub	data/template_c/admin/addinfo.tpl.php	/^function sub(obj){$/;"	f
 sub	data/template_c/admin/editinfo.tpl.php	/^function sub(obj){$/;"	f
 sub	data/template_c/admingroup/addinfo.tpl.php	/^function sub(obj){$/;"	f
@@ -2099,6 +2350,7 @@ sub	web/template/department/edit.htm	/^function sub(obj){$/;"	f
 subject	initphp/library/email.init.php	/^	public function sendmail($to, $from, $subject = "", $body = "", $mailtype, $cc = "", $bcc = "", $additional_headers = "") {$/;"	v
 sublen	initphp/initphp.php	/^            $sublen = $sublen*2;$/;"	v
 sublen	initphp/library/function.init.php	/^	public function insert_str($string, $sublen=10, $str="<br\/>", $code='UTF-8'){$/;"	v
+sublen	library/service/TeamUtilsService.php	/^            $sublen = $sublen*2;$/;"	v
 succeed	initphp/library/file.init.php	/^							$succeed = false;$/;"	v
 succeed	initphp/library/file.init.php	/^					$succeed = false;$/;"	v
 succeed	initphp/library/file.init.php	/^		$succeed = true;$/;"	v
@@ -2133,12 +2385,16 @@ t.putBit	static/js/jquery.qrcode.min.js	/^(a-1)+2];case 2:return p.RS_BLOCK_TABL
 tWorksheetTitle	initphp/library/excel.init.php	/^		$this->tWorksheetTitle=$title;$/;"	v
 tWorksheetTitle	initphp/library/excel.init.php	/^	private $tWorksheetTitle;$/;"	v
 table	initphp/library/hash.init.php	/^			$table = '$hash_table = ' . var_export(self::$hash_table, TRUE) . ';';$/;"	v
+tableName	library/dao/customerDao.php	/^	public $tableName = 'zx_customer_pool';$/;"	v
 tableName	library/dao/departmentDao.php	/^    public $tableName = 'zx_department';$/;"	v
+tableName	library/dao/recordDao.php	/^	public $tableName = 'zx_customer_record';$/;"	v
 table_name	library/dao/adminDao.php	/^    public $table_name = 'cp_zjingjiren_admin';$/;"	v
 table_name	library/dao/adminGroupDao.php	/^    public $table_name = 'cp_zjingjiren_admin_group';$/;"	v
 table_name	library/dao/adminLogDao.php	/^    public $table_name = 'cp_admin_log';$/;"	v
 table_name	library/dao/companyDao.php	/^    public $table_name = 'cp_zcompany';$/;"	v
+table_name	library/dao/dealRecordDao.php	/^    public $table_name = 'cp_deal_record';$/;"	v
 table_name	library/dao/gerenyongjinDao.php	/^    public $table_name = 'cp_zjingjiren_admin';$/;"	v
+table_name	library/dao/myResultsDao.php	/^    public $table_name = 'cp_deal_order';$/;"	v
 table_name	library/dao/user_yaoqingma_listDao.php	/^    private $table_name = 'cp_user_yaoqingma_list';$/;"	v
 tag	initphp/core/dao/nosql/nosql.init.php	/^		$tag = $class . "_" . $server;$/;"	v
 tag	initphp/initphp.php	/^		$tag = "INITPHP_OUT_PATH:";$/;"	v
@@ -2195,6 +2451,7 @@ template_type	initphp/core/view/view.init.php	/^			$this->template_type = $confi
 template_type	initphp/core/view/view.init.php	/^	private $template_type      = 'htm'; \/\/模板文件类型$/;"	v
 tenderCompletedDate	initphp/library/function.init.php	/^                $tenderCompletedDate = $dt;$/;"	v
 test	initphp/core/util/unittesting.init.php	/^	public function test($function) {$/;"	f
+testController	web/controller/testController.php	/^class testController extends baseController{$/;"	c
 test_file_name	initphp/core/util/unittesting.init.php	/^			$test_file_name = $this->classname . $InitPHP_conf['unittesting']['test_postfix'];$/;"	v
 test_file_name	initphp/core/util/unittesting.init.php	/^		$test_file_name = $this->classname . $InitPHP_conf['service']['service_postfix'];$/;"	v
 test_file_path	initphp/core/util/unittesting.init.php	/^			$test_file_path = $InitPHP_conf['unittesting']['path'] . $test_file_name . '.php';$/;"	v
@@ -2233,6 +2490,8 @@ time	initphp/core/dao/cache/driver/xcache.init.php	/^	public function set_cache(
 time	initphp/initphp.php	/^	public static $time;$/;"	v
 time	initphp/library/date.init.php	/^		$time = $this->get_time() + $day_num;$/;"	v
 time	initphp/library/zip.init.php	/^	private function addFile($data, $name, $time = 0) {$/;"	v
+time1	library/service/myResultsService.php	/^        $time1 = strtotime($year_monthly); \/\/自动为00:00:00 时分秒$/;"	v
+time2	library/service/myResultsService.php	/^        $time2 = strtotime(date("Y-m"));$/;"	v
 timeOut	initphp/core/dao/nosql/driver/redis.init.php	/^	public function set($key, $value, $timeOut = 0) {$/;"	v
 time_out	initphp/library/email.init.php	/^		$this->time_out = 30; \/\/is used in fsockopen()$/;"	v
 time_out	initphp/library/email.init.php	/^	var $time_out;$/;"	v
@@ -2246,10 +2505,22 @@ tmp	initphp/initphp.php	/^			$tmp = $tmp[$item];$/;"	v
 tmp	initphp/initphp.php	/^		$tmp = $InitPHP_conf;$/;"	v
 tmp	initphp/library/function.init.php	/^            $tmp = $box [$a];$/;"	v
 tmp	initphp/library/function.init.php	/^            $tmp = $box [$i];$/;"	v
+tmp	library/service/TeamUtilsService.php	/^        $tmp = array();$/;"	v
+tmpArray	web/controller/customerController.php	/^			$tmpArray = array();$/;"	v
 tmpName	library/service/departmentService.php	/^            $tmpName = sprintf("%s%s", str_repeat('——', $deep), $v['department_name']);$/;"	v
+tmpName	web/controller/adminController.php	/^            $tmpName = sprintf("%s%s", str_repeat('——', $deep), $v['department_name']);$/;"	v
 tmpName	web/controller/departmentController.php	/^        	$tmpName = sprintf("%s%s", str_repeat('——', $deep), $v['department_name']);$/;"	v
+tmparr	library/service/TeamUtilsService.php	/^        $tmparr = array();$/;"	v
+tmparr	library/service/myResultsService.php	/^            $tmparr=array_merge($tmparr,$arr);$/;"	v
+tmparr	library/service/myResultsService.php	/^            $tmparr=array_merge($tmparr,$yaoqingUserOrderList);$/;"	v
+tmparr	library/service/myResultsService.php	/^        $tmparr = array('zonger'=>null,'nianhuan'=>null);$/;"	v
+tmparr	library/service/myResultsService.php	/^        $tmparr = array();$/;"	v
+tmparray	library/dao/customerDao.php	/^	            $tmparray=array_merge($tmparray,array($arr));$/;"	v
+tmparray	library/dao/customerDao.php	/^	    $tmparray = array();$/;"	v
+tmparray	library/service/TeamUtilsService.php	/^        $tmparray = array();$/;"	v
 tmpname	initphp/core/controller/filter.init.php	/^		$tmpname = strtolower($fileName);$/;"	v
 tmpstr	initphp/initphp.php	/^            $tmpstr = '';$/;"	v
+tmpstr	library/service/TeamUtilsService.php	/^            $tmpstr = '';$/;"	v
 tn	initphp/library/function.init.php	/^					$tn = 1; $n++; $noc++;$/;"	v
 tn	initphp/library/function.init.php	/^					$tn = 2; $n += 2; $noc += 2;$/;"	v
 tn	initphp/library/function.init.php	/^					$tn = 3; $n += 3; $noc += 2;$/;"	v
@@ -2258,7 +2529,6 @@ tn	initphp/library/function.init.php	/^					$tn = 5; $n += 5; $noc += 2;$/;"	v
 tn	initphp/library/function.init.php	/^					$tn = 6; $n += 6; $noc += 2;$/;"	v
 to	initphp/library/ip.init.php	/^        $to       =  strtoupper($to)=='UTF8'? 'utf-8':$to;$/;"	v
 to	initphp/library/sms.init.php	/^		$to = strtoupper( $to ) == "UTF8" ? "utf-8" : $to;$/;"	v
-toTrees	web/controller/departmentController.php	/^		$toTrees = $this->_generateTree2($lists);$/;"	v
 token	initphp/library/function.init.php	/^	public function token($type = 'encode') {$/;"	f
 token	web/controller/adminController.php	/^		$token = $this->controller->check_token(); $/;"	v
 token	web/controller/agentController.php	/^        $token = $this->controller->check_token();$/;"	v
@@ -2268,6 +2538,9 @@ top	static/js/ZeroClipboard.js	/^			top: 0, $/;"	p
 total	initphp/library/pinyin.init.php	/^				$total =sizeof($this->pinyinArr) - 1;$/;"	v
 totalip	initphp/library/ip.init.php	/^            $this->totalip = ($this->lastip - $this->firstip) \/ 7;$/;"	v
 totalip	initphp/library/ip.init.php	/^    private $totalip;$/;"	v
+touzijine	library/service/TeamUtilsService.php	/^        $touzijine              = 0;  \/\/投资金额合计$/;"	v
+touzirenshuliang	library/service/TeamUtilsService.php	/^    private $touzirenshuliang;     \/\/投资人数量$/;"	v
+touzizongedu	library/service/TeamUtilsService.php	/^    private $touzizongedu;         \/\/投资总额度$/;"	v
 trace	initphp/init/exception.init.php	/^			$trace = $e->getTrace();$/;"	v
 trace	initphp/init/exception.init.php	/^		$trace = $e->getTrace();$/;"	v
 traceMessageHtml	initphp/init/exception.init.php	/^			$traceMessageHtml = null;$/;"	v
@@ -2279,12 +2552,11 @@ transaction_start	initphp/core/dao/db/db.init.php	/^	public function transaction
 tree	a.php	/^    $tree = array();$/;"	v
 tree	a.php	/^$tree = generateTree($items);$/;"	v
 tree	library/service/departmentService.php	/^        $tree = array();$/;"	v
-tree	web/controller/departmentController.php	/^		$tree = $this->_generateTree2($items);$/;"	v
-tree	web/controller/departmentController.php	/^		$tree = $this->departmentService->getDepartmentTree();$/;"	v
 tree	web/controller/departmentController.php	/^    	$tree = array();$/;"	v
+tree2	web/controller/adminController.php	/^        $tree2 = $this->_generateTree2($list2);$/;"	v
 tree2	web/controller/departmentController.php	/^		$tree2 = $this->_generateTree2($list2);$/;"	v
+tree2	web/controller/departmentController.php	/^        $tree2 	= $this->_generateTree2($list2);$/;"	v
 tree2	web/controller/departmentController.php	/^        $tree2 = $this->_generateTree2($list2);$/;"	v
-treeData	web/controller/departmentController.php	/^		$treeData = $this->_getTreeData($tree);$/;"	v
 treeInit	initphp/library/tree.init.php	/^class treeInit $/;"	c
 trim	initphp/library/function.init.php	/^	public function array_remove_empty(&$arr, $trim = true) {$/;"	v
 tuijianjingjiren_list	library/dao/adminDao.php	/^    public function tuijianjingjiren_list($tuijianren)$/;"	f
@@ -2319,9 +2591,18 @@ type	initphp/library/image.init.php	/^            $type = strtolower($info['type
 tz	initphp/library/function.init.php	/^        $tz = new DateTimeZone('Asia\/Shanghai');$/;"	v
 u	initphp/library/ip.init.php	/^                $u = $i - 1;            \/\/ 将搜索的上边界修改为中间记录减一$/;"	v
 u	initphp/library/ip.init.php	/^        $u = $this->totalip;            \/\/ 搜索的上边界$/;"	v
+uDepartment	web/controller/customerController.php	/^        $uDepartment	= $this->controller->get_gp('user_department');$/;"	v
+uName	web/controller/customerController.php	/^		$uName 			= $this->controller->get_gp('user_name');$/;"	v
+uRole	web/controller/customerController.php	/^        $uRole 		 	= $this->controller->get_gp('user_role');$/;"	v
+uid	library/dao/customerDao.php	/^		$uid = 3;$/;"	v
+uid	library/dao/customerDao.php	/^	    $uid 			= intval($id['id']);$/;"	v
+uid	library/service/myResultsService.php	/^            $uid = intval($val['uid']);\/\/邀请的用户uid$/;"	v
+uid	library/service/myResultsService.php	/^        $uid = $adminService->GetToZiXiTongUserId($userinfo['id']);\/\/获取当前登录的用户uid$/;"	v
+uname	web/controller/myClientsController.php	/^        $uname = urldecode($this->controller->get_gp('uname')) ? urldecode($this->controller->get_gp('uname')) : '';    \/\/获取用户名$/;"	v
 unc_len	initphp/library/zip.init.php	/^		$unc_len = strlen($data);$/;"	v
 unittestingInit	initphp/core/util/unittesting.init.php	/^class unittestingInit {$/;"	c
 unix2DosTime	initphp/library/zip.init.php	/^	private function unix2DosTime($unixtime = 0) {$/;"	f
+unmae	web/controller/adminController.php	/^        $unmae = $this->controller->get_gp('uname') ? $this->controller->get_gp('uname') : '';\/\/获取用户姓名$/;"	v
 update	initphp/core/dao/db/db.init.php	/^	public function update($id, $data, $table_name, $id_key = 'id') {$/;"	f
 update	initphp/core/dao/nosql/driver/mongo.init.php	/^	public function update($query, $data, $option = array()) {$/;"	f
 updateDepartmentInfo	library/dao/departmentDao.php	/^    public function updateDepartmentInfo($id,$data){$/;"	f
@@ -2338,6 +2619,15 @@ url	initphp/library/pager.init.php	/^		$url      = (strpos($url, '?') === false)
 url	initphp/library/sms.init.php	/^		$url = 'http:\/\/sdk999ws.eucp.b2m.cn:8080\/sdkproxy\/'.$t.'.action?cdkey='.$this->cdkey.'&password='.$this->password.$d;$/;"	v
 url	library/service/adminService.php	/^				$url = "http:\/\/api.baihedai.com.cn\/zhiXiaoXiTong\/register\/?t=".json_encode($data);$/;"	v
 url	library/service/agentService.php	/^		$url = "http:\/\/api.baihedai.com.cn\/yeWuXiTong\/register\/?t=".json_encode($data);$/;"	v
+url	library/service/myClientsService.php	/^            $url=$url.'\/end_date\/'.$end_date;$/;"	v
+url	library/service/myClientsService.php	/^            $url=$url.'\/phone\/'.$phone;$/;"	v
+url	library/service/myClientsService.php	/^            $url=$url.'\/start_date\/'.$start_date;$/;"	v
+url	library/service/myClientsService.php	/^            $url=$url.'\/uname\/'.$uname;$/;"	v
+url	library/service/myClientsService.php	/^        $url = 'myClients\/run';$/;"	v
+url	web/controller/customerController.php	/^			$url 	= $url . '\/user_department\/' . $uDepartment;$/;"	v
+url	web/controller/customerController.php	/^			$url 	= $url . '\/user_role\/' . $uRole;$/;"	v
+url	web/controller/customerController.php	/^		$url = '\/customer\/run';$/;"	v
+url	web/controller/customerController.php	/^            $url 	= $url . '\/user_name\/' . $uName;$/;"	v
 urlArr	initphp/init/dispatcher.init.php	/^    	$urlArr = parse_url($InitPHP_conf['url']);$/;"	v
 use_memory	initphp/core/util/debug.init.php	/^	public function use_memory($name) {$/;"	f
 use_time	initphp/core/util/debug.init.php	/^	public function use_time($name, $decimal = 6) {$/;"	f
@@ -2355,12 +2645,19 @@ user	library/service/authService.php	/^	    $user=$this->adminService->current_u
 user	library/service/authService.php	/^        $user=$this->adminService->current_user();$/;"	v
 user	web/controller/admingroupController.php	/^        $user = $this->adminService->current_user();$/;"	v
 user	web/controller/loginController.php	/^        $user = $this->controller->get_gp('user');$/;"	v
+user	web/controller/myClientsController.php	/^        $user=$this->adminService->current_user();$/;"	v
 userHuifu	library/service/adminService.php	/^			$userHuifu = $this->adminDao->getUsrNameAndIdNo($data['IdNo']);$/;"	v
+userInfo	web/controller/customerController.php	/^		$userInfo       = $adminService->current_user();$/;"	v
 user_group	library/service/adminService.php	/^        $user_group= $this->adminGroupDao->adminGroupInfo($user['gid']);$/;"	v
 user_group	web/controller/adminController.php	/^        $user_group = $this->adminGroupService->adminList();$/;"	v
 user_yaoqingma_listDao	library/dao/user_yaoqingma_listDao.php	/^class user_yaoqingma_listDao extends Dao$/;"	c
+userid	web/controller/myClientsController.php	/^        $userid = $this->myClientsService->getUserId($user['user']); \/\/根据登陆，获取用户id$/;"	v
 userinfo	web/controller/companyController.php	/^        $userinfo = $this->adminService->current_user();$/;"	v
 userinfo	web/controller/indexController.php	/^        $userinfo = $this->adminService->current_user();$/;"	v
+userinfo	web/controller/myResultsController.php	/^        $userinfo = $adminService->current_user();$/;"	v
+userinfo	web/controller/testController.php	/^       $userinfo = $adminService->current_user();$/;"	v
+userlist	library/service/myResultsService.php	/^        $userlist = $myResultsDao->getUserOrderList($uid,$where);$/;"	v
+useryaoqingmalistDao	library/service/myResultsService.php	/^        $useryaoqingmalistDao = InitPHP::getDao("user_yaoqingma_list");$/;"	v
 utf8	initphp/library/pinyin.init.php	/^	public function pinyin($string, $utf8 = true) {$/;"	v
 v	initphp/core/controller/controller.init.php	/^	public $v; \/\/视图模型对象$/;"	v
 v	initphp/library/sms.init.php	/^			foreach($data as $v => $k)$/;"	v
@@ -2410,6 +2707,14 @@ weekArr	initphp/library/date.init.php	/^		$weekArr = array("星期天", "星期�
 where	initphp/core/dao/db/db.init.php	/^			$where = $this->build_where(array($id_key=>$ids));$/;"	v
 where	initphp/core/dao/db/db.init.php	/^		$where = $this->build_where($field);$/;"	v
 where	initphp/core/dao/db/db.init.php	/^		$where = $this->build_where(array($id_key=>$id));$/;"	v
+where	library/service/adminService.php	/^        $where = ' ';$/;"	v
+where	library/service/myClientsService.php	/^        $where = ' ';$/;"	v
+where	library/service/myResultsService.php	/^        $where = ' and a.refund_time>='.strtotime($val['start']).' and a.refund_time<='.strtotime($val['end']);$/;"	v
+where	library/service/myResultsService.php	/^        $where=null;        \/\/临时使用后期删掉$/;"	v
+where	library/service/myResultsService.php	/^        $where=null;$/;"	v
+where	library/service/myResultsService.php	/^        $where=null;\/\/临时赋值后面删除$/;"	v
+where	web/controller/adminController.php	/^        $where = $this->adminService->getWhere($part_id,$department_id,$unmae,$phone);$/;"	v
+where	web/controller/customerController.php	/^		$where = '';$/;"	v
 white	initphp/library/code.init.php	/^		$white = imagecolorallocate($im, 255,255,255); $/;"	v
 whiteList	initphp/init/run.init.php	/^		$whiteList = $methodList = array();$/;"	v
 width	initphp/library/captcha.init.php	/^                $this->width = $config['width'];$/;"	v
@@ -2431,10 +2736,33 @@ xml	initphp/core/util/error.init.php	/^			$xml = '<?xml version="1.0" encoding="
 yClick	static/js/datetime.js	/^	function yClick(e){$/;"	f
 yL	static/js/datetime.js	/^	function yL(){$/;"	f
 yR	static/js/datetime.js	/^	function yR(){$/;"	f
+yaoqingDao	library/dao/customerDao.php	/^		$yaoqingDao = InitPHP::getDao('user_yaoqingma_listDao');$/;"	v
+yaoqingDao	library/dao/customerDao.php	/^	    $yaoqingDao 	= InitPHP::getDao('user_yaoqingma_list');$/;"	v
+yaoqingUserOrderList	library/service/myResultsService.php	/^            $yaoqingUserOrderList = $myResultsDao->getUserOrderList($uid,$where);$/;"	v
+yaoqingUserOrderList	library/service/myResultsService.php	/^        $yaoqingUserOrderList = $this->getYaoQingUserOrderList($yaoqingUserUidlist,$val);$/;"	v
+yaoqingUserReceivabe	library/service/myResultsService.php	/^        $yaoqingUserReceivabe = $this->ReceivableOrderMoney($yaoqingUserReceivabeOrderList);$/;"	v
+yaoqingUserReceivabeOrderList	library/service/myResultsService.php	/^        $yaoqingUserReceivabeOrderList =  $this->getUserReceivableOrderList($yaoqingUserUidlist,$val);$/;"	v
+yaoqingUserUidlist	library/service/myResultsService.php	/^        $yaoqingUserUidlist = $this->getYaoQingRenList($uid,$val);$/;"	v
+yaoqinglistUid	library/service/myResultsService.php	/^        $yaoqinglistUid = $useryaoqingmalistDao->getUidlist($uid,$yaoqingwhere);$/;"	v
+yaoqingrenNumber	library/service/myResultsService.php	/^        $yaoqingrenNumber = 0;$/;"	v
+yaoqingrenNumber	library/service/myResultsService.php	/^        $yaoqingrenNumber = count($yaoqingUserUidlist);$/;"	v
+yaoqingwhere	library/service/myResultsService.php	/^        $yaoqingwhere = ' and add_date>='.strtotime($val['start']).' and add_date<='.strtotime($val['end']);$/;"	v
+yaoqingwhere	library/service/myResultsService.php	/^        $yaoqingwhere=null;\/\/这里测试先写死后面删掉就好了$/;"	v
 year	initphp/library/date.init.php	/^		$this->year = ($year <= 2100 && $year >= 1970) ? $year : date('Y');$/;"	v
 year	initphp/library/date.init.php	/^		$year = (int) $year;$/;"	v
+year_monthly	library/service/myResultsService.php	/^        $year_monthly = date("Y-m",$userinfo['regtime']);\/\/得到用户注册时间$/;"	v
+yesInvest	library/service/myClientsService.php	/^                    $yesInvest = $yesInvest.",".$val['friends'];$/;"	v
+yesInvest	library/service/myClientsService.php	/^                $yesInvest = substr($yesInvest,1);$/;"	v
+yesInvest	library/service/myClientsService.php	/^        $yesInvest = '';$/;"	v
+yongJinJiSuan	library/service/TeamUtilsService.php	/^    public function yongJinJiSuan($data){$/;"	f
+yongjin	library/service/TeamUtilsService.php	/^        $yongjin                = 0;  \/\/佣金合计$/;"	v
+yuefenarr	library/service/myResultsService.php	/^        $yuefenarr = $this->returnnianfen($userinfo);$/;"	v
 zdata	initphp/library/zip.init.php	/^		$zdata = gzcompress($data);$/;"	v
 zdata	initphp/library/zip.init.php	/^		$zdata = substr(substr($zdata, 0, strlen($zdata) - 4), 2); \/\/ fix crc bug$/;"	v
 zip	initphp/library/zip.init.php	/^	public function zip($zipfilename, $dir = ".\/") {$/;"	f
 zipInit	initphp/library/zip.init.php	/^class zipInit {$/;"	c
+zjiaoyieheji	library/service/TeamUtilsService.php	/^        $zjiaoyieheji           = 0;  \/\/总交易额合计$/;"	v
+znianhuajiaoyieheji	library/service/TeamUtilsService.php	/^        $znianhuajiaoyieheji    = 0;  \/\/年化交易额合计$/;"	v
+zonge	library/service/myResultsService.php	/^        $zonge = ($Userarr['zonger']+$YaoQingUserarr['zonger']);$/;"	v
 zongjiansearch	static/js/comm.js	/^function zongjiansearch(p){$/;"	c
+ztuijianjingtie	library/service/TeamUtilsService.php	/^        $ztuijianjingtie        = 0;  \/\/推荐津贴合计$/;"	v

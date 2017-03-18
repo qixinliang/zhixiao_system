@@ -1,4 +1,4 @@
-<?php  if (!defined("IS_INITPHP")) exit("Access Denied!");  /* INITPHP Version 1.0 ,Create on 2017-03-14 12:33:17, compiled from ./web/template/admin/run.htm */ ?>
+<?php  if (!defined("IS_INITPHP")) exit("Access Denied!");  /* INITPHP Version 1.0 ,Create on 2017-03-18 19:44:12, compiled from ./web/template/admin/run.htm */ ?>
 <!DOCTYPE html>
 <html lang="zh-cn">
 <head>
@@ -18,27 +18,49 @@
   <div class="padding border-bottom">  
   <a class="button border-yellow" href="/admin/add"><span class="icon-plus-square-o"></span> 添加用户</a>
   </div> 
+  <div class="padding border-bottom">
+      <form action="/admin/run" method="post">
+      <select style="width: 160px;height: 25px;margin-right: 30px;" name="part_id">
+          <option value="" >职务</option>
+          <?php foreach ($adminList as $k=>$v) { ?>
+          <option value="<?php echo $v['id'];?>" <?php if ($v[id]==$part) { ?>selected="selected"<?php } ?> >&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $v['name'];?></option>
+          <?php } ?>
+      </select>
+          
+      <select style="width: 160px;height: 25px;margin-right: 30px;" name="department_id">
+          <option value=''>所属部门</option>
+            <?php echo $html;?>
+      </select>
+          <input type="text" name="uname" style="width: 160px;height: 25px;margin-right: 30px;" value="<?php echo $uname;?>" placeholder="姓名">
+      <input type="text" name="phone" style="width: 160px;height: 25px;margin-right: 30px;" value="<?php echo $phone;?>" placeholder="手机号">
+      <input type="submit" class="button border-yellow" value="搜索"> 
+      </form>
+  </div> 
   <table class="table table-hover text-center">
     <tr>
-      <th width="5%">ID</th>     
-      <th>用户帐号</th> 
-      <th>真实名字</th>   
-	  <th>职务</th>
-	  <th>状态</th>  	
-      <th width="250">操作</th>
+        <th width="5%">ID</th>     
+        <th>用户帐号</th> 
+        <th>真实名字</th>
+        <th>联系手机</th>
+        <th>所属部门</th>
+        <th>职务</th>
+        <th>状态</th>  	
+    <th width="250">操作</th>
     </tr>
    <?php foreach ($list as $key=>$vo) { ?>
 	<tr>
 		<td><?php echo $vo['id'];?></td>
 		<td><?php echo $vo['user'];?></td>
 		<td><?php echo $vo['UsrName'];?></td>
+                <td><?php echo $vo['phone'];?></td>
+                <td><?php echo $vo['department_name'];?></td>
 		<td><?php echo $vo['gname'];?></td>
 		<td>
-			<?php if ($vo['status']==1) { ?>
-			启用
-			<?php } else { ?>
-			禁用
-			<?php } ?>
+                    <?php if ($vo['status']==1) { ?>
+                    启用
+                    <?php } else { ?>
+                    禁用
+                    <?php } ?>
 		</td>
       <td>
 		  <div class="button-group">

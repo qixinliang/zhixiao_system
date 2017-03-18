@@ -40,6 +40,10 @@ class customerController extends baseController{
 		$salesId		= 26;//临时调试使用
 		$pager 			= $this->getLibrary('pager');
         $page 			= $this->controller->get_gp('page') ? $this->controller->get_gp('page') : 1 ;
+		if($page < 1){
+			$page = 1;
+		}
+
 		$uName 			= $this->controller->get_gp('user_name');
         $uDepartment	= $this->controller->get_gp('user_department');
         $uRole 		 	= $this->controller->get_gp('user_role');

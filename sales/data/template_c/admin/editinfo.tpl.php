@@ -1,4 +1,4 @@
-<?php  if (!defined("IS_INITPHP")) exit("Access Denied!");  /* INITPHP Version 1.0 ,Create on 2017-03-12 01:03:00, compiled from ./web/template/admin/editinfo.htm */ ?>
+<?php  if (!defined("IS_INITPHP")) exit("Access Denied!");  /* INITPHP Version 1.0 ,Create on 2017-03-15 13:20:59, compiled from ./web/template/admin/editinfo.htm */ ?>
 <!DOCTYPE html>
 <html lang="zh-cn">
 <head>
@@ -18,22 +18,10 @@
   <div class="body-content">
 	<form id="form" class="form-x" >
 	
-		<div class="form-group">
-		  <div class="label">
-			<label>角色组：</label>
-		  </div>
-		  <div class="field">
-			<select name="gid" id="gid" class="input w50">
-				<?php foreach ($user_group as $key=>$vo) { ?>
-				<option value="<?php echo $vo['id'];?>" <?php if ($info['gid']==$vo['id']) { ?> selected="selected" <?php } ?> ><?php echo $vo['name'];?></option>
-				<?php } ?>
-			</select>
-		  </div>
-		</div>
-
-      <div class="form-group">
+	
+	<div class="form-group">
         <div class="label">
-          <label>角色账号：</label>
+          <label>用户名：</label>
         </div>
         <div class="field">
 			<?php if ($info['user']) { ?>
@@ -44,8 +32,29 @@
           <div class="tips_user" style="float: left;padding-left: 10px;color: #888;line-height: 42px;"></div>
         </div>
       </div> 
-    
-      <div class="form-group">
+      
+      
+       <div class="form-group">
+        <div class="label">
+          <label>登录密码：</label>
+        </div>
+        <div class="field">
+		  <input name="password" type="password" class="input w50" id="password"/> 
+		  <div class="tips_Password" style="float: left;padding-left: 10px;color: #888;line-height: 42px;"></div>		  
+        </div>
+      </div> 
+      
+     <div class="form-group">
+        <div class="label">
+          <label>手机号：</label>
+        </div>
+        <div class="field">
+		  <input name="phone" type="text" class="input w50" id="phone" value="<?php echo $info['phone'];?>" onblur="chekPhone()"/>       
+          <div class="tips_Phone" style="float: left;padding-left: 10px;color: #888;line-height: 42px;"></div>
+        </div>
+      </div> 
+      
+       <div class="form-group">
         <div class="label">
           <label>真实姓名：</label>
         </div>
@@ -54,6 +63,38 @@
           <div class="tips_UsrName" style="float: left;padding-left: 10px;color: #888;line-height: 42px;"></div>
         </div>
       </div> 
+      
+      
+		<div class="form-group">
+		  <div class="label">
+			<label>角色类型：</label>
+		  </div>
+		  <div class="field">
+			<select name="gid" id="gid" class="input w50">
+				<?php foreach ($user_group as $key=>$vo) { ?>
+				<option value="<?php echo $vo['id'];?>" <?php if ($info['gid']==$vo['id']) { ?> selected="selected" <?php } ?> ><?php echo $vo['name'];?></option>
+				<?php } ?>
+			</select>
+			<div class="tips_jiaose" style="float: left;padding-left: 10px;color: #888;line-height: 42px;"></div>
+		  </div>
+		</div>
+
+      
+      <div class="form-group">
+		  <div class="label">
+			<label>所属部门：</label>
+		  </div>
+		  <div class="field">
+			<select name=department_id id="department_id" class="input w50">
+                <?php echo $html;?>
+			</select>
+			<div class="tips_bumen" style="float: left;padding-left: 10px;color: #888;line-height: 42px;"></div>
+		  </div>
+		</div>
+		
+		
+    
+     
 	  
       <div class="form-group">
         <div class="label">
@@ -65,35 +106,37 @@
         </div>
       </div> 
 	  
-      <div class="form-group">
-        <div class="label">
-          <label>手机号：</label>
-        </div>
-        <div class="field">
-		  <input name="phone" type="text" class="input w50" id="phone" value="<?php echo $info['phone'];?>" onblur="chekPhone()"/>       
-          <div class="tips_Phone" style="float: left;padding-left: 10px;color: #888;line-height: 42px;"></div>
-        </div>
-      </div> 
 	  
       <div class="form-group">
         <div class="label">
-          <label>角色密码：</label>
+          <label>级别：</label>
         </div>
         <div class="field">
-		  <input name="password" type="password" class="input w50" id="password"/> 
-		  <div class="tips_Password" style="float: left;padding-left: 10px;color: #888;line-height: 42px;"></div>		  
+          <div class="button-group radio">
+			<input name="level_id" type="radio" value="0"  <?php if ($info['level_id']==0) { ?> checked="checked" <?php } ?> />实习&nbsp;&nbsp;
+			<input name="level_id" type="radio" value="1" <?php if ($info['level_id']==1) { ?> checked="checked" <?php } ?> />初级&nbsp;&nbsp;
+			<input name="level_id" type="radio" value="2" <?php if ($info['level_id']==2) { ?> checked="checked" <?php } ?> />中级&nbsp;&nbsp;
+			<input name="level_id" type="radio" value="3" <?php if ($info['level_id']==3) { ?> checked="checked" <?php } ?> />高级&nbsp;&nbsp;
+			<span class="tips" style="padding-left: 10px;color: #888;line-height: 42px;"></span>				
+           </div>  
         </div>
-      </div> 
-	  
-      <div class="form-group">
+     </div>
+     
+     
+     <div class="form-group">
         <div class="label">
-          <label>确认密码：</label>
+          <label>性别：</label>
         </div>
         <div class="field">
-		  <input name="password2" type="password" class="input w50" id="password2"/>   
-		  <div class="tips_RePassword" style="float: left;padding-left: 10px;color: #888;line-height: 42px;"></div>	
+          <div class="button-group radio">
+			<input name="gender" type="radio" value="1"  <?php if ($info['gender']==1) { ?> checked="checked" <?php } ?> />男&nbsp;&nbsp;
+			<input name="gender" type="radio" value="2" <?php if ($info['gender']==2) { ?> checked="checked" <?php } ?> />女&nbsp;&nbsp;
+			<span class="tips" style="padding-left: 10px;color: #888;line-height: 42px;"></span>				
+           </div>  
         </div>
-      </div> 
+     </div>
+	  
+     
 	  
      <div class="form-group">
         <div class="label">
@@ -163,6 +206,20 @@ function chekIdNo()
 		return false;
 	}
 }
+function chekJiaose(){
+	 var gid = $("#gid").val();
+	if(gid <0){
+		$(".tips_jiaose").html("<font color=\"red\">请选择角色类型</font>").show();
+		return false;
+	}
+}
+function chekBumen(){
+	 var department_id = $("#department_id").val();
+	if(department_id <0){
+		$(".tips_bumen").html("<font color=\"red\">请选择所属部门</font>").show();
+		return false;
+	}
+}
 
 function chekPhone()
 {
@@ -177,11 +234,15 @@ function chekPhone()
 }
 
 function sub(obj){
-
-	chekUsName();
-	chekUsrName();
-	chekIdNo();
-	chekPhone();
+	chekUsName();//用户名
+	chekPhone();//手机号码
+	chekUsrName();//真实姓名
+	chekJiaose();//角色类型
+	chekBumen();//所属部门
+	chekIdNo();//身份证号
+	
+	//
+	//
 	if(user == 1 && UsrName == 1 && IdNo == 1 && Phone == 1)
 	{
 		$.ajax({
