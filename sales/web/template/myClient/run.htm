@@ -15,22 +15,23 @@
 <div class="panel admin-panel">
   <div class="panel-head"><strong class="icon-reorder"> 用户列表</strong></div>
   <div class="padding border-bottom">  
-      <a class="button border-yellow" href="/myClients/run/"> 已投资客户</a>
-      <a class="button border-yellow" href="/myClients/run/"> 未投资客户 </a>
+      <a class="button border-yellow" href="/myClients/run/" <!--{if($status!='1')}--> style="color:#fff;border-color:#f90;background-color:#f90"<!--{/if}-->> 已投资客户</a>
+      <a class="button border-yellow" href="/myClients/run/status/1"<!--{if($status=='1')}--> style="color:#fff;border-color:#f90;background-color:#f90"<!--{/if}-->> 未投资客户 </a>
   </div>
   <div class="padding border-bottom">
-      <form action="/myclients/run" method="post">
+      <form action="/myclients/run<!--{if($status=='1')}-->/status/1<!--{/if}-->" method="post">
         投资人 ： <input type="text" name="uname" style="width: 160px;height: 25px;margin-right: 30px;" value="<!--{$uname}-->" placeholder="姓名">
         手机号 ： <input type="text" name="phone" style="width: 160px;height: 25px;margin-right: 30px;" value="<!--{$phone}-->" placeholder="手机号">
-        到期日 ： <input type="text" name="start_date" style="width: 130px;height: 25px;margin-right: 30px;" value="<!--{$start_date}-->" placeholder="1990-01-01">
-        <input type="text" name="end_date" style="width: 130px;height: 25px;margin-right: 30px;" value="<!--{$end_date}-->" placeholder="1990-01-01">
-        <input type="hidden" name ="page" value="<!--{$page}-->">
+        到期日 ： <input type="text" name="start_date" style="width: 130px;height: 25px;margin-right: 30px;" value="<!--{$start_date}-->" placeholder="1990-01-01"<!--{if($status=='1')}-->readonly="readonly"<!--{/if}--> >
+        <input type="text" name="end_date" style="width: 130px;height: 25px;margin-right: 30px;" value="<!--{$end_date}-->" placeholder="1990-01-01" <!--{if($status=='1')}-->readonly="readonly"<!--{/if}-->>
       <input type="submit" class="button border-yellow" value="搜索"> 
       </form>
+      <div style="padding-top:20px;">共有<sapn style="color: red;"><!--{$count}--></sapn>个<!--{if($status=='1')}-->未<!--{/if}-->投资客户</div>
   </div> 
   <table class="table table-hover text-center">
+      <!--{if($status=='0')}-->
     <tr>
-        <th width="5%">ID</th>     
+        <th width="5%">会员ID</th>     
         <th>投资人姓名</th> 
         <th>手机号</th>
         <th>投资项目名称</th>
@@ -42,10 +43,9 @@
         <th>邀请人</th>
         <th>赚取佣金</th>
     </tr>
-	
         <!--{foreach($friends as $k=>$v)}-->
         <tr>
-            <td><!--{$v['deal_id']}--></td>
+            <td><!--{$v['uid']}--></td>
             <td><!--{$v['UsrName']}--></td>
             <td><!--{$v['UsrMp']}--></td>
             <td><!--{$v['title']}--></td>
@@ -68,7 +68,26 @@
             <td><!--{$v['nhsyl']}--></td>
         </tr>
         <!--{/foreach}-->
-	
+        <!--{else}-->
+        <tr>
+        <th width="5%">会员ID</th>     
+        <th>用户名</th> 
+        <th>姓名</th>
+        <th>手机</th>
+        <th>注册日期(元)</th>
+        <th>是否开通存管</th>
+    </tr>
+        <!--{foreach($friends as $k=>$v)}-->
+        <tr>
+            <td><!--{$v['id']}--></td>
+            <td><!--{$v['username']}--></td>
+            <td><!--{$v['UsrName']}--></td>
+            <td><!--{$v['UsrMp']}--></td>
+            <td><!--{$v['login_time']}--></td>
+            <td><?php echo date('Y-m-d',$v['create_time']);?></td>
+        </tr>
+        <!--{/foreach}-->
+	<!--{/if}-->
   </table>
 </div>
     <div class="padding border-bottom">  
@@ -82,13 +101,13 @@ function pages(){
                 dataType:'json',
                 data: {id: id},
                 success: function(msg) {
-                        if(msg.status == 9){
-                                alert("内置用户无法删除");
-                        }else if(msg.status == 11){
-                                alert("越权操作");
-                        }else{
-                                $(obj).parent().parent().parent().remove();
-                        }
+                    if(msg.status == 9){
+                            alert("内置用户无法删除");
+                    }else if(msg.status == 11){
+                            alert("越权操作");
+                    }else{
+                            $(obj).parent().parent().parent().remove();
+                    }
                 }
         });
 }

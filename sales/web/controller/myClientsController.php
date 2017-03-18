@@ -44,14 +44,17 @@ class myClientsController extends baseController
         if($friendIds==''){
             exit("还没有未投资用户！");
         }
-        
         //根据检索条件，拼接where条件，和url链接地址
         $arrange_where_url = $this->myClientsService->arrange_where_url($uname,$phone,$start_date,$end_date);
-        
-        $page = ($page-1)*10 ? ($page-1)*10 : 0;
-        $friends = $this->myClientsService->getFriends($friendIds,$page,10,$arrange_where_url['where']);//查询所有数据
-        $friendsCount = $this->myClientsService->getFriendsCount($friendIds,$arrange_where_url['where']);//统计条数
 
+        $page = ($page-1)*10 ? ($page-1)*10 : 0;
+        if($status!='1'){//1查询未投资用户信息 0查询投资用户信息
+            $friends = $this->myClientsService->getInvestFriends($friendIds,$page,10,$arrange_where_url['where']);//查询所有数据
+            $friendsCount = $this->myClientsService->getInvestFriendsCount($friendIds,$arrange_where_url['where']);//统计条数
+        }else{
+            $friends = $this->myClientsService->getNoInvestFriends($friendIds,$page,10,$arrange_where_url['where']);//查询所有数据
+            $friendsCount = $this->myClientsService->getNoInvestFriendsCount($friendIds,$arrange_where_url['where']);//统计条数
+        }
         $page_html = $pager->pager($friendsCount['count'], 10, $arrange_where_url['url']); //最后一个参数为true则使用默认样式
         $friendsList = $this->TeamUtilsService->yongJinJiSuan($friends);//计算每笔订单的佣金
 
@@ -61,6 +64,7 @@ class myClientsController extends baseController
         $this->view->assign('start_date', $start_date);
         $this->view->assign('end_date', $end_date);
         $this->view->assign('status',$status);
+        $this->view->assign('count',$friendsCount['count']);//投资和未投资统计人数
         //分页
         $this->view->assign('page',$page);
         $this->view->assign('page_html', $page_html);

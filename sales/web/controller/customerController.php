@@ -21,9 +21,6 @@ class customerController extends baseController{
 		$salesId        = $userInfo['id'];
 		$salesId		= 26;
 		$ret 			= $this->customerService->addCustomer($salesId);
-       	echo '<pre>';
-       	print_r($ret);
-       	echo '</pre>';
 
 		$uName 			= $this->controller->get_gp('user_name');
         $uDepartment	= $this->controller->get_gp('user_department');
@@ -45,7 +42,6 @@ class customerController extends baseController{
 			$this->view->assign('user_role',$uRole);
 		}
 		$list = $this->customerService->getCustomers($where);
-		var_dump($list);
 		$this->view->assign('list',$list);
 		$this->view->display('customer/run');
 

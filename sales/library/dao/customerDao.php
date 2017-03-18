@@ -114,7 +114,6 @@ class customerDao extends Dao{
 				$arr['update_time'] = time();
 				
 				unset($arr['friends']);
-				var_dump($arr);
 
 				//调用addSave方法写入数据库.
 				$this->addSave($arr);
