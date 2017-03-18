@@ -25,32 +25,25 @@ class adminController extends baseController
         $this->authService->checkauth("1023");
         $departmentService = InitPHP::getService("department"); //上级列表
         
-        $part_id = $this->controller->get_gp('part_id');    //获取角色id
-        $department_id = $this->controller->get_gp('department_id');//获取部门id
-        $unmae = $this->controller->get_gp('uname');//获取用户姓名
-        $phone = $this->controller->get_gp('phone');//获取用户手机
-        //查询条件判断
-        $where = ' ';
-        if($part_id){
-            $where.= ' and a.gid = '.$part_id;
-            $this->view->assign('part', $part_id);
-        }
-        if($department_id){
-            $where.= ' and a.department_id = '.$department_id;
-        }
-        if($unmae){
-            $where.= ' and UsrName = "'.$unmae.'"';
-            $this->view->assign('uname', $unmae);
-        }if($phone){
-            $where.= ' and a.phone = '.$phone;
-            $this->view->assign('phone', $phone);
-        }
+        $part_id = $this->controller->get_gp('part_id') ? $this->controller->get_gp('part_id') : '';    //获取角色id
+        $department_id = $this->controller->get_gp('department_id') ? $this->controller->get_gp('department_id') : '';//获取部门id
+        $unmae = $this->controller->get_gp('uname') ? $this->controller->get_gp('uname') : '';//获取用户姓名
+        $phone = $this->controller->get_gp('phone') ? $this->controller->get_gp('phone') : '';//获取用户手机
+        
+        //根据检索条件，拼接sql语句where条件
+        $where = $this->adminService->getWhere($part_id,$department_id,$unmae,$phone);
+
         $list = $this->adminService->admin_list($where); //查询列表数据
         $adminList = $this->adminGroupService->adminList(); //获取角色列表
         
         $list2 = $departmentService->getDepartmentList2();//获取所属部门列表
         $tree2 = $this->_generateTree2($list2);
         $html = $this->_exportTree($tree2,$department_id);
+        
+        //映射检索条件
+        $this->view->assign('part', $part_id);
+        $this->view->assign('uname', $unmae);
+        $this->view->assign('phone', $phone);
         
         $this->view->assign('html', $html);
         $this->view->assign('list', $list);
