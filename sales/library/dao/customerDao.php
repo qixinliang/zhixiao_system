@@ -12,100 +12,6 @@ class customerDao extends Dao{
 		$sql = sprintf("SELECT * FROM %s %s",$this->tableName,$where);
 		$ret = $this->dao->db->get_all_sql($sql);
 		return $ret;
-
-		$ret = array(
-			array(
-				'customer_pool_id' 			=> 1,
-				'investor_id' 				=> 20,
-				'investor_login_name' 		=> 'abcdefg',
-				'investor_real_name' 		=> 'abcdefg',
-				'investor_cellphone' 		=> '13800138000',
-				'inviter_id' 				=> '1',
-				'inviter_name' 				=> 'zhangsan',
-				'inviter_department_id' 	=> '承德一区-滦平一部',
-				'inviter_role_id' 			=>  '业务员',
-				'invest_status' 			=> 0,
-				'inviter_off_time' 			=> time(),
-				'create_time' 				=> time(),
-				'update_time' 				=> time(),
-			),
-			array(
-				'customer_pool_id' 			=> 1,
-				'investor_id' 				=> 20,
-				'investor_login_name' 		=> 'abcdefg',
-				'investor_real_name' 		=> 'abcdefg',
-				'investor_cellphone' 		=> '13800138000',
-				'inviter_id' 				=> '1',
-				'inviter_name' 				=> 'zhangsan',
-				'inviter_department_id' 	=> '承德一区-滦平一部',
-				'inviter_role_id' 			=>  '业务员',
-				'invest_status' 			=> 0,
-				'inviter_off_time' 			=> time(),
-				'create_time' 				=> time(),
-				'update_time' 				=> time(),
-			),
-			array(
-				'customer_pool_id' 			=> 1,
-				'investor_id' 				=> 20,
-				'investor_login_name' 		=> 'abcdefg',
-				'investor_real_name' 		=> 'abcdefg',
-				'investor_cellphone' 		=> '13800138000',
-				'inviter_id' 				=> '1',
-				'inviter_name' 				=> 'zhangsan',
-				'inviter_department_id' 	=> '承德一区-滦平一部',
-				'inviter_role_id' 			=>  '业务员',
-				'invest_status' 			=> 0,
-				'inviter_off_time' 			=> time(),
-				'create_time' 				=> time(),
-				'update_time' 				=> time(),
-			),
-			array(
-				'customer_pool_id' 			=> 1,
-				'investor_id' 				=> 20,
-				'investor_login_name' 		=> 'abcdefg',
-				'investor_real_name' 		=> 'abcdefg',
-				'investor_cellphone' 		=> '13800138000',
-				'inviter_id' 				=> '1',
-				'inviter_name' 				=> 'zhangsan',
-				'inviter_department_id' 	=> '承德一区-滦平一部',
-				'inviter_role_id' 			=>  '业务员',
-				'invest_status' 			=> 0,
-				'inviter_off_time' 			=> time(),
-				'create_time' 				=> time(),
-				'update_time' 				=> time(),
-			),
-			array(
-				'customer_pool_id' 			=> 1,
-				'investor_id' 				=> 20,
-				'investor_login_name' 		=> 'abcdefg',
-				'investor_real_name' 		=> 'abcdefg',
-				'investor_cellphone' 		=> '13800138000',
-				'inviter_id' 				=> '1',
-				'inviter_name' 				=> 'zhangsan',
-				'inviter_department_id' 	=> '承德一区-滦平一部',
-				'inviter_role_id' 			=>  '业务员',
-				'invest_status' 			=> 0,
-				'inviter_off_time' 			=> time(),
-				'create_time' 				=> time(),
-				'update_time' 				=> time(),
-			),
-			array(
-				'customer_pool_id' 			=> 1,
-				'investor_id' 				=> 20,
-				'investor_login_name' 		=> 'abcdefg',
-				'investor_real_name' 		=> 'abcdefg',
-				'investor_cellphone' 		=> '13800138000',
-				'inviter_id' 				=> '1',
-				'inviter_name' 				=> 'zhangsan',
-				'inviter_department_id' 	=> '承德一区-滦平一部',
-				'inviter_role_id' 			=>  '业务员',
-				'invest_status' 			=> 0,
-				'inviter_off_time' 			=> time(),
-				'create_time' 				=> time(),
-				'update_time' 				=> time(),
-			),
-		);
-		return $ret;
 	}
 	
 	public function add2($adminId){
@@ -185,18 +91,18 @@ class customerDao extends Dao{
 	    foreach ($array as $key => $val){
 	        $arr = $this->getUserinfo(intval($val['uid']));
 	        if(!empty($arr)){
-	            $xiaoshouUid = $adminDao->GetToZiXiTongAdminId(intval($arr['friends']));
-	            $xiaoshouInfo = $this->getYaoQingRenUserInfo($xiaoshouUid);
-				$arr['inviter_id'] = $xiaoshouUid;
-	            $arr['inviter_name']=$xiaoshouInfo['xiaoshouloginname'];
-	            $arr['inviter_department_id']=$xiaoshouInfo['department_id'];
+	            $salesUid = $adminDao->GetToZiXiTongAdminId(intval($arr['friends']));
+	            $salesInfo = $this->getYaoQingRenUserInfo($salesUid);
+				$arr['inviter_id'] 		= $salesUid;
+	            $arr['inviter_name']	= $salesInfo['sales_login_name'];
+	            $arr['inviter_department_id'] = $salesInfo['department_id'];
 	            $arr['inviter_role_id'] = 0;
 	            $arr['inviter_off_time'] = time();
-	            //$arr['bumenname']=$xiaoshouInfo['bumenname'];
-	            //$arr['department_name']=$xiaoshouInfo['department_name'];
-	            $xiaoshounameinfo = $this->getXiaoShouName(intval($arr['friends']));
-	            //$arr['yaoqingrenloginname']=$xiaoshounameinfo['baihedailoginname'];
-	            //$arr['YaoqingrenUsrName']=$xiaoshounameinfo['UsrName'];
+	            //$arr['bumenname'] = $salesInfo['bumenname'];
+	            //$arr['department_name'] = $salesInfo['department_name'];
+	            $salesNameInfo = $this->getXiaoShouName(intval($arr['friends']));
+	            //$arr['yaoqingrenloginname'] = $salesNameInfo['baihedailoginname'];
+	            //$arr['YaoqingrenUsrName'] = $salesNameInfo['UsrName'];
 	            $istrue = $this->IsUserWhethertoinvest(intval($arr['investor_id']));
 	            //$istrue = $this->IsUserWhethertoinvest(intval($arr['id']));
 	            if($istrue == true){
@@ -228,7 +134,7 @@ class customerDao extends Dao{
 	 * @传入当前用户UID查询出邀请的人姓名，所属部门，角色
 	 *************************************************************/
 	public function getYaoQingRenUserInfo($uid){
-	     $sql=sprintf("SELECT a.`user` as xiaoshouloginname,a.department_id as department_id, b.`name`as bumenname,c.department_name from cp_zjingjiren_admin as a LEFT JOIN cp_zjingjiren_admin_group as b ON a.gid=b.id LEFT JOIN zx_department as c ON c.department_id=a.department_id where a.id=%s",$uid);
+	     $sql=sprintf("SELECT a.`user` as sales_login_name,a.department_id as department_id, b.`name`as bumenname,c.department_name from cp_zjingjiren_admin as a LEFT JOIN cp_zjingjiren_admin_group as b ON a.gid=b.id LEFT JOIN zx_department as c ON c.department_id=a.department_id where a.id=%s",$uid);
 	     return  $this->dao->db->get_one_sql($sql);
 	}
 	/************************************************************
