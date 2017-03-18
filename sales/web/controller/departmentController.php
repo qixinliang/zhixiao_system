@@ -33,7 +33,7 @@ class departmentController extends baseController{
 	}
 
 	private function _exportTree($tree,$deep = 0){
-		static $html = '';
+		static $html = '<option value="0">请选择</option>';
     	foreach ($tree as $k => $v) {
         	$tmpName = sprintf("%s%s", str_repeat('——', $deep), $v['department_name']);
 			$html .= "<option value=$k>" . $tmpName . "</option>";
@@ -45,7 +45,7 @@ class departmentController extends baseController{
 	}
 
 	private function _exportSelectedTree($tree,$deep = 0,$pid){
-		static $html = '';
+		static $html = '<option value="0">请选择</option>';
     	foreach ($tree as $k => $v) {
         	$tmpName = sprintf("%s%s", str_repeat('——', $deep), $v['department_name']);
 			/*
