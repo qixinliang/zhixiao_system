@@ -16,4 +16,12 @@ class customerService extends Service{
 	public function getCustomers($where){
 		return $this->customerDao->getCustomers($where);
 	}
+	
+	public function getCustomers2($page,$offset,$where){
+		return $this->customerDao->getCustomers2($page,$offset,$where);
+	}
+
+	public function getCustomers2Count($where){
+		return $this->customerDao->getCustomers2Count($where);
+	}
 }

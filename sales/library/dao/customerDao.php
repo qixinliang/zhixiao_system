@@ -14,6 +14,19 @@ class customerDao extends Dao{
 		return $ret;
 	}
 	
+	public function getCustomers2($page,$offset,$where){
+		$sql = sprintf("SELECT * FROM %s where 1=1 $where limit $page,$offset",$this->tableName);
+		$ret = $this->dao->db->get_all_sql($sql);
+		return $ret;
+	}
+	public function getCustomers2Count($where)
+		//$sql = sprintf("SELECT count(*) AS count FROM %s where 1=1 $where",$this->tableName);
+		$sql = "SELECT count(*) AS count FROM $this->tableName where 1=1 $where";
+	
+		$ret = $this->dao->db->get_one_sql($sql);
+		return $ret;
+	}
+	
 	public function add2($adminId){
 		//adminDao...
 		$adminDao = InitPHP::getDao('admin');
