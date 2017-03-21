@@ -22,9 +22,38 @@ class adminController extends baseController
      */
     public function run()
     {
-		$this->authService->checkauth("1023");
-        $list = $this->adminService->admin_list();
+        $this->authService->checkauth("1023");
+        $departmentService = InitPHP::getService("department"); //上级列表
+        
+        $part_id = $this->controller->get_gp('part_id');    //获取角色id
+        $department_id = $this->controller->get_gp('department_id');//获取部门id
+        $unmae = $this->controller->get_gp('uname');//获取用户姓名
+        $phone = $this->controller->get_gp('phone');//获取用户手机
+        $where = ' ';
+        if($part_id){
+            $where.= ' and a.gid = '.$part_id;
+            $this->view->assign('part', $part_id);
+        }
+        if($department_id){
+            $where.= ' and a.department_id = '.$department_id;
+        }
+        if($unmae){
+            $where.= ' and UsrName = "'.$unmae.'"';
+            $this->view->assign('uname', $unmae);
+        }if($phone){
+            $where.= ' and a.phone = '.$phone;
+            $this->view->assign('phone', $phone);
+        }
+        $list = $this->adminService->admin_list($where); //查询列表数据
+        $adminList = $this->adminGroupService->adminList(); //获取角色列表
+        
+        $list2 = $departmentService->getDepartmentList2();//获取所属部门列表
+        $tree2 = $this->_generateTree2($list2);
+        $html = $this->_exportTree($tree2,$department_id);
+        
+        $this->view->assign('html', $html);
         $this->view->assign('list', $list);
+        $this->view->assign('adminList',$adminList);
         $this->view->display("admin/run");
     }
     /**
