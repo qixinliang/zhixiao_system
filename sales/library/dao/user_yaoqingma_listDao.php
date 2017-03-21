@@ -30,8 +30,8 @@ class user_yaoqingma_listDao extends Dao
      * @email:fuyuwen88@126.com
      * @根据邀请人id查询用户id
      *************************************************************/
-    public function getUidlist($uid){
-        $sql=sprintf("select `uid` from %s where friends='%s'",$this->table_name,$uid);
+    public function getUidlist($uid,$where=null){
+        $sql=sprintf("select `uid` from %s where friends='%s' %s ",$this->table_name,$uid,$where);
         $data = $this->dao->db->get_all_sql($sql);
         return $data;
     }
