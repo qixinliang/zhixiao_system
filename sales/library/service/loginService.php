@@ -17,7 +17,6 @@ class loginService extends Service
         {
             return false;
         }
-
         $this->adminDao = InitPHP::getDao("admin");//获取管理员信息
         return $this->adminDao->adminInfo($admin_id);
 	}

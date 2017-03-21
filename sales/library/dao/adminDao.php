@@ -14,7 +14,7 @@ class adminDao extends Dao
      */
     public function adminInfo($admin_id)
     {
-        $sql=sprintf("select a.*,b.name as gname from %s a , %s b  where a.gid=b.id and a.id=%s ",$this->table_name,'cp_zjingjiren_admin_group',$admin_id);
+        $sql=sprintf("SELECT a.*,b.name as gnname from %s as a LEFT JOIN  %s b ON a.gid=b.id where a.id=%s ",$this->table_name,'cp_zjingjiren_admin_group',$admin_id);
         return  $this->dao->db->get_one_sql($sql);
     }
 

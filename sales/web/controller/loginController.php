@@ -23,13 +23,11 @@ class loginController extends Controller
     {
         $token = $this->controller->check_token();
         if(!$token) $this->controller->redirect("/login/run");
-
         $user = $this->controller->get_gp('user');
         $password = md5($this->controller->get_gp('password'));
         $ip = $this->controller->get_ip();
         $loginService = InitPHP::getService("login");//获取Service
         $check = $loginService->check($user,$password,$ip);
-
         if(!$check)
         {
             exit(json_encode(array('status' => 0, 'message' => '帐号信息输入错误!')));
