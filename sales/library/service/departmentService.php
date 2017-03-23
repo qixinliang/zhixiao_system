@@ -119,25 +119,17 @@ class departmentService extends Service{
         return $html;
     }
 
-    public function exportSelectedTree($tree,$deep = 0,$pid){
+    public function exportSelectedTree($tree,$pid,$deep = 0){
         static $html = '<option value="0">请选择</option>';
         foreach ($tree as $k => $v) {
             $tmpName = sprintf("%s%s", str_repeat('——', $deep), $v['department_name']);
-            /*
             if($v['department_id'] == $pid){
                 $html .= "<option value=$k selected=\"selected\">" . $tmpName . "</option>";
             }else{
                 $html .= "<option value=$k>" . $tmpName . "</option>";
-            }*/
-            $html .= '<option value='.$k;
-            if($v['department_id'] == $pid){
-                $html.=' selected="selected" ';
             }
-            $html .= '>';
-            $html .= $tmpName . '</option>';
-            
             if (isset($v['son']) && !empty($v['son'])) {
-                $this->exportSelectedTree($v['son'], $deep + 1,$pid);
+                $this->exportSelectedTree($v['son'],$pid,$deep + 1);
             }
         }
         return $html;

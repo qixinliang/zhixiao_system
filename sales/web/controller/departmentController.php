@@ -35,7 +35,7 @@ class departmentController extends baseController{
 		//生成目录树的下拉框展示。
         $list2 = $this->departmentService->getDepartmentList2();
         $tree2 = $this->departmentService->generateTree2($list2);
-        $html = $this->departmentService->exportTree($tree2);
+        $html  = $this->departmentService->exportTree($tree2);
 
         $this->view->assign('html', $html);
 		$this->view->assign('action_name','添加');
@@ -73,7 +73,7 @@ class departmentController extends baseController{
             exit(json_encode(array('status' => 0, 'message' => '未发现此条数据！')));
 		}
 		//获取出上级部门ID
-		$pNode = $this->departmentService->getParentNodeById($departmentId);
+		$pNode  = $this->departmentService->getParentNodeById($departmentId);
 		if(!isset($pNode) || empty($pNode)){
             exit(json_encode(array('status' => 0, 'message' => '未发现上级节点！')));
 		}
@@ -83,11 +83,9 @@ class departmentController extends baseController{
         $html 	= $this->departmentService->exportSelectedTree($tree2,$id);
 
         $this->view->assign('html', $html);
-		
 		$this->view->assign('data',$data);
 		$this->view->assign('action','editSave');
 		$this->view->display("department/edit");
-
 	}
 	
 	public function editSave(){
