@@ -54,8 +54,11 @@ class departmentService extends Service{
         return  $this->_departmentDao->del($id);
     }
 
-	//树相关...
+	public function addNodes($pid,$name){
+		return $this->_departmentDao->addNodes($pid,$name);
+	}
 
+	//树相关...
 	public function generateTree($items){
         $tree = array();
         foreach($items as $item){

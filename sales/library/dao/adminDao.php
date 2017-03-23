@@ -7,6 +7,11 @@ if (!defined('IS_INITPHP')) exit('Access Denied!');
 class adminDao extends Dao
 {
     public $table_name = 'cp_zjingjiren_admin';
+	
+	public function adminInfoEx($adminId){
+        $sql=sprintf("SELECT UsrName,department_id,gid FROM %s WHERE id=%s",$this->table_name,$adminId);
+		return $this->dao->db->get_one_sql($sql);
+	}
 
     /**
      * 根据管理员id查详细资料
@@ -14,7 +19,7 @@ class adminDao extends Dao
      */
     public function adminInfo($admin_id)
     {
-        $sql=sprintf("select a.*,b.name as gname from %s a , %s b  where a.gid=b.id and a.id=%s ",$this->table_name,'cp_zjingjiren_admin_group',$admin_id);
+        $sql=sprintf("SELECT a.*,b.name as gnname from %s as a LEFT JOIN  %s b ON a.gid=b.id where a.id=%s ",$this->table_name,'cp_zjingjiren_admin_group',$admin_id);
         return  $this->dao->db->get_one_sql($sql);
     }
 
@@ -147,6 +152,19 @@ class adminDao extends Dao
     public function GetToZiXiTongUserId($admin_id){
         $sql=sprintf("SELECT b.id from %s as a LEFT JOIN cp_user as b on b.username=a.user where a.id='%s'",$this->table_name,$admin_id);
         return  $this->dao->db->get_one_sql($sql);
+    }
+    
+    /************************************************************
+     * @copyright(c): 2017年1月17日
+     * @Author:  yuwen
+     * @Create Time: 下午2:02:58
+     * @通过业务账号的id查询投资系统内注册的账号id
+     * @这个id可以查询当前登录业务系统账号自己的投资账号id，通过id可以查询他自己的订单
+     *************************************************************/
+    public function GetToZiXiTongAdminId($uid){
+        $sql=sprintf("SELECT a.id from %s as a LEFT JOIN cp_user as b on b.username=a.user where b.id='%s'",$this->table_name,$uid);
+        $data= $this->dao->db->get_one_sql($sql);
+        return $data['id'];
     }
     /************************************************************
      * @copyright(c): 2016年12月16日

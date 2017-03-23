@@ -71,54 +71,23 @@ class departmentController extends baseController{
 	/******************************************************/
 
 	public function run(){
-		//从数据库中直接取出格式化完成的树
-		/*
-		$tree = $this->departmentService->getDepartmentTree();
-		print_r($tree);
-		echo('<pre>');
-		die;
-		*/
         $list = $this->departmentService->getDepartmentList();
 		
-		//list2的数组下标跟对应的department_id是一致的，这样才能创建树。
+		/*
+		 *list2的数组下标跟对应的
+         *department_id是一致的，这样才能创建树
+		 */
 		$list2 = $this->departmentService->getDepartmentList2();	
+		if(!isset($list2) || empty($list2)){
+    		exit(json_encode(array('status' => -1, 'message' => '未找到任何部门!')));
+		}
+		
+		//必须要用tree2函数，非tree函数，可以调试看出数组下标的区别。
 		$tree2 = $this->_generateTree2($list2);
-		$html = $this->_exportTree($tree2);
+		$html  = $this->_exportTree($tree2);
         $this->view->assign('list', $list);
         $this->view->assign('html', $html);
-        $this->view->display("department/run"); //使用模板
-	}
-	
-	//默认是树形的部门树结构展示，代码中需要增加节点的合并，删除等操作。
-	public function run2(){
-		//$this->authService->checkauth("1017");//权限检测目前这里暂时注释
-		//默认显示部门树结构。
-
-
-		//1.先取出现有系统中的所有数据。
-		$lists = $this->departmentService->getDepartmentList();
-		//转换成tree
-		$toTrees = $this->_generateTree2($lists);
-		var_dump($toTrees);
-
-		//$items = $this->departmentService->getDepartmentTree();
-		exit;
-		$items = array(
-    		1 => array('department_id' => 1, 'p_dpt_id' => 0, 'name' => '安徽省'),
-    		2 => array('department_id' => 2, 'p_dpt_id' => 0, 'name' => '浙江省'),
-    		3 => array('department_id' => 3, 'p_dpt_id' => 1, 'name' => '合肥市'),
-    		4 => array('department_id' => 4, 'p_dpt_id' => 3, 'name' => '长丰县'),
-    		5 => array('department_id' => 5, 'p_dpt_id' => 1, 'name' => '安庆市'),
-		);
-		$tree = $this->_generateTree2($items);
-		var_dump($tree);
-		$treeData = $this->_getTreeData($tree);
-		//var_dump($treeData);
-        $list = $this->departmentService->getDepartmentList();
-        $this->view->assign('list', $list);
-        $this->view->assign('tree', $treeData);
-        $this->view->display("department/run"); //使用模板
-
+        $this->view->display("department/run");
 	}
 
 	public function add(){
@@ -140,6 +109,7 @@ class departmentController extends baseController{
 	}
 
 	public function addSave(){
+		/*
 		$data = array(
 			'department_name' => $this->controller->get_gp('name'),
 			'p_dpt_id'		  => $this->controller->get_gp('p_dpt_id'),
@@ -147,7 +117,13 @@ class departmentController extends baseController{
 			'create_time'	  => time(),
 			'update_time'	  => time()
 		);
-        $ret = $this->departmentService->addSave($data);
+        $ret 	= $this->departmentService->addSave($data);
+		*/
+		//根据父节点添加子节点...
+		$pid 	= $this->controller->get_gp('p_dpt_id');
+		$dName 	= $this->controller->get_gp('name'); 
+		$ret    = $this->departmentService->addNodes($pid,$dName);
+
         if($ret){
             exit(json_encode(array('status' => 1, 'message' => '部门信息添加成功!')));
         }else{
@@ -157,22 +133,20 @@ class departmentController extends baseController{
 
 	public function edit(){
 		$departmentId = $this->controller->get_gp('department_id');
-		$data = $this->departmentService->getDepartmentInfo($departmentId);
+		$data 		  = $this->departmentService->getDepartmentInfo($departmentId);
 		if(!isset($data) || empty($data)){
             exit(json_encode(array('status' => 0, 'message' => '未发现此条数据！')));
 		}
-		//TODO 列举出现有系统出的所有部门信息。
 		//获取出上级部门ID
 		$pNode = $this->departmentService->getParentNodeById($departmentId);
 		if(!isset($pNode) || empty($pNode)){
             exit(json_encode(array('status' => 0, 'message' => '未发现上级节点！')));
 		}
-		$id = $pNode['department_id'];
-
-        $list2 = $this->departmentService->getDepartmentList2();
-        $tree2 = $this->_generateTree2($list2);
+		$id 	= $pNode['department_id'];
+        $list2 	= $this->departmentService->getDepartmentList2();
+        $tree2 	= $this->_generateTree2($list2);
         //$html = $this->_exportTree($tree2);
-        $html = $this->_exportSelectedTree($tree2,$id);
+        $html 	= $this->_exportSelectedTree($tree2,$id);
 
         $this->view->assign('html', $html);
 		

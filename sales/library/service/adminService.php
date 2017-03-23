@@ -51,6 +51,17 @@ class adminService extends Service
             return 0;
         }
     }
+    
+    /************************************************************
+     * @copyright(c): 2017年1月17日
+     * @Author:  yuwen
+     * @Create Time: 下午2:02:58
+     * @通过投资系统的UID获取业务系统的ADMIN_ID
+     *************************************************************/
+    public function GetToZiXiTongAdminId($uid){
+        $data= $this->adminDao->GetToZiXiTongAdminId($uid);
+        return $data;
+    }
     /**
      * 获取用户列表
      */
