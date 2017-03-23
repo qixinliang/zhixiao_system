@@ -137,9 +137,6 @@ class departmentService extends Service{
         return $html;
     }
 	
-	public function getParentNodeById($id){
-		return $this->_departmentDao->getParentNodeById($id);
-	}
 	/************************************************************
 	 * @copyright(c): 2017年3月24日
 	 * @Author:  yuwen
