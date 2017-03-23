@@ -33,14 +33,14 @@ class myClientsController extends baseController
         $status = $this->controller->get_gp('status') ? $this->controller->get_gp('status') : 0; //null 投资用户 ，1未投资用户列表
        
         //获取登陆用户信息
-        $user=$this->adminService->current_user();
-        $userid = $this->myClientsService->getUserId($user['user']); //根据登陆，获取用户id
-        if(count($userid)==0){
+        $adminUid=$this->adminService->current_user();
+        $uid = $this->adminService->GetToZiXiTongUserId($adminUid['id']);
+        if(empty($uid)){
             exit("未获取用户信息！");
         }
         
         //获取用户邀请的好友id列表（投资，和未投资）
-        $friendIds = $this->myClientsService->getfriendsIdList($userid['id'],$status);
+        $friendIds = $this->myClientsService->getfriendsIdList($uid,$status);
         if($friendIds==''){
             exit("还没有未投资用户！");
         }
