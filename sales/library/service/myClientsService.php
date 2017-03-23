@@ -75,14 +75,17 @@ class myClientsService extends Service
         $yesInvest = '';
             //根绝当前登录用户，获取邀请过的好友id
             $friends = $this->myClientsDao->getFriendsIdList($uid);
+            if(count($friends)==0){
+                exit('还没有邀请客户！');
+            }
             //foreach循环判断用户是否投资
             foreach ($friends as $k=>$val){
                 //根据邀请过的好友id，查询order表是否为空
-                $friednOorder = $this->myClientsDao->getFriednOorder($val['friends']);
+                $friednOorder = $this->myClientsDao->getFriednOorder($val['uid']);
                 if(empty($friednOorder)){
-                    $noInvest = $noInvest.",".$val['friends'];
+                    $noInvest = $noInvest.",".$val['uid'];
                 }else{
-                    $yesInvest = $yesInvest.",".$val['friends'];
+                    $yesInvest = $yesInvest.",".$val['uid'];
                 }
             }
             //判断显示类型，1表示未投资，返回未投资用户id，0表示投资，返回投资用户id

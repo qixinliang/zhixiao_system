@@ -35,7 +35,7 @@ class myClientsController extends baseController
         //获取登陆用户信息
         $user=$this->adminService->current_user();
         $userid = $this->myClientsService->getUserId($user['user']); //根据登陆，获取用户id
-        if(!isset($userid) || empty($userid)){
+        if(count($userid)==0){
             exit("未获取用户信息！");
         }
         

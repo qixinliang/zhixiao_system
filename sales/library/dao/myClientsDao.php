@@ -69,7 +69,7 @@ class myClientsDao extends Dao
      * @return array
      */
     public function getFriendsIdList($uid){
-        $sql = "SELECT y.friends FROM cp_user u left join cp_user_yaoqingma_list y on u.id = y.uid where u.id = $uid";
+        $sql = "select uid from cp_user_yaoqingma_list where friends = $uid";
         return $this->dao->db->get_all_sql($sql);
     }
     
