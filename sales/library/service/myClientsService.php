@@ -75,7 +75,7 @@ class myClientsService extends Service
         $yesInvest = '';
             //根绝当前登录用户，获取邀请过的好友id
             $friends = $this->myClientsDao->getFriendsIdList($uid);
-            if(empty($friends) || isset($friends)){
+            if(empty($friends) || !isset($friends)){
                 exit('还没有邀请客户！');
             }
             //foreach循环判断用户是否投资
