@@ -244,4 +244,30 @@ class adminService extends Service
         $arr = $this->adminDao->del($id);
 		if($arr) return 10;
     }
+    
+    /**
+     * 根据数据，拼接检索条件
+     * @param type $part_id
+     * @param type $department_id
+     * @param type $unmae
+     * @param type $phone
+     * @return string sql语句where条件
+     */
+    public function getWhere($part_id,$department_id,$unmae,$phone){
+        //查询条件判断
+        $where = ' ';
+        if($part_id){
+            $where.= ' and a.gid = '.$part_id;
+        }
+        if($department_id){
+            $where.= ' and a.department_id = '.$department_id;
+        }
+        if($unmae){
+            $where.= ' and UsrName = "'.$unmae.'"';
+        }
+        if($phone){
+            $where.= ' and a.phone = '.$phone;
+        }
+        return $where;
+    }
 }
