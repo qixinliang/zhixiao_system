@@ -1,4 +1,4 @@
-<?php  if (!defined("IS_INITPHP")) exit("Access Denied!");  /* INITPHP Version 1.0 ,Create on 2017-03-18 20:38:46, compiled from ./web/template/department/run.htm */ ?>
+<?php  if (!defined("IS_INITPHP")) exit("Access Denied!");  /* INITPHP Version 1.0 ,Create on 2017-03-24 14:35:59, compiled from ./web/template/department/run.htm */ ?>
 <!DOCTYPE html>
 <html lang="zh-cn">
 <head>
@@ -36,7 +36,7 @@
       	启用
       <?php } else { ?>
       	停用
-      <?php } ?></td>      
+      <?php } ?></td>
       <td>
       <div class="button-group">
       <a type="button" class="button border-main" href="/department/edit/department_id/<?php echo $v['department_id'];?>"><span class="icon-edit"></span>修改</a>
