@@ -6,6 +6,8 @@ if (!defined('IS_INITPHP')) exit('Access Denied!');
  */
 class departmentService extends Service{
     
+    public $department_name = '';
+    
 	public static $defaultDepartmentDict = array(
 		1 => '中承集团',
 		2 => '承德市',
@@ -134,4 +136,31 @@ class departmentService extends Service{
         }
         return $html;
     }
+	
+	public function getParentNodeById($id){
+		return $this->_departmentDao->getParentNodeById($id);
+	}
+	/************************************************************
+	 * @copyright(c): 2017年3月24日
+	 * @Author:  yuwen
+	 * @Create Time: 上午10:31:36
+	 * @qq:32891873
+	 * @email:fuyuwen88@126.com
+	 * @通过department_id获取上级部门名字和上级部门ID
+	 *************************************************************/
+	public function getDepartmentName($department_id){
+	    $info = $this->_departmentDao->getDepartmentName($department_id);
+	    if(!empty($info['p_dpt_id'])){
+	        $this->department_name.=$info['department_name'].'-';
+	        $this->getDepartmentName(intval($info['p_dpt_id']));
+	    }
+	    if(!empty($this->department_name)){
+	        $arr = explode('-',$this->department_name);
+	        if(is_array($arr)){
+	            array_pop($arr);
+	            sort($arr);
+	        }
+	        return implode('-', $arr);
+	    }
+	}
 }
