@@ -66,6 +66,36 @@ class customerController extends baseController{
 		$count = $this->customerService->getCustomers2Count($arrWhereUrl['where']);
 		$pageHtml = $pager->pager($count['count'], $limit, $arrWhereUrl['url']);
 
+		//来个转换函数。。。
+		$fList = array();
+		foreach($list as $k => $v){
+			$inviterDptName = $this->departmentService->getDepartmentName($v['inviter_department_id']);
+			if(!isset($inviterDptName) || empty($inviterDptName)){
+				$inviterDptName = '无';
+			}
+
+			$inviterRoleName = '无';
+			$row = $this->roleService->info($v['inviter_role_id']);
+			if(isset($row) && !empty($row)){
+				$inviterRoleName = $row['name'];
+			}
+			$tmpList = array(
+				'customer_pool_id' 		=> $v['customer_pool_id'], 
+				'investor_id' 			=> $v['investor_id'], 
+				'investor_login_name' 	=> $v['investor_login_name'], 
+				'investor_real_name' 	=> $v['investor_real_name'], 
+				'investor_cellphone' 	=> $v['investor_cellphone'], 
+				'create_time' 			=> date('Y-m-d H:i:s',$v['create_time']),
+				'inviter_name' 			=> $v['inviter_name'], 
+				'inviter_dpt_name' 		=> $inviterDptName,
+				'inviter_role_name' 	=> $inviterRoleName,
+				//FIXME,离职的时候把销售的离职日期写到数据库中.
+				'inviter_off_time' 		=> date('Y-m-d H:i:s',time()),
+				'invest_status' 		=> $v['invest_status']
+			);
+			$fList[] = $tmpList;
+		}
+
 		//部门
 		$list2 = $this->departmentService->getDepartmentList2();
         $tree2 = $this->departmentService->generateTree2($list2);
@@ -75,9 +105,10 @@ class customerController extends baseController{
 		//角色
 		$userGroup = $this->roleService->adminList();
 		$this->view->assign('user_group', $userGroup);
+
         $this->view->assign('page',$page);
         $this->view->assign('page_html', $pageHtml);
-		$this->view->assign('list',$list);
+		$this->view->assign('list',$fList);
 		$this->view->display('customer/run');
 	}
 }
