@@ -13,15 +13,6 @@ class myClientsService extends Service
     }
     
     /**
-     * 根据用户名称，查询user数据列表id
-     * @param type $user
-     * @return type
-     */
-    public function getUserId($user){
-        return $this->myClientsDao->getUserId($user);
-    }
-    
-    /**
      * 根据条件查询投资客户数据列表
      * @param type $friendIds 好友id
      * @param type $page 开始页码
@@ -73,30 +64,30 @@ class myClientsService extends Service
     public function getfriendsIdList($uid,$status){
         $noInvest = '';
         $yesInvest = '';
-            //根绝当前登录用户，获取邀请过的好友id
-            $friends = $this->myClientsDao->getFriendsIdList($uid);
-            if(empty($friends) || isset($friends)){
-                exit('还没有邀请客户！');
-            }
-            //foreach循环判断用户是否投资
-            foreach ($friends as $k=>$val){
-                //根据邀请过的好友id，查询order表是否为空
-                $friednOorder = $this->myClientsDao->getFriednOorder($val['uid']);
-                if(empty($friednOorder)){
-                    $noInvest = $noInvest.",".$val['uid'];
-                }else{
-                    $yesInvest = $yesInvest.",".$val['uid'];
-                }
-            }
-            //判断显示类型，1表示未投资，返回未投资用户id，0表示投资，返回投资用户id
-            if($status=='1'){
-                $noInvest = substr($noInvest,1);
-                $invest = $noInvest;
+        //根绝当前登录用户，获取邀请过的好友id
+        $friends = $this->myClientsDao->getFriendsIdList($uid);
+        if(empty($friends) || !isset($friends)){
+            exit('还没有邀请客户！');
+        }
+        //foreach循环判断用户是否投资
+        foreach ($friends as $k=>$val){
+            //根据邀请过的好友id，查询order表是否为空
+            $friednOorder = $this->myClientsDao->getFriednOorder($val['uid']);
+            if(empty($friednOorder)){
+                $noInvest = $noInvest.",".$val['uid'];
             }else{
-                $yesInvest = substr($yesInvest,1);
-                 $invest = $yesInvest;
+                $yesInvest = $yesInvest.",".$val['uid'];
             }
-            return $invest;
+        }
+        //判断显示类型，1表示未投资，返回未投资用户id，0表示投资，返回投资用户id
+        if($status=='1'){
+            $noInvest = substr($noInvest,1);
+            $invest = $noInvest;
+        }else{
+            $yesInvest = substr($yesInvest,1);
+             $invest = $yesInvest;
+        }
+        return $invest;
     }
     
     /**
