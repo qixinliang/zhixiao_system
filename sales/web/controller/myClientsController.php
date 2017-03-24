@@ -66,7 +66,6 @@ class myClientsController extends baseController
         $this->view->assign('status',$status);
         $this->view->assign('count',$friendsCount['count']);//投资和未投资统计人数
         //分页
-        $this->view->assign('page',$page);
         $this->view->assign('page_html', $page_html);
         $this->view->assign('username', $userid['username']);
         //数据列表

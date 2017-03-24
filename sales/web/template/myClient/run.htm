@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <meta name="renderer" content="webkit">
     <title>销售管理系统</title>
-	<base href="<?php echo InitPHP::getConfig('url');?>"/>
+    <base href="<?php echo InitPHP::getConfig('url');?>"/>
     <link rel="stylesheet" href="/static/css/base.css">
     <link rel="stylesheet" href="/static/css/css.css">
     <script src="/static/js/jquery.js"></script>
@@ -29,7 +29,7 @@
       <div style="padding-top:20px;">共有<sapn style="color: red;"><!--{$count}--></sapn>个<!--{if($status=='1')}-->未<!--{/if}-->投资客户</div>
   </div> 
   <table class="table table-hover text-center">
-      <!--{if($status=='0')}-->
+    <!--{if($status=='0')}-->
     <tr>
         <th width="5%">会员ID</th>     
         <th>投资人姓名</th> 
@@ -43,32 +43,32 @@
         <th>邀请人</th>
         <th>赚取佣金</th>
     </tr>
-        <!--{foreach($friends as $k=>$v)}-->
-        <tr>
-            <td><!--{$v['uid']}--></td>
-            <td><!--{$v['UsrName']}--></td>
-            <td><!--{$v['UsrMp']}--></td>
-            <td><!--{$v['title']}--></td>
-            <td><!--{$v['order_money']}--></td>
-            <td><?php echo date('Y-m-d',$v['OrdDate']);?></td>
-            <td><?php echo date('Y-m-d',$v['start_date']);?></td>
-            <td><?php echo date('Y-m-d',$v['end_date']);?></td>
-            <td>
-                <?php
-                    if($v['status']=='1'){
-                    echo'投标失败';
-                    }elseif($v['status']==2){
-                    echo'投标成功';
-                    }elseif($v['status']==3){
-                    echo'撤标';
-                    }
-                ?>
-            </td>
-            <td style="color: red;"><!--{$username}--></td>
-            <td><!--{$v['nhsyl']}--></td>
-        </tr>
-        <!--{/foreach}-->
-        <!--{else}-->
+    <!--{foreach($friends as $k=>$v)}-->
+    <tr>
+        <td><!--{$v['uid']}--></td>
+        <td><!--{$v['UsrName']}--></td>
+        <td><!--{$v['UsrMp']}--></td>
+        <td><!--{$v['title']}--></td>
+        <td><!--{$v['order_money']}--></td>
+        <td><?php echo date('Y-m-d',$v['OrdDate']);?></td>
+        <td><?php echo date('Y-m-d',$v['start_date']);?></td>
+        <td><?php echo date('Y-m-d',$v['end_date']);?></td>
+        <td>
+            <?php
+                if($v['status']=='1'){
+                echo'投标失败';
+                }elseif($v['status']==2){
+                echo'投标成功';
+                }elseif($v['status']==3){
+                echo'撤标';
+                }
+            ?>
+        </td>
+        <td style="color: red;"><!--{$username}--></td>
+        <td><!--{$v['nhsyl']}--></td>
+    </tr>
+    <!--{/foreach}-->
+    <!--{else}-->
         <tr>
         <th width="5%">会员ID</th>     
         <th>用户名</th> 
@@ -90,26 +90,7 @@
 	<!--{/if}-->
   </table>
 </div>
-    <div class="padding border-bottom">  
-        <!--{$page_html}-->
-    </div> 
-<script>
-function pages(){
-        $.ajax({
-                url: '/myclients/run',
-                type: 'post',
-                dataType:'json',
-                data: {id: id},
-                success: function(msg) {
-                    if(msg.status == 9){
-                            alert("内置用户无法删除");
-                    }else if(msg.status == 11){
-                            alert("越权操作");
-                    }else{
-                            $(obj).parent().parent().parent().remove();
-                    }
-                }
-        });
-}
-</script>
+<div class="padding border-bottom">  
+    <!--{$page_html}-->
+</div> 
 </body></html>
