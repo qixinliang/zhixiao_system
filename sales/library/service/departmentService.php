@@ -60,7 +60,14 @@ class departmentService extends Service{
 		return $this->_departmentDao->addNodes($pid,$name);
 	}
 
-	//树相关...
+	public function getParentNodeById($id){
+		return $this->_departmentDao->getParentNodeById($id);
+	}
+	
+	/*
+     * 从部门列表获取的数组，生成一种树结构
+	 * son字段对应的数组代表了下面的子节点.
+     */
 	public function generateTree($items){
         $tree = array();
         foreach($items as $item){
@@ -75,18 +82,56 @@ class departmentService extends Service{
 
     public function generateTree2($items){
         foreach($items as $item)
-            $items[$item['p_dpt_id']]['son'][$item['department_id']] = &$items[$item['depart
-ment_id']];
+            $items[$item['p_dpt_id']]['son'][$item['department_id']] = &$items[$item['department_id']];
         return isset($items[0]['son']) ? $items[0]['son'] : array();
     }
-	
+
+	/*
+     * 递归类似array(
+     *		1=>array(
+	 *			'department_id' => 1,
+     *			'p_dpt_id' => 0,
+     *			'department_name' => 'aaa',
+	 *			...
+     *			son => array(
+     *				3 => array(
+     *					'department_id'	 => 3,
+	 *					'p_dpt_id'	=> 1,
+     *					...
+	 *				)
+	 *				4 => array(
+	 *					...
+	 *				)
+	 *			)
+	 *		2 => array(
+	 *			...
+	 *      )
+	 *    )
+	 * 生成一个select下拉框提供给view层 
+     */
     public function exportTree($tree,$deep = 0){
-        static $html = '';
+		static $html = '<option value="0">请选择</option>';
         foreach ($tree as $k => $v) {
             $tmpName = sprintf("%s%s", str_repeat('——', $deep), $v['department_name']);
             $html .= "<option value=$k>" . $tmpName . "</option>";
             if (isset($v['son']) && !empty($v['son'])) {
-                $this->_exportTree($v['son'], $deep + 1);
+                $this->exportTree($v['son'], $deep + 1);
+            }
+        }
+        return $html;
+    }
+
+    public function exportSelectedTree($tree,$pid,$deep = 0){
+        static $html = '<option value="0">请选择</option>';
+        foreach ($tree as $k => $v) {
+            $tmpName = sprintf("%s%s", str_repeat('——', $deep), $v['department_name']);
+            if($v['department_id'] == $pid){
+                $html .= "<option value=$k selected=\"selected\">" . $tmpName . "</option>";
+            }else{
+                $html .= "<option value=$k>" . $tmpName . "</option>";
+            }
+            if (isset($v['son']) && !empty($v['son'])) {
+                $this->exportSelectedTree($v['son'],$pid,$deep + 1);
             }
         }
         return $html;

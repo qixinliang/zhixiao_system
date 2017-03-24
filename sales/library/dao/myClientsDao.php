@@ -7,16 +7,6 @@ if (!defined('IS_INITPHP')) exit('Access Denied!');
 class myClientsDao extends Dao
 {
     /**
-     * 根据当前登录用户，获取user表用户id
-     * @param type $user 用户名称
-     * @return type
-     */
-    public function getUserId($user){
-        $sql = "select u.id,u.username from cp_zjingjiren_admin a left join cp_user u on a.`user` = u.username  where a.user = '$user'";
-        return $this->dao->db->get_one_sql($sql);
-    }
-    
-    /**
      * 查询出投资的客户数据列表
      * @param type $friendIds
      * @param type $limit

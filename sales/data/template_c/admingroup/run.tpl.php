@@ -1,4 +1,4 @@
-<?php  if (!defined("IS_INITPHP")) exit("Access Denied!");  /* INITPHP Version 1.0 ,Create on 2017-03-18 19:44:06, compiled from ./web/template/admingroup/run.htm */ ?>
+<?php  if (!defined("IS_INITPHP")) exit("Access Denied!");  /* INITPHP Version 1.0 ,Create on 2017-03-18 20:38:44, compiled from ./web/template/admingroup/run.htm */ ?>
 <!DOCTYPE html>
 <html lang="zh-cn">
 <head>
