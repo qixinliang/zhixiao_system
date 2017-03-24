@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="renderer" content="webkit">
+    <title>直销管理系统</title>
+	<base href="<?php echo InitPHP::getConfig('url');?>"/>
+    <link rel="stylesheet" href="/static/css/base.css">
+    <link rel="stylesheet" href="/static/css/css.css">
+    <link rel="stylesheet" href="/static/css/simpleTree.css">
+    <script src="/static/js/jquery.js"></script>
+</head>
+<body>
+<div class="panel admin-panel">
+  <div class="panel-head"><strong class="icon-reorder">分配历史记录</strong></div>
+  <div class="padding border-bottom">
+      <form action="/customer/record" method="post">
+        	客户姓名：
+			<input type="text" name="investor_name" style="width: 160px;height: 25px;margin-right: 30px;" value="<!--{$investor_name}-->" placeholder="客户姓名">
+        <input type="hidden" name ="page" value="<!--{$page}-->">
+      	<input type="submit" class="button border-yellow" value="搜索">
+      </form>
+  </div>
+  <table class="table table-hover text-center">
+    <tr>
+      <th>记录ID</th>     
+      <th>客户ID</th> 
+      <th>客户名</th> 
+      <th>上次所属销售ID</th> 
+      <th>上次所属销售名字</th>     
+      <th>这次所属销售ID</th>     
+      <th>这次所属销售名字</th>     
+      <th>被分配的时间</th>     
+    </tr>
+	
+	<!--{foreach($records as $k => $v)}-->
+    <tr>
+      <td><!--{$v['record_id']}--></td>
+      <td><!--{$v['investor_id']}--></td> 
+      <td><!--{$v['investor_name']}--></td>
+      <td><!--{$v['origin_inviter_id']}--></td>
+      <td><!--{$v['origin_inviter_name']}--></td>
+      <td><!--{$v['new_inviter_id']}--></td>
+      <td><!--{$v['new_inviter_name']}--></td>
+      <td><!--{$v['create_time']}--></td>
+    </tr> 
+	<!--{/foreach}-->
+
+  </table>
+</div>
+
+<div class="padding border-bottom">
+	<!--{$page_html}-->
+</div>
+
+</body>
+</html>

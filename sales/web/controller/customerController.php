@@ -1,8 +1,9 @@
 <?php
 if(!defined('IS_INITPHP')) exit('Access Denied!');
 
-//客户管理控制器
-
+/*
+ * @客户管理控制器
+ */
 class customerController extends baseController{
 	public $departmentService 		= NULL;
 	public $roleService 			= NULL;

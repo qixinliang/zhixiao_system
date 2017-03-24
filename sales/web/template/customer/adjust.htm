@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="renderer" content="webkit">
+    <title>直销管理系统</title>
+	<base href="<?php echo InitPHP::getConfig('url');?>"/>
+    <link rel="stylesheet" href="/static/css/base.css">
+    <link rel="stylesheet" href="/static/css/css.css">
+    <script src="/static/js/jquery.js"></script>
+</head>
+<body>
+<div class="panel admin-panel margin-top">
+  <div class="panel-head" id="add"><strong><span class="icon-pencil-square-o"></span>客户分配</strong></div>
+  <div class="body-content">
+	<form id="form" class="form-x" >
+      <div class="form-group">
+        <div class="label">
+          <label>原销售：</label>
+        </div>
+        <div class="field">
+			<p><!--{$origin_inviter_name}--></p>
+            <input name="origin_inviter_id" id="origin_inviter_id" type="hidden" value="<!--{$origin_inviter_id}-->" />
+            <input name="origin_inviter_name" id="origin_inviter_name" type="hidden" value="<!--{$origin_inviter_name}-->" />
+        </div>
+      </div>
+	<div class="form-group">
+		<div class="label">
+			<label>请选择新销售：</label>
+		</div>
+        <div class="field" id="power">
+            <select name="new_inviter_id" id="new_inviter_id" class="input w50">
+				<option value="0">请选择</option>
+				<option value="1">张三</option>
+				<option value="2">李四</option>
+				<option value="3">王五</option>
+				<option value="4">赵六</option>
+            </select>
+        </div>
+		<div id="reserved">
+		</div>
+	</div>
+		
+     <div class="form-group">
+        <div class="label">
+          <label></label>
+        </div>
+        <div class="field">
+            <input name="investor_id" id="investor_id" type="hidden" value="<!--{$investor_id}-->" />
+            <input name="investor_name" id="investor_name" type="hidden" value="<!--{$investor_name}-->" />
+            <button  class="button bg-main icon-check-square-o" type="button" onclick="sub(this)"> 提交</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<script type="text/javascript">
+function sub(obj){
+	var new_inviter_id  =  $("#new_inviter_id").val();
+	if(new_inviter_id == ""){
+		$(".tipss").html("<font color=\"red\">新销售人员为空!</font>").show();
+		return;
+	}
+	var myselect = document.getElementById("new_inviter_id");
+	var index = myselect.selectedIndex;
+	var new_inviter_name = myselect.options[index].text;
+	
+	$("#reserved").html("<input name=\"new_inviter_name\" id=\"new_inviter_name\" type=\"hidden\" value="+new_inviter_name+" />");
+	$.ajax({
+		url: '/customer/<!--{$action}-->',
+		type: 'post',
+		dataType:'json',
+		data: $('#form').serialize(),
+		success: function(data) {
+			if(data.status==1){
+				window.location.href="/customer/run";
+			}else{
+				$("#tipss").html("<font color=\"red\">"+data.message+"</font>");
+				setTimeout(function() {
+					$("#tipss").html('');
+				}, 3000);
+				return false;
+			}
+		}
+	});
+};
+</script>
+</body>
+</html>
