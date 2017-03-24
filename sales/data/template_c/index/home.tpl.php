@@ -1,4 +1,4 @@
-<?php  if (!defined("IS_INITPHP")) exit("Access Denied!");  /* INITPHP Version 1.0 ,Create on 2017-03-18 19:48:55, compiled from ./web/template/index/home.htm */ ?>
+<?php  if (!defined("IS_INITPHP")) exit("Access Denied!");  /* INITPHP Version 1.0 ,Create on 2017-03-24 11:42:55, compiled from ./web/template/index/home.htm */ ?>
 <!DOCTYPE html>
 <html lang="zh-cn">
 <head>
@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <meta name="renderer" content="webkit">
-    <title>业务管理系统</title>
+    <title>销售管理系统</title>
 	<base href="<?php echo InitPHP::getConfig('url');?>"/>
     <link rel="stylesheet" href="/static/css/base.css">
     <link rel="stylesheet" href="/static/css/css.css">
@@ -14,7 +14,7 @@
     <script src="/static/js/jquery.qrcode.min.js"></script>
     <style type="text/css">
         .xinContent{margin:0 auto;font-family: "Microsoft YaHei", \5fae\8f6f\96c5\9ed1, arial, \5b8b\4f53;font-size: 14px;}
-        .xinContent .blueTit{width:120px;height:38px;line-height: 38px;text-align: center;font-weight: bold;background-color: #f3f9fd;}
+        .xinContent .blueTit{width:320px;height:38px;line-height: 38px;text-align: center;font-weight: bold;background-color: #f3f9fd;}
         .xinContent .line{border-top: 1px solid #808080;padding-top: 12px;}
         .xinContent p{line-height: 38px;  padding-left: 20px;}
         .xinContent .line .add{width:200px;height:28px;line-height:28px;text-align:center;color:#fff;background-color: #717171;margin-bottom: 14px;display: inline-block;}
@@ -33,14 +33,11 @@
 <body>
     <div class="xinContent">
         <div class="blueTit">
-            个人信息
+		欢迎使用百合贷直销业务管理系统
         </div>
         <div class="line codePar">
-            <p>当前财富角色：<?php echo $list['user'];?> (<?php echo $list['gname'];?>)</p>
-            <p>专属推荐码ID：<?php echo $list['phone'];?></p>
-            <p>上次登录时间：
-            <?php echo date("Y-m-d H:i:s",$list['logintime']);?>
-			</p>
+            <p>您所在的部门：<?php echo $departmentName;?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;您目前的职位：<?php echo $position;?></p>
+            <p></p>
             <div class="add"><a href="http://www.baihedai.com"  target="_blank">去百合贷投资</a></div>
             <?php if ($list['gid']<3) { ?>
 			<div class="add"><a href="/friends/zongjian_add">推荐总监</a></div>
