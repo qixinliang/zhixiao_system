@@ -8,6 +8,11 @@ class customerDao extends Dao{
 		parent::__construct();
 	}
 
+    public function info($id){
+		$sql = sprintf("SELECT * FROM %s WHERE customer_pool_id=%s",$this->tableName,$id);
+		return $this->dao->db->get_one_sql($sql);
+    }
+
 	public function getCustomers($where = ''){
 		$sql = sprintf("SELECT * FROM %s %s",$this->tableName,$where);
 		$ret = $this->dao->db->get_all_sql($sql);

@@ -31,4 +31,8 @@ class customerService extends Service{
 	public function getCustomers2Count($where){
 		return $this->customerDao->getCustomers2Count($where);
 	}
+
+	public function info($id){
+		return $this->customerDao->info($id);
+	}
 }
