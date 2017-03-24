@@ -4,12 +4,17 @@ if(!defined('IS_INITPHP')) exit('Access Denied!');
 //客户管理控制器
 
 class customerController extends baseController{
-	public $customerRecordService = NULL;
+	public $departmentService 		= NULL;
+	public $roleService 			= NULL;
+	public $customerService 		= NULL;
+	public $customerRecordService 	= NULL;
 
 	public $initphp_list = array('run');
 	public function __construct(){
 		parent::__construct();
-		$this->customerService = InitPHP::getService('customer');
+		$this->customerService 		= InitPHP::getService('customer');
+		$this->departmentService 	= InitPHP::getService('department');
+		$this->roleService 			= InitPHP::getService('adminGroup');
 	}
 		
 	public function joinWhereUrl($uName =null,$uDeparment=null,$uRole = null){
@@ -60,46 +65,19 @@ class customerController extends baseController{
 		$list = $this->customerService->getCustomers2($page,$limit,$arrWhereUrl['where']);
 		$count = $this->customerService->getCustomers2Count($arrWhereUrl['where']);
 		$pageHtml = $pager->pager($count['count'], $limit, $arrWhereUrl['url']);
-		/*
-		 * @获取部门
-		 */
-		$departmentService = InitPHP::getService("department"); //上级列表
-		$list2 = $departmentService->getDepartmentList2();
-        $tree2 = $this->_generateTree2($list2);
-        $html = $this->_exportTree($tree2,$uDepartment);
+
+		//部门
+		$list2 = $this->departmentService->getDepartmentList2();
+        $tree2 = $this->departmentService->generateTree2($list2);
+        $html  = $this->departmentService->exportSelectedTree($tree2,$uDepartment);
         $this->view->assign('html', $html);
-		/*
-		 * @获取角色
-		 */
-        $adminGroupService = InitPHP::getService("adminGroup"); //获取角色
-		$user_group = $adminGroupService->adminList();
-		$this->view->assign('user_group', $user_group);
+
+		//角色
+		$userGroup = $this->roleService->adminList();
+		$this->view->assign('user_group', $userGroup);
         $this->view->assign('page',$page);
         $this->view->assign('page_html', $pageHtml);
 		$this->view->assign('list',$list);
 		$this->view->display('customer/run');
-	}
-	private function _generateTree2($items){
-	    foreach($items as $item)
-	        $items[$item['p_dpt_id']]['son'][$item['department_id']] = &$items[$item['department_id']];
-	    return isset($items[0]['son']) ? $items[0]['son'] : array();
-	}
-	
-	private function _exportTree($tree,$department_id=0,$deep = 0){
-	    static $html = '<option value="0">请选择</option>';
-	    foreach ($tree as $k => $v) {
-	        $tmpName = sprintf("%s%s", str_repeat('——', $deep), $v['department_name']);
-	        $html .= '<option value='.$k;
-	        if($v['department_id']==$department_id){
-	            $html.=' selected="selected" ';
-	        }
-	        $html .= '>';
-	        $html .= $tmpName . '</option>';
-	
-	        if (isset($v['son']) && !empty($v['son'])) {
-	            $this->_exportTree($v['son'],$department_id, $deep + 1);
-	        }
-	    }
-	    return $html;
 	}
 }
