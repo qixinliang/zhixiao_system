@@ -14,7 +14,7 @@ class myClientsDao extends Dao
      * @return array
      */
     public function getInvestFriends($friendIds,$page,$length,$where){
-        $sql = "select h.uid,d.deal_id,h.UsrName,h.UsrMp,d.title,o.order_money,o.OrdDate,d.start_date,d.end_date,o.`status`,d.expires_type,d.expires FROM cp_user_yaoqingma_list y left join cp_deal_order o on y.friends = o.uid left join cp_deal d on o.deal_id = d.deal_id right join cp_user_huifu h on y.friends = h.uid where o.`status`=2 and y.friends in($friendIds) $where limit $page ,$length";
+        $sql = "select h.uid,d.deal_id,h.UsrName,h.UsrMp,d.title,o.order_money,o.OrdDate,d.start_date,d.end_date,o.`status`,d.expires_type,d.expires from cp_user_huifu h left join cp_deal_order o on h.uid = o.uid left join cp_deal d on d.deal_id = o.deal_id where h.uid in ($friendIds) $where limit $page ,$length";
         return $this->dao->db->get_all_sql($sql);
     }
     
@@ -47,7 +47,7 @@ class myClientsDao extends Dao
      * @return type
      */
     public function getInvestFriendsCount($friendIds,$where){
-        $sql = "select count(*) as count FROM cp_user_yaoqingma_list y left join cp_deal_order o on y.friends = o.uid left join cp_deal d on o.deal_id = d.deal_id right join cp_user_huifu h on y.friends = h.uid where o.`status`=2 and y.friends in($friendIds) $where";
+        $sql = "select count(h.uid) as count from cp_user_huifu h left join cp_deal_order o on h.uid = o.uid left join cp_deal d on d.deal_id = o.deal_id where h.uid in ($friendIds) $where";
         return $this->dao->db->get_one_sql($sql);
     }
     
