@@ -90,7 +90,7 @@ class departmentDao extends Dao{
 		}
        return $this->dao->db->delete_by_field(array('department_id' => $id), $this->tableName);
 	}
-
+    
 	public function getParentNodeById($id){
 		$sql = sprintf("SELECT `p_dpt_id` FROM %s WHERE department_id=%s",$this->tableName,$id);
 		$ret = $this->dao->db->get_one_sql($sql);
@@ -98,9 +98,20 @@ class departmentDao extends Dao{
 			return -1;	
 		}
 		$pid = $ret['p_dpt_id'];
-
 		$sql = sprintf("SELECT * FROM %s WHERE department_id=%s",$this->tableName,$pid);
 		$ret = $this->dao->db->get_one_sql($sql);
 		return $ret;
+	}
+	/************************************************************
+	 * @copyright(c): 2017年3月24日
+	 * @Author:  yuwen
+	 * @Create Time: 上午9:54:48
+	 * @qq:32891873
+	 * @email:fuyuwen88@126.com
+	 * @通过department_id获取上级部门名字和上级部门ID
+	 *************************************************************/
+	public function getDepartmentName($department_id){
+	    $sql = sprintf("SELECT `department_name`,`p_dpt_id` FROM %s WHERE department_id=%s",$this->tableName,$department_id);
+	    return $this->dao->db->get_one_sql($sql);
 	}
 }
