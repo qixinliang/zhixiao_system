@@ -4,72 +4,31 @@ if (!defined('IS_INITPHP')) exit('Access Denied!');
 
 class customerDao extends Dao{
 	public $tableName = 'zx_customer_pool';
+
 	public function __construct(){
 		parent::__construct();
 	}
+
+    public function del($id){
+       return $this->dao->db->delete_by_field(
+		array('customer_pool_id' => $id), $this->tableName);
+    }
 
     public function info($id){
 		$sql = sprintf("SELECT * FROM %s WHERE customer_pool_id=%s",$this->tableName,$id);
 		return $this->dao->db->get_one_sql($sql);
     }
 
-	public function getCustomers($where = ''){
-		$sql = sprintf("SELECT * FROM %s %s",$this->tableName,$where);
-		$ret = $this->dao->db->get_all_sql($sql);
-		return $ret;
+	public function getCustomers($limit,$offset,$where){
+		$sql = sprintf("SELECT * FROM %s where 1=1 $where
+			limit $limit,$offset",$this->tableName);
+		return $this->dao->db->get_all_sql($sql);
 	}
-	
-	//获取列表数据根据条件检索查询
-	public function getCustomers2($page,$offset,$where){
-		$sql = sprintf("SELECT * FROM %s where 1=1 $where limit $page,$offset",$this->tableName);
-		$ret = $this->dao->db->get_all_sql($sql);
-		return $ret;
-	}
-	public function getCustomers2Count($where){
-	   //$sql = sprintf("SELECT count(*) AS count FROM %s where 1=1 $where",$this->tableName);
-		$sql = "SELECT count(*) AS count FROM $this->tableName where 1=1 $where";
-		$ret = $this->dao->db->get_one_sql($sql);
-		return $ret;
-	}
-	
-	public function add2($adminId){
-		//adminDao...
-		$adminDao = InitPHP::getDao('admin');
-		//找到销售人员在cp_user表的ID字段
-		$cpUserId = $adminDao->GetToZiXiTongUserId($adminId); 
-		$cpUserId = 3;
-	
-		//根据该销售人员获取一下他的(客户/投资人)信息
-		$yaoqingDao = InitPHP::getDao('user_yaoqingma_listDao');
-		$investorList = $yaoqingDao->getInvestorList($cpUserId);
-		if(!isset($investorList) || empty($investorList)){
-			return -1;
-		}
-		$fData = array();
-		foreach($inverstorList as $k => $v){
-			$data = array();
-			$infoEx = $adminDao->adminInfoEx($adminId);
-			if(!isset($infoEx) || empty($infoEx)){
-				continue;
-			}
-			$departmentId = $infoEx['department_id'];
-			$roleId = $infoEx['gid'];
-			$data['investor_id'] = $v['uid'];
-			$data['investor_login_name'] = $v['username'];
-			$data['investor_real_name'] = $v['UsrName'];
-			$data['investor_cellphone'] = $v['phone'];
-			$data['inviter_id'] = $cpUserId;
-			$data['inviter_name'] = $infoEx['UsrName']; 
-			$data['inviter_department_id'] = $infoEx['department_id'];
-			$data['inviter_role_id'] = $infoEx['gid'];
-			$data['inviter_off_time'] = time();
-			$data['invest_status'] = 0;
-			$data['create_time'] = time();
-			$data['update_time'] = time();
-			$this->addSave($data);
-			$fData[] = $data;
-		}
-		return $fData;
+
+	public function getCustomersCount($where){
+		$sql = "SELECT count(customer_pool_id) AS count FROM 
+				$this->tableName where 1=1 $where";
+		return $this->dao->db->get_one_sql($sql);
 	}
 	
     public function addSave($data){
@@ -86,8 +45,6 @@ class customerDao extends Dao{
 		//得到当前登录销售系统的线上百合贷的UID
 	    $uid 			= intval($id['id']);
 		
-		//FIXME 测试写死
-		$uid = 3;
 		//获取邀请的客户/投资人的UID list
 	    $investorUids 	= $yaoqingDao->getUidlist($uid);
 		if(!isset($investorUids) || empty($investorUids)){
@@ -198,5 +155,4 @@ class customerDao extends Dao{
 	        return false;
 	    }
 	}
-	
 }

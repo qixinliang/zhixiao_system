@@ -160,4 +160,14 @@ class departmentService extends Service{
 	        return implode('-', $arr);
 	    }
 	}
+
+	public function getDepartmentName2($departmentId){
+		$info = $this->_departmentDao->getDepartmentName($departmentId);
+		if(isset($info['department_name']) && !empty($info['department_name'])){
+			$departmentName = $info['department_name'];
+		}else{
+			$departmentName = '';
+		}
+		return $departmentName;
+	}
 }
