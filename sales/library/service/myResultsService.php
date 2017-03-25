@@ -21,9 +21,18 @@ class myResultsService extends Service{
      * @email:fuyuwen88@126.com
      * @TOP排行使用方法
      *************************************************************/
-    public function getTopranking($uid){
-        $date = date("Y-m-d H:i:s");//当前时间
-        $val = $this->getthemonth($date);//返回当前月的开始和结束时间
+    public function getTopranking($uid,$start=null,$end=null){
+        if(!empty($start) && empty($end)){
+            $val = $this->getthemonth($start);//返回当前月的开始和结束时间
+        }
+        if(!empty($start)&&!empty($end)){
+            $val['start']=$start;
+            $val['end']=$end;
+        }
+        if(empty($start)&&empty($end)){
+            $Month = date("Y-m-d H:i:s");//当前时间
+            $val = $this->getthemonth($Month);//返回当前月的开始和结束时间
+        }
         return $this->MonthlyPersonalDetail($uid,$val);//返回当前月份的-入金规模(万)-折标金额(万)-回款金额(万)-佣金收入(元)-新增客户数(人)
     }
     /************************************************************

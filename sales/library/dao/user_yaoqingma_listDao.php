@@ -35,7 +35,14 @@ class user_yaoqingma_listDao extends Dao
         $data = $this->dao->db->get_all_sql($sql);
         return $data;
     }
-
+    /************************************************************
+     * @copyright(c): 2017年3月29日
+     * @Author:  yuwen
+     * @Create Time: 下午1:37:56
+     * @qq:32891873
+     * @email:fuyuwen88@126.com
+     * @获取投资客户信息
+     *************************************************************/
 	public function getInvestorList($salesId){
 		$sql = "SELECT 
 					a.uid,
@@ -47,7 +54,7 @@ class user_yaoqingma_listDao extends Dao
 				LEFT JOIN cp_user b ON b.id=a.uid
 				LEFT JOIN cp_user_info c ON c.uid=b.id
 				LEFT JOIN cp_user_huifu d ON d.uid=b.id
-				WHERE a.friends=$saleId";
+				WHERE a.friends=$salesId";
 		return $this->dao->db->get_all_sql($sql);
 	}
 }
