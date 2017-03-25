@@ -102,6 +102,27 @@ class departmentDao extends Dao{
 		$ret = $this->dao->db->get_one_sql($sql);
 		return $ret;
 	}
+	
+	//暂停使用
+	public function getChildNodes2($id){
+		$sql = sprintf("SELECT * FROM %s WHERE p_dpt_id=%s",$this->tableName,$id);
+		$rows = $this->dao->db->get_all_sql($sql);
+		if(isset($rows) && !empty($rows)){
+			foreach($rows as $k => $v){
+				$this->getChildNodes($v['department_id']);
+			}
+		}
+	}
+	
+	//根据父节点查找所有子孙节点
+	public function getChildNodes($id){
+		$lists = $this->getDepartmentList2();
+		foreach($lists as $l){
+        	$lists[$l['p_dpt_id']]['son'][$l['department_id']] = &$lists[$l['department_id']];
+		}
+		return $lists[$id]['son'];
+	}
+
 	/************************************************************
 	 * @copyright(c): 2017年3月24日
 	 * @Author:  yuwen
