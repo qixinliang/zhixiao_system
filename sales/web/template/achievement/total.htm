@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="renderer" content="webkit">
+    <title>直销管理系统</title>
+	<base href="<?php echo InitPHP::getConfig('url');?>"/>
+    <link rel="stylesheet" href="/static/css/base.css">
+    <link rel="stylesheet" href="/static/css/css.css">
+    <link rel="stylesheet" href="/static/css/simpleTree.css">
+    <script src="/static/js/jquery.js"></script>
+</head>
+<body>
+<div class="panel admin-panel">
+  <div class="panel-head"><strong class="icon-reorder">业绩统计</strong></div>
+  <div class="padding border-bottom">
+  </div>
+  <table id="mytable" border="1">
+ </table>
+</div>
+</body>
+<script>
+var data = '<!--{$departments}-->';
+var data = $.parseJSON(data);
+console.log(data);
+var table = document.getElementById("mytable");
+function exportNodes(data){
+	$.each(data,function(key,value){
+		var tr=document.createElement("tr");
+		var td=document.createElement("td"); 
+		td.innerHTML=value.department_name;
+        tr.appendChild(td);
+		//存在子节点，递归
+		if(value.son){
+			exportNodes(value.son);
+		}
+    	table.appendChild(tr);
+	});
+}
+exportNodes(data);
+</script>
+</html>
