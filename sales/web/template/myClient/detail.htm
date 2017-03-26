@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="renderer" content="webkit">
+    <title>销售管理系统</title>
+	<base href="<?php echo InitPHP::getConfig('url');?>"/>
+    <link rel="stylesheet" href="/static/css/base.css">
+    <link rel="stylesheet" href="/static/css/css.css">
+    <script src="/static/js/jquery.js"></script>
+</head>
+<body>
+<div class="panel admin-panel">
+  <div class="panel-head"><strong class="icon-reorder">客户明细</strong></div>
+
+	<div class="padding border-bottom"> 
+		<div>客户姓名：&nbsp;&nbsp;<!--{$clientInfo['UsrName']}--><span style="padding-left: 200px;">注册时间：&nbsp;&nbsp;<?php echo date('Y-m-d H:i:s',$clientInfo['create_time'])?></span></div>
+	</div> 
+
+	<div class="padding border-bottom"> 
+	<div>手&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;机：&nbsp;&nbsp;<!--{$clientInfo['UsrMp']}--><span style="padding-left: 154px;">身份证号：&nbsp;&nbsp;<!--{$clientInfo['IdNo']}--></span></div>
+	</div>
+
+	<div class="padding border-bottom"> 
+		<div>是否投资：&nbsp;&nbsp;<span style="color:red;">是</span></div>
+	</div>
+
+	<div class="padding border-bottom" style="font-weight:bold"> 
+	原始邀请人明细
+	</div>
+	<table class="table table-hover text-center">
+		<tr>
+		  <th style="width:30%">原始邀请人ID</th>     
+		  <th style="width:30%">原始邀请人姓名</th>  
+		  <th style="width:30%">邀请时间</th>
+		</tr>
+		<tr>
+		  <td><!--{$original_inviter['inviter_id']}--></td>      
+		  <td><!--{$original_inviter['inviter_name']}--></td>  
+		  <td><?php echo date('Y-m-d H:i:s',$original_inviter['create_time']);?></td>  
+		</tr>
+	</table>
+
+
+</div>
+	<div class="padding border-bottom" style="font-weight:bold"> 
+	分配邀请人明细
+	</div>
+	<table class="table table-hover text-center">
+		<tr>
+                    <th style="width:30%">分配邀请人ID</th>     
+                    <th style="width:30%">分配邀请人姓名</th>  
+                    <th style="width:30%">分配时间</th>
+		</tr>
+            <!--{foreach($allocation_inviter as $k=>$v)}-->
+		<tr>
+                    <td><!--{$v['id']}--></td>      
+                    <td><!--{$v['username']}--></td>  
+                    <td><?php echo date('Y-m-d H:i:s',$v['create_time']); ?></td>  
+		</tr>
+            <!--{/foreach}-->
+	</table>
+</body>
+</html>
