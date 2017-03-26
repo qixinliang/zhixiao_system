@@ -112,7 +112,8 @@ class bmyjmxService extends Service
     	$users = $this->getDepartmentUser($did);
 		if(isset($users) && !empty($users)){
 			foreach($users as $k => $v){
-                $userYeji = $this->myResultsService->getTopranking($v['id'],$start_date,$end_date);
+                //$userYeji = $this->myResultsService->getTopranking($v['id'],$start_date,$end_date);
+                $userYeji = $this->myResultsService->getSummaryRanking($v['id'],$start_date,$end_date);
                 $v['yaoqingrencount'] = $userYeji['yaoqingrencount'];
                 $v['zonge'] = $userYeji['zonge'];
                 $v['nianhuan'] = $userYeji['nianhuan'];

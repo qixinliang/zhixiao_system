@@ -37,15 +37,14 @@ class achievementController extends baseController{
 		$departmentId 	= $userInfo['department_id'];//部门ID
 		$roleId 		= $userInfo['gid']; //角色ID
 
-
-		//临时调试使用
-		$departmentId = 1;
+		$startDate = $this->controller->get_gp('start_date');
+		$startDate = isset($startDate)? $startDate : '2016-10';
 
 		//获取当前登录用户部门下级列表
 		$dpts = $this->departmentService->getChilds($departmentId);
 	    foreach ($dpts as $key =>$val){
 	        //目前取得的数据是个人业绩,不包含客户业绩,需要修改
-			$tmpInfo = $this->bmyjmxService->getInvestInfoByDepartmentId($val['department_id'],'2016-10');
+			$tmpInfo = $this->bmyjmxService->getInvestInfoByDepartmentId($val['department_id'],$startDate);
 			$rujin   = 0;
 			$zhebiao = 0;
 			$huikuan = 0;
