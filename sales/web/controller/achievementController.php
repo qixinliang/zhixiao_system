@@ -32,10 +32,61 @@ class achievementController extends baseController{
 		$departmentId 	= $userInfo['department_id'];//部门ID
 		$roleId 		= $userInfo['gid']; //角色ID
 		
-
 		//销售1.1部
 		$did = 11;
 		$ret = $this->bmyjmxService->getInvestInfoByDepartmentId($did);
+		echo('<pre>');
+		print_r($ret);
+		echo('</pre>');
+		
+		//获取所有的部门列表
+		$dpts = $this->departmentService->getDepartmentList2();
+
+		//$v必须要用引用...必须要用
+		foreach($dpts as $k => &$v){
+			//$v['investor_info'] = $this->bmyjmxService->getInvestInfoByDepartmentId($k);
+			$tmpInfo = $this->bmyjmxService->getInvestInfoByDepartmentId($k);
+			if(isset($tmpInfo) && !empty($tmpInfo)){
+				$rujin = 0;
+				$zhebiao = 0;
+				$huikuan = 0;
+				$cnt = 0;
+				foreach($tmpInfo as $k1 => $v1){
+					$cnt++;//投资明细数
+            		$rujin += $v1['zonge'];
+            		$zhebiao += $v1['nianhuan'];
+            		$huikuan += $v1['huikuan'];
+				}
+				$v['invest_info']['rujin'] = $rujin;
+				$v['invest_info']['zhebiao'] = $zhebiao;
+				$v['invest_info']['huikuan'] = $huikuan;
+				$v['invest_info']['cnt'] = $cnt;
+			}else{
+				$v['invest_info']['rujin'] = 0;
+				$v['invest_info']['zhebiao'] = 0;
+				$v['invest_info']['huikuan'] = 0;
+				$v['invest_info']['cnt'] = 0; 
+			}
+		}
+		echo('<pre>');
+		print_r($dpts);
+		echo('</pre>');
+		//把$dpts变成一种带son级联形式的，便于统计
+		//FIXME 这地方就可以循环上面的列表，做计算了。。。考虑下
+		$dpts = $this->departmentService->generateTree2($dpts);
+		echo('<pre>');
+		print_r($dpts);
+		echo('</pre>');
+
+		//妥妥滴，要传入一个部门ID,把刚才的dpts的结果export出来,其中相同的部门ID下的
+		//投资信息要做累加
+		$tree = $this->cal($dpts);
+		echo('<pre>');
+		print_r($tree);
+		echo('</pre>');
+		die("22222222222");
+		
+
 		echo('<pre>');
 		print_r($ret);
 		echo('</pre>');
@@ -50,12 +101,13 @@ class achievementController extends baseController{
 		$departmentList = $this->departmentService->getChilds($departmentId);
 
 
+		/*
 		$userData       = $this->bmyjmxService->getUserDataList($departmentList); 
 	
 		echo('<pre>');
 		print_r($userData);
 		echo('</pre>');
-		die("1111");
+		die("1111");*/
 
 
 
@@ -100,7 +152,7 @@ class achievementController extends baseController{
 
 	//传递过来一个部门树，及用户的业绩明细，
 	//将用户的业绩明细，加到相同部门的节点上
-	public function calculate(&$departments,&$userData){
+	public function calculate2(&$departments,&$userData){
 		foreach($departments as $k => $v){
 			$rujin   = 0; //入金
 			$zhebiao = 0; //折标
@@ -135,5 +187,23 @@ class achievementController extends baseController{
 			}
 		}
 		return $departments;
+	}
+	
+	//传入一个部门ID,计算最终结果
+	public function cal($tree){
+		static $selfRujin = 0;
+		static $selfZhebiao = 0;
+		static $selfHuikuan = 0;
+		static $selfCnt = 0;
+		foreach($tree as $k => $v){
+			$selfRujin += $v['invest_info']['rujin'];
+			$selfZhebiao += $v['invest_info']['zhebiao'];
+			$selfHuikuan += $v['invest_info']['huikuan'];
+			$selfCnt += $v['invest_info']['cnt'];
+			if(isset($v['son'])){
+				$this->cal($v['son']);	
+			}
+		}
+		return $tree;
 	}
 }
