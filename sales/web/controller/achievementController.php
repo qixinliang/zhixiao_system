@@ -6,6 +6,11 @@ if(!defined('IS_INITPHP')) exit('Access Denied!');
  */
 class achievementController extends baseController{
 	
+	public $subrujin = 0;
+	public $subzhebiao = 0;
+	public $subhuikuan = 0;
+	public $subcnt = 0;
+
 	public $adminService 		= NULL;
 	public $departmentService   = NULL;
 	public $bmyjmxService 		= NULL;
@@ -31,33 +36,64 @@ class achievementController extends baseController{
 		$uid 			= $userInfo['id']; //admin表主键
 		$departmentId 	= $userInfo['department_id'];//部门ID
 		$roleId 		= $userInfo['gid']; //角色ID
-		
+
+
+		//临时调试使用
+		$departmentId = 1;
+
 		//获取当前登录用户部门下级列表
 		$dpts = $this->departmentService->getChilds($departmentId);
-	    foreach ($dpts as $key=>$val){
-	        
-	        //目前取得的数据是  个人业绩  不包含客户业绩   需要修改 -------------------------------------
+		echo('|--------------------下级部门列表-----------------|');
+		echo('<pre>');
+		print_r($dpts);
+		echo('</pre>');
+	    foreach ($dpts as $key =>$val){
+	        //目前取得的数据是个人业绩,不包含客户业绩,需要修改
 			$tmpInfo = $this->bmyjmxService->getInvestInfoByDepartmentId($val['department_id'],'2016-10');
 			$rujin = 0;
 			$zhebiao = 0;
 			$huikuan = 0;
 			$cnt = 0;
 			//本部门投资明细
-			foreach($tmpInfo as $k1 => $v1){
-			    $cnt++;//投资明细数
-			    $val['benbu_rujin'] += $v1['zonge'];
-			    $val['benbu_zhebiao'] += $v1['nianhuan'];
-			    $val['benbu_huikuan'] += $v1['huikuan'];
-			    $val['benbu_cnt'] = $cnt++;
+			if(isset($tmpInfo) && !empty($tmpInfo)){
+				foreach($tmpInfo as $k1 => $v1){
+			    	$cnt++;//投资明细数
+			    	$val['self_rujin']   += $v1['zonge'];
+			    	$val['self_zhebiao'] += $v1['nianhuan'];
+			    	$val['self_huikuan'] += $v1['huikuan'];
+			    	$val['self_cnt']     = $cnt;
+				}
+			}else{
+				$val['self_rujin'] = 0;
+				$val['self_zhebiao'] = 0;
+				$val['self_huikuan'] = 0;
+				$val['self_cnt'] = 0;
 			}
+
 			$dpts[$key]=$val;
+			echo('<pre>');
+			print_r($dpts);
+			echo('</pre>');
 			
-			$dpts[$key]['heji'] =  $this->getXiaJiBuMenShuJu($val['department_id']);
+			//取出当前部门下的所有子孙部门的投资信息，并做计算，传递到这里
+			$subInfo = $this->getXiaJiBuMenShuJu($val['department_id']);
+			$dpts[$key]['sub_rujin'] = $subInfo['sub_rujin'];
+			$dpts[$key]['sub_zhebiao'] = $subInfo['sub_zhebiao'];
+			$dpts[$key]['sub_huikuan'] = $subInfo['sub_huikuan'];
+			$dpts[$key]['sub_cnt'] = $subInfo['sub_cnt'];
+			$this->subrujin = 0;
+			$this->subzhebiao = 0;
+			$this->subhuikuan = 0;
+			$this->subcnt = 0;
+			//$dpts[$key]['heji'] =  $this->getXiaJiBuMenShuJu($val['department_id']);
 
 	    }
 
+		echo("-----------------------------最终结果-----------------------");
+		echo('<pre>');
 	    print_r($dpts);
-exit;
+		echo('</pre>');
+		exit;
 
 		$this->view->assign('departments',$departments);
 		$this->view->assign('final_data',$finalData);
@@ -66,24 +102,38 @@ exit;
 
 	//递归获取下级数据
 	public function getXiaJiBuMenShuJu($did){
-	    echo $did;
+	    echo("$did");
 	    $dpts = $this->departmentService->getChilds($did);
-	    $hejirujin = 0;
+
+		/*
+	    $subrujin = 0;
+		$subzhebiao = 0;
+		$subhuikuan = 0;
+		$subcnt = 0;
+		*/
+
 	    foreach ($dpts as $key=>$val){
-	        //目前取得的数据是  个人业绩  不包含客户业绩   需要修改 -------------------------------------
+	        //目前取得的数据是个人业绩,不包含客户业绩需要修改
+
+			//下级部门ID
+			$subId = $val['department_id'];
 	        $tmpInfo = $this->bmyjmxService->getInvestInfoByDepartmentId($val['department_id'],'2016-10');
-	        $rujin = 0;
-	        $zhebiao = 0;
-	        $huikuan = 0;
-	        $cnt = 0;
 	        //本部门投资明细
 	        foreach($tmpInfo as $k1 => $v1){
-	            $hejirujin += $v1['zonge'];
+	            $this->subrujin += $v1['zonge'];
+				$this->subzhebiao += $v1['nianhuan'];
+				$this->subhuikuan += $v1['huikuan'];
+				$this->subcnt++;
 	        }
-	        	
-	        //$this->getXiaJiBuMenShuJu($did);
+	        $this->getXiaJiBuMenShuJu($subId);
 	    }
-	    return $hejirujin;
+		$subInfo = array(
+			'sub_rujin' => $this->subrujin,
+			'sub_zhebiao' => $this->subzhebiao,
+			'sub_huikuan' => $this->subhuikuan,
+			'sub_cnt' => $this->subcnt,
+		);
+	    return $subInfo;
 	}
 	
 	
