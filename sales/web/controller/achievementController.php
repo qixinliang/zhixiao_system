@@ -32,88 +32,106 @@ class achievementController extends baseController{
 		$departmentId 	= $userInfo['department_id'];//部门ID
 		$roleId 		= $userInfo['gid']; //角色ID
 		
-		//根据用户的部门ID获取子级部门
-		$departments1 = $this->departmentService->getChilds($departmentId);
 
-		//根据部门ID获取它的所有子部门
+		//销售1.1部
+		$did = 11;
+		$ret = $this->bmyjmxService->getInvestInfoByDepartmentId($did);
+		echo('<pre>');
+		print_r($ret);
+		echo('</pre>');
+		$up = $this->bmyjmxService->up($did);
+		echo('<pre>');
+		print_r($up);
+		echo('</pre>');
+		die("1111111111111111111111");
+		
+		//////////////////
+		
+		$departmentList = $this->departmentService->getChilds($departmentId);
+
+
+		$userData       = $this->bmyjmxService->getUserDataList($departmentList); 
+	
+		echo('<pre>');
+		print_r($userData);
+		echo('</pre>');
+		die("1111");
+
+
+
+
+		//根据用户的部门ID获取子级部门
 		$departments = $this->departmentService->getChildNodes($departmentId);
 		if(!isset($departments) || empty($departments)){
  			exit(json_encode(array('status' => -1,'message' => 'Departments NULL！')));
 		}
+		echo("--------------部门树-------------");
 		echo('<pre>');
 		print_r($departments);
 		echo('</pre>');
-		echo("xxxxxxxxxxxxxxxxxxxxxxxxxx");
 
 		//获取部门下的用户业绩明细
-		$userData     = $this->bmyjmxService->getUserDataList($departments1); 
+		$userData     = $this->bmyjmxService->getUserDataList($departmentList); 
+		echo("--------------用户业绩明细-------------");
 		echo('<pre>');
 		print_r($userData);
 		echo('</pre>');
-		echo('111111111---------------');
 
 		//统计计算
 		$finalData = $this->calculate($departments,$userData);
+		echo("--------------最终数据-------------");
 		echo('<pre>');
 		print_r($finalData);
 		echo('</pre>');
-		die('111111111');
-		
-		//先模拟数据测试动态表格创建
-		$departments = json_encode(array(
-			4 => array(
-				'department_id' => 4,
-				'p_dpt_id' => 2,
-				'department_name' => '承德一区',
-				'son' => array(
-					'7' => array(
-						'department_id' => 7,
-						'p_dpt_id' => 4,
-						'department_name' => '兴隆县',
-					)
-				)
-			),
-			5 => array(
-				'department_id' => 5, 
-				'p_dpt_id' => 2,
-				'department_name' => '承德二区',
-			),
-			6 => array(
-				'department_id' => 6, 
-				'p_dpt_id' => 2,
-				'department_name' => '承德三区',
-			),
-		));
+		die('ok');
+		$finalData = json_encode($finalData);
+
 		$this->view->assign('departments',$departments);
+		$this->view->assign('final_data',$finalData);
 		$this->view->display('achievement/total');
 	}
 
+	//根据一个部门ID获取它的投资明细
+	//假设是最小颗粒度
+	public function getInvestInfoByDepartmentId($did){
+		$ret = $this->bmyjmxService->getInvestInfoByDepartmentId($did);
+		return $ret;
+	}
+
 	//传递过来一个部门树，及用户的业绩明细，
-	//将用户的业绩明细，加到最底层的节点上
+	//将用户的业绩明细，加到相同部门的节点上
 	public function calculate(&$departments,&$userData){
-		static $rujin = 0; //入金
-		static $zhebiao = 0; //折标
-		static $huikuan = 0; //回款
-		
 		foreach($departments as $k => $v){
+			$rujin   = 0; //入金
+			$zhebiao = 0; //折标
+			$huikuan = 0; //回款
+			$cnt     = 0; //用于计算该部门下的用户数
+			if(isset($v['son'])){
+				$this->calculate($v['son'],$userData);
+			}
 			foreach($userData as $k1 => $v1){
 				$did  = $v['department_id'];//部门树中的ID
 				$did1 = $v1['department_id']; //用户信息中的部门ID
 				var_dump($did);
-				
 				if($did == $did1){
-					//取出所有同一部门的数据做累加
-					$rujin += $v1['zonge'];
+					//取出同一部门的数据做累加
+					$rujin 	 += $v1['zonge'];
 					$zhebiao += $v1['nianhuan'];
 					$huikuan += $v1['huikuan'];
-					echo("!!!!!!!!!!!!!!!!!!!!!!");
-					$departments[$k]['rujin'] = $rujin;
+					$cnt++;
+					echo("次数:$cnt...");
+					if($k == 9){
+						echo("下标为9");
+						echo('<pre>');
+						print_r($departments);
+						echo('</pre>');
+					}
+
+					$departments[$k]['rujin']   = $rujin;
 					$departments[$k]['zhebiao'] = $zhebiao;
 					$departments[$k]['huikuan'] = $huikuan;
+					$departments[$k]['cnt']     = $cnt;
 				}
-			}
-			if(isset($v['son'])){
-				$this->calculate($v['son'],$userData);
 			}
 		}
 		return $departments;

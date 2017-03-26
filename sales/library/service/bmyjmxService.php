@@ -11,6 +11,7 @@ class bmyjmxService extends Service
         parent::__construct();
         $this->bmyjmxsDao = InitPHP::getDao("bmyjmx");
         $this->myResultsService = InitPHP::getService("myResults");
+		$this->departmentDao = InitPHP::getDao('department');
     }
     
     /**
@@ -104,4 +105,61 @@ class bmyjmxService extends Service
         }
         return $user_data;
     }
+
+	//获取一个部门下的投资明细
+	public function getInvestInfoByDepartmentId($did){
+		$finalArr = array();
+		//获取部门下的用户
+    	$users = $this->getDepartmentUser($did);
+		if(isset($users) && !empty($users)){
+			foreach($users as $k => $v){
+                $userYeji = $this->myResultsService->getTopranking($v['id'],'2016-10',$end_date);
+                $v['yaoqingrencount'] = $userYeji['yaoqingrencount'];
+                $v['zonge'] = $userYeji['zonge'];
+                $v['nianhuan'] = $userYeji['nianhuan'];
+                $v['huikuan'] = $userYeji['huikuan'];
+                $finalArr[] = $v;
+			}
+		}
+		return $finalArr;
+	}
+
+	//把最底层的用户投资数据，往上传递到父节点
+	public function up($did){
+		//取到最底层的数据
+		$data = $this->getInvestInfoByDepartmentId($did);
+		$output = array();
+		//获取上级部门
+		$pDepartment = $this->departmentDao->getParentNodeById($did);
+		if(isset($pDepartment) && !empty($pDepartment)){
+			$rujin = 0;
+			$zhebiao = 0;
+			$huikuan = 0;
+			$cnt = 0;
+			foreach($data as $k => $v){
+				$cnt++;
+				$rujin += $v['zonge'];
+				$zhebiao += $v['nianhuan'];
+				$huikuan += $v['huikuan'];
+				$pDepartment['son'][] = $v;
+			}
+
+			//当前父级节点的部门ID
+			$departmentId = $pDepartment['department_id'];
+			$pDepartment['invest_info']['rujin'] = $rujin;
+			$pDepartment['invest_info']['zhebiao'] = $zhebiao;
+			$pDepartment['invest_info']['huikuan'] = $huikuan;
+			$pDepartment['invest_info']['cnt'] = $cnt;
+			$output[] = $pDepartment;
+			$this->up($departmentId);
+			//如果当前部门ID与根节点或者是传入的统计参数中的部门ID相等
+			var_dump($departmentId);
+			if($departmentId == 9){
+				echo('<pre>');
+				print_r($output);
+				echo('</pre>');
+				return $pDepartment;
+			}
+		}
+	}
 }
