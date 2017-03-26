@@ -111,7 +111,6 @@ class bmyjmxService extends Service
 		$finalArr = array();
 		//获取部门下的用户
     	$users = $this->getDepartmentUser($did);
-
 		if(isset($users) && !empty($users)){
 			foreach($users as $k => $v){
                 $userYeji = $this->myResultsService->getTopranking($v['id'],'2016-10',$end_date);

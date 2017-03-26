@@ -33,14 +33,14 @@ class achievementController extends baseController{
 		$roleId 		= $userInfo['gid']; //角色ID
 		
 		//销售1.1部
-		$did = 11;
-		$ret = $this->bmyjmxService->getInvestInfoByDepartmentId($did);
-		echo('<pre>');
-		print_r($ret);
-		echo('</pre>');
+		//$did = 11;
+		//$ret = $this->bmyjmxService->getInvestInfoByDepartmentId($did);
 		
 		//获取所有的部门列表
 		$dpts = $this->departmentService->getDepartmentList2();
+		echo('<pre>');
+		print_r($dpts);
+		echo('</pre>');
 
 		//$v必须要用引用...必须要用
 		foreach($dpts as $k => &$v){
@@ -68,19 +68,15 @@ class achievementController extends baseController{
 				$v['invest_info']['cnt'] = 0; 
 			}
 		}
-		echo('<pre>');
-		print_r($dpts);
-		echo('</pre>');
 		//把$dpts变成一种带son级联形式的，便于统计
 		//FIXME 这地方就可以循环上面的列表，做计算了。。。考虑下
 		$dpts = $this->departmentService->generateTree2($dpts);
-		echo('<pre>');
-		print_r($dpts);
-		echo('</pre>');
+		
 
 		//妥妥滴，要传入一个部门ID,把刚才的dpts的结果export出来,其中相同的部门ID下的
 		//投资信息要做累加
 		$tree = $this->cal($dpts);
+		echo("---------------zuizhongjieguo");
 		echo('<pre>');
 		print_r($tree);
 		echo('</pre>');
