@@ -190,18 +190,24 @@ class achievementController extends baseController{
 	}
 	
 	//传入一个部门ID,计算最终结果
-	public function cal($tree){
+	public function cal(&$tree){
 		static $selfRujin = 0;
 		static $selfZhebiao = 0;
 		static $selfHuikuan = 0;
 		static $selfCnt = 0;
-		foreach($tree as $k => $v){
+		foreach($tree as $k => &$v){
 			$selfRujin += $v['invest_info']['rujin'];
 			$selfZhebiao += $v['invest_info']['zhebiao'];
 			$selfHuikuan += $v['invest_info']['huikuan'];
 			$selfCnt += $v['invest_info']['cnt'];
 			if(isset($v['son'])){
-				$this->cal($v['son']);	
+				foreach($v['son'] as $k1 => $v1){
+					$v['invest_info']['rujin'] += $v1['invest_info']['rujin'];
+					$v['invest_info']['zhebiao'] += $v1['invest_info']['zhebiao'];
+					$v['invest_info']['huikuan'] += $v1['invest_info']['huikuan'];
+					$v['invest_info']['cnt'] += $v1['invest_info']['cnt'];
+				}
+				$this->cal($v['son']);
 			}
 		}
 		return $tree;
