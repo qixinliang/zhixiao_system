@@ -24,7 +24,7 @@
 	</div>
 
 	<div class="padding border-bottom"> 
-		<div>是否投资：&nbsp;&nbsp;<span style="color:red;">是</span></div>
+		<div>是否投资：&nbsp;&nbsp;<span style="color:red;"><!--{if($clientOorder==1)}-->是<!--{else}-->否<!--{/if}--></span></div>
 	</div>
 
 	<div class="padding border-bottom" style="font-weight:bold"> 
@@ -42,10 +42,8 @@
 		  <td><?php echo date('Y-m-d H:i:s',$original_inviter['create_time']);?></td>  
 		</tr>
 	</table>
-
-
-</div>
-	<div class="padding border-bottom" style="font-weight:bold"> 
+        <!--{if($allocation_inviter)}-->
+        <div class="padding border-bottom" style="font-weight:bold"> 
 	分配邀请人明细
 	</div>
 	<table class="table table-hover text-center">
@@ -62,5 +60,8 @@
 		</tr>
             <!--{/foreach}-->
 	</table>
+        <!--{/if}-->
+</div>
+	
 </body>
 </html>
