@@ -90,7 +90,7 @@ class adminController extends baseController
 		$data['gid'] = $this->controller->get_gp('gid');
 		$data['user'] = $this->controller->get_gp('user');
 		$data['UsrName'] = $this->controller->get_gp('UsrName');
-		$data['IdNo'] = $this->controller->get_gp('IdNo');
+		//$data['IdNo'] = $this->controller->get_gp('IdNo');
 		$data['phone'] = $this->controller->get_gp('phone');
 		$data['password'] = $this->controller->get_gp('password');
 		$data['password2'] = $this->controller->get_gp('password2');
@@ -165,18 +165,21 @@ class adminController extends baseController
 		$token = $this->controller->check_token(); 
 		if(!$token) exit;//如果token不存在则退出
 		
-		$data['id'] = $this->controller->get_gp('id');
-		$data['gid'] = $this->controller->get_gp('gid');
-		$data['UsrName'] = $this->controller->get_gp('UsrName');
-		$data['IdNo'] = $this->controller->get_gp('IdNo');
-		$data['phone'] = $this->controller->get_gp('phone');
-		$data['password'] = $this->controller->get_gp('password');
-		$data['password2'] = $this->controller->get_gp('password2');
-		$data['department_id'] = $this->controller->get_gp('department_id');
+		$data['id'] = $this->controller->get_gp('id');//自然ID
+		$data['gid'] = $this->controller->get_gp('gid');//角色ID
+                $data['department_id'] = $this->controller->get_gp('department_id');//部门ID
+		$data['UsrName'] = $this->controller->get_gp('UsrName');//用户名
+		//$data['phone'] = $this->controller->get_gp('phone');//手机号
+		$data['password'] = $this->controller->get_gp('password');//密码
+		$data['password2'] = $this->controller->get_gp('password2');//确认密码
 		$data['level_id'] = $this->controller->get_gp('level_id');
-		$data['gender'] = $this->controller->get_gp('gender');
-		
-		$data['status'] = $this->controller->get_gp('status');
+		$data['gender'] = $this->controller->get_gp('gender');//性别
+		$data['departure'] = $this->controller->get_gp('departure');//在职状态
+		$data['status'] = $this->controller->get_gp('status');//状态
+                
+                if($data['departure'] == 0){ //如果离职触发客户池功能
+                    //FIXME,调用客户分配服务层中的方法，把数据写入公共池中。
+                }
 		
         $arr = $this->adminService->edit_save($data);
         if($arr==5)

@@ -93,7 +93,7 @@ class myClientsService extends Service
     public function arrange_where_url($uname='',$phone='',$start_date='',$end_date=''){
         $where = ' ';
         //分页地址
-        $url = 'myClients/invest';
+        $url = 'myClients/run';
         if($uname!=''){
             $url=$url.'/uname/'.$uname;
             $where.= ' and h.UsrName = "'.$uname.'"';

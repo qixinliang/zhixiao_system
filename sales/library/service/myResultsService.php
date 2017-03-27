@@ -39,38 +39,44 @@ class myResultsService extends Service{
      * @email:fuyuwen88@126.com
      * @月度个人明细
      * @统计当前登录用户自己投资的记录
-     * @得到当前登录用户邀请客户投资的记录
+     * @得到当前登录用户邀请客户投资的记录-------------此条去掉
      *************************************************************/
     public function MonthlyPersonalDetail($uid,$val){
         $myResultsDao = InitPHP::getDao("myResults");
         $useryaoqingmalistDao = InitPHP::getDao("user_yaoqingma_list");
-        //$where = ' and a.create_time>='.strtotime($val['start']).' and a.create_time<='.strtotime($val['end']);
-        $where=null;
-        //获取客户自己的订单记录
+        $where = ' and a.create_time>='.strtotime($val['start']).' and a.create_time<='.strtotime($val['end']);
+        //$where=null;
+        //获取登录用户自己的订单记录
         $userlist = $myResultsDao->getUserOrderList($uid,$where);
         $Userarr = $this->calculateData($userlist);
-       
-        //获取邀请客户Uid列表
+        /*
+         * 获取被邀请客户的Uid列表
+         * uid作为 friends
+         */
         $yaoqingUserUidlist = $this->getYaoQingRenList($uid,$val);
         //得到邀请用户的全部订单
-        $yaoqingUserOrderList = $this->getYaoQingUserOrderList($yaoqingUserUidlist,$val);
-        $YaoQingUserarr = $this->calculateData($yaoqingUserOrderList);
+        //$yaoqingUserOrderList = $this->getYaoQingUserOrderList($yaoqingUserUidlist,$val);
+        //$YaoQingUserarr = $this->calculateData($yaoqingUserOrderList);
         
         //获取邀请客户的回款投资记录
-        $yaoqingUserReceivabeOrderList =  $this->getUserReceivableOrderList($yaoqingUserUidlist,$val);
+        //$yaoqingUserReceivabeOrderList =  $this->getUserReceivableOrderList($yaoqingUserUidlist,$val);
         
         //计算邀请的用户回款总额度
-        $yaoqingUserReceivabe = $this->ReceivableOrderMoney($yaoqingUserReceivabeOrderList);
+        //$yaoqingUserReceivabe = $this->ReceivableOrderMoney($yaoqingUserReceivabeOrderList);
        
         //当前用户自己回款的记录
         $data[]['uid']=$uid;
         $UserReceivabeOrderList = $this->getUserReceivableOrderList($data,$val);
         //计算当前用户自己的回款总额
         $UserReceivabe = $this->ReceivableOrderMoney($UserReceivabeOrderList);
-        $zonge = ($Userarr['zonger']+$YaoQingUserarr['zonger']);
-        $nianhuan = ($Userarr['nianhuan']+$YaoQingUserarr['nianhuan']);
-        $huikuan = ($yaoqingUserReceivabe+$UserReceivabe);
+        //$zonge = ($Userarr['zonger']+$YaoQingUserarr['zonger']);
+        $zonge = ($Userarr['zonger']);
+        //$nianhuan = ($Userarr['nianhuan']+$YaoQingUserarr['nianhuan']);
+        $nianhuan = ($Userarr['nianhuan']);
+        //$huikuan = ($yaoqingUserReceivabe+$UserReceivabe);
+        $huikuan = ($UserReceivabe);
         //获取邀请的客户
+        
         $yaoqingrenNumber = 0;
         $yaoqingrenNumber = count($yaoqingUserUidlist);
         return array(
@@ -138,8 +144,8 @@ class myResultsService extends Service{
      * @根据条件查询用户回款记录
      *************************************************************/
     public function getUserReceivableOrderList($array,$val){
-        $where = ' and a.refund_time>='.strtotime($val['start']).' and a.refund_time<='.strtotime($val['end']);
-        $where=null;        //临时使用后期删掉
+        $where = " and refund_time>='".strtotime($val['start'])."' and refund_time<='".strtotime($val['end'])."'";
+        //$where=null;        //临时使用后期删掉
         $dealRecordDao = InitPHP::getDao("dealRecord");
         $tmparr = array();
         foreach ($array as $key=>$val){
@@ -182,7 +188,7 @@ class myResultsService extends Service{
     public function getYaoQingRenList($uid,$val){
         $useryaoqingmalistDao = InitPHP::getDao("user_yaoqingma_list");
         $yaoqingwhere = ' and add_date>='.strtotime($val['start']).' and add_date<='.strtotime($val['end']);
-        $yaoqingwhere=null;//这里测试先写死后面删掉就好了
+        //$yaoqingwhere=null;//这里测试先写死后面删掉就好了
         $yaoqinglistUid = $useryaoqingmalistDao->getUidlist($uid,$yaoqingwhere);
         return $yaoqinglistUid;
     }
