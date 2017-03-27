@@ -15,7 +15,7 @@
 <div class="panel admin-panel margin-top">
   <div class="panel-head" id="add"><strong><span class="icon-pencil-square-o"></span>增加角色</strong></div>
   <div class="body-content">
-	<form id="form" class="form-x" >
+    <form id="form" class="form-x" >
       <div class="form-group">
         <div class="label">
           <label>角色名称：</label>
@@ -23,6 +23,15 @@
         <div class="field">
 		  <input name="name" type="text" class="input w50" id="name" value="<!--{$info['name']}-->" />       
           <div class="tips"></div>
+        </div>
+      </div> 
+      <div class="form-group">
+        <div class="label">
+          <label>权重：</label>
+        </div>
+        <div class="field">
+		  <input name="privilege" type="text" class="input w50" id="privilege" value="<!--{$info['privilege']}-->" />   
+          <div class="tips">总裁1000 副总裁999 城市总900 城市副总899 区县总 800 团队总监300 团队经理200 销售100</div>
         </div>
       </div> 
       <div class="form-group">

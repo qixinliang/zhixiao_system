@@ -89,27 +89,7 @@
 			<div class="tips_bumen" style="float: left;padding-left: 10px;color: #888;line-height: 42px;"></div>
 		  </div>
 		</div>
-		
-		
 
-     
-    
-     
-	  
-      <div class="form-group">
-        <div class="label">
-          <label>身份证号：</label>
-        </div>
-        <div class="field">
-		  <input name="IdNo" type="text" class="input w50" id="IdNo" value="<!--{$info['IdNo']}-->" onblur="chekIdNo()"/>       
-          <div class="tips_IdNo" style="float: left;padding-left: 10px;color: #888;line-height: 42px;"></div>
-        </div>
-      </div> 
-	  
-     
-      
-	  
-	  
 	   <div class="form-group">
         <div class="label">
           <label>级别：</label>
@@ -211,20 +191,6 @@ function chekUsrName()
 	}
 }
 
-function chekIdNo()
-{
-    var s = $("#IdNo").val();
-    var card = /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/;
-	
-    if(card.test(s)){  
-		$(".tips_IdNo").html("").show();
-		IdNo = 1;
-    }else{
-        $(".tips_IdNo").html("<font color=\"red\">身份证号不正确</font>").show();
-		return false;
-	}
-}
-
 function chekPhone()
 {
     var reg = /^13[0-9]{9}$|14[0-9]{9}|15[0-9]{9}$|17[0-9]{9}|18[0-9]{9}$/;
@@ -258,9 +224,6 @@ function sub(obj){
 	chekUsrName();//真实姓名 
 	chekJiaose();//角色类型
 	chekBumen();//所属部门
-	chekIdNo();//身份证号
-	
-	
 	
 	if(user == 1 && UsrName == 1 && IdNo == 1 && Phone == 1 && password == 1)
 	{

@@ -16,7 +16,7 @@ class dealRecordDao extends Dao{
      * @根据uid和条件查询回款记录
      *************************************************************/
     public function getUserReceivableOrderList($uid,$where){
-        $sql=sprintf("select * from %s where status=2 and uid='%s' % ",$this->table_name,$uid,$where);
+        $sql=sprintf("select * from %s where status=2 and uid='%s' %s ",$this->table_name,$uid,$where);
         return $this->dao->db->get_all_sql($sql);
     }
 }

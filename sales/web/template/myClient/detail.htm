@@ -28,39 +28,32 @@
 	</div>
 
 	<div class="padding border-bottom" style="font-weight:bold"> 
-	原始邀请人明细
+	业务人员
 	</div>
 	<table class="table table-hover text-center">
 		<tr>
-		  <th style="width:30%">原始邀请人ID</th>     
-		  <th style="width:30%">原始邀请人姓名</th>  
+                  <th style="width:10%">ID</th>     
+		  <th style="width:25%">姓名</th>     
+		  <th style="width:25%">手机号</th>  
 		  <th style="width:30%">邀请时间</th>
 		</tr>
 		<tr>
-		  <td><!--{$original_inviter['inviter_id']}--></td>      
+                  <td>1</td>
+		  <td><!--{$original_inviter['inviter_name']}-->(原始邀请人)</td>      
 		  <td><!--{$original_inviter['inviter_name']}--></td>  
 		  <td><?php echo date('Y-m-d H:i:s',$original_inviter['create_time']);?></td>  
 		</tr>
+                <!--{if($allocation_inviter)}-->
+                <!--{foreach($allocation_inviter as $k=>$v)}-->
+                    <tr>
+                        <td><?php echo $k+2;?></td>
+                        <td><!--{$v['id']}--></td>      
+                        <td><!--{$v['username']}--></td>  
+                        <td><?php echo date('Y-m-d H:i:s',$v['create_time']); ?></td>  
+                    </tr>
+                <!--{/foreach}-->
+                <!--{/if}-->
 	</table>
-        <!--{if($allocation_inviter)}-->
-        <div class="padding border-bottom" style="font-weight:bold"> 
-	分配邀请人明细
-	</div>
-	<table class="table table-hover text-center">
-		<tr>
-                    <th style="width:30%">分配邀请人ID</th>     
-                    <th style="width:30%">分配邀请人姓名</th>  
-                    <th style="width:30%">分配时间</th>
-		</tr>
-            <!--{foreach($allocation_inviter as $k=>$v)}-->
-		<tr>
-                    <td><!--{$v['id']}--></td>      
-                    <td><!--{$v['username']}--></td>  
-                    <td><?php echo date('Y-m-d H:i:s',$v['create_time']); ?></td>  
-		</tr>
-            <!--{/foreach}-->
-	</table>
-        <!--{/if}-->
 </div>
 	
 </body>
