@@ -17,8 +17,7 @@ class adminGroupService extends Service
      */
     public function adminList()
     {
-        $user=$this->adminService->current_user();
-        return $this->adminGroupDao->adminList($user['grade']);
+        return $this->adminGroupDao->adminList();
     }
     /**
      * 根据id获取详情
@@ -57,14 +56,8 @@ class adminGroupService extends Service
     public function edit($id)
     {
         $info = $this->adminGroupDao->info($id);
-        $user = $this->adminService->current_user();
-        if($info['grade']<$user['grade']){
-            return 0;
-        }
         $datas['model_power'] = explode(',', $info['model_power']);
-
         $datas['info'] = $info;
-        $datas['user'] = $user;
         return $datas;
     }
     /**

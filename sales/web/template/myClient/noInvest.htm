@@ -22,8 +22,6 @@
       <form action="/myclients/noInvest" method="post">
         投资人 ： <input type="text" name="uname" style="width: 160px;height: 25px;margin-right: 30px;" value="<!--{$uname}-->" placeholder="姓名">
         手机号 ： <input type="text" name="phone" style="width: 160px;height: 25px;margin-right: 30px;" value="<!--{$phone}-->" placeholder="手机号">
-        到期日 ： <input type="text" name="start_date" style="width: 130px;height: 25px;margin-right: 30px;" value="<!--{$start_date}-->" placeholder="1990-01-01"readonly="readonly" >
-        <input type="text" name="end_date" style="width: 130px;height: 25px;margin-right: 30px;" value="<!--{$end_date}-->" placeholder="1990-01-01" readonly="readonly">
       <input type="submit" class="button border-yellow" value="搜索"> 
       </form>
       <div style="padding-top:20px;">共有<sapn style="color: red;"><!--{$count}--></sapn>未投资客户</div>

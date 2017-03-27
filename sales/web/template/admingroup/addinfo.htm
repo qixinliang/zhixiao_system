@@ -96,7 +96,6 @@
           <label></label>
         </div>
         <div class="field">
-			<input name="grade" id="grade" type="hidden" value="1" />
             <button  class="button bg-main icon-check-square-o" type="button" onclick="sub(this)"> 提交</button>
         </div>
       </div>
@@ -108,7 +107,6 @@ function sub(obj){
 
 	var name  =  $("#name").val();
 	var id    =  $("#id").val();
-	var grade =  $("#grade").val();
 
 	if(name == ""){
 		$(".tipss").html("<font color=\"red\">用户名不能为空</font>").show();

@@ -30,7 +30,6 @@ class adminService extends Service
         $user['model_power']=$user_group['model_power'];
         $user['class_power']=$user_group['class_power'];
         $user['status_power']=$user_group['status_power'];
-        $user['grade']=$user_group['grade'];
         $user['keep']=$user_group['keep'];
         return $user;
     }
@@ -67,8 +66,7 @@ class adminService extends Service
      */
     public function admin_list($where="")
     {
-        $user=$this->current_user();
-        return $this->adminDao->admin_list($user['grade'],$where);
+        return $this->adminDao->admin_list($where);
     }
     /*
      *  根据用户名、手机、信箱检测用户是否存在
@@ -186,13 +184,9 @@ class adminService extends Service
         $data['user_group'] = $this->adminGroupService->adminList();
         $info = $this->adminService->adminInfo($id);
         $info_group = $this->adminGroupService->info($info['gid']);
-        $user = $this->adminService->current_user();
-        if($info_group['grade']<$user['grade']){
-            return 4;
-        }
+
         $data['info']=$info;
         $data['info_group']=$info_group;
-        $data['user']=$user;
         return $data;
     }
     /**
@@ -236,13 +230,9 @@ class adminService extends Service
         {
             return 9;
         }
-        $info_group = $this->adminGroupService->info($info['gid']);
-        $user = $this->adminService->current_user();
-        if($info_group['grade']<$user['grade']){
-            return 11;
-        }
+
         $arr = $this->adminDao->del($id);
-		if($arr) return 10;
+	if($arr) return 10;
     }
     
     /**

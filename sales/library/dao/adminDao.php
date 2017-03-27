@@ -46,10 +46,9 @@ class adminDao extends Dao
      * 获取用户列表
      * @param $data array()
      */
-    public function admin_list($grade,$where)
+    public function admin_list($where)
     {
-        $sql=sprintf("select a.*,b.name as gname,d.department_name from %s a left join cp_zjingjiren_admin_group b on a.gid=b.id left JOIN zx_department d on d.department_id = a.department_id where b.grade>=%s and a.vaild =1  %s order by id desc",$this->table_name,$grade,$where);
-//        echo $sql;exit;
+        $sql=sprintf("select a.*,b.name as gname,d.department_name from %s a left join cp_zjingjiren_admin_group b on a.gid=b.id left JOIN zx_department d on d.department_id = a.department_id where a.vaild =1  %s order by id desc",$this->table_name,$where);
         return  $this->dao->db->get_all_sql($sql);
     }
     /**

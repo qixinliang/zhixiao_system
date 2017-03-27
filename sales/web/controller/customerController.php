@@ -13,57 +13,13 @@ class customerController extends baseController{
 	public $initphp_list = array('run','adjust','adjustSave','record');
 	public function __construct(){
 		parent::__construct();
-		$this->customerService 		 = InitPHP::getService('customer');
+		$this->customerService 	= InitPHP::getService('customer');
 		$this->customerRecordService = InitPHP::getService('customerRecord');
-		$this->departmentService 	 = InitPHP::getService('department');
-		$this->roleService 			 = InitPHP::getService('adminGroup');
+		$this->departmentService = InitPHP::getService('department');
+		$this->roleService = InitPHP::getService('adminGroup');
 	}
 
-	/*
-	 *@分配记录
-	 */
-	public function record(){
-		$pager 			= $this->getLibrary('pager');
-        $page 			= $this->controller->get_gp('page') ? $this->controller->get_gp('page') : 1 ;
-		if($page < 1){
-			$page = 1;
-		}
 
-		$investorName = $this->controller->get_gp('investor_name');
-		if(!empty($investorName)){
-			$this->view->assign('investor_name',$investorName);
-		}
-		$limit 			= 10;
-		$page 			= ($page-1)*10 ? ($page-1)*10 : 0;
-		$arrWhereUrl 	= $this->joinWhereUrl2($investorName); 
-
-		$records  = $this->customerRecordService->getRecords($page,$limit,$arrWhereUrl['where']);
-		$count    = $this->customerRecordService->getRecordsCount($arrWhereUrl['where']);
-		$pageHtml = $pager->pager($count['count'], $limit, $arrWhereUrl['url']);
-
-		if(!isset($records) || empty($records)){
-			exit(json_encode(array('status' => -1,'message' => '分配记录为空')));
-		}
-		$fRecords = array();
-		foreach($records as $k => $v){
-			$tmpArr = array(
-				'record_id'				=> $v['record_id'],
-				'investor_id'			=> $v['investor_id'],
-				'investor_name'			=> $v['investor_name'],
-				'origin_inviter_id'		=> $v['origin_inviter_id'],
-				'origin_inviter_name'	=> $v['origin_inviter_name'],
-				'new_inviter_id'		=> $v['new_inviter_id'],
-				'new_inviter_name'		=> $v['new_inviter_name'],
-				'create_time' 			=> date('Y-m-d H:i:s',$v['create_time']),
-			);
-			$fRecords[] = $tmpArr;
-		}
-        $this->view->assign('page',$page);
-        $this->view->assign('page_html', $pageHtml);
-
-		$this->view->assign('records',$fRecords);
-		$this->view->display('customer/record');
-	}
 
 	public function joinWhereUrl2($investorName = null){
 		$where = '';
@@ -93,16 +49,17 @@ class customerController extends baseController{
 		return array('url' => $url, 'where' => $where);
 	}
 	
-	public function run(){
-		$adminService   = InitPHP::getService('admin');
-		$userInfo       = $adminService->current_user();
+	public function run()
+        {
+            $adminService = InitPHP::getService('admin');
+            $userInfo   = $adminService->current_user();
 		if(!isset($userInfo)){
-			exit(json_encode(array('status' => -1,'message' => '参数错误！')));
+                    exit(json_encode(array('status' => -1,'message' => '参数错误！')));
 		}
-		$salesId        = $userInfo['id'];
-		$salesId		= 26;//临时调试使用
-		$pager 			= $this->getLibrary('pager');
-        $page 			= $this->controller->get_gp('page') ? $this->controller->get_gp('page') : 1 ;
+		$salesId  = $userInfo['id'];
+		$salesId  = 26;//临时调试使用
+		$pager = $this->getLibrary('pager');
+                $page = $this->controller->get_gp('page') ? $this->controller->get_gp('page') : 1 ;
 		if($page < 1){
 			$page = 1;
 		}
@@ -154,15 +111,15 @@ class customerController extends baseController{
 			$fList[] = $tmpList;
 		}
 
-		//部门
-		$list2 = $this->departmentService->getDepartmentList2();
+	//部门筛选
+	$list2 = $this->departmentService->getDepartmentList2();
         $tree2 = $this->departmentService->generateTree2($list2);
         $html  = $this->departmentService->exportSelectedTree($tree2,$uDepartment);
         $this->view->assign('html', $html);
 
-		//角色
-		$userGroup = $this->roleService->adminList();
-		$this->view->assign('user_group', $userGroup);
+	//角色筛选
+	$userGroup = $this->roleService->adminList();
+	$this->view->assign('user_group', $userGroup);
 
         $this->view->assign('page',$page);
         $this->view->assign('page_html', $pageHtml);
@@ -232,5 +189,51 @@ class customerController extends baseController{
 		}else{
             exit(json_encode(array('status' => -1, 'message' => '客户分配失败!')));
 		}
+	}
+        
+        	/*
+	 *@分配记录
+	 */
+	public function record(){
+		$pager 			= $this->getLibrary('pager');
+        $page 			= $this->controller->get_gp('page') ? $this->controller->get_gp('page') : 1 ;
+		if($page < 1){
+			$page = 1;
+		}
+
+		$investorName = $this->controller->get_gp('investor_name');
+		if(!empty($investorName)){
+			$this->view->assign('investor_name',$investorName);
+		}
+		$limit 			= 10;
+		$page 			= ($page-1)*10 ? ($page-1)*10 : 0;
+		$arrWhereUrl 	= $this->joinWhereUrl2($investorName); 
+
+		$records  = $this->customerRecordService->getRecords($page,$limit,$arrWhereUrl['where']);
+		$count    = $this->customerRecordService->getRecordsCount($arrWhereUrl['where']);
+		$pageHtml = $pager->pager($count['count'], $limit, $arrWhereUrl['url']);
+
+		if(!isset($records) || empty($records)){
+			exit(json_encode(array('status' => -1,'message' => '分配记录为空')));
+		}
+		$fRecords = array();
+		foreach($records as $k => $v){
+			$tmpArr = array(
+				'record_id'				=> $v['record_id'],
+				'investor_id'			=> $v['investor_id'],
+				'investor_name'			=> $v['investor_name'],
+				'origin_inviter_id'		=> $v['origin_inviter_id'],
+				'origin_inviter_name'	=> $v['origin_inviter_name'],
+				'new_inviter_id'		=> $v['new_inviter_id'],
+				'new_inviter_name'		=> $v['new_inviter_name'],
+				'create_time' 			=> date('Y-m-d H:i:s',$v['create_time']),
+			);
+			$fRecords[] = $tmpArr;
+		}
+        $this->view->assign('page',$page);
+        $this->view->assign('page_html', $pageHtml);
+
+		$this->view->assign('records',$fRecords);
+		$this->view->display('customer/record');
 	}
 }
