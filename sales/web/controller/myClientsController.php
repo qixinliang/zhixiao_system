@@ -20,7 +20,7 @@ class myClientsController extends baseController
      * 默认Action
      * @author aaron
      */
-    public function invest(){
+    public function run(){
         $pager= $this->getLibrary('pager'); //分页加载
         $page = $this->controller->get_gp('page') ? $this->controller->get_gp('page') : 1 ; //获取当前页码
         
@@ -116,6 +116,8 @@ class myClientsController extends baseController
         }
         //根据客户id，获取客户信息
         $clientInfo = $this->myClientsService->getClientInfo($clientId);
+        //查询当前客户是否投资
+        $clientOorder = $this->myClientsService->getFriednOorder($clientId);
         //根据客户id关联邀码，cp_user_yaoqingma_list，查询用户uid，判断用是否离职
         $info = $this->myClientsService->getInviterDeparture($clientId);
         if($info['departure']=='1'){ //判断邀请人是否离职 1在职 0离职
@@ -130,6 +132,7 @@ class myClientsController extends baseController
             $allocation_inviter = $this->myClientsService->getAllocationInviter($clientId);
             $this->view->assign('allocation_inviter', $allocation_inviter);
         }
+        $this->view->assign('clientOorder',$clientOorder);
         $this->view->assign('clientInfo', $clientInfo);
         $this->view->assign('original_inviter', $original_inviter);
         $this->view->display('myClient/detail');
