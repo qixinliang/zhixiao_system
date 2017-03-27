@@ -21,12 +21,14 @@ class achievementController extends baseController{
 		$this->adminService 		= InitPHP::getService('admin');
 		$this->departmentService    = InitPHP::getService('department');
 		$this->bmyjmxService        = InitPHP::getService("bmyjmx");
+		$this->authService			= InitPHP::getService('auth');
 	}
 
 	/*
      *@业绩统计
 	 */
 	public function total(){
+		$this->authService->checkauth('1023');
 		//获取当前登陆用户.
 		$userInfo = $this->adminService->current_user();
 		if(!isset($userInfo)){

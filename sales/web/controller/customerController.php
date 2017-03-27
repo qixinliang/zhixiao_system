@@ -17,12 +17,14 @@ class customerController extends baseController{
 		$this->customerRecordService 	= InitPHP::getService('customerRecord');
 		$this->departmentService 		= InitPHP::getService('department');
 		$this->roleService 				= InitPHP::getService('adminGroup');
+		$this->authService              = InitPHP::getService('auth');
 	}
 
 	/*
      * @客户管理的首页
 	 */
 	public function run(){
+		$this->authService->checkauth('1025');
 		//获取当前登陆用户
 		$adminService = InitPHP::getService('admin');
 		$userInfo     = $adminService->current_user();
@@ -139,6 +141,7 @@ class customerController extends baseController{
      *@客户重新分配
      */
 	public function adjust(){
+		$this->authService->checkauth('1026');
 		/*
          *run函数，点击重新分配按钮传递过来的是公共池的ID
 		 */
@@ -169,6 +172,7 @@ class customerController extends baseController{
 
 	//保存至数据库
 	public function adjustSave(){
+		$this->authService->checkauth('1027');
 		$customerPoolId     = $this->controller->get_gp('customer_pool_id');
 		$investorId 		= $this->controller->get_gp('investor_id');
 		$investorName 		= $this->controller->get_gp('investor_name');
@@ -204,6 +208,7 @@ class customerController extends baseController{
 	 *@分配记录
 	 */
 	public function record(){
+		$this->authService->checkauth('1028');
 		$pager = $this->getLibrary('pager');
         $page  = $this->controller->get_gp('page')?
 				$this->controller->get_gp('page') : 1 ;

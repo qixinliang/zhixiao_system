@@ -11,9 +11,11 @@ class departmentController extends baseController{
 	public function __construct(){
 		parent::__construct();
 		$this->departmentService = InitPHP::getService('department');
+		$this->authService = InitPHP::getService("auth");
 	}
 	
 	public function run(){
+		$this->authService->checkauth('1001');
 		/*
 		 *list2的数组下标跟对应的
          *department_id是一致的，这样才能创建树
@@ -32,6 +34,7 @@ class departmentController extends baseController{
 	}
 
 	public function add(){
+		$this->authService->checkauth('1002');
 		//生成目录树的下拉框展示。
         $list2 = $this->departmentService->getDepartmentList2();
         $tree2 = $this->departmentService->generateTree2($list2);
@@ -44,16 +47,7 @@ class departmentController extends baseController{
 	}
 	
 	public function addSave(){
-		/*
-		$data = array(
-			'department_name' => $this->controller->get_gp('name'),
-			'p_dpt_id'		  => $this->controller->get_gp('p_dpt_id'),
-			'status'		  => 0,//正常
-			'create_time'	  => time(),
-			'update_time'	  => time()
-		);
-        $ret 	= $this->departmentService->addSave($data);
-		*/
+		$this->authService->checkauth('1003');
 		//根据父节点添加子节点...
 		$pid 	= $this->controller->get_gp('p_dpt_id');
 		$dName 	= $this->controller->get_gp('name'); 
@@ -67,6 +61,7 @@ class departmentController extends baseController{
 	}
 
 	public function edit(){
+		$this->authService->checkauth('1004');
 		$departmentId = $this->controller->get_gp('department_id');
 		$data 		  = $this->departmentService->getDepartmentInfo($departmentId);
 		if(!isset($data) || empty($data)){
@@ -89,6 +84,7 @@ class departmentController extends baseController{
 	}
 	
 	public function editSave(){
+		$this->authService->checkauth('1005');
         $arr = $this->departmentService->editSave($_POST);
         if($arr){
             exit(json_encode(array('status' => 1, 'message' => '部门信息修改成功!')));
@@ -96,6 +92,7 @@ class departmentController extends baseController{
 	}
 
 	public function del(){
+		$this->authService->checkauth('1006');
 		$departmentId = $this->controller->get_gp('department_id');
 		$ret = $this->departmentService->del($departmentId);
         if($ret == 1){

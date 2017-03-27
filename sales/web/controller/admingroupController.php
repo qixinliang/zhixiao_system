@@ -22,7 +22,7 @@ class admingroupController extends baseController
      */
     public function run()
     {
-        $this->authService->checkauth("1017");
+        $this->authService->checkauth("1007");
         $list = $this->adminGroupService->adminList();
         $this->view->assign('list', $list);
         $this->view->display("admingroup/run"); //使用模板
@@ -33,7 +33,7 @@ class admingroupController extends baseController
      */
     public function add()
     {
-        $this->authService->checkauth("1018");
+        $this->authService->checkauth("1008");
         $user = $this->adminService->current_user();
         $this->view->assign('action_name', '添加');
         $this->view->assign('action', 'add');
@@ -46,7 +46,7 @@ class admingroupController extends baseController
      */
     public function add_save()
     {
-        if($this->authService->checkauthUser("1019")==false){
+        if($this->authService->checkauthUser("1009")==false){
             exit(json_encode(array('status' =>0, 'message' => '您没有权限!')));
         }
         $arr = $this->adminGroupService->add_save($_POST);
@@ -61,7 +61,7 @@ class admingroupController extends baseController
      */
     public function edit()
     {
-        $this->authService->checkauth("1020");
+        $this->authService->checkauth("1010");
         $id = $this->controller->get_gp('id');
         $data=$this->adminGroupService->edit($id);
 
@@ -77,7 +77,7 @@ class admingroupController extends baseController
      */
     public function edit_save()
     {
-        if($this->authService->checkauthUser("1021")==false){
+        if($this->authService->checkauthUser("1011")==false){
             exit(json_encode(array('status' =>0, 'message' => '您没有权限!')));
         }
         
@@ -94,7 +94,7 @@ class admingroupController extends baseController
     //用户组删除
     public function del()
     {
-        if($this->authService->checkauthUser("1022")==false){
+        if($this->authService->checkauthUser("1012")==false){
             exit(json_encode(array('status' =>0, 'message' => '您没有权限!')));
         }
         $id = $this->controller->get_gp('id');

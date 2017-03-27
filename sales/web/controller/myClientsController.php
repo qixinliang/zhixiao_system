@@ -14,6 +14,7 @@ class myClientsController extends baseController
         parent::__construct();
         $this->adminService = InitPHP::getService("admin");//获取管理员信息
         $this->myClientsService = InitPHP::getService("myClients");
+		$this->authService = InitPHP::getService('auth');
     }
     
     /**
@@ -21,6 +22,7 @@ class myClientsController extends baseController
      * @author aaron
      */
     public function run(){
+		$this->authService->checkauth('1020');
         $pager= $this->getLibrary('pager'); //分页加载
         $page = $this->controller->get_gp('page') ? $this->controller->get_gp('page') : 1 ; //获取当前页码
         $this->teamUtilsService = InitPHP::getService('TeamUtils');
@@ -92,6 +94,7 @@ class myClientsController extends baseController
      * 未投资客户
      */
     public function noInvest(){
+		$this->authService->checkauth('1021');
         $pager= $this->getLibrary('pager'); //分页加载
         $page = $this->controller->get_gp('page') ? $this->controller->get_gp('page') : 1 ; //获取当前页码
         $user_id = intval($this->controller->get_gp('uid')) ? intval($this->controller->get_gp('uid')) : ''; //获取uid，用户id
@@ -146,6 +149,7 @@ class myClientsController extends baseController
      * 客户明细
      */
     public function detail(){
+		$this->authService->checkauth('1022');
         //获取用户当前客户id
         $clientId = intval($this->controller->get_gp('clientId')) ? intval($this->controller->get_gp('clientId')) : '' ; //获取当前页码
         if(!isset($clientId)){
