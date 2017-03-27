@@ -14,14 +14,14 @@ class myClientsService extends Service
     
     /**
      * 根据条件查询投资客户数据列表
-     * @param type $friendIds 好友id
+     * @param type $friendId 好友id
      * @param type $page 开始页码
      * @param type $length 长度
      * @param type $where 查询条件
      * @return type
      */
-    public function getInvestFriends($friendIds,$page,$length,$where){
-        return $this->myClientsDao->getInvestFriends($friendIds,$page,$length,$where);
+    public function getInvestFriends($uid,$page,$length,$where){
+        return $this->myClientsDao->getInvestFriends($uid,$page,$length,$where);
     }
     
     /**
@@ -42,8 +42,8 @@ class myClientsService extends Service
      * @param type $where
      * @return array
      */
-    public function getInvestFriendsCount($id,$where){
-        return $this->myClientsDao->getInvestFriendsCount($id,$where);
+    public function getInvestFriendsCount($uid,$where){
+        return $this->myClientsDao->getInvestFriendsCount($uid,$where);
     }
     
     /**
@@ -59,34 +59,26 @@ class myClientsService extends Service
     /**
      * 获取用户邀请的好友id列表
      * @param int $uid 用户id
-     * @param int $status 返回的是投资好友id或未投资好友id
      */
-    public function getfriendsIdList($uid,$status){
-        $noInvest = '';
-        $yesInvest = '';
+    public function getfriendsIdList($uid){
+        $noInvest = null;
+        $yesInvest = null;
         //根绝当前登录用户，获取邀请过的好友id
         $friends = $this->myClientsDao->getFriendsIdList($uid);
         if(empty($friends) || !isset($friends)){
-            exit('还没有邀请客户！');
+            return $invest = ''; exit;
         }
         //foreach循环判断用户是否投资
         foreach ($friends as $k=>$val){
             //根据邀请过的好友id，查询order表是否为空
             $friednOorder = $this->myClientsDao->getFriednOorder($val['uid']);
             if(empty($friednOorder)){
-                $noInvest = $noInvest.",".$val['uid'];
-            }else{
-                $yesInvest = $yesInvest.",".$val['uid'];
+                $noInvest= ','.$val['uid'];
             }
         }
         //判断显示类型，1表示未投资，返回未投资用户id，0表示投资，返回投资用户id
-        if($status=='1'){
-            $noInvest = substr($noInvest,1);
-            $invest = $noInvest;
-        }else{
-            $yesInvest = substr($yesInvest,1);
-             $invest = $yesInvest;
-        }
+        $noInvest = substr($noInvest, 1);
+        $invest = $noInvest;
         return $invest;
     }
     
@@ -101,7 +93,7 @@ class myClientsService extends Service
     public function arrange_where_url($uname='',$phone='',$start_date='',$end_date=''){
         $where = ' ';
         //分页地址
-        $url = 'myClients/run';
+        $url = 'myClients/invest';
         if($uname!=''){
             $url=$url.'/uname/'.$uname;
             $where.= ' and h.UsrName = "'.$uname.'"';
@@ -120,5 +112,46 @@ class myClientsService extends Service
         }
         
         return array('url'=>$url,'where'=>$where);
+    }
+    
+    /**
+     * 根据客户id，查询原邀请人信息状态
+     * @param int $clientId 客户id
+     * @return array
+     */
+    public function getInviterDeparture($clientId){
+        $res = $this->myClientsDao->getInviterDeparture($clientId);
+        if(empty($res) ||!isset($res)){
+            return $res = array();
+        }else{
+            return $res;
+        }
+    }
+    
+    /**
+     * 查询客户的原始邀请人信息
+     * @param type $clientId
+     * @return type
+     */
+    public function getoOriginalInviter($clientId){
+        return $this->myClientsDao->getoOriginalInviter($clientId);
+    }
+    
+    /**
+     * 查询客户分配后的邀请人信息
+     * @param type $clientId
+     * @return type
+     */
+    public function getAllocationInviter($clientId){
+        return $this->myClientsDao->getAllocationInviter($clientId);
+    }
+    
+    /**
+     * 查询客户的详细信息
+     * @param type $clientId
+     * @return type
+     */
+    public function getClientInfo($clientId){
+        return $this->myClientsDao->getClientInfo($clientId);
     }
 }
