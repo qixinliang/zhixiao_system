@@ -154,4 +154,18 @@ class myClientsService extends Service
     public function getClientInfo($clientId){
         return $this->myClientsDao->getClientInfo($clientId);
     }
+    
+    /**
+     * 查询当前客户是否投资
+     * @param type $clientId 好友id
+     * @return int 0,1
+     */
+    public function getFriednOorder($clientId){
+        $info = $this->myClientsDao->getFriednOorder($clientId);
+        if(isset($info) && !empty($info)){
+            return 1;
+        }else{
+            return 0;
+        }
+    }
 }
