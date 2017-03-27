@@ -52,8 +52,6 @@ function del(id,obj){
 			success: function(msg) {
 				if(msg.status == 2){
 					alert("内置角色无法删除");
-				}else if(msg.status == 3){
-					alert("越权操作");
 				}else{
 					$(obj).parent().parent().parent().remove();
 				}

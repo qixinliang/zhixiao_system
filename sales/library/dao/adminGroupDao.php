@@ -21,9 +21,9 @@ class adminGroupDao extends Dao
      * 获取用户组列表
      * @param $data
      */
-    public function adminList($user)
+    public function adminList()
     {
-        $sql = sprintf("select * from %s where grade= %s",$this->table_name,$user);
+        $sql = sprintf("select * from %s",$this->table_name);
         return  $this->dao->db->get_all_sql($sql);
     }
     /**

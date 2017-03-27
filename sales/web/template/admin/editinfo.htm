@@ -163,7 +163,7 @@
   </div>
 </div>
 <script type="text/javascript">
-var user = 0, UsrName = 0, IdNo = 0, Phone = 0;
+var user = 0, UsrName = 0;
 function chekUsName()
 {
     var s = $("#user").val();
@@ -209,7 +209,7 @@ function sub(obj){
 	chekJiaose();//角色类型
 	chekBumen();//所属部门
 
-	if(user == 1 && UsrName == 1 && IdNo == 1 && Phone == 1)
+	if(user == 1 && UsrName == 1)
 	{
 		$.ajax({
 			url: '/admin/<!--{$action}-->_save',

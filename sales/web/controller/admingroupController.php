@@ -14,7 +14,7 @@ class admingroupController extends baseController
         parent::__construct();
         $this->adminGroupService = InitPHP::getService("adminGroup");       //获取Service
         $this->adminService = InitPHP::getService("admin");                 //获取Service
-		$this->authService = InitPHP::getService("auth");                   //获取权限Service
+	$this->authService = InitPHP::getService("auth");                   //获取权限Service
     }
     /**
      * 默认Action
@@ -22,7 +22,7 @@ class admingroupController extends baseController
      */
     public function run()
     {
-		$this->authService->checkauth("1017");
+        $this->authService->checkauth("1017");
         $list = $this->adminGroupService->adminList();
         $this->view->assign('list', $list);
         $this->view->display("admingroup/run"); //使用模板
@@ -64,12 +64,8 @@ class admingroupController extends baseController
         $this->authService->checkauth("1020");
         $id = $this->controller->get_gp('id');
         $data=$this->adminGroupService->edit($id);
-        if($data==0)
-        {
-            exit(json_encode(array('status' => 0, 'message' => '越权操作!')));
-        }
+
         $this->view->assign('info', $data['info']);
-        $this->view->assign('user', $data['user']);
         $this->view->assign('model_power', $data['model_power']);
         $this->view->assign('action_name', '修改');
         $this->view->assign('action', 'edit');

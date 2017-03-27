@@ -35,7 +35,6 @@ class adminController extends baseController
 
         $list = $this->adminService->admin_list($where); //查询列表数据
         $adminList = $this->adminGroupService->adminList(); //获取角色列表
-        
         $list2 = $departmentService->getDepartmentList2();//获取所属部门列表
         $tree2 = $this->_generateTree2($list2);
         $html = $this->_exportTree($tree2,$department_id);
@@ -136,10 +135,7 @@ class adminController extends baseController
         $this->authService->checkauth("1026");
         $id = $this->controller->get_gp('id');
         $arr=$this->adminService->edit($id);
-        if($arr==4)
-        {
-            exit(json_encode(array('status' => 4, 'message' => '越权操作!')));
-        }
+
         $departmentService = InitPHP::getService("department");//上级列表
         $list2 = $departmentService->getDepartmentList2();
         $tree2 = $this->_generateTree2($list2);
@@ -148,7 +144,6 @@ class adminController extends baseController
         $this->view->assign('html', $html);
         $this->view->assign('user_group', $arr['user_group']);
         $this->view->assign('info', $arr['info']);
-        $this->view->assign('user', $arr['user']);
         $this->view->assign('action_name', '修改');
         $this->view->assign('action', 'edit');
         $this->view->display("admin/editinfo");
@@ -214,10 +209,6 @@ class adminController extends baseController
         if($arr==10)
         {
             exit(json_encode(array('status' => 10, 'message' => '删除成功!')));
-        }
-        if($arr==11)
-        {
-            exit(json_encode(array('status' => 11, 'message' => '越权操作!')));
         }
     }
     private function _generateTree2($items){
