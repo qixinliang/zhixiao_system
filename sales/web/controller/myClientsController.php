@@ -73,7 +73,7 @@ class myClientsController extends baseController
         $this->view->assign('friendsCount', $friendsCount['count']);//客户统计数量
         //数据列表
         $this->view->assign('friends',$friends['friends']);
-        $this->view->display('myClient/run');
+        $this->view->display('myclient/run');
     }
     
     /**
@@ -120,7 +120,7 @@ class myClientsController extends baseController
         $this->view->assign('start_date', $start_date);
         $this->view->assign('end_date', $end_date);
         
-        $this->view->display('myClient/noInvest');
+        $this->view->display('myclient/noInvest');
     }
     
     /**
@@ -153,6 +153,6 @@ class myClientsController extends baseController
         $this->view->assign('clientOorder',$clientOorder);
         $this->view->assign('clientInfo', $clientInfo);
         $this->view->assign('original_inviter', $original_inviter);
-        $this->view->display('myClient/detail');
+        $this->view->display('myclient/detail');
     }
 }
