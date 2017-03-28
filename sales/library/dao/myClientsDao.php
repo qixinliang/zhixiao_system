@@ -13,9 +13,9 @@ class myClientsDao extends Dao
      * @param type $where
      * @return array
      */
-    public function getInvestFriends($uid,$page,$length,$where){
-//        $sql = "select h.uid,d.deal_id,h.UsrName,h.UsrMp,d.title,o.order_money,o.order_time,d.start_date,d.end_date,o.`status`,d.expires_type,d.expires from cp_user_huifu h left join cp_deal_order o on h.uid = o.uid left join cp_deal d on d.deal_id = o.deal_id where h.uid in ($friendIds) $where limit $page ,$length";
-        $sql = "select h.uid,d.deal_id,h.UsrName,h.UsrMp,d.title,o.order_money,o.order_time,d.start_date,d.end_date,o.`status`,d.expires_type,d.expires from cp_user_yaoqingma_list y left join cp_user_huifu h on y.uid = h.uid left join cp_deal_order o on h.uid = o.uid left join cp_deal d on o.deal_id = d.deal_id where y.friends = $uid $where limit $page ,$length";
+    public function getInvestFriends($uid,$where){
+//        $sql = "select h.uid,d.deal_id,h.UsrName,i.phone,d.title,o.order_money,o.order_time,d.start_date,d.end_date,d.syl,d.expires_type,d.expires,d.full_time,d.deal_id from cp_user_yaoqingma_list y left join cp_user_huifu h on y.uid = h.uid left join cp_deal_order o on h.uid = o.uid left join cp_deal d on o.deal_id = d.deal_id left join cp_user_info i on h.uid = i.uid where y.friends = $uid $where";
+        $sql = "select i.uid,d.deal_id,h.UsrName,i.phone,d.title,o.order_money,o.order_time,d.start_date,d.end_date,d.syl,d.expires_type,d.expires,d.full_time,d.deal_id from cp_deal d ,cp_deal_order o ,cp_user_yaoqingma_list y ,cp_user_info i,cp_user_huifu h where d.deal_id = o.deal_id and o.uid = i.uid and h.uid = i.uid and i.uid = y.uid and y.friends = $uid $where";
         return $this->dao->db->get_all_sql($sql);
     }
     
@@ -26,8 +26,8 @@ class myClientsDao extends Dao
      * @param type $where
      * @return array
      */
-    public function getNoInvestFriends($friendIds,$page,$length,$where){
-        $sql = "select u.id,u.username,h.UsrName,h.UsrMp,u.login_time,h.create_time from cp_user u left join cp_user_huifu h on u.id = h.uid where  u.id in($friendIds) $where limit $page ,$length";
+    public function getNoInvestFriends($friendIds,$where){
+        $sql = "select u.id,u.username,h.UsrName,h.UsrMp,u.login_time,h.create_time,i.phone from cp_user u left join cp_user_huifu h on u.id = h.uid left join cp_user_info i on u.id = i.uid where u.id in($friendIds) $where ";
         return $this->dao->db->get_all_sql($sql);
     }
     
@@ -38,7 +38,7 @@ class myClientsDao extends Dao
      * @return type
      */
     public function getNoInvestFriendsCount($friendIds,$where){
-        $sql = "select count(u.id) as count from cp_user u left join cp_user_huifu h on u.id = h.uid where  u.id in($friendIds) $where";
+        $sql = "select count(h.uid)as count from cp_user u left join cp_user_huifu h on u.id = h.uid left join cp_user_info i on u.id = i.uid where u.id in($friendIds) $where ";
         return $this->dao->db->get_one_sql($sql);
     }
     /**
@@ -47,10 +47,10 @@ class myClientsDao extends Dao
      * @param type $where
      * @return type
      */
-    public function getInvestFriendsCount($uid,$where){
-        $sql = "select count(h.uid) as count from cp_user_yaoqingma_list y left join cp_user_huifu h on y.uid = h.uid left join cp_deal_order o on h.uid = o.uid left join cp_deal d on o.deal_id = d.deal_id where y.friends = $uid $where";
-        return $this->dao->db->get_one_sql($sql);
-    }
+//    public function getInvestFriendsCount($uid,$where){
+//        $sql = "select count(h.uid) as count from cp_user_yaoqingma_list y left join cp_user_huifu h on y.uid = h.uid left join cp_deal_order o on h.uid = o.uid left join cp_deal d on o.deal_id = d.deal_id left join cp_user_info i on h.uid = i.uid where y.friends = $uid $where";
+//        return $this->dao->db->get_one_sql($sql);
+//    }
     
     
     
@@ -110,6 +110,36 @@ class myClientsDao extends Dao
      */
     public function getClientInfo($clientId){
         $sql = "select h.UsrName,h.UsrMp,h.IdNo,h.create_time from cp_user u left join cp_user_huifu h on u.id = h.uid where u.id = $clientId";
+        return $this->dao->db->get_one_sql($sql);
+    }
+    
+    /**
+     * 查询客户分配记录表里，分配给我的客户id
+     * @param type $uid
+     * @return type
+     */
+    public function getCustomerRecordList($uid){
+        $sql="select * from zx_customer_record where new_inviter_id = $uid ";
+        return $this->dao->db->get_all_sql($sql);
+    }
+    
+    /**
+     * 查询客户分配表里面的客户订单信息
+     * @param type $investor_id
+     * @param type $where
+     * @return type
+     */
+    public function getCustomerRecordOrder($investor_id,$where){
+        $sql="select i.uid,d.deal_id,h.UsrName,i.phone,d.title,o.order_money,o.order_time,d.start_date,d.end_date,d.syl,d.expires_type,d.expires,d.full_time,d.deal_id from cp_deal d ,cp_deal_order o ,cp_user_huifu h ,cp_user_info i where d.deal_id = o.deal_id and o.uid = h.uid and h.uid = i.uid and o.uid = $investor_id $where";
+        return $this->dao->db->get_all_sql($sql);
+    }
+    
+    /**
+     * 根据用户id，统计用户邀请的客户数量
+     * @param type $uid
+     */
+    public function clientCount($uid){
+        $sql="select count(id) as count from cp_user_yaoqingma_list where friends = $uid";
         return $this->dao->db->get_one_sql($sql);
     }
 }

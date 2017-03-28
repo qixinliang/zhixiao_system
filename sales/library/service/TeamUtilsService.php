@@ -193,24 +193,31 @@ class TeamUtilsService extends Service{
      * @copyright(c): 2017年3月21日
      * @Author:  cxd
      * @Create Time: 下午3:30:52
-     * @年化收益额计算
+     * @年化收益额计算，统计年化收益金额，统计年化投资金额，循环查询投资客户的直属业务员
      * @$data 标的订单列表
      *************************************************************/
     public function yongJinJiSuan($data){
-        $tmparray = array();
+        $friends = array();
+        $tzje_count= 0; //投资金额统计
+        $nhsyl_count = 0;//年化收益率统计
         if(empty($data)){
             return $tmparray;
         }
         foreach ($data as $key=>$val){
             if(!empty($val['order_money']) && $val['order_money']>0){
                 if($val['expires_type']==1){
-                    $val['nhsyl']=$val['order_money']/360*$val['expires'];  //按天计算年化收益额
+                    $val['nhsyl']=round($val['order_money']/360*$val['expires'],2);;  //按天计算年化收益额
+                    $val['deal_end_date'] = strtotime('+'.$val['expires'].' day', $val['full_time'] );//按天计算
                 }else{
-                    $val['nhsyl']=$val['order_money']/12*$val['expires'];    //按月计算年化收益额
+                    $val['nhsyl']=round($val['order_money']/12*$val['expires'],2);    //按月计算年化收益额
+                    $val['deal_end_date'] = strtotime('+'.$val['expires'].' month', $val['full_time']);//按月计算
                 }
+                $nhsyl_count += $val['nhsyl'];      //年化收益率统计
+                $tzje_count += $val['order_money']; //投资金额统计
             }
-            $tmparray[] = $val;
+            $friends[] = $val;
         }
-        return $tmparray;
+//        print_r($friends);exit;
+        return array('friends'=>$friends,'nhsyl_count'=>$nhsyl_count,'tzje_count'=>$tzje_count);
     }
 }
