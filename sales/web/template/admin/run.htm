@@ -37,6 +37,7 @@
   </div> 
   <table class="table table-hover text-center">
     <tr>
+        <th>用户名</th> 
         <th>员工姓名</th> 
         <th>联系手机</th>
         <th>所属部门</th>
@@ -50,6 +51,7 @@
     </tr>
    <!--{foreach($list as $key=>$vo)}-->
 	<tr>
+                <td><!--{$vo['user']}--></td>
 		<td><!--{$vo['UsrName']}--></td>
 		<td><!--{$vo['phone']}--></td>
 		<td><!--{$vo['department_name']}--></td>
