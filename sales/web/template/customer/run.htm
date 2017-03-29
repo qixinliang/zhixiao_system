@@ -31,7 +31,6 @@
 						<option value="<!--{$vo['id']}-->" <!--{if($vo['id']==$uRole)}--> selected="selected" <!--{/if}--> ><!--{$vo['name']}--></option>
 					<!--{/foreach}-->
 			</select>
-        <input type="hidden" name ="page" value="<!--{$page}-->">
       	<input type="submit" class="button border-yellow" value="搜索">
       </form>
   </div>
@@ -49,39 +48,48 @@
 	  <th>是否投资</th>
 	  <th>操作</th>
     </tr>
-	
-	<!--{foreach($list as $k => $v)}-->
-    <tr>
-      <td><!--{$v['investor_id']}--></td>
-      <td><!--{$v['investor_login_name']}--></td> 
-      <td><!--{$v['investor_real_name']}--></td>
-      <td><!--{$v['investor_cellphone']}--></td>
-      <td><!--{$v['create_time']}--></td>
-      <td><!--{$v['inviter_name']}--></td>
-      <td><!--{$v['inviter_dpt_name']}--></td>
-      <td><!--{$v['inviter_role_name']}--></td>
-      <td><!--{$v['inviter_off_time']}--></td>
-      <td>
-		<!--{if($v['invest_status'] == 0)}-->
-      		否
-      	<!--{else}-->
-      		是
-      	<!--{/if}-->
-	  </td>
-      <td>
-      <div class="button-group">
-      <a type="button" class="button border-main" href="/customer/adjust/customer_pool_id/<!--{$v['customer_pool_id']}-->"><span class="icon-edit"></span>重新分配</a>
-      </div>
-      </td>
-    </tr> 
-	<!--{/foreach}-->
-
+	<!--{if(isset($list) && !empty($list))}-->
+		<!--{foreach($list as $k => $v)}-->
+    	<tr>
+      		<td><!--{$v['investor_id']}--></td>
+      		<td><!--{$v['investor_login_name']}--></td> 
+      		<td><!--{$v['investor_real_name']}--></td>
+      		<td><!--{$v['investor_cellphone']}--></td>
+      		<td><!--{$v['create_time']}--></td>
+      		<td><!--{$v['inviter_name']}--></td>
+      		<td><!--{$v['inviter_dpt_name']}--></td>
+      		<td><!--{$v['inviter_role_name']}--></td>
+      		<td><!--{$v['inviter_off_time']}--></td>
+      		<td>
+				<!--{if($v['invest_status'] == 0)}-->
+      				否
+      			<!--{else}-->
+      				是
+      			<!--{/if}-->
+	  		</td>
+     		<td>
+      		<div class="button-group">
+      			<a type="button" class="button border-main" href=
+			"/customer/adjust/customer_pool_id/<!--{$v['customer_pool_id']}-->">
+				<span class="icon-edit"></span>重新分配
+				</a>
+      		</div>
+      		</td>
+    	</tr> 
+		<!--{/foreach}-->
+	<!--{else}-->
+        <tr>
+            <td colspan="6">暂无数据</td>
+        </tr>
+	<!--{/if}-->
   </table>
 </div>
 
+<!--{if($count)}-->
 <div class="padding border-bottom">
 	<!--{$page_html}-->
 </div>
+<!--{/if}-->
 
 </body>
 </html>

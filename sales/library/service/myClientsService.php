@@ -20,8 +20,8 @@ class myClientsService extends Service
      * @param type $where 查询条件
      * @return type
      */
-    public function getInvestFriends($uid,$page,$length,$where){
-        return $this->myClientsDao->getInvestFriends($uid,$page,$length,$where);
+    public function getInvestFriends($uid,$where){
+        return $this->myClientsDao->getInvestFriends($uid,$where);
     }
     
     /**
@@ -32,8 +32,8 @@ class myClientsService extends Service
      * @param type $where 查询条件
      * @return type
      */
-    public function getNoInvestFriends($friendIds,$page,$length,$where){
-        return $this->myClientsDao->getNoInvestFriends($friendIds,$page,$length,$where);
+    public function getNoInvestFriends($friendIds,$where){
+        return $this->myClientsDao->getNoInvestFriends($friendIds,$where);
     }
     
     /**
@@ -60,9 +60,8 @@ class myClientsService extends Service
      * 获取用户邀请的好友id列表
      * @param int $uid 用户id
      */
-    public function getfriendsIdList($uid){
+    public function getfriendsIdList($uid,$allocation){
         $noInvest = null;
-        $yesInvest = null;
         //根绝当前登录用户，获取邀请过的好友id
         $friends = $this->myClientsDao->getFriendsIdList($uid);
         if(empty($friends) || !isset($friends)){
@@ -74,6 +73,15 @@ class myClientsService extends Service
             $friednOorder = $this->myClientsDao->getFriednOorder($val['uid']);
             if(empty($friednOorder)){
                 $noInvest= ','.$val['uid'];
+            }
+        }
+        //循环分配记录表里面，分配给当前用户的客户信息，判断是否投资
+        if(!empty($allocation)){
+            foreach ($allocation as $k=>$v){
+                $friednOorder = $this->myClientsDao->getFriednOorder($v['investor_id']);
+                if(empty($friednOorder)){
+                    $noInvest.=','.$v['investor_id'];
+                }
             }
         }
         //判断显示类型，1表示未投资，返回未投资用户id，0表示投资，返回投资用户id
@@ -100,15 +108,15 @@ class myClientsService extends Service
         }
         if($phone!=''){
             $url=$url.'/phone/'.$phone;
-            $where.= ' and h.UsrMp = '.$phone;
+            $where.= ' and i.phone = '.$phone;
         }
         if($start_date!=''){
             $url=$url.'/start_date/'.$start_date;
-            $where.= ' and d.start_date >= '.strtotime($start_date);
+            $where.= ' and o.order_time >= '.strtotime($start_date);
         }
         if($end_date!=''){
             $url=$url.'/end_date/'.$end_date;
-            $where.= ' and d.end_date <= '.strtotime($end_date);
+            $where.= ' and o.order_time <= '.strtotime($end_date);
         }
         
         return array('url'=>$url,'where'=>$where);
@@ -157,7 +165,7 @@ class myClientsService extends Service
     
     /**
      * 查询当前客户是否投资
-     * @param type $clientId 好友id
+     * @param type $clientId 客户id
      * @return int 0,1
      */
     public function getFriednOorder($clientId){
@@ -168,4 +176,50 @@ class myClientsService extends Service
             return 0;
         }
     }
+    
+    /**
+     * 查询客户分配记录表里，分配给我的客户id
+     * @param type $uid
+     * @return type
+     */
+    public function getCustomerRecordList($uid){
+        return $this->myClientsDao->getCustomerRecordList($uid);
+    }
+    
+    /**
+     * 查询客户分配表里面的客户订单信息
+     * @param type $investor_id
+     * @return array
+     */
+    public function getCustomerRecordOrder($investor_id,$where){
+        return $this->myClientsDao->getCustomerRecordOrder($investor_id,$where);
+    }
+    
+    /**
+     * 根据用户id，统计用户邀请的客户数量
+     * @param type $uid
+     * @return type
+     */
+    public function clientCount($uid){
+        return $this->myClientsDao->clientCount($uid);
+    }
+    
+    public function mergeData($friends,$customer_record_list,$arrange_where_url){
+        foreach ($friends as $k=>$v){
+            foreach($customer_record_list as $k1=>$v1){
+                if($v['uid']==$v1['investor_id']){
+                    unset($customer_record_list[$k1]);
+                }
+            }
+        }
+        foreach($customer_record_list as $k=>$v){
+            //根据客户分配表里面的客户id，查询相关投资几率
+            $customer_record_order = $this->getCustomerRecordOrder($v['investor_id'],$arrange_where_url['where']); 
+            if(is_array($customer_record_order)){
+                $friends = array_merge($friends,$customer_record_order);
+            }
+        }
+        return $friends;
+    }
+    
 }
