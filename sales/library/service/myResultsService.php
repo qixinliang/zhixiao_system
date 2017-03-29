@@ -14,6 +14,19 @@ class myResultsService extends Service{
         parent::__construct();
     }
     /************************************************************
+     * @copyright(c): 2017年3月29日
+     * @Author:  yuwen
+     * @Create Time: 下午3:33:24
+     * @qq:32891873
+     * @email:fuyuwen88@126.com
+     * @TOP排行使用方法
+     *************************************************************/
+    public function getTopranking($uid){
+        $date = date("Y-m-d H:i:s");//当前时间
+        $val = $this->getthemonth($date);//返回当前月的开始和结束时间
+        return $this->MonthlyPersonalDetail($uid,$val);//返回当前月份的-入金规模(万)-折标金额(万)-回款金额(万)-佣金收入(元)-新增客户数(人)
+    }
+    /************************************************************
      * @copyright(c): 2017年3月21日
      * @Author:  yuwen
      * @Create Time: 上午10:00:25
