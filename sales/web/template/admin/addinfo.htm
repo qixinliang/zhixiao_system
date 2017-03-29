@@ -90,6 +90,21 @@
 		  </div>
 		</div>
 
+
+		
+		<div class="form-group">
+        <div class="label">
+          <label>入职时间：</label>
+        </div>
+        <div class="field">
+		  <input name="Inthetime" type="text" class="input w50" id="Inthetime" value="<!--{$info['Inthetime']}-->" />       
+          <div class="tips_Inthetime" style="float: left;padding-left: 10px;color: #888;line-height: 42px;"></div>
+        </div>
+      </div> 
+		
+		
+		
+		
 	   <div class="form-group">
         <div class="label">
           <label>级别：</label>
@@ -154,7 +169,6 @@ function chekUsName()
 {
     var s = $("#user").val();
     var reg = /^\w{6,16}$/;   
-	
     if(reg.test(s)){  
 		$(".tips_user").html("").show();
 		user = 1;
@@ -217,15 +231,13 @@ function chekPassWord()
 
 
 function sub(obj){
-
 	chekUsName();//用户名
 	chekPassWord();//登录密码
 	chekPhone();//手机号
 	chekUsrName();//真实姓名 
 	chekJiaose();//角色类型
 	chekBumen();//所属部门
-	
-	if(user == 1 && UsrName == 1 && IdNo == 1 && Phone == 1 && password == 1)
+	if(user == 1 && UsrName == 1 && Phone == 1 && password == 1)
 	{
 		$.ajax({
 			url: '/admin/<!--{$action}-->_save',
@@ -245,6 +257,8 @@ function sub(obj){
 				}
 			}
 		});
+	}else{
+		alert('no');
 	}
 	
 
