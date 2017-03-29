@@ -204,6 +204,13 @@ class myClientsService extends Service
         return $this->myClientsDao->clientCount($uid);
     }
     
+    /**
+     * 循环取出客户分配表里面，分配给我的客户信息，并和我的客户数据合并
+     * @param type $friends
+     * @param type $customer_record_list
+     * @param type $arrange_where_url
+     * @return type
+     */
     public function mergeData($friends,$customer_record_list,$arrange_where_url){
         foreach ($friends as $k=>$v){
             foreach($customer_record_list as $k1=>$v1){
@@ -214,12 +221,23 @@ class myClientsService extends Service
         }
         foreach($customer_record_list as $k=>$v){
             //根据客户分配表里面的客户id，查询相关投资几率
-            $customer_record_order = $this->getCustomerRecordOrder($v['investor_id'],$arrange_where_url['where']); 
+            $customer_record_order = $this->getCustomerRecordOrder($v['investor_id'],$arrange_where_url['where']);
+            //循环查询当前客户所归属的业务员
+            foreach ($customer_record_order as $k1=>$v1){
+                $salesman = $this->myClientsDao->getSalesmanUsername2($v1['uid']);
+                $customer_record_order[$k1]['salesman'] = $salesman['new_inviter_name'];
+            }
             if(is_array($customer_record_order)){
                 $friends = array_merge($friends,$customer_record_order);
             }
         }
-        return $friends;
+        $customer_friends_count = count($customer_record_list);//分配给我的邀请人数量，用于计算客户数量
+        return array('friends'=>$friends,'customer_friends_count'=>$customer_friends_count);
+    }
+    
+    public function getSalesmanUsername($uid){
+        $salesman = $this->myClientsDao->getSalesmanUsername($uid);
+        return $salesman['username'];
     }
     
 }
