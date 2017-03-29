@@ -260,4 +260,28 @@ class adminService extends Service
         }
         return $where;
     }
+    /************************************************************
+     * @copyright(c): 2017年3月28日
+     * @Author:  yuwen
+     * @Create Time: 下午5:26:05
+     * @qq:32891873
+     * @email:fuyuwen88@126.com
+     * @根据department_id获取部门
+     *************************************************************/
+    public function getParentNodeById($department_id){
+        $departmentDao = InitPHP::getDao("department");//获取上级部门
+        return $departmentDao->getParentNodeById($department_id);
+    }
+    /************************************************************
+     * @copyright(c): 2017年3月28日
+     * @Author:  yuwen
+     * @Create Time: 下午5:32:43
+     * @qq:32891873
+     * @email:fuyuwen88@126.com
+     * @根据department_id获取部门内有多少用户
+     *************************************************************/
+    public function getdepartmentTheUser($department_id){
+        $adminDao = InitPHP::getDao("admin");//获取上级部门
+        return $adminDao->getdepartmentTheUser($department_id);
+    }
 }
