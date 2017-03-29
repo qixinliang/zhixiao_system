@@ -142,4 +142,15 @@ class myClientsDao extends Dao
         $sql="select count(id) as count from cp_user_yaoqingma_list where friends = $uid";
         return $this->dao->db->get_one_sql($sql);
     }
+    
+    //从cp_user_yaoqing_list获取客户的业务员姓名
+    public function getSalesmanUsername($clientId){
+        $sql="select u.username from cp_user_yaoqingma_list y left join cp_user u on y.friends = u.id where y.uid = $clientId";
+        return $this->dao->db->get_one_sql($sql);
+    }
+    
+    public function getSalesmanUsername2($clientId){
+        $sql="select new_inviter_name from zx_customer_record where investor_id = $clientId";
+        return $this->dao->db->get_one_sql($sql);
+    }
 }
