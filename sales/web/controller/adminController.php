@@ -32,22 +32,56 @@ class adminController extends baseController
         
         //根据检索条件，拼接sql语句where条件
         $where = $this->adminService->getWhere($part_id,$department_id,$unmae,$phone);
-
         $list = $this->adminService->admin_list($where); //查询列表数据
         $adminList = $this->adminGroupService->adminList(); //获取角色列表
         $list2 = $departmentService->getDepartmentList2();//获取所属部门列表
         $tree2 = $this->_generateTree2($list2);
         $html = $this->_exportTree($tree2,$department_id);
-        
+        $list = $this->getToObtainTheSuperior($list);//查找直属负责人
         //映射检索条件
         $this->view->assign('part', $part_id);
         $this->view->assign('uname', $unmae);
         $this->view->assign('phone', $phone);
-        
         $this->view->assign('html', $html);
         $this->view->assign('list', $list);
         $this->view->assign('adminList',$adminList);
         $this->view->display("admin/run");
+    }
+    /************************************************************
+     * @copyright(c): 2017年3月28日
+     * @Author:  yuwen
+     * @Create Time: 下午5:23:44
+     * @qq:32891873
+     * @email:fuyuwen88@126.com
+     * @获取上级部门
+     *************************************************************/
+    public function getToObtainTheSuperior($list){
+        if(empty($list)){
+            return array();
+        }
+        foreach ($list as $key=>$val){
+            $val['superior'] =null;
+            $val['superior_position'] =null;
+            $val['superior_department_name'] =null;
+            //获取上级部门
+            $res = $this->adminService->getParentNodeById($val['department_id']);
+            if(intval($res['department_id'])>0){
+                //获取上级部门内有多少用户
+                $userinfo = $this->adminService->getdepartmentTheUser(intval($res['department_id']));
+                if (!empty($userinfo)){
+                    foreach ($userinfo as $k=>$v){
+                        if($v['privilege']>$val['privilege']){
+                            $val['superior'] =$v['UsrName'];
+                            $val['superior_position'] =$v['name'];
+                            $val['superior_department_name'] =$v['department_name'];
+                            $list[$key]=$val;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        return $list;
     }
     /**
      * 添加
@@ -58,12 +92,10 @@ class adminController extends baseController
         $this->authService->checkauth("1024");
         $departmentService = InitPHP::getService("department");//上级列表
         $user_group = $this->adminGroupService->adminList();
-        
         $list2 = $departmentService->getDepartmentList2();
         $tree2 = $this->_generateTree2($list2);
         $html = $this->_exportTree($tree2);
         $this->view->assign('html', $html);
-        
         $this->view->assign('action_name', '添加');
         $this->view->assign('action', 'add');
         $this->view->assign('user_group', $user_group);
@@ -93,7 +125,7 @@ class adminController extends baseController
 		$data['phone'] = $this->controller->get_gp('phone');
 		$data['password'] = $this->controller->get_gp('password');
 		$data['password2'] = $this->controller->get_gp('password2');
-		
+		$data['Inthetime'] = $this->controller->get_gp('Inthetime');
 		$data['department_id'] = $this->controller->get_gp('department_id');
 		$data['level_id'] = $this->controller->get_gp('level_id');
 		$data['gender'] = $this->controller->get_gp('gender');
@@ -162,7 +194,7 @@ class adminController extends baseController
 		
 		$data['id'] = $this->controller->get_gp('id');//自然ID
 		$data['gid'] = $this->controller->get_gp('gid');//角色ID
-                $data['department_id'] = $this->controller->get_gp('department_id');//部门ID
+        $data['department_id'] = $this->controller->get_gp('department_id');//部门ID
 		$data['UsrName'] = $this->controller->get_gp('UsrName');//用户名
 		//$data['phone'] = $this->controller->get_gp('phone');//手机号
 		$data['password'] = $this->controller->get_gp('password');//密码
@@ -171,11 +203,10 @@ class adminController extends baseController
 		$data['gender'] = $this->controller->get_gp('gender');//性别
 		$data['departure'] = $this->controller->get_gp('departure');//在职状态
 		$data['status'] = $this->controller->get_gp('status');//状态
-                
-                if($data['departure'] == 0){ //如果离职触发客户池功能
-                    //FIXME,调用客户分配服务层中的方法，把数据写入公共池中。
-                }
-		
+		$data['Inthetime'] = $this->controller->get_gp('Inthetime');
+        if($data['departure'] == 0){ //如果离职触发客户池功能
+            //FIXME,调用客户分配服务层中的方法，把数据写入公共池中。
+        }
         $arr = $this->adminService->edit_save($data);
         if($arr==5)
         {
