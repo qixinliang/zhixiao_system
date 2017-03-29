@@ -48,7 +48,7 @@ class adminDao extends Dao
      */
     public function admin_list($where)
     {
-        $sql=sprintf("select a.*,b.name as gname,d.department_name from %s a left join cp_zjingjiren_admin_group b on a.gid=b.id left JOIN zx_department d on d.department_id = a.department_id where a.vaild =1  %s order by id desc",$this->table_name,$where);
+        $sql=sprintf("select a.*,b.name as gname,d.department_name,b.privilege from %s a left join cp_zjingjiren_admin_group b on a.gid=b.id left JOIN zx_department d on d.department_id = a.department_id where a.vaild =1  %s order by id desc",$this->table_name,$where);
         return  $this->dao->db->get_all_sql($sql);
     }
     /**
@@ -175,6 +175,18 @@ class adminDao extends Dao
      *************************************************************/
     public function jingjirentuijianjingjirensereach($tuijianren,$start,$end){
         $sql=sprintf("select a.*,b.name as gname,c.id as uid from %s a left join cp_zjingjiren_admin_group b on a.gid=b.id left join cp_user c on a.user=c.username where a.tuijianren=%s and a.regtime >=%s and a.regtime <=%s and a.gid= 3 order by id asc",$this->table_name,$tuijianren,$start,$end);
+        return  $this->dao->db->get_all_sql($sql);
+    }
+    /************************************************************
+     * @copyright(c): 2017年3月28日
+     * @Author:  yuwen
+     * @Create Time: 下午5:35:01
+     * @qq:32891873
+     * @email:fuyuwen88@126.com
+     * @根据department_id获取部门内有多少用户
+     *************************************************************/
+    public function getdepartmentTheUser($department_id){
+        $sql=sprintf("select * from cp_zjingjiren_admin a left join cp_zjingjiren_admin_group b on  a.gid=b.id left join zx_department c on a.department_id=c.department_id where c.department_id=%s",$department_id);
         return  $this->dao->db->get_all_sql($sql);
     }
 }
