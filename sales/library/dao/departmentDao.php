@@ -102,6 +102,26 @@ class departmentDao extends Dao{
 		$ret = $this->dao->db->get_one_sql($sql);
 		return $ret;
 	}
+
+	public function getChilds($id){
+		$lists = $this->getDepartmentList2();
+		return $this->getMenuTree($lists,$id);
+	}
+	
+	public function getMenuTree($arrOrigin,$pid,$level=0){
+	    static  $arrTree = array();
+    	if(empty($arrOrigin)) return FALSE;
+    	$level++;
+    	foreach($arrOrigin as $k => $v){
+        	if($v['p_dpt_id' ] == $pid){
+            	$v['level'] = $level;
+            	$arrTree[] = $v;
+            	unset($arrOrigin[$k]); //注销当前节点数据，减少已无用的遍历
+            	$this->getMenuTree($arrOrigin, $v['department_id'], $level);
+        	}
+    	}
+    	return $arrTree;
+	}	
 	
 	//暂停使用
 	public function getChildNodes2($id){
@@ -109,7 +129,7 @@ class departmentDao extends Dao{
 		$rows = $this->dao->db->get_all_sql($sql);
 		if(isset($rows) && !empty($rows)){
 			foreach($rows as $k => $v){
-				$this->getChildNodes($v['department_id']);
+				$this->getChildNodes2($v['department_id']);
 			}
 		}
 	}

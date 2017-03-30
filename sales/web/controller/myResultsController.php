@@ -34,7 +34,11 @@ class myResultsController extends baseController{
     public function run(){
         $adminService = InitPHP::getService("admin");//获取管理员信息
         $myResultsService = InitPHP::getService("myResults");
-        $userinfo = $adminService->current_user();
+        
+        $userinfo['id'] = $this->controller->get_gp('uid') ? $this->controller->get_gp('uid') : '' ;
+        if(empty($userinfo['id'])){
+            $userinfo = $adminService->current_user();
+        }
         $res = $myResultsService->ResultsList($userinfo);
         $renshucount=0;
         if(!empty($res['data'])){

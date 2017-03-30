@@ -167,4 +167,8 @@ class departmentService extends Service{
 	public function getChildNodes($id){
 		return $this->_departmentDao->getChildNodes($id);
 	}
+
+	public function getChilds($id){
+		return $this->_departmentDao->getChilds($id);
+	}
 }
