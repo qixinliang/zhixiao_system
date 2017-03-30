@@ -40,15 +40,15 @@
 		<tr>
                   <td>1</td>
 		  <td><!--{$original_inviter['inviter_name']}-->(原始邀请人)</td>      
-		  <td><!--{$original_inviter['inviter_name']}--></td>  
+		  <td><!--{$original_inviter['investor_cellphone']}--></td>  
 		  <td><?php echo date('Y-m-d H:i:s',$original_inviter['create_time']);?></td>  
 		</tr>
                 <!--{if($allocation_inviter)}-->
                 <!--{foreach($allocation_inviter as $k=>$v)}-->
                     <tr>
                         <td><?php echo $k+2;?></td>
-                        <td><!--{$v['id']}--></td>      
-                        <td><!--{$v['username']}--></td>  
+                        <td><!--{$v['username']}--></td>      
+                        <td><!--{$v['phone']}--></td>  
                         <td><?php echo date('Y-m-d H:i:s',$v['create_time']); ?></td>  
                     </tr>
                 <!--{/foreach}-->

@@ -100,7 +100,7 @@ class myClientsDao extends Dao
      * @return type
      */
     public function getAllocationInviter($clientId){
-        $sql = "select u.id,u.username,r.create_time from zx_customer_record r left join cp_user u on r.new_inviter_id = u.id where r.investor_id = $clientId";
+        $sql = "select u.id,u.username,r.create_time,i.phone from zx_customer_record r left join cp_user u on r.new_inviter_id = u.id left join cp_user_info i on u.id = i.uid where r.investor_id = $clientId";
         return $this->dao->db->get_all_sql($sql);
     }
     /**
