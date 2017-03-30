@@ -57,14 +57,16 @@
 		<td><!--{$vo['department_name']}--></td>
         <td><!--{$vo['gname']}--></td>
         <td>
-        <!--{if($vo['level_id']==0)}-->
-		实习
-		<!--{elseif($vo['level_id']==1)}-->
-		初级
-		<!--{elseif($vo['level_id']==2)}-->
-		中级
-		<!--{elseif($vo['level_id']==3)}-->
-		高级
+        <!--{if($vo['gid']==10)}-->
+	        <!--{if($vo['level_id']==0)}-->
+			实习
+			<!--{elseif($vo['level_id']==1)}-->
+			初级
+			<!--{elseif($vo['level_id']==2)}-->
+			中级
+			<!--{elseif($vo['level_id']==3)}-->
+			高级
+			<!--{/if}-->
 		<!--{/if}-->
         </td>
 		<td><!--{$vo['superior']}--></td>
