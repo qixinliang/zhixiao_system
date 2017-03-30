@@ -147,6 +147,9 @@ class departmentService extends Service{
 	 *************************************************************/
 	public function getDepartmentName($department_id){
 	    $info = $this->_departmentDao->getDepartmentName($department_id);
+	    if(empty($info['p_dpt_id'])){
+	        return $info['department_name'];
+	    }
 	    if(!empty($info['p_dpt_id'])){
 	        $this->department_name.=$info['department_name'].'-';
 	        $this->getDepartmentName(intval($info['p_dpt_id']));
