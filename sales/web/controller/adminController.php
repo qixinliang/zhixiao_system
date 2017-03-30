@@ -65,9 +65,17 @@ class adminController extends baseController
             $val['superior_department_name'] =null;
             //获取上级部门
             $res = $this->adminService->getParentNodeById($val['department_id']);
-            if(intval($res['department_id'])>0){
+            if(intval($res['department_id'])>0||intval($val['gid'])==4||intval($val['gid'])==2){
                 //获取上级部门内有多少用户
-                $userinfo = $this->adminService->getdepartmentTheUser(intval($res['department_id']));
+                //10销售4副总裁5城市总经理
+                if($val['gid']==10||$val['gid']==4||$val['gid']==2){
+                    $userinfo = $this->adminService->getdepartmentTheUser(intval($val['department_id']));
+                }else{
+                    $userinfo = $this->adminService->getdepartmentTheUser(intval($res['department_id']));
+                    if($val['gid']==5){
+                        rsort($userinfo);
+                    }
+                }
                 if (!empty($userinfo)){
                     foreach ($userinfo as $k=>$v){
                         if($v['privilege']>$val['privilege']){
