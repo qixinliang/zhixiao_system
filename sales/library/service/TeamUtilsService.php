@@ -217,7 +217,6 @@ class TeamUtilsService extends Service{
             }
             $friends[] = $val;
         }
-//        print_r($friends);exit;
         return array('friends'=>$friends,'nhsyl_count'=>$nhsyl_count,'tzje_count'=>$tzje_count);
     }
 }

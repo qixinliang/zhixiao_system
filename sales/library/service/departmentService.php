@@ -8,25 +8,12 @@ class departmentService extends Service{
     
     public $department_name = '';
     
-	public static $defaultDepartmentDict = array(
-		1 => '中承集团',
-		2 => '承德市',
-		3 => '承德一区',
-		4 => '承德二区',
-		5 => '承德三区',
-		6 => '怀来县',
-	);
-
 	private $_departmentDao = NULL;
 
     public function __construct(){
         parent::__construct();
         $this->_departmentDao = InitPHP::getDao("department");
     }
-
-	public function getDefaultDepartmentDict(){
-		return self::$defaultDepartmentDict;
-	}
 
 	public function getDepartmentTree(){
 		return $this->_departmentDao->getDepartmentTree();
@@ -172,5 +159,12 @@ class departmentService extends Service{
 			$departmentName = '';
 		}
 		return $departmentName;
+	}
+
+	/*
+	 *@根据部门ID获取它的所有子部门
+     */
+	public function getChildNodes($id){
+		return $this->_departmentDao->getChildNodes($id);
 	}
 }

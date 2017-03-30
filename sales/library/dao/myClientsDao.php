@@ -14,8 +14,8 @@ class myClientsDao extends Dao
      * @return array
      */
     public function getInvestFriends($uid,$where){
-//        $sql = "select h.uid,d.deal_id,h.UsrName,i.phone,d.title,o.order_money,o.order_time,d.start_date,d.end_date,d.syl,d.expires_type,d.expires,d.full_time,d.deal_id from cp_user_yaoqingma_list y left join cp_user_huifu h on y.uid = h.uid left join cp_deal_order o on h.uid = o.uid left join cp_deal d on o.deal_id = d.deal_id left join cp_user_info i on h.uid = i.uid where y.friends = $uid $where";
-        $sql = "select i.uid,d.deal_id,h.UsrName,i.phone,d.title,o.order_money,o.order_time,d.start_date,d.end_date,d.syl,d.expires_type,d.expires,d.full_time,d.deal_id from cp_deal d ,cp_deal_order o ,cp_user_yaoqingma_list y ,cp_user_info i,cp_user_huifu h where d.deal_id = o.deal_id and o.uid = i.uid and h.uid = i.uid and i.uid = y.uid and y.friends = $uid $where";
+//        $sql = "select i.uid,d.deal_id,h.UsrName,i.phone,d.title,o.order_money,o.order_time,d.start_date,d.end_date,d.syl,d.expires_type,d.expires,d.full_time,d.deal_id from cp_deal d ,cp_deal_order o ,cp_user_yaoqingma_list y ,cp_user_info i,cp_user_huifu h where d.deal_id = o.deal_id and o.uid = i.uid and h.uid = i.uid and i.uid = y.uid and y.friends = $uid $where";
+        $sql="select i.uid,d.deal_id,h.UsrName,i.phone,d.title,o.order_money,o.order_time,d.start_date,d.end_date,d.syl,d.expires_type,d.expires,d.full_time,d.deal_id from cp_deal d left join cp_deal_order o on d.deal_id = o.deal_id left join cp_user_yaoqingma_list y on o.uid = y.uid left join cp_user_huifu h on h.uid =o.uid left join cp_user_info i on h.uid = i.uid where y.friends = $uid $where";
         return $this->dao->db->get_all_sql($sql);
     }
     
@@ -140,6 +140,17 @@ class myClientsDao extends Dao
      */
     public function clientCount($uid){
         $sql="select count(id) as count from cp_user_yaoqingma_list where friends = $uid";
+        return $this->dao->db->get_one_sql($sql);
+    }
+    
+    //从cp_user_yaoqing_list获取客户的业务员姓名
+    public function getSalesmanUsername($clientId){
+        $sql="select u.username from cp_user_yaoqingma_list y left join cp_user u on y.friends = u.id where y.uid = $clientId";
+        return $this->dao->db->get_one_sql($sql);
+    }
+    
+    public function getSalesmanUsername2($clientId){
+        $sql="select new_inviter_name from zx_customer_record where investor_id = $clientId";
         return $this->dao->db->get_one_sql($sql);
     }
 }
