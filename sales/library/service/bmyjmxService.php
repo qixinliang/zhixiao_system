@@ -28,7 +28,7 @@ class bmyjmxService extends Service
      * @param type $where
      * @return type
      */
-    public function getDepartmentUser($department_id,$where){
+    public function getDepartmentUser($department_id,$where=''){
         return $this->bmyjmxsDao->getDepartmentUser($department_id,$where);
     }
     
@@ -72,12 +72,12 @@ class bmyjmxService extends Service
         return $this->bmyjmxsDao->getMyDepartment($department_id);
     }
     
-    public function getUserDataList($my_department_lsit,$arrange_where_url=array()){
+    public function getUserDataList($my_department_lsit,$where=''){
         //循环所有的部门，查询所有部门下的user
         $user_array = array();
         foreach($my_department_lsit as $k=>$v){
             //获取用户信息，并赋值给user_array
-            $user = $this->getDepartmentUser($v['department_id'],$arrange_where_url['where']);//getDepartmentUser
+            $user = $this->getDepartmentUser($v['department_id'],$where);//getDepartmentUser
             if(!empty($user) && isset($user)){
                 $user_array[] = $user;
             }
