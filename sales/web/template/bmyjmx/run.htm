@@ -18,7 +18,7 @@
 <body>
 <div class="panel admin-panel">
     <div class="panel-head">
-        <strong class="icon-reorder">部门员工销售业绩</strong>
+        <strong class="icon-reorder">部门业绩明细</strong>
         <strong style="padding-left:800px;"><a href="<?php echo $excelUrl;?>">导出表格</a></strong>
     </div>
   
@@ -62,7 +62,19 @@
         <td><!--{$v['UsrName']}--></td>
         <td><!--{$v['phone']}--></td>
         <td><!--{$v['name']}--></td>
-        <td><!--{$v['level_id']}--></td>
+        <td>
+            <!--{if($v['gid']==10)}-->
+                <!--{if($v['level_id']=='0')}-->
+                实习
+                <!--{elseif($v['level_id']=='1')}-->
+                初级
+                <!--{elseif($v['level_id']=='2')}-->
+                中级
+                <!--{elseif($v['level_id']=='3')}-->
+                高级
+                <!--{/if}-->
+            <!--{/if}-->
+        </td>
         <td><!--{$v['department_name']}--></td>
         <td><!--{$v['zonge']}--></td>
         <td><!--{$v['nianhuan']}--></td>
@@ -71,7 +83,7 @@
         <td><!--{$v['yaoqingrencount']}--></td>
         <td>
             <div class="button-group">
-                <a type="button" class="button border-main" href="myResults/run/uid/<!--{$v['id']}-->"><span class="icon-edit"></span>客户数据</a>
+                <a type="button" class="button border-main" href="myClients/run/uid/<!--{$v['id']}-->"><span class="icon-edit"></span>客户数据</a>
             </div>
         </td>
     </tr>

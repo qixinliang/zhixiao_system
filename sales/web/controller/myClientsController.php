@@ -30,19 +30,25 @@ class myClientsController extends baseController
         $phone = $this->controller->get_gp('phone') ? $this->controller->get_gp('phone') : '';//手机号
         $start_date = $this->controller->get_gp('start_date') ? $this->controller->get_gp('start_date') : '';//开始时间
         $end_date = $this->controller->get_gp('end_date') ? $this->controller->get_gp('end_date') : '';//结束时间
-        $status = $this->controller->get_gp('status') ? $this->controller->get_gp('status') : 0; //null 投资用户 ，1未投资用户列表
-       
-        //获取登陆用户信息
-        $adminUid=$this->adminService->current_user();
-        $uid = $this->adminService->GetToZiXiTongUserId($adminUid['id']);
+        $user_id = intval($this->controller->get_gp('uid')) ? intval($this->controller->get_gp('uid')) : ''; //获取uid，用户id
+        /**
+         * 判断当前是否传过来uid，如果传入uid，以传入的uid为准，获取客户列表，否则，自动获取当前登录用户的。
+         */
+        if(empty($user_id)){
+            //获取登陆用户信息
+            $adminUid=$this->adminService->current_user();
+            $uid = $this->adminService->GetToZiXiTongUserId($adminUid['id']);
+        }else{
+            $uid = $this->adminService->GetToZiXiTongUserId($user_id);
+        }
+        
         if(empty($uid)){
             exit("未获取用户信息！");
         }
         //根据检索条件，拼接where条件，和url链接地址
-        $arrange_where_url = $this->myClientsService->arrange_where_url($uname,$phone,$start_date,$end_date);
+        $arrange_where_url = $this->myClientsService->arrange_where_url($uname,$phone,$start_date,$end_date,$user_id);
         //查询所有的我的客户
         $friends = $this->myClientsService->getInvestFriends($uid,$arrange_where_url['where']);//查询所有数据
-//         print_r($friends);exit;
         //循环查询出我邀请的客户所属的业务人员
         foreach($friends as $k=>$v){
             $friends[$k]['salesman'] = $this->myClientsService->getSalesmanUsername($v['uid']);
@@ -69,7 +75,6 @@ class myClientsController extends baseController
         $this->view->assign('phone', $phone);
         $this->view->assign('start_date', $start_date);
         $this->view->assign('end_date', $end_date);
-        $this->view->assign('status',$status);
         //分页
         $this->view->assign('page_html', $page_html);
         $this->view->assign('username', $adminUid['user']);
@@ -77,6 +82,7 @@ class myClientsController extends baseController
         $this->view->assign('nhsyl_count', $friends_list['nhsyl_count']);//年化收益金额
         $this->view->assign('tzje_count', $friends_list['tzje_count']);//投资金额
         $this->view->assign('friendsCount', $friendsCount);//客户统计数量
+        $this->view->assign('uid',$user_id);
         //数据列表
         $this->view->assign('friends',$friends);
         $this->view->display('myclient/run');
@@ -88,6 +94,7 @@ class myClientsController extends baseController
     public function noInvest(){
         $pager= $this->getLibrary('pager'); //分页加载
         $page = $this->controller->get_gp('page') ? $this->controller->get_gp('page') : 1 ; //获取当前页码
+        $user_id = intval($this->controller->get_gp('uid')) ? intval($this->controller->get_gp('uid')) : ''; //获取uid，用户id
         
         //获取用户检索条件
         $uname = urldecode($this->controller->get_gp('uname')) ? urldecode($this->controller->get_gp('uname')) : '';    //获取用户名
@@ -96,23 +103,28 @@ class myClientsController extends baseController
         $end_date = $this->controller->get_gp('end_date') ? $this->controller->get_gp('end_date') : '';
        
         //获取登陆用户信息
-        $adminUid=$this->adminService->current_user();
-        $uid = $this->adminService->GetToZiXiTongUserId($adminUid['id']);
+        if(empty($user_id)){
+            //获取登陆用户信息
+            $adminUid=$this->adminService->current_user();
+            $uid = $this->adminService->GetToZiXiTongUserId($adminUid['id']);
+        }else{
+            $uid = $this->adminService->GetToZiXiTongUserId($user_id);
+        }
         if(empty($uid)){
             exit("未获取用户信息！");
         }
+        
         //获取分配记录表的客户信息
         $allocation = $this->myClientsService->getCustomerRecordList($uid);
         //获取用户邀请的好友id列表（投资，和未投资）
         $friendIds = $this->myClientsService->getfriendsIdList($uid,$allocation);
         if($friendIds!=''){
             //根据检索条件，拼接where条件，和url链接地址
-            $arrange_where_url = $this->myClientsService->arrange_where_url($uname,$phone,$start_date,$end_date);
+            $arrange_where_url = $this->myClientsService->arrange_where_url($uname,$phone,$start_date,$end_date,$user_id);
             $page = ($page-1)*10 ? ($page-1)*10 : 0;
             $friends = $this->myClientsService->getNoInvestFriends($friendIds,$arrange_where_url['where']);//查询所有数据
             $friendsCount = $this->myClientsService->getNoInvestFriendsCount($friendIds,$arrange_where_url['where']);//统计条数
             $page_html = $pager->pager($friendsCount['count'], 10, $arrange_where_url['url']); //最后一个参数为true则使用默认样式
-            
             //分页
             $this->view->assign('page_html', $page_html);
             //数据列表
@@ -125,6 +137,7 @@ class myClientsController extends baseController
         $this->view->assign('phone', $phone);
         $this->view->assign('start_date', $start_date);
         $this->view->assign('end_date', $end_date);
+        $this->view->assign('uid',$user_id);
         
         $this->view->display('myclient/noInvest');
     }

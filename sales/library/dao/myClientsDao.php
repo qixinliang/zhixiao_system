@@ -38,7 +38,7 @@ class myClientsDao extends Dao
      * @return type
      */
     public function getNoInvestFriendsCount($friendIds,$where){
-        $sql = "select count(h.uid)as count from cp_user u left join cp_user_huifu h on u.id = h.uid left join cp_user_info i on u.id = i.uid where u.id in($friendIds) $where ";
+        $sql = "select count(u.id)as count from cp_user u left join cp_user_huifu h on u.id = h.uid left join cp_user_info i on u.id = i.uid where u.id in($friendIds) $where ";
         return $this->dao->db->get_one_sql($sql);
     }
     /**

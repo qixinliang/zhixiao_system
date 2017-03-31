@@ -98,23 +98,26 @@ class myClientsService extends Service
      * @param string $end_date 结束时间
      * @return  array 拼接的where条件，和url地址
      */
-    public function arrange_where_url($uname='',$phone='',$start_date='',$end_date=''){
+    public function arrange_where_url($uname='',$phone='',$start_date='',$end_date='',$user_id=''){
         $where = ' ';
         //分页地址
         $url = 'myClients/run';
-        if($uname!=''){
+        if(!empty($user_id)){
+            $url=$url.'/uid/'.$user_id;
+        }
+        if(!empty($uname)){
             $url=$url.'/uname/'.$uname;
             $where.= ' and h.UsrName = "'.$uname.'"';
         }
-        if($phone!=''){
+        if(!empty($phone)){
             $url=$url.'/phone/'.$phone;
             $where.= ' and i.phone = '.$phone;
         }
-        if($start_date!=''){
+        if(!empty($start_date)){
             $url=$url.'/start_date/'.$start_date;
             $where.= ' and o.order_time >= '.strtotime($start_date);
         }
-        if($end_date!=''){
+        if(!empty($end_date)){
             $url=$url.'/end_date/'.$end_date;
             $where.= ' and o.order_time <= '.strtotime($end_date);
         }

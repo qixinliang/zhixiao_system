@@ -19,7 +19,7 @@ class bmyjmxDao extends Dao
     }
     
     public function getDepartmentUser($department_id,$where=''){
-        $sql = "select z.id,z.user,z.UsrName,z.phone,g.`name`,z.level_id,d.department_id,d.department_name,z.Inthetime from cp_zjingjiren_admin z left join zx_department d on z.department_id = d.department_id left join cp_zjingjiren_admin_group g on z.gid = g.id where z.department_id = $department_id $where";
+        $sql = "select z.id,z.user,z.gid,z.UsrName,z.phone,g.`name`,z.level_id,d.department_id,d.department_name,z.Inthetime from cp_zjingjiren_admin z left join zx_department d on z.department_id = d.department_id left join cp_zjingjiren_admin_group g on z.gid = g.id where z.department_id = $department_id $where";
         return $this->dao->db->get_all_sql($sql);
     }
     
