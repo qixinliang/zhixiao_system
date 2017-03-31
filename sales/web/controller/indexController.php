@@ -57,10 +57,12 @@ class indexController extends baseController
         /*
          * @TOP排行榜
          */
-        $list = $this->getTopranking();
+        $YearsMonth = date("Y-m");
+        $list = $this->getTopranking($YearsMonth);
         $list = $this->SortAnArray($list);
         $output = array_slice($list, 0,5);//显示前5调数据
         $this->view->assign('output', $output);
+        $this->view->assign('YearsMonth', $YearsMonth);
         /*
          * @个人管理 上月入金规模
          */
@@ -80,7 +82,7 @@ class indexController extends baseController
      * @email:fuyuwen88@126.com
      * @首页排行榜
      *************************************************************/
-    public function getTopranking(){
+    public function getTopranking($YearsMonth){
         $adminService = InitPHP::getService("admin");
         $myResultsService = InitPHP::getService("myResults");
         $userlist = $adminService->admin_list();
@@ -91,7 +93,7 @@ class indexController extends baseController
             $val['huikuan']=0;
             $uid = $adminService->GetToZiXiTongUserId($val['id']);//获取当前登录的用户uid
             if(intval($uid)>0){
-                $res = $myResultsService->getTopranking($uid);
+                $res = $myResultsService->getTopranking($uid,$YearsMonth);
                 $val['yaoqingrencount']=$res['yaoqingrencount'];
                 $val['zonge']=$res['zonge'];
                 $val['nianhuan']=$res['nianhuan'];
