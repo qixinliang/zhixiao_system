@@ -72,7 +72,15 @@ class bmyjmxService extends Service
         return $this->bmyjmxsDao->getMyDepartment($department_id);
     }
     
-    public function getUserDataList($my_department_lsit,$where=''){
+    /**
+     * 获取用户列表
+     * @param unknown $my_department_lsit
+     * @param string $where     查询用户的检索条件
+     * @param unknown $start_date 根据时间检索，开始时间
+     * @param unknown $end_date   结束时间
+     * @return Ambigous <unknown, type>
+     */
+    public function getUserDataList($my_department_lsit,$where='',$start_date,$end_date){
         //循环所有的部门，查询所有部门下的user
         $user_array = array();
         foreach($my_department_lsit as $k=>$v){

@@ -201,7 +201,7 @@ class TeamUtilsService extends Service{
         $tzje_count= 0; //投资金额统计
         $nhsyl_count = 0;//年化收益率统计
         if(empty($data)){
-            return $tmparray;
+            return $friends;
         }
         foreach ($data as $key=>$val){
             if(!empty($val['order_money']) && $val['order_money']>0){

@@ -36,7 +36,7 @@ class bmyjmxController extends baseController{
         //拼接where条件，和url链接地址
         $arrange_where_url = $this->bmyjmxService->arrange_where_url($department_id,$username,$start_date,$end_date);
         //获取用户列表
-        $user_data = $this->bmyjmxService->getUserDataList($my_department_lsit,$arrange_where_url['where']);
+        $user_data = $this->bmyjmxService->getUserDataList($my_department_lsit,$arrange_where_url['where'],$start_date,$end_date);
         
         //分页
         $page = ($page-1)*10 ? ($page-1)*10 : 0;
