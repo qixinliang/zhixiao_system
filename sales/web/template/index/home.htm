@@ -60,22 +60,31 @@
     <!--{$YearsMonth}-->月份公司销售业绩TOP 5
 </div>
 <div class="line">
-	<table class="table table-hover text-center">
+
+<table class="table table-hover text-center">
+<!--{if($checkAmount)}-->
 	<tr>
 	<th>姓名</th> 
 	<th>部门</th>
 	<th>入金规模 </th>
 	<th>折标业绩（万元）</th>
 	</tr>
-	<!--{foreach($output as $key=>$vo)}-->
-	<tr>
-	<td><!--{$vo['UsrName']}--></td>
-	<td><!--{$vo['gname']}-->-<!--{$vo['department_name']}--></td>
-	<td><!--{$vo['zonge']}--> </td>
-	<td><!--{$vo['nianhuan']}-->(万元)</td>
-	</tr>
-	<!--{/foreach}-->
-	</table>
+<!--{/if}-->
+<!--{if($checkAmount)}-->
+         <!--{foreach($output as $key=>$vo)}-->
+		<tr>
+		<td><!--{$vo['UsrName']}--></td>
+		<td><!--{$vo['gname']}-->-<!--{$vo['department_name']}--></td>
+		<td><!--{$vo['zonge']}--> </td>
+		<td><!--{$vo['nianhuan']}-->(万元)</td>
+		</tr>
+		<!--{/foreach}-->
+<!--{else}-->
+	   <tr>
+	    <td colspan="4">暂无排行数据</td>
+	  </tr>
+<!--{/if}-->
+</table>
 </div>
   
   
