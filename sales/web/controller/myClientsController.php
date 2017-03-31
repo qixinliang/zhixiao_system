@@ -42,23 +42,24 @@ class myClientsController extends baseController
         $arrange_where_url = $this->myClientsService->arrange_where_url($uname,$phone,$start_date,$end_date);
         //查询所有的我的客户
         $friends = $this->myClientsService->getInvestFriends($uid,$arrange_where_url['where']);//查询所有数据
+//         print_r($friends);exit;
         //循环查询出我邀请的客户所属的业务人员
         foreach($friends as $k=>$v){
             $friends[$k]['salesman'] = $this->myClientsService->getSalesmanUsername($v['uid']);
         }
         //查询客户分配记录表里，分配给我的客户id
         $customer_record_list = $this->myClientsService->getCustomerRecordList($uid);
+        
         //循环取出客户分配表里面，分配给我的客户信息，并和我的客户数据合并
         $friends_data = $this->myClientsService->mergeData($friends,$customer_record_list,$arrange_where_url);
         
+        //循环计算年化收益率和查询当前客户，所属业务人员,统计年化收益金额，统计年化投资金额
+        $friends_list = $this->teamUtilsService->yongJinJiSuan($friends_data['friends']);
         //分页
         $page = ($page-1)*10 ? ($page-1)*10 : 0;
-        $friendsCount = count($friends_data['friends']);
-        $friends = array_slice($friends_data['friends'], $page,10);
+        $friendsCount = count($friends_list['friends']);
+        $friends = array_slice($friends_list['friends'], $page,10);
         $page_html = $pager->pager($friendsCount, 10, $arrange_where_url['url']); //最后一个参数为true则使用默认样式
-        
-        //循环计算年化收益率和查询当前客户，所属业务人员,统计年化收益金额，统计年化投资金额
-        $friends = $this->teamUtilsService->yongJinJiSuan($friends);
 
         //统计用户的客户数量
         $count = $this->myClientsService->clientCount($uid);
@@ -73,11 +74,11 @@ class myClientsController extends baseController
         $this->view->assign('page_html', $page_html);
         $this->view->assign('username', $adminUid['user']);
         //统计数据
-        $this->view->assign('nhsyl_count', $friends['nhsyl_count']);//年化收益金额
-        $this->view->assign('tzje_count', $friends['tzje_count']);//投资金额
+        $this->view->assign('nhsyl_count', $friends_list['nhsyl_count']);//年化收益金额
+        $this->view->assign('tzje_count', $friends_list['tzje_count']);//投资金额
         $this->view->assign('friendsCount', $friendsCount);//客户统计数量
         //数据列表
-        $this->view->assign('friends',$friends['friends']);
+        $this->view->assign('friends',$friends);
         $this->view->display('myclient/run');
     }
     
