@@ -15,7 +15,7 @@ class myClientsDao extends Dao
      */
     public function getInvestFriends($uid,$where){
 //        $sql = "select i.uid,d.deal_id,h.UsrName,i.phone,d.title,o.order_money,o.order_time,d.start_date,d.end_date,d.syl,d.expires_type,d.expires,d.full_time,d.deal_id from cp_deal d ,cp_deal_order o ,cp_user_yaoqingma_list y ,cp_user_info i,cp_user_huifu h where d.deal_id = o.deal_id and o.uid = i.uid and h.uid = i.uid and i.uid = y.uid and y.friends = $uid $where";
-        $sql="select i.uid,d.deal_id,h.UsrName,i.phone,d.title,o.order_money,o.order_time,d.start_date,d.end_date,d.syl,d.expires_type,d.expires,d.full_time,d.deal_id from cp_deal d left join cp_deal_order o on d.deal_id = o.deal_id left join cp_user_yaoqingma_list y on o.uid = y.uid left join cp_user_huifu h on h.uid =o.uid left join cp_user_info i on h.uid = i.uid where y.friends = $uid $where";
+        $sql="select i.uid,d.deal_id,h.UsrName,i.phone,d.title,o.order_money,o.order_time,d.start_date,d.end_date,d.syl,d.expires_type,d.expires,d.full_time,d.deal_id,o.VocherAmt,o.JiaXi from cp_deal d left join cp_deal_order o on d.deal_id = o.deal_id left join cp_user_yaoqingma_list y on o.uid = y.uid left join cp_user_huifu h on h.uid =o.uid left join cp_user_info i on h.uid = i.uid where y.friends = $uid $where";
         return $this->dao->db->get_all_sql($sql);
     }
     
@@ -130,7 +130,7 @@ class myClientsDao extends Dao
      * @return type
      */
     public function getCustomerRecordOrder($investor_id,$where){
-        $sql="select i.uid,d.deal_id,h.UsrName,i.phone,d.title,o.order_money,o.order_time,d.start_date,d.end_date,d.syl,d.expires_type,d.expires,d.full_time,d.deal_id from cp_deal d ,cp_deal_order o ,cp_user_huifu h ,cp_user_info i where d.deal_id = o.deal_id and o.uid = h.uid and h.uid = i.uid and o.uid = $investor_id $where";
+        $sql="select i.uid,d.deal_id,h.UsrName,i.phone,d.title,o.order_money,o.order_time,d.start_date,d.end_date,d.syl,d.expires_type,d.expires,d.full_time,d.deal_id,o.VocherAmt,o.JiaXi from cp_deal d ,cp_deal_order o ,cp_user_huifu h ,cp_user_info i where d.deal_id = o.deal_id and o.uid = h.uid and h.uid = i.uid and o.uid = $investor_id $where";
         return $this->dao->db->get_all_sql($sql);
     }
     
