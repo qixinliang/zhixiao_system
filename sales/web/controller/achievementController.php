@@ -32,113 +32,65 @@ class achievementController extends baseController{
 		$departmentId 	= $userInfo['department_id'];//部门ID
 		$roleId 		= $userInfo['gid']; //角色ID
 		
-		//销售1.1部
-		//$did = 11;
-		//$ret = $this->bmyjmxService->getInvestInfoByDepartmentId($did);
-		
-		//获取所有的部门列表
-		$dpts = $this->departmentService->getDepartmentList2();
-		echo('<pre>');
-		print_r($dpts);
-		echo('</pre>');
-
-		//$v必须要用引用...必须要用
-		foreach($dpts as $k => &$v){
-			//$v['investor_info'] = $this->bmyjmxService->getInvestInfoByDepartmentId($k);
-			$tmpInfo = $this->bmyjmxService->getInvestInfoByDepartmentId($k);
-			if(isset($tmpInfo) && !empty($tmpInfo)){
-				$rujin = 0;
-				$zhebiao = 0;
-				$huikuan = 0;
-				$cnt = 0;
-				foreach($tmpInfo as $k1 => $v1){
-					$cnt++;//投资明细数
-            		$rujin += $v1['zonge'];
-            		$zhebiao += $v1['nianhuan'];
-            		$huikuan += $v1['huikuan'];
-				}
-				$v['invest_info']['rujin'] = $rujin;
-				$v['invest_info']['zhebiao'] = $zhebiao;
-				$v['invest_info']['huikuan'] = $huikuan;
-				$v['invest_info']['cnt'] = $cnt;
-			}else{
-				$v['invest_info']['rujin'] = 0;
-				$v['invest_info']['zhebiao'] = 0;
-				$v['invest_info']['huikuan'] = 0;
-				$v['invest_info']['cnt'] = 0; 
+		//获取当前登录用户部门下级列表
+		$dpts = $this->departmentService->getChilds($departmentId);
+	    foreach ($dpts as $key=>$val){
+	        
+	        //目前取得的数据是  个人业绩  不包含客户业绩   需要修改 -------------------------------------
+			$tmpInfo = $this->bmyjmxService->getInvestInfoByDepartmentId($val['department_id'],'2016-10');
+			$rujin = 0;
+			$zhebiao = 0;
+			$huikuan = 0;
+			$cnt = 0;
+			//本部门投资明细
+			foreach($tmpInfo as $k1 => $v1){
+			    $cnt++;//投资明细数
+			    $val['benbu_rujin'] += $v1['zonge'];
+			    $val['benbu_zhebiao'] += $v1['nianhuan'];
+			    $val['benbu_huikuan'] += $v1['huikuan'];
+			    $val['benbu_cnt'] = $cnt++;
 			}
-		}
-		//把$dpts变成一种带son级联形式的，便于统计
-		//FIXME 这地方就可以循环上面的列表，做计算了。。。考虑下
-		$dpts = $this->departmentService->generateTree2($dpts);
-		
+			$dpts[$key]=$val;
+			
+			$dpts[$key]['heji'] =  $this->getXiaJiBuMenShuJu($val['department_id']);
 
-		//妥妥滴，要传入一个部门ID,把刚才的dpts的结果export出来,其中相同的部门ID下的
-		//投资信息要做累加
-		$tree = $this->cal($dpts);
-		echo("---------------zuizhongjieguo");
-		echo('<pre>');
-		print_r($tree);
-		echo('</pre>');
-		die("22222222222");
-		
+	    }
 
-		echo('<pre>');
-		print_r($ret);
-		echo('</pre>');
-		$up = $this->bmyjmxService->up($did);
-		echo('<pre>');
-		print_r($up);
-		echo('</pre>');
-		die("1111111111111111111111");
-		
-		//////////////////
-		
-		$departmentList = $this->departmentService->getChilds($departmentId);
-
-
-		/*
-		$userData       = $this->bmyjmxService->getUserDataList($departmentList); 
-	
-		echo('<pre>');
-		print_r($userData);
-		echo('</pre>');
-		die("1111");*/
-
-
-
-
-		//根据用户的部门ID获取子级部门
-		$departments = $this->departmentService->getChildNodes($departmentId);
-		if(!isset($departments) || empty($departments)){
- 			exit(json_encode(array('status' => -1,'message' => 'Departments NULL！')));
-		}
-		echo("--------------部门树-------------");
-		echo('<pre>');
-		print_r($departments);
-		echo('</pre>');
-
-		//获取部门下的用户业绩明细
-		$userData     = $this->bmyjmxService->getUserDataList($departmentList); 
-		echo("--------------用户业绩明细-------------");
-		echo('<pre>');
-		print_r($userData);
-		echo('</pre>');
-
-		//统计计算
-		$finalData = $this->calculate($departments,$userData);
-		echo("--------------最终数据-------------");
-		echo('<pre>');
-		print_r($finalData);
-		echo('</pre>');
-		die('ok');
-		$finalData = json_encode($finalData);
+	    print_r($dpts);
+exit;
 
 		$this->view->assign('departments',$departments);
 		$this->view->assign('final_data',$finalData);
 		$this->view->display('achievement/total');
 	}
 
+	//递归获取下级数据
+	public function getXiaJiBuMenShuJu($did){
+	    echo $did;
+	    $dpts = $this->departmentService->getChilds($did);
+	    $hejirujin = 0;
+	    foreach ($dpts as $key=>$val){
+	        //目前取得的数据是  个人业绩  不包含客户业绩   需要修改 -------------------------------------
+	        $tmpInfo = $this->bmyjmxService->getInvestInfoByDepartmentId($val['department_id'],'2016-10');
+	        $rujin = 0;
+	        $zhebiao = 0;
+	        $huikuan = 0;
+	        $cnt = 0;
+	        //本部门投资明细
+	        foreach($tmpInfo as $k1 => $v1){
+	            $hejirujin += $v1['zonge'];
+	        }
+	        	
+	        //$this->getXiaJiBuMenShuJu($did);
+	    }
+	    return $hejirujin;
+	}
+	
+	
+	
+	
+	
+	
 	//根据一个部门ID获取它的投资明细
 	//假设是最小颗粒度
 	public function getInvestInfoByDepartmentId($did){
