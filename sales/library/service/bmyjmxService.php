@@ -107,13 +107,13 @@ class bmyjmxService extends Service
     }
 
 	//获取一个部门下的投资明细
-	public function getInvestInfoByDepartmentId($did){
+	public function getInvestInfoByDepartmentId($did,$start_date=null,$end_date=null){
 		$finalArr = array();
 		//获取部门下的用户
     	$users = $this->getDepartmentUser($did);
 		if(isset($users) && !empty($users)){
 			foreach($users as $k => $v){
-                $userYeji = $this->myResultsService->getTopranking($v['id'],'2016-10',$end_date);
+                $userYeji = $this->myResultsService->getTopranking($v['id'],$start_date,$end_date);
                 $v['yaoqingrencount'] = $userYeji['yaoqingrencount'];
                 $v['zonge'] = $userYeji['zonge'];
                 $v['nianhuan'] = $userYeji['nianhuan'];
