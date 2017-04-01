@@ -19,8 +19,8 @@
 <div class="panel admin-panel">
   <div class="panel-head"><strong class="icon-reorder"> 用户列表</strong></div>
   <div class="padding border-bottom">  
-      <a class="button border-yellow" href="/myClients/run/"style="color:#fff;border-color:#f90;background-color:#f90"> 已投资客户</a>
-      <a class="button border-yellow" href="/myClients/noInvest/"> 未投资客户 </a>
+      <a class="button border-yellow" href="/myClients/run<!--{if(!empty($uid))}-->/uid/<!--{$uid}--><!--{/if}-->"style="color:#fff;border-color:#f90;background-color:#f90"> 已投资客户</a>
+      <a class="button border-yellow" href="/myClients/noInvest<!--{if(!empty($uid))}-->/uid/<!--{$uid}--><!--{/if}-->"> 未投资客户 </a>
   </div>
   <div class="padding border-bottom">
       <form action="/myclients/run" method="post">
@@ -66,9 +66,9 @@
         <td><!--{$v['nhsyl']}--></td>
         <td>
         	<!--{if($v['VocherAmt']!='')}-->
-        		<!--{$v['VocherAmt']}-->
-        	<!--{else}-->
-        		<!--{$v['JiaXi']}-->
+        		<!--{$v['VocherAmt']}-->元
+        	<!--{elseif($v['JiaXi']!='')}-->
+        		<!--{$v['JiaXi']}-->%
         	<!--{/if}-->
         </td>
         <td><!--{$v['salesman']}--></td>

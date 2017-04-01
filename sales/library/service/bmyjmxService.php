@@ -81,7 +81,7 @@ class bmyjmxService extends Service
      * @param unknown $end_date   结束时间
      * @return Ambigous <unknown, type>
      */
-    public function getUserDataList($my_department_lsit,$where='',$start_date,$end_date){
+    public function getUserDataList($my_department_lsit,$where='',$start_date='',$end_date=''){
         //循环所有的部门，查询所有部门下的user
         $user_array = array();
         foreach($my_department_lsit as $k=>$v){
@@ -94,7 +94,7 @@ class bmyjmxService extends Service
         //根据用户，循环查询所有的业绩明细
         foreach($user_array as $k=>$val){
             foreach ($val as $k1=>$val1){
-                $userYeji = $this->myResultsService->getTopranking($val1['id'],'2016-10',$end_date);
+                $userYeji = $this->myResultsService->getTopranking($val1['id'],$start_date,$end_date);
                 //$userYeji = $this->myResultsService->getTopranking($val1['id'],$start_date,$end_date);
                 $val1['yaoqingrencount'] = $userYeji['yaoqingrencount'];
                 $val1['zonge'] = $userYeji['zonge'];
