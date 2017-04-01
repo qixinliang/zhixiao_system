@@ -61,6 +61,9 @@ class indexController extends baseController
         $list = $this->getTopranking($YearsMonth);
         $list = $this->SortAnArray($list);
         $output = array_slice($list, 0,5);//显示前5调数据
+        //检查是否有数据
+        $checkAmount = $this->checkTheAmountOf($output);
+        $this->view->assign('checkAmount', $checkAmount);
         $this->view->assign('output', $output);
         $this->view->assign('YearsMonth', $YearsMonth);
         /*
@@ -69,6 +72,7 @@ class indexController extends baseController
         $datey = $this->getlastMonthDays(date("Y-m-d H:i:s"));
         $myResultsService = InitPHP::getService("myResults");
         $getlastMonthlist = $myResultsService->getTopranking($uid,$datey['start'],$datey['end']);
+        
         $this->view->assign('getlastMonthzonge', $getlastMonthlist['zonge']);
         $this->view->assign('getlastMonthnianhuan', $getlastMonthlist['nianhuan']);
         $this->view->assign('list', $userinfo);
@@ -151,5 +155,28 @@ class indexController extends baseController
         $val['start']=$firstday;
         $val['end']=$lastday;
         return $val;
+    }
+    /************************************************************
+     * @copyright(c): 2017年3月31日
+     * @Author:  yuwen
+     * @Create Time: 上午11:35:50
+     * @qq:32891873
+     * @email:fuyuwen88@126.com
+     * @检查是否有数据交易金额
+     *************************************************************/
+    public function checkTheAmountOf($array){
+        $amount=0;
+        if(empty($array)){
+            return false;
+        }
+        foreach ($array as $key=>$val){
+            $amount+=$val['zonge'];
+        }
+        if($amount>0){
+            return true;
+        }else{
+            return false;
+        }
+        
     }
 }
