@@ -11,6 +11,7 @@ class bmyjmxService extends Service
         parent::__construct();
         $this->bmyjmxsDao = InitPHP::getDao("bmyjmx");
         $this->myResultsService = InitPHP::getService("myResults");
+		$this->departmentDao = InitPHP::getDao('department');
     }
     
     /**
@@ -104,4 +105,110 @@ class bmyjmxService extends Service
         }
         return $user_data;
     }
+
+	//获取一个部门下的投资明细
+	public function getInvestInfoByDepartmentId($did,$start_date=null,$end_date=null){
+		$finalArr = array();
+		//获取部门下的用户
+    	$users = $this->getDepartmentUser($did);
+		if(isset($users) && !empty($users)){
+			foreach($users as $k => $v){
+                $userYeji = $this->myResultsService->getTopranking($v['id'],$start_date,$end_date);
+                $v['yaoqingrencount'] = $userYeji['yaoqingrencount'];
+                $v['zonge'] = $userYeji['zonge'];
+                $v['nianhuan'] = $userYeji['nianhuan'];
+                $v['huikuan'] = $userYeji['huikuan'];
+                $finalArr[] = $v;
+			}
+		}
+		return $finalArr;
+	}
+	
+	public function up($did){
+		$data = $this->getInvestInfoByDepartmentId($did);
+		echo('<pre>');
+		print_r($data);
+		echo('</pre>');
+
+		//把统一部门下的金额计算
+		$rujin = 0;
+		$zhebiao = 0;
+		$huikuan = 0;
+		$cnt = 0;
+		$tmp = array();
+		foreach($data as $k => $v){
+            $cnt++;
+            $rujin += $v['zonge'];
+            $zhebiao += $v['nianhuan'];
+            $huikuan += $v['huikuan'];
+		}
+		$tmp['rujin'] = $rujin;
+		$tmp['zhebiao'] = $zhebiao;
+		$tmp['huikuan'] = $huikuan;
+		$tmp['cnt'] = $cnt;
+		
+		//要把这些数据加入到上级节点里
+		//1.获取上级部门
+		$pDepartment = $this->departmentDao->getParentNodeById($did);
+		$res = array();
+		while($pDepartment){
+			$did = $pDepartment['department_id'];
+			var_dump($did);
+			$pDepartment['invest_info'] = $tmp;
+			$res[] = $pDepartment;
+			$pDepartment = $this->departmentDao->getParentNodeById($did);
+				echo('<pre>');
+			print_r($res);
+				echo('</pre>');
+			
+		}
+		/*
+		if(isset($pDepartment) && !empty($pDepartment)){
+			$departmentId = $pDepartment['department_id'];
+			var_dump($departmentId);
+			$pDepartment['invest_info'] = $tmp;
+		}*/
+		var_dump($pDepartment);
+		die('-1111');
+	}
+
+	//把最底层的用户投资数据，往上传递到父节点
+	public function up2($did,&$output = array()){
+		$tmp= array();
+		//取到最底层的数据
+		$data = $this->getInvestInfoByDepartmentId($did);
+		//获取上级部门
+		$pDepartment = $this->departmentDao->getParentNodeById($did);
+		if(isset($pDepartment) && !empty($pDepartment)){
+			$rujin = 0;
+			$zhebiao = 0;
+			$huikuan = 0;
+			$cnt = 0;
+			foreach($data as $k => $v){
+				$cnt++;
+				$rujin += $v['zonge'];
+				$zhebiao += $v['nianhuan'];
+				$huikuan += $v['huikuan'];
+				$pDepartment['son'][] = $v;
+			}
+
+			//当前父级节点的部门ID
+			$departmentId = $pDepartment['department_id'];
+			$pDepartment['invest_info']['rujin'] = $rujin;
+			$pDepartment['invest_info']['zhebiao'] = $zhebiao;
+			$pDepartment['invest_info']['huikuan'] = $huikuan;
+			$pDepartment['invest_info']['cnt'] = $cnt;
+			$tmp[$departmentId] = $pDepartment;
+			$output = array_merge($tmp,$output);
+			$this->up($departmentId,$output);
+			//如果当前部门ID与根节点或者是传入的统计参数中的部门ID相等
+			var_dump($departmentId);
+			if($departmentId == 9){
+				echo('<pre>');
+				print_r($output);
+				echo('</pre>');
+				return $output;
+			}
+		}
+	}
 }

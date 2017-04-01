@@ -6,7 +6,7 @@ if (!defined('IS_INITPHP')) exit('Access Denied!');
 class departmentDao extends Dao{
 	const DEPARTMENT_STATUS_NORMAL = 0;
 	const DEPARTMENT_STATUS_ERROR = 1;
-    
+    private $arrTree = array();
     public $tableName = 'zx_department';
 
     public function getdepartmentInfo($id){
@@ -105,22 +105,24 @@ class departmentDao extends Dao{
 
 	public function getChilds($id){
 		$lists = $this->getDepartmentList2();
-		return $this->getMenuTree($lists,$id);
+		$arrTree = $this->getMenuTree($lists,$id);
+		$this->arrTree = array();
+		return $arrTree;
+		
 	}
 	
 	public function getMenuTree($arrOrigin,$pid,$level=0){
-	    static  $arrTree = array();
     	if(empty($arrOrigin)) return FALSE;
     	$level++;
     	foreach($arrOrigin as $k => $v){
         	if($v['p_dpt_id' ] == $pid){
             	$v['level'] = $level;
-            	$arrTree[] = $v;
+            	$this->arrTree[] = $v;
             	unset($arrOrigin[$k]); //注销当前节点数据，减少已无用的遍历
             	$this->getMenuTree($arrOrigin, $v['department_id'], $level);
         	}
     	}
-    	return $arrTree;
+    	return $this->arrTree;
 	}	
 	
 	//暂停使用
