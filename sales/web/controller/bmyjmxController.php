@@ -8,7 +8,9 @@ if (!defined('IS_INITPHP')) exit('Access Denied!');
  * @部门业绩明细
  *************************************************************/
 class bmyjmxController extends baseController{
-    public $initphp_list = array('createExcel'); //Action白名单
+    public $initphp_list = array('createExcel','getcountlist'); //Action白名单
+    
+    public $tree = array();
     
     public function __construct(){
         parent::__construct();
@@ -33,6 +35,7 @@ class bmyjmxController extends baseController{
         $my_department = $this->bmyjmxService->getMyDepartment($user['department_id']); //获取我的部门信息
         //根据用户的部门id，获取子部门id
         $my_department_lsit = $this->GetTree($deparment_list_all,$user['department_id']);
+        $this->tree = array();
         //拼接where条件，和url链接地址
         $arrange_where_url = $this->bmyjmxService->arrange_where_url($department_id,$username,$start_date,$end_date);
         //获取用户列表
@@ -57,17 +60,17 @@ class bmyjmxController extends baseController{
         $this->view->display('bmyjmx/run');
     }
     
-    private function GetTree($arr,$pid,$step=0){
-        global $tree;
+    public function GetTree($arr,$pid,$step=0){
+        
         foreach($arr as $key=>$val) {
             if($val['p_dpt_id'] == $pid) {
                 $flg = str_repeat('―',$step);
                 $val['step'] = $flg;
-                $tree[] = $val;
+                $this->tree[] = $val;
                 $this->GetTree($arr , $val['department_id'],$step+1);
             }
         }
-        return $tree;
+        return $this->tree;
     }
     
     
@@ -89,4 +92,5 @@ class bmyjmxController extends baseController{
         $this->createExcelService = InitPHP::getService("createExcel");
         $this->createExcelService->run($user_data);
     }
+    
 }

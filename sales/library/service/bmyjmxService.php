@@ -95,7 +95,6 @@ class bmyjmxService extends Service
         foreach($user_array as $k=>$val){
             foreach ($val as $k1=>$val1){
                 $userYeji = $this->myResultsService->getTopranking($val1['id'],$start_date,$end_date);
-                //$userYeji = $this->myResultsService->getTopranking($val1['id'],$start_date,$end_date);
                 $val1['yaoqingrencount'] = $userYeji['yaoqingrencount'];
                 $val1['zonge'] = $userYeji['zonge'];
                 $val1['nianhuan'] = $userYeji['nianhuan'];
