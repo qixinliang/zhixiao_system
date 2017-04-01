@@ -14,6 +14,28 @@ class myResultsService extends Service{
         parent::__construct();
     }
     /************************************************************
+     * @copyright(c): 2017年4月1日
+     * @Author:  yuwen
+     * @Create Time: 下午2:28:37
+     * @qq:32891873
+     * @email:fuyuwen88@126.com
+     * @后台排行榜大数据调用读取
+     *************************************************************/
+    public function getSummaryRanking($uid,$start=null,$end=null){
+        if(!empty($start) && empty($end)){
+            $val = $this->getthemonth($start);//返回当前月的开始和结束时间
+        }
+        if(!empty($start)&&!empty($end)){
+            $val['start']=$start;
+            $val['end']=$end;
+        }
+        if(empty($start)&&empty($end)){
+            $Month = date("Y-m-d H:i:s");//当前时间
+            $val = $this->getthemonth($Month);//返回当前月的开始和结束时间
+        }
+        return $this->getMonthlyPersonalDetail($uid,$val);//返回当前月份的-入金规模(万)-折标金额(万)-回款金额(万)-佣金收入(元)-新增客户数(人)
+    }
+    /************************************************************
      * @copyright(c): 2017年3月29日
      * @Author:  yuwen
      * @Create Time: 下午3:33:24
@@ -52,6 +74,60 @@ class myResultsService extends Service{
             $data[$key] =$this->MonthlyPersonalDetail($uid,$val);
         }
         return array('data'=>$data,'NY'=>$yuefenarr);
+    }
+    
+    
+    /************************************************************
+     * @copyright(c): 2017年4月1日
+     * @Author:  yuwen
+     * @Create Time: 下午2:30:10
+     * @qq:32891873
+     * @email:fuyuwen88@126.com
+     * @后台汇总大数据排行榜统计
+     *************************************************************/
+    public function getMonthlyPersonalDetail($uid,$val){
+        $myResultsDao = InitPHP::getDao("myResults");
+        $useryaoqingmalistDao = InitPHP::getDao("user_yaoqingma_list");
+        $where = ' and a.create_time>='.strtotime($val['start']).' and a.create_time<='.strtotime($val['end']);
+        //$where=null;
+        //获取登录用户自己的订单记录
+        $userlist = $myResultsDao->getUserOrderList($uid,$where);
+        $Userarr = $this->calculateData($userlist);
+        /*
+         * 获取被邀请客户的Uid列表
+         * uid作为 friends
+        */
+        $yaoqingUserUidlist = $this->getYaoQingRenList($uid,$val);
+        //得到邀请用户的全部订单
+        $yaoqingUserOrderList = $this->getYaoQingUserOrderList($yaoqingUserUidlist,$val);
+        $YaoQingUserarr = $this->calculateData($yaoqingUserOrderList);
+        
+        //获取邀请客户的回款投资记录
+        $yaoqingUserReceivabeOrderList =  $this->getUserReceivableOrderList($yaoqingUserUidlist,$val);
+        
+        //计算邀请的用户回款总额度
+        $yaoqingUserReceivabe = $this->ReceivableOrderMoney($yaoqingUserReceivabeOrderList);
+         
+        //当前用户自己回款的记录
+        $data[]['uid']=$uid;
+        $UserReceivabeOrderList = $this->getUserReceivableOrderList($data,$val);
+        //计算当前用户自己的回款总额
+        $UserReceivabe = $this->ReceivableOrderMoney($UserReceivabeOrderList);
+        $zonge = ($Userarr['zonger']+$YaoQingUserarr['zonger']);
+        //$zonge = ($Userarr['zonger']);
+        $nianhuan = ($Userarr['nianhuan']+$YaoQingUserarr['nianhuan']);
+        //$nianhuan = ($Userarr['nianhuan']);
+        $huikuan = ($yaoqingUserReceivabe+$UserReceivabe);
+        //$huikuan = ($UserReceivabe);
+        //获取邀请的客户
+        $yaoqingrenNumber = 0;
+        $yaoqingrenNumber = count($yaoqingUserUidlist);
+        return array(
+            'yaoqingrencount'=>$yaoqingrenNumber,
+            'zonge'=>number_format($zonge,2,".",""),
+            'nianhuan'=>number_format($nianhuan,2,".",""),
+            'huikuan'=>number_format($huikuan,2,".","")
+        );
     }
     /************************************************************
      * @copyright(c): 2017年3月21日
