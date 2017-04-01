@@ -103,68 +103,71 @@ class adminService extends Service
 		
 		$info = $this->adminDao->get_username($data['user']);//检查在投资系统中是否存在账号
 		if($info){
-			//根据身份证号检查是否一致，如果一致说明是同一人，只在业务系统中开通经纪人账户
-// 			$userHuifu = $this->adminDao->getUsrNameAndIdNo($data['IdNo']);
-// 			if($userHuifu){
-				//写入业务系统
-				$data['tuijianren'] = $admin_id;
-				$arr = $this->adminDao->add_save($data);
-				if($arr) return 3;
-// 			}else{
-// 				return 4;
-// 			}
-		}else{
-			//如果投资系统中不存在重复账号，但是身份证存在，说明不是同一人，不可以开通业务账号
-// 			$userHuifu = $this->adminDao->getUsrNameAndIdNo($data['IdNo']);
-// 			if($userHuifu){
-// 				return 7;
-// 			}else{
-				/*
-				 * 开通业务系统账号同时开户投资系统账号
-				 */
-				
-				//写入业务系统
-				$data['tuijianren'] = $admin_id;
-				$this->adminDao->add_save($data);
-				
-				//接口注册投资系统
-				$curl = $this->getLibrary('curl'); 
-				$url = "http://api.baihedai.com.cn/zhiXiaoXiTong/register/?t=".json_encode($data);
-				$arr = $curl->get($url);
-				if($arr == '123'){
-					$admin = $this->adminDao->getAdmin($data['user']);//根据账户名查数据库是否存在
-					if($admin){//如果存在删除该记录
-						$this->adminDao->del($admin['id']);
-						return 123;//用户名必须要6-16位字母、数字和下划线
-					}
-				}elseif($arr == '234'){
-					$admin = $this->adminDao->getAdmin($data['user']);//根据账户名查数据库是否存在
-					if($admin){//如果存在删除该记录
-						$this->adminDao->del($admin['id']);
-						return 234;//用户名只能包含数字、字母、下划线，不能使用特殊字符
-					}
-				}elseif($arr == '345'){
-					$admin = $this->adminDao->getAdmin($data['user']);//根据账户名查数据库是否存在
-					if($admin){//如果存在删除该记录
-						$this->adminDao->del($admin['id']);
-						return 345;
-					}
-				}elseif($arr == '456'){
-					$admin = $this->adminDao->getAdmin($data['user']);//根据账户名查数据库是否存在
-					if($admin){//如果存在删除该记录
-						$this->adminDao->del($admin['id']);
-						return 456;
-					}
-				}elseif($arr == '567'){
-					$admin = $this->adminDao->getAdmin($data['user']);//根据账户名查数据库是否存在
-					if($admin){//如果存在删除该记录
-						$this->adminDao->del($admin['id']);
-						return 567;
-					}
-				}else{
-					return 678;
+			//如果线上投资系统存在该用户，则检测手机号是否相同，如果相同说明是同一人写入直销系统
+			$userPhone = $this->adminDao->get_phone($data['phone']);
+			if($userPhone){
+				if($userPhone['uid'] == $info['id']){
+					//写入业务系统
+					$data['tuijianren'] = $admin_id;
+					$arr = $this->adminDao->add_save($data);
+					if($arr) return 3;
 				}
-// 			}
+			}else{
+				return 4;
+			}
+
+		}else{
+			//如果直销系统以及投资系统中不存在该用户，则检测手机号在直销系统及投资系统中是否存在
+			$userPhoneZx = $this->adminDao->get_phone_zx($data['phone']);//检测直销系统中是否存在
+			$userPhone = $this->adminDao->get_phone($data['phone']);//检测线上投资系统中是否存在
+			
+			if($userPhoneZx || $userPhone){
+				return 5;
+			}
+			
+			//写入业务系统
+			$data['tuijianren'] = $admin_id;
+			$this->adminDao->add_save($data);
+			
+			//接口注册投资系统
+			$curl = $this->getLibrary('curl'); 
+			$url = "http://api.baihedai.com.cn/zhiXiaoXiTong/register/?t=".json_encode($data);
+			$arr = $curl->get($url);
+			if($arr == '123'){
+				$admin = $this->adminDao->getAdmin($data['user']);//根据账户名查数据库是否存在
+				if($admin){//如果存在删除该记录
+					$this->adminDao->del($admin['id']);
+					return 123;//用户名必须要6-16位字母、数字和下划线
+				}
+			}elseif($arr == '234'){
+				$admin = $this->adminDao->getAdmin($data['user']);//根据账户名查数据库是否存在
+				if($admin){//如果存在删除该记录
+					$this->adminDao->del($admin['id']);
+					return 234;//用户名只能包含数字、字母、下划线，不能使用特殊字符
+				}
+			}elseif($arr == '345'){
+				$admin = $this->adminDao->getAdmin($data['user']);//根据账户名查数据库是否存在
+				if($admin){//如果存在删除该记录
+					$this->adminDao->del($admin['id']);
+					return 345;
+				}
+			}elseif($arr == '456'){
+				$admin = $this->adminDao->getAdmin($data['user']);//根据账户名查数据库是否存在
+				if($admin){//如果存在删除该记录
+					$this->adminDao->del($admin['id']);
+					return 456;
+				}
+			}elseif($arr == '567'){
+				$admin = $this->adminDao->getAdmin($data['user']);//根据账户名查数据库是否存在
+				if($admin){//如果存在删除该记录
+					$this->adminDao->del($admin['id']);
+					return 567;
+				}
+			}else{
+				return 678;
+			}
+			
+
 		}
     }
     /**

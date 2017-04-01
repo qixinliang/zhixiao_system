@@ -140,6 +140,7 @@ class adminController extends baseController
 		
 		
 		$data['status'] = $this->controller->get_gp('status');
+		
         $arr = $this->adminService->add_save($data,$admin['id']);
         if($arr == 1){
             exit(json_encode(array('status' => 1, 'message' => '两次密码输入不同！')));
@@ -148,12 +149,13 @@ class adminController extends baseController
 		}else if($arr == 3){
 			exit(json_encode(array('status' => 3, 'message' => '角色账号添加成功！')));
 		}
-// 		else if($arr == 4){
-// 			exit(json_encode(array('status' => 4, 'message' => '投资账号已存在，请输入正确的身份证号及手机号！')));
-// 		}
-// 		else if($arr == 7){
-// 			exit(json_encode(array('status' => 7, 'message' => '身份证在直销系统中已存在！')));
-// 		}
+		else if($arr == 4){
+ 			exit(json_encode(array('status' => 4, 'message' => '投资账号已存在，请输入正确手机号！')));
+ 		}
+		else if($arr == 5){
+ 			exit(json_encode(array('status' => 5, 'message' => '该手机号已存在')));
+ 		}
+
 		else if($arr == 123){
 			exit(json_encode(array('status' => 123, 'message' => '用户名必须要6-16位字母、数字和下划线！')));
 		}else if($arr == 234){
@@ -161,9 +163,9 @@ class adminController extends baseController
 		}else if($arr == 345){
 			exit(json_encode(array('status' => 345, 'message' => '用户名不能为手机号！')));
 		}else if($arr == 456){
-			exit(json_encode(array('status' => 456, 'message' => '用户名在直销系统中已存在,请输入正确的手机号！')));
+			exit(json_encode(array('status' => 456, 'message' => '用户名已注册')));
 		}else if($arr == 567){
-			exit(json_encode(array('status' => 567, 'message' => '直销系统手机号已存在！')));
+			exit(json_encode(array('status' => 567, 'message' => '该手机号已在百合贷注册！')));
 		}else if($arr == 678){
 			exit(json_encode(array('status' => 678, 'message' => '角色账号添加成功！')));
 		}
