@@ -43,50 +43,48 @@ class achievementController extends baseController{
 
 		//获取当前登录用户部门下级列表
 		$dpts = $this->departmentService->getChilds($departmentId);
-		echo('|--------------------下级部门列表-----------------|');
-		echo('<pre>');
-		print_r($dpts);
-		echo('</pre>');
 	    foreach ($dpts as $key =>$val){
 	        //目前取得的数据是个人业绩,不包含客户业绩,需要修改
 			$tmpInfo = $this->bmyjmxService->getInvestInfoByDepartmentId($val['department_id'],'2016-10');
-			$rujin = 0;
+			$rujin   = 0;
 			$zhebiao = 0;
 			$huikuan = 0;
-			$cnt = 0;
+			$cnt     = 0;
 			//本部门投资明细
 			if(isset($tmpInfo) && !empty($tmpInfo)){
 				foreach($tmpInfo as $k1 => $v1){
 			    	$cnt++;//投资明细数
-			    	$val['self_rujin']   += $v1['zonge'];
-			    	$val['self_zhebiao'] += $v1['nianhuan'];
-			    	$val['self_huikuan'] += $v1['huikuan'];
-			    	$val['self_cnt']     = $cnt;
+			    	$rujin   += $v1['zonge'];
+			    	$zhebiao += $v1['nianhuan'];
+			    	$huikuan += $v1['huikuan'];
 				}
-			}else{
-				$val['self_rujin'] = 0;
-				$val['self_zhebiao'] = 0;
-				$val['self_huikuan'] = 0;
-				$val['self_cnt'] = 0;
 			}
-
-			$dpts[$key]=$val;
-			echo('<pre>');
-			print_r($dpts);
-			echo('</pre>');
-			
 			//取出当前部门下的所有子孙部门的投资信息，并做计算，传递到这里
 			$subInfo = $this->getXiaJiBuMenShuJu($val['department_id']);
-			$dpts[$key]['sub_rujin'] = $subInfo['sub_rujin'];
-			$dpts[$key]['sub_zhebiao'] = $subInfo['sub_zhebiao'];
-			$dpts[$key]['sub_huikuan'] = $subInfo['sub_huikuan'];
-			$dpts[$key]['sub_cnt'] = $subInfo['sub_cnt'];
+			//自己的投资部分
+			$val['self_rujin']=$rujin;
+			$val['self_zhebiao']=$zhebiao;
+			$val['self_huikuan']=$huikuan;
+			$val['self_cnt']=$cnt;
+			//所有子孙部门下的投资数据
+			$val['all_sub_rujin']=$subInfo['sub_rujin'];
+			$val['all_sub_zhebiao']=$subInfo['sub_zhebiao'];
+			$val['all_sub_huikuan']=$subInfo['sub_huikuan'];
+			$val['all_sub_cnt']=$subInfo['sub_cnt'];
+			//总数据
+			$val['total_rujin']=($val['self_rujin']+$val['all_sub_rujin']);
+			$val['total_zhebiao']=($val['self_zhebiao']+$val['all_sub_zhebiao']);
+			$val['total_huikuan'] = ($val['self_huikuan']+$val['all_sub_huikuan']);
+			$val['total_cnt'] = ($val['self_cnt']+$val['all_sub_cnt']);
+			
+			//成员变量恢复初始值，要不就会一直累加下去
 			$this->subrujin = 0;
 			$this->subzhebiao = 0;
 			$this->subhuikuan = 0;
 			$this->subcnt = 0;
-			//$dpts[$key]['heji'] =  $this->getXiaJiBuMenShuJu($val['department_id']);
-
+			
+			//数据组装
+			$dpts[$key]=$val;
 	    }
 
 		echo("-----------------------------最终结果-----------------------");
@@ -102,19 +100,15 @@ class achievementController extends baseController{
 
 	//递归获取下级数据
 	public function getXiaJiBuMenShuJu($did){
-	    echo("$did");
 	    $dpts = $this->departmentService->getChilds($did);
-
 		/*
 	    $subrujin = 0;
 		$subzhebiao = 0;
 		$subhuikuan = 0;
 		$subcnt = 0;
 		*/
-
 	    foreach ($dpts as $key=>$val){
 	        //目前取得的数据是个人业绩,不包含客户业绩需要修改
-
 			//下级部门ID
 			$subId = $val['department_id'];
 	        $tmpInfo = $this->bmyjmxService->getInvestInfoByDepartmentId($val['department_id'],'2016-10');
