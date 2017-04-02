@@ -166,7 +166,7 @@ class bmyjmxController extends baseController{
         //判断是否按照地区筛选
         if(isset($city) && !empty($city)){
             foreach ($departmentUserDetail as $k=>$v){
-                if($v[info][0] != $city){
+                if($v['info'][0] != $city){
                     unset($departmentUserDetail[$k]);
                 }
             }
