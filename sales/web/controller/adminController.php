@@ -213,7 +213,7 @@ class adminController extends baseController
 		//$data['password2'] = $this->controller->get_gp('password2');//确认密码
 		$data['level_id'] = $this->controller->get_gp('level_id');
 		$data['gender'] = $this->controller->get_gp('gender');//性别
-		$data['status'] = $this->controller->get_gp('status');//在职状态
+		//$data['status'] = $this->controller->get_gp('status');//在职状态
 		$data['Inthetime'] = $this->controller->get_gp('Inthetime');
         $arr = $this->adminService->edit_save($data);
         if($arr==7)
