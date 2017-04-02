@@ -70,7 +70,7 @@ class customerDao extends Dao{
 				$arr['inviter_id'] 		= $salesUid;
 	            $arr['inviter_name']	= $salesInfo['sales_login_name'];
 	            $arr['inviter_department_id'] = $salesInfo['department_id'];
-	            $arr['inviter_role_id'] = 0;
+	            $arr['inviter_role_id'] = $salesInfo['role_id'];
 	            $arr['inviter_off_time'] = $salesInfo['update_time'];
 	            //$arr['bumenname'] = $salesInfo['bumenname'];
 	            //$arr['department_name'] = $salesInfo['department_name'];
@@ -107,7 +107,7 @@ class customerDao extends Dao{
 	 * @传入当前用户UID查询出邀请的人姓名，所属部门，角色
 	 *************************************************************/
 	public function getYaoQingRenUserInfo($uid){
-	     $sql=sprintf("SELECT a.`user` as sales_login_name,a.department_id as department_id,a.update_time, b.`name`as bumenname,c.department_name from zx_admin as a LEFT JOIN zx_role as b ON a.gid=b.id LEFT JOIN zx_department as c ON c.department_id=a.department_id where a.id=%s",$uid);
+	     $sql=sprintf("SELECT a.`user` as sales_login_name,a.department_id as department_id,a.gid as role_id,a.update_time, b.`name`as bumenname,c.department_name from zx_admin as a LEFT JOIN zx_role as b ON a.gid=b.id LEFT JOIN zx_department as c ON c.department_id=a.department_id where a.id=%s",$uid);
 	     return  $this->dao->db->get_one_sql($sql);
 	}
 	/************************************************************

@@ -83,7 +83,6 @@ class customerController extends baseController{
 				'inviter_name' 			=> $v['inviter_name'], 
 				'inviter_dpt_name' 		=> $inviterDptName,
 				'inviter_role_name' 	=> $inviterRoleName,
-				//FIXME,离职的时候把销售的离职日期写到数据库中.
 				'inviter_off_time' 		=> date('Y-m-d H:i:s',$v['inviter_off_time']),
 				'invest_status' 		=> $v['invest_status']
 			);
@@ -190,6 +189,7 @@ class customerController extends baseController{
 			'create_time' 			=> time(),
 			'update_time' 			=> time(),
 		);
+
 
 		//查询当前客户是否已经被分配过，如果分配过，把数据分配记录里面的当前负责人清零。
 		$clientUid = $this->customerService->getClientUid($investorId);
