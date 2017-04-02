@@ -172,19 +172,19 @@ class myClientsService extends Service
     /**
      * 循环取出客户分配表里面，分配给我的客户信息，并和我的客户数据合并
      * @param type $friends
-     * @param type $customerRecord_List
+     * @param type $customerRecordList
      * @param type $arrange_where_url
      * @return type
      */
-    public function mergeData($friends,$customerRecord_List,$where=null){
+    public function mergeData($friends,$customerRecordList,$where=null){
         foreach ($friends as $k=>$v){
-            foreach($customerRecord_List as $k1=>$v1){
+            foreach($customerRecordList as $k1=>$v1){
                 if($v['uid']==$v1['investor_id']){
-                    unset($customerRecord_List[$k1]);
+                    unset($customerRecordList[$k1]);
                 }
             }
         }
-        foreach($customerRecord_List as $k=>$v){
+        foreach($customerRecordList as $k=>$v){
             //根据客户分配表里面的客户id，查询相关投资几率
             $customerRecordOrder = $this->getCustomerRecordOrder($v['investor_id'],$where);
             //循环查询当前客户所归属的业务员
@@ -196,7 +196,7 @@ class myClientsService extends Service
                 $friends = array_merge($friends,$customerRecordOrder);
             }
         }
-        $customerFriendsCount = count($customerRecord_List);//分配给我的邀请人数量，用于计算客户数量
+        $customerFriendsCount = count($customerRecordList);//分配给我的邀请人数量，用于计算客户数量
         return array('friends'=>$friends,'customerFriendsCount'=>$customerFriendsCount);
     }
     
