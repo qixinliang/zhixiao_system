@@ -22,7 +22,7 @@ class adminController extends baseController
      */
     public function run()
     {
-        $this->authService->checkauth("1023");
+        $this->authService->checkauth("1013");
         $departmentService = InitPHP::getService("department"); //上级列表
         
         $part_id = $this->controller->get_gp('part_id') ? $this->controller->get_gp('part_id') : '';    //获取角色id
@@ -97,7 +97,7 @@ class adminController extends baseController
      */
     public function add()
     {
-        $this->authService->checkauth("1024");
+        $this->authService->checkauth("1014");
         $departmentService = InitPHP::getService("department");//上级列表
         $user_group = $this->adminGroupService->adminList();
         $list2 = $departmentService->getDepartmentList2();
@@ -115,7 +115,7 @@ class adminController extends baseController
      */
     public function add_save()
     {	
-        if($this->authService->checkauthUser("1025")==false){
+        if($this->authService->checkauthUser("1015")==false){
             exit(json_encode(array('status' => 0, 'message' => '您没有权限操作')));
         }
 		$token = $this->controller->check_token(); 
@@ -172,7 +172,7 @@ class adminController extends baseController
      */
     public function edit()
     {
-        $this->authService->checkauth("1026");
+        $this->authService->checkauth("1016");
         $id = $this->controller->get_gp('id');
         $arr=$this->adminService->edit($id);
 
@@ -194,7 +194,7 @@ class adminController extends baseController
      */
     public function edit_save()
     {
-        if($this->authService->checkauthUser("1027")==false){
+        if($this->authService->checkauthUser("1017")==false){
             exit(json_encode(array('status' => 0, 'message' => '您没有权限操作')));
         }
 		$token = $this->controller->check_token(); 
@@ -236,7 +236,7 @@ class adminController extends baseController
      */
     public function del()
     {
-        if($this->authService->checkauthUser("1028")==false){
+        if($this->authService->checkauthUser("1018")==false){
             exit(json_encode(array('status' => 0, 'message' => '您没有权限操作')));
         }
         $id = $this->controller->get_gp('id');

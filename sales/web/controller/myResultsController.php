@@ -22,6 +22,7 @@ class myResultsController extends baseController{
      *************************************************************/
     public function __construct(){
         parent::__construct();
+		$this->authService = InitPHP::getService('auth');
     }
     /************************************************************
      * @copyright(c): 2017年2月27日
@@ -32,6 +33,7 @@ class myResultsController extends baseController{
      * @我的业绩默认列表
      *************************************************************/
     public function run(){
+		$this->authService->checkauth('1019');
         $adminService = InitPHP::getService("admin");//获取管理员信息
         $myResultsService = InitPHP::getService("myResults");
         
