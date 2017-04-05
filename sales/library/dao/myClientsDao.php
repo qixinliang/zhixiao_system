@@ -14,8 +14,8 @@ class myClientsDao extends Dao
      * @return array
      */
     public function getInvestFriends($uid,$where){
-//        $sql = "select i.uid,d.deal_id,h.UsrName,i.phone,d.title,o.order_money,o.order_time,d.start_date,d.end_date,d.syl,d.expires_type,d.expires,d.full_time,d.deal_id from cp_deal d ,cp_deal_order o ,cp_user_yaoqingma_list y ,cp_user_info i,cp_user_huifu h where d.deal_id = o.deal_id and o.uid = i.uid and h.uid = i.uid and i.uid = y.uid and y.friends = $uid $where";
-        $sql="select i.uid,d.deal_id,h.UsrName,i.phone,d.title,o.order_money,o.order_time,d.start_date,d.end_date,d.syl,d.expires_type,d.expires,d.full_time,d.deal_id,o.VocherAmt,o.JiaXi from cp_deal d left join cp_deal_order o on d.deal_id = o.deal_id left join cp_user_yaoqingma_list y on o.uid = y.uid left join cp_user_huifu h on h.uid =o.uid left join cp_user_info i on h.uid = i.uid where y.friends = $uid $where";
+//         $sql="select o.uid,d.deal_id,h.UsrName,i.phone,d.title,o.order_money,o.order_time,d.start_date,d.end_date,d.syl,d.expires_type,d.expires,d.full_time,d.deal_id,o.VocherAmt,o.JiaXi from cp_deal d left join cp_deal_order o on d.deal_id = o.deal_id left join cp_user_yaoqingma_list y on o.uid = y.uid left join cp_user_huifu h on h.uid =o.uid left join cp_user_info i on h.uid = i.uid where y.friends = $uid $where";
+        $sql = "select u.id as uid,d.deal_id,h.UsrName,i.phone,d.title,o.order_money,o.order_time,d.start_date,d.end_date,d.syl,d.expires_type,d.expires,d.full_time,d.deal_id,o.VocherAmt,o.JiaXi from cp_deal d left join cp_deal_order o on d.deal_id = o.deal_id left join cp_user_yaoqingma_list y on o.uid = y.uid left join cp_user u on y.uid = u.id left join cp_user_huifu h on u.id =h.uid left join cp_user_info i on h.uid = i.uid where y.friends = $uid $where ;";
         return $this->dao->db->get_all_sql($sql);
     }
     
@@ -26,7 +26,7 @@ class myClientsDao extends Dao
      * @param type $where
      * @return array
      */
-    public function getNoInvestFriends($friendIds,$where){
+    public function getNoInvestFriends($friendIds,$where=''){
         $sql = "select u.id,u.username,h.UsrName,h.UsrMp,u.login_time,h.create_time,i.phone from cp_user u left join cp_user_huifu h on u.id = h.uid left join cp_user_info i on u.id = i.uid where u.id in($friendIds) $where ";
         return $this->dao->db->get_all_sql($sql);
     }
@@ -37,8 +37,8 @@ class myClientsDao extends Dao
      * @param type $where
      * @return type
      */
-    public function getNoInvestFriendsCount($friendIds,$where){
-        $sql = "select count(u.id)as count from cp_user u left join cp_user_huifu h on u.id = h.uid left join cp_user_info i on u.id = i.uid where u.id in($friendIds) $where ";
+    public function getNoInvestFriendsCount($friendIds,$where=''){
+        $sql = "select count(u.id) as count from cp_user u left join cp_user_huifu h on u.id = h.uid left join cp_user_info i on u.id = i.uid where u.id in($friendIds) $where ";
         return $this->dao->db->get_one_sql($sql);
     }
     /**
@@ -119,7 +119,7 @@ class myClientsDao extends Dao
      * @return type
      */
     public function getCustomerRecordList($uid){
-        $sql="select * from zx_customer_record where new_inviter_id = $uid ";
+        $sql="select * from zx_customer_record where principal=1 and new_inviter_id = $uid";
         return $this->dao->db->get_all_sql($sql);
     }
     
