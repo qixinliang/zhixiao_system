@@ -191,6 +191,12 @@ class customerController extends baseController{
 			'update_time' 			=> time(),
 		);
 
+		//查询当前客户是否已经被分配过，如果分配过，把数据分配记录里面的当前负责人清零。
+		$clientUid = $this->customerService->getClientUid($investorId);
+		if(!empty($clientUid) && $clientUid>0){
+		    //修改用户记录表，把zx_customer_record表 principal字段默认设置为0
+		  $this->customerService->updateCustomerRecord($investorId);
+		}
 		/*
 		 *写入历史纪录表，插入成功，$ret为返回的数据库primary key
 		 */

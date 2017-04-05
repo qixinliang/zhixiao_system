@@ -150,7 +150,7 @@ class myClientsDao extends Dao
     }
     
     public function getSalesmanUsername2($clientId){
-        $sql="select new_inviter_name from zx_customer_record where investor_id = $clientId";
+        $sql="select new_inviter_name from zx_customer_record where principal=1 and investor_id = $clientId";
         return $this->dao->db->get_one_sql($sql);
     }
 }
