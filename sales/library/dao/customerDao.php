@@ -155,4 +155,22 @@ class customerDao extends Dao{
 	        return false;
 	    }
 	}
+	
+	public function getClientUid($clientId){
+	    $sql="select count(*) as count from zx_customer_record where investor_id = $clientId";
+	    $res = $this->dao->db->get_one_sql($sql);
+	    if(!empty($res)){
+	        return $res['count'];
+	    }else{
+	        return 0;
+	    }
+	}
+	
+	/**
+	 * 修改用户记录表，把zx_customer_record表 principal字段默认设置为0
+	 * @param unknown $clientId
+	 */
+	public function updateCustomerRecord($clientId){
+	    return $this->dao->db->update_by_field(array('principal'=>0), array('investor_id'=>$clientId), 'zx_customer_record');
+	}
 }

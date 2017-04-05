@@ -27,4 +27,20 @@ class customerService extends Service{
 	public function del($id){
 		return $this->customerDao->del($id);
 	}
+	
+	/**
+	 * 查询当前客户，之前是否被分配过
+	 * @param unknown $clientId
+	 */
+	public function getClientUid($clientId){
+	    return $this->customerDao->getClientUid($clientId);
+	}
+	
+	/**
+	 * 修改用户记录表，把zx_customer_record表 principal字段默认设置为0
+	 * @param unknown $clientId
+	 */
+	public function updateCustomerRecord($clientId){
+	    return $this->customerDao->updateCustomerRecord($clientId);
+	}
 }
