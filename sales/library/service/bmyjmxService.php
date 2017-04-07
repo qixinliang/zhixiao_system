@@ -6,6 +6,7 @@ if (!defined('IS_INITPHP')) exit('Access Denied!');
  */
 class bmyjmxService extends Service
 {
+    public $array = array();
     public function __construct()
     {
         parent::__construct();
@@ -41,10 +42,10 @@ class bmyjmxService extends Service
      * @param type $end_date
      * @return type
      */
-    public function arrange_where_url($department_id,$username,$start_date,$end_date){
+    public function arrange_where_url($url,$department_id,$username,$start_date,$end_date){
         $where = ' ';
         //分页地址
-        $url = 'bmyjmx/run';
+        $url = $url;
         $excelUrl = 'bmyjmx/createExcel';
         if($department_id!=''){
             $url=$url.'/department_id/'.$department_id;
@@ -211,4 +212,66 @@ class bmyjmxService extends Service
 			}
 		}
 	}
+	
+	
+	public function getDiGuiDepartment($department_id){
+	    print_r($department_id);
+	    $department = $this->departmentDao->getdepartmentInfo($department_id);
+	    
+	    if($department['p_dpt_id']=='1'){
+	         $this->array[] = $department['department_name'];
+	    }else{
+    	    $department2 = $this->departmentDao->getDepartmentName($department['p_dpt_id']);
+    	    $this->array[] = $department2['department_name'];
+    	    $this->getDiGuiDepartment($department2['p_dpt_id']);
+	    }
+	    return $this->array;
+	}
+	
+	public function digui($departmentList,$department_id){
+	    foreach($departmentList as $k=>$v){
+	        if($v['department_id'] == $department_id){
+	            if($v['p_dpt_id']=='1'){
+	                $this->array[] = $v['department_name'];
+	            }else{
+	                $department_id = $v['p_dpt_id'];
+	                $this->array[] = $v['department_name'];
+	                unset($departmentList[$k]);
+	                $this->digui($departmentList, $department_id);
+	            }
+	        }
+	    }
+	    return $this->array;
+	}
+	
+	public function getDepartmentName($department_id){
+	    $info = $this->departmentDao->getDepartmentName($department_id);
+	    if(empty($info['p_dpt_id'])){
+	        return $info['department_name'];
+	    }
+	    if(!empty($info['p_dpt_id'])){
+	        $this->department_name.=$info['department_name'].'-';
+	        $this->getDepartmentName(intval($info['p_dpt_id']));
+	    }
+	    if(!empty($this->department_name)){
+	        $arr = explode('-',$this->department_name);
+	        $tmparr = array();
+	        $str= null;
+	        if(is_array($arr)){
+	            foreach ($arr as $key=>$val){
+	                if(!empty($val)){
+	                    $tmparr[$key]=$val;
+	                }
+	            }
+	            for ($n=count($tmparr); $n>=0; $n--){
+	                if(!empty($tmparr[$n])){
+	                    $str.=$tmparr[$n].'->';
+	                }
+	
+	            }
+	        }
+	        return substr($str, 0,-2);
+	    }
+	}
+	
 }
