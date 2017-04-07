@@ -103,6 +103,7 @@ class bmyjmxController extends baseController{
         $this->createExcelService->run($user_data);
     }
     
+    //部门业绩统计
     public function total(){
         $pager= $this->getLibrary('pager'); //分页加载
         $page = $this->controller->get_gp('page') ? $this->controller->get_gp('page') : 1 ; //获取当前页码
@@ -110,16 +111,18 @@ class bmyjmxController extends baseController{
         $end_date = $this->controller->get_gp('end_date') ? $this->controller->get_gp('end_date') : '' ; //获取结束时间
         $department_id = $this->controller->get_gp('department_id') ? $this->controller->get_gp('department_id') : '' ; //部门id
         $username = urldecode($this->controller->get_gp('username')) ? urldecode($this->controller->get_gp('username')) : '' ; //获取姓名
-        
+        $city = urldecode($this->controller->get_gp('city')) ? urldecode($this->controller->get_gp('city')) : '' ; 
         //获取用户id
         $user = $this->adminService->current_user();
         $deparment_list_all = $this->departmentService->getDepartmentList(); //获取所有的部门列表
         $my_department = $this->bmyjmxService->getMyDepartment($user['department_id']); //获取我的部门信息
+        //获取所有pid为1的部门，当做城市部门
+        $cityDepartment = $this->bmyjmxService->getDepartmentList(1);
         //根据用户的部门id，获取子部门id
         $my_department_lsit = $this->GetTree($deparment_list_all,$user['department_id']);
         $this->tree = array();
         //拼接where条件，和url链接地址
-        $arrange_where_url = $this->bmyjmxService->arrange_where_url('bmyjmx/total',$department_id,$username,$start_date,$end_date);
+        $arrange_where_url = $this->bmyjmxService->arrange_where_url('bmyjmx/total',$department_id,$username,$start_date,$end_date,$city);
         //获取用户列表
         $user_data = $this->bmyjmxService->getUserDataList($my_department_lsit,$arrange_where_url['where'],$start_date,$end_date);
         //循环客户列表，获取当前客户的上级部门
@@ -129,6 +132,14 @@ class bmyjmxController extends baseController{
             $this->bmyjmxService->array=array();
             $data = array_reverse($data);
             $user_data[$k]['info'] = $data;
+        }
+        //判断是否按照地区筛选
+        if(isset($city) && !empty($city)){
+            foreach ($user_data as $k=>$v){
+                if($v[info][0] != $city){
+                    unset($user_data[$k]);
+                }
+            }
         }
         //分页
         $page = ($page-1)*10 ? ($page-1)*10 : 0;
@@ -143,11 +154,28 @@ class bmyjmxController extends baseController{
         $this->view->assign('username', $username);
         $this->view->assign('excelUrl',$arrange_where_url['excelUrl']);
         //返回数据
+        $this->view->assign('cityDepartment', $cityDepartment);
+        $this->view->assign('city',$city);
         $this->view->assign('my_department', $my_department); //返回我的部门信息
         $this->view->assign('my_department_lsit', $my_department_lsit); //返回我的子部门列表，用作搜索条件
         $this->view->assign('page_html', $page_html);
         $this->view->assign('user_data', $user_data);
         $this->view->display('bmyjtj/run');
     }
+    
+    public function utf8_array_asort(&$array) {
+        if(!isset($array) || !is_array($array)) {
+            return false;
+        }
+        foreach($array as $k=>$v) {
+            $array[$k] = iconv('UTF-8', 'GB2312',$v);
+        }
+        asort($array);
+        foreach($array as $k=>$v) {
+            $array[$k] = iconv('GB2312', 'UTF-8', $v);
+        }
+        return true;
+    }
+    
     
 }
