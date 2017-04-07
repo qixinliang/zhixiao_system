@@ -147,13 +147,13 @@ function sub(obj){
 	}
 	
 	$.ajax({
-		url: '/admingroup/<!--{$action}-->_save',
+		url: '/role/<!--{$action}-->_save',
 		type: 'post',
 		dataType:'json',
 		data: $('#form').serialize(),
 		success: function(data) {
 			if(data.status==1){
-				window.location.href="/admingroup/run";
+				window.location.href="/role/run";
 			}else{
 				$("#tipss").html("<font color=\"red\">"+data.message+"</font>");
 				setTimeout(function() {

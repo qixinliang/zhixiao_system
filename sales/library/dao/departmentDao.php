@@ -159,7 +159,7 @@ class departmentDao extends Dao{
 	}
 
 	public function getUsersByDepartmentId($departmentId){
-        $sql = "select z.id,z.user,z.UsrName,z.phone,g.`name`,z.level_id,d.department_name,z.Inthetime from cp_zjingjiren_admin z left join zx_department d on z.department_id = d.department_id left join cp_zjingjiren_admin_group g on z.gid = g.id where z.department_id = $departmentId";
+        $sql = "select z.id,z.user,z.UsrName,z.phone,g.`name`,z.level_id,d.department_name,z.Inthetime from zx_admin z left join zx_department d on z.department_id = d.department_id left join zx_role g on z.gid = g.id where z.department_id = $departmentId";
         return $this->dao->db->get_all_sql($sql);
     }
 }

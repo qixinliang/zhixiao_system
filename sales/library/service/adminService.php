@@ -10,7 +10,7 @@ class adminService extends Service
     {
         parent::__construct();
         $this->adminDao = InitPHP::getDao("admin");//获取管理员信息
-        $this->adminGroupDao = InitPHP::getDao("adminGroup");//获取管理员组信息
+        $this->roleDao = InitPHP::getDao("role");//获取管理员组信息
     }
 	/**
 	 * 获取当前用户信息
@@ -24,7 +24,7 @@ class adminService extends Service
             return false;
         }
         $user= $this->adminDao->adminInfo($admin_id);
-        $user_group= $this->adminGroupDao->adminGroupInfo($user['gid']);
+        $user_group= $this->roleDao->adminGroupInfo($user['gid']);
 
         $user['gname']=$user_group['name'];
         $user['model_power']=$user_group['model_power'];
@@ -180,10 +180,10 @@ class adminService extends Service
     public function edit($id)
     {
         $this->adminService = InitPHP::getService("admin");//获取Service
-        $this->adminGroupService = InitPHP::getService("adminGroup");//获取Service
-        $data['user_group'] = $this->adminGroupService->adminList();
+        $this->roleService = InitPHP::getService("role");//获取Service
+        $data['user_group'] = $this->roleService->adminList();
         $info = $this->adminService->adminInfo($id);
-        $info_group = $this->adminGroupService->info($info['gid']);
+        $info_group = $this->roleService->info($info['gid']);
 
         $data['info']=$info;
         $data['info_group']=$info_group;
@@ -224,7 +224,7 @@ class adminService extends Service
     public function del($id)
     {
         $this->adminService = InitPHP::getService("admin");//获取Service
-        $this->adminGroupService = InitPHP::getService("adminGroup");//获取Service
+        $this->roleService = InitPHP::getService("role");//获取Service
         $info=$this->adminService->adminInfo($id);
         if($info['keep']==1)
         {

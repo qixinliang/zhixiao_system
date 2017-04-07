@@ -5,14 +5,14 @@ if (!defined('IS_INITPHP')) exit('Access Denied!');
  * 后台管理组控制器
  * @author aaron
  */
-class admingroupController extends baseController
+class roleController extends baseController
 {
     public $initphp_list = array('add','add_save','edit','edit_save','del'); //Action白名单
 
     public function __construct()
     {
         parent::__construct();
-        $this->adminGroupService = InitPHP::getService("adminGroup");       //获取Service
+        $this->roleService = InitPHP::getService("role");       //获取Service
         $this->adminService = InitPHP::getService("admin");                 //获取Service
 	$this->authService = InitPHP::getService("auth");                   //获取权限Service
     }
@@ -23,9 +23,15 @@ class admingroupController extends baseController
     public function run()
     {
         $this->authService->checkauth("1007");
-        $list = $this->adminGroupService->adminList();
+        $userInfo = $this->adminService->current_user();
+        $roleId = '';
+        if(isset($userInfo)){
+            $roleId = $userInfo['gid'];
+        }
+        $this->view->assign('role_id',$roleId);
+        $list = $this->roleService->adminList();
         $this->view->assign('list', $list);
-        $this->view->display("admingroup/run"); //使用模板
+        $this->view->display("role/run"); //使用模板
     }
     /**
      * 添加
@@ -38,7 +44,7 @@ class admingroupController extends baseController
         $this->view->assign('action_name', '添加');
         $this->view->assign('action', 'add');
         $this->view->assign('user', $user);
-        $this->view->display("admingroup/addinfo"); //使用模板
+        $this->view->display("role/addinfo"); //使用模板
     }
     /**
      * 添加保存
@@ -49,7 +55,7 @@ class admingroupController extends baseController
         if($this->authService->checkauthUser("1009")==false){
             exit(json_encode(array('status' =>0, 'message' => '您没有权限!')));
         }
-        $arr = $this->adminGroupService->add_save($_POST);
+        $arr = $this->roleService->add_save($_POST);
         if($arr)
         {
             exit(json_encode(array('status' => 1, 'message' => '用户组添加成功!')));
@@ -63,13 +69,13 @@ class admingroupController extends baseController
     {
         $this->authService->checkauth("1010");
         $id = $this->controller->get_gp('id');
-        $data=$this->adminGroupService->edit($id);
+        $data=$this->roleService->edit($id);
 
         $this->view->assign('info', $data['info']);
         $this->view->assign('model_power', $data['model_power']);
         $this->view->assign('action_name', '修改');
         $this->view->assign('action', 'edit');
-        $this->view->display("admingroup/editinfo");
+        $this->view->display("role/editinfo");
     }
     /**
      * 修改保存
@@ -81,7 +87,7 @@ class admingroupController extends baseController
             exit(json_encode(array('status' =>0, 'message' => '您没有权限!')));
         }
         
-        $arr = $this->adminGroupService->edit_save($_POST);
+        $arr = $this->roleService->edit_save($_POST);
         if($arr)
         {
             exit(json_encode(array('status' => 1, 'message' => '用户组修改成功!')));
@@ -98,7 +104,7 @@ class admingroupController extends baseController
             exit(json_encode(array('status' =>0, 'message' => '您没有权限!')));
         }
         $id = $this->controller->get_gp('id');
-        $arr = $this->adminGroupService->del($id);
+        $arr = $this->roleService->del($id);
         if($arr==1)
         {
             exit(json_encode(array('status' => 1, 'message' => '用户组删除成功!')));
