@@ -108,7 +108,7 @@ class customerDao extends Dao{
 	 * @传入当前用户UID查询出邀请的人姓名，所属部门，角色
 	 *************************************************************/
 	public function getYaoQingRenUserInfo($uid){
-	     $sql=sprintf("SELECT a.`user` as sales_login_name,a.department_id as department_id, b.`name`as bumenname,c.department_name from cp_zjingjiren_admin as a LEFT JOIN cp_zjingjiren_admin_group as b ON a.gid=b.id LEFT JOIN zx_department as c ON c.department_id=a.department_id where a.id=%s",$uid);
+	     $sql=sprintf("SELECT a.`user` as sales_login_name,a.department_id as department_id, b.`name`as bumenname,c.department_name from zx_admin as a LEFT JOIN zx_role as b ON a.gid=b.id LEFT JOIN zx_department as c ON c.department_id=a.department_id where a.id=%s",$uid);
 	     return  $this->dao->db->get_one_sql($sql);
 	}
 	/************************************************************

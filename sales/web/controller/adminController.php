@@ -13,7 +13,7 @@ class adminController extends baseController
     {
         parent::__construct();
         $this->adminService = InitPHP::getService("admin");//获取Service
-        $this->adminGroupService = InitPHP::getService("adminGroup");//获取Service
+        $this->roleService = InitPHP::getService("role");//获取Service
 		$this->authService = InitPHP::getService("auth");//获取权限Service
     }
     /**
@@ -33,7 +33,7 @@ class adminController extends baseController
         //根据检索条件，拼接sql语句where条件
         $where = $this->adminService->getWhere($part_id,$department_id,$unmae,$phone);
         $list = $this->adminService->admin_list($where); //查询列表数据
-        $adminList = $this->adminGroupService->adminList(); //获取角色列表
+        $adminList = $this->roleService->adminList(); //获取角色列表
         $list2 = $departmentService->getDepartmentList2();//获取所属部门列表
         $tree2 = $this->_generateTree2($list2);
         $html = $this->_exportTree($tree2,$department_id);
@@ -99,7 +99,7 @@ class adminController extends baseController
     {
         $this->authService->checkauth("1014");
         $departmentService = InitPHP::getService("department");//上级列表
-        $user_group = $this->adminGroupService->adminList();
+        $user_group = $this->roleService->adminList();
         $list2 = $departmentService->getDepartmentList2();
         $tree2 = $this->_generateTree2($list2);
         $html = $this->_exportTree($tree2);
@@ -175,7 +175,6 @@ class adminController extends baseController
         $this->authService->checkauth("1016");
         $id = $this->controller->get_gp('id');
         $arr=$this->adminService->edit($id);
-
         $departmentService = InitPHP::getService("department");//上级列表
         $list2 = $departmentService->getDepartmentList2();
         $tree2 = $this->_generateTree2($list2);

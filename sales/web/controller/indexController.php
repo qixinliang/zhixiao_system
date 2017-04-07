@@ -38,8 +38,8 @@ class indexController extends baseController
         /*
          * @所属职位
          */
-        $adminGroupService = InitPHP::getService("adminGroup");
-        $position = $adminGroupService->info(intval($userinfo['gid']));
+        $roleService = InitPHP::getService("role");
+        $position = $roleService->info(intval($userinfo['gid']));
         $this->view->assign('position', $position['name']);
         /*
          * @邀请客户数量

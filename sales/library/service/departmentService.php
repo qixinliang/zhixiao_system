@@ -143,11 +143,21 @@ class departmentService extends Service{
 	    }
 	    if(!empty($this->department_name)){
 	        $arr = explode('-',$this->department_name);
+	        $tmparr = array();
+	        $str= null;
 	        if(is_array($arr)){
-	            array_pop($arr);
-	            sort($arr);
+	            foreach ($arr as $key=>$val){
+	               if(!empty($val)){
+	                   $tmparr[$key]=$val;
+	               }
+	            }
+	            for ($n=count($tmparr); $n>=0; $n--){
+                       if(!empty($tmparr[$n])){
+                           $str.=$tmparr[$n].'->';
+                       }
+	            }
 	        }
-	        return implode('-', $arr);
+	        return substr($str, 0,-2);
 	    }
 	}
 

@@ -15,7 +15,7 @@
 <div class="panel admin-panel">
   <div class="panel-head"><strong class="icon-reorder"> 角色组列表</strong></div>
   <div class="padding border-bottom">  
-  <a class="button border-yellow" href="/admingroup/add"><span class="icon-plus-square-o"></span> 添加角色</a>
+  <a class="button border-yellow" href="/role/add"><span class="icon-plus-square-o"></span> 添加角色</a>
   </div> 
   <table class="table table-hover text-center">
     <tr>
@@ -32,14 +32,13 @@
       <td>1</td>      
       <td>
       <div class="button-group">
-       <!--  
-       <a type="button" class="button border-main" href="/admingroup/edit/id/<!--{$vo['id']}-->"><span class="icon-edit"></span>修改</a>
-       <a class="button border-red" href="javascript:void(0)" onclick="del('<!--{$vo['id']}-->',this)"><span class="icon-trash-o"></span> 删除</a>
-       -->
-       
-       <a type="button" class="button border-main" href="javascript:void(0);"><span class="icon-edit"></span>修改</a>
-       <a class="button border-red" href="javascript:void(0);"><span class="icon-trash-o"></span> 删除</a>
-       
+      	<!--{if($role_id == 1)}-->
+       		<a type="button" class="button border-main" href="/role/edit/id/<!--{$vo['id']}-->"><span class="icon-edit"></span>修改</a>
+       		<a class="button border-red" href="javascript:void(0)" onclick="del('<!--{$vo['id']}-->',this)"><span class="icon-trash-o"></span> 删除</a>
+       <!--{else}-->
+       		<a type="button" class="button border-main" href="javascript:void(0);"><span class="icon-edit"></span>修改</a>
+       		<a class="button border-red" href="javascript:void(0);"><span class="icon-trash-o"></span> 删除</a>
+       <!--{/if}-->
       </div>
       </td>
     </tr> 
@@ -51,7 +50,7 @@
 function del(id,obj){
 	if(confirm("您确定要删除吗?")){
 		$.ajax({
-			url: '/admingroup/del',
+			url: '/role/del',
 			type: 'post',
 			dataType:'json',
 			data: {id: id},

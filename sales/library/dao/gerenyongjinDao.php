@@ -6,7 +6,7 @@ if (!defined('IS_INITPHP')) exit('Access Denied!');
  */
 class gerenyongjinDao extends Dao
 {
-    public $table_name = 'cp_zjingjiren_admin';
+    public $table_name = 'zx_admin';
     
     /************************************************************
      * @copyright(c): 2016年12月16日
@@ -24,7 +24,7 @@ class gerenyongjinDao extends Dao
         if(!empty($limit)){
             $limit = ' limit '.$limit;
         }
-        $sql=sprintf("select a.UsrName as TuiJianName,e.username as TouZiRen,d.uid,e.id as delal_order_id ,e.deal_number,e.order_money,e.`status`,e.create_time,f.jiangli_type,f.tiexi,e.JiaXi,e.VocherAmt,f.title,f.syl from %s as a left JOIN cp_zjingjiren_admin_group as b on a.gid=b.id left JOIN cp_user as c ON c.username=a.`user` left join cp_user_yaoqingma_list as d ON d.friends=c.id left JOIN cp_deal_order as e ON e.uid=d.uid left join cp_deal as f on f.deal_id=e.deal_id WHERE a.id=%s and e.`status`=2 %s %s ",$this->table_name,$uid,$sqlwhere,$limit);
+        $sql=sprintf("select a.UsrName as TuiJianName,e.username as TouZiRen,d.uid,e.id as delal_order_id ,e.deal_number,e.order_money,e.`status`,e.create_time,f.jiangli_type,f.tiexi,e.JiaXi,e.VocherAmt,f.title,f.syl from %s as a left JOIN zx_role as b on a.gid=b.id left JOIN cp_user as c ON c.username=a.`user` left join cp_user_yaoqingma_list as d ON d.friends=c.id left JOIN cp_deal_order as e ON e.uid=d.uid left join cp_deal as f on f.deal_id=e.deal_id WHERE a.id=%s and e.`status`=2 %s %s ",$this->table_name,$uid,$sqlwhere,$limit);
         return  $this->dao->db->get_all_sql($sql);
     }
     
@@ -41,7 +41,7 @@ class gerenyongjinDao extends Dao
         {
             $sqlwhere=" and ".$sqlwhere;
         }
-        $sql=sprintf("select count(e.deal_number) as number from %s as a left JOIN cp_zjingjiren_admin_group as b on a.gid=b.id left JOIN cp_user as c ON c.username=a.`user` left join cp_user_yaoqingma_list as d ON d.friends=c.id left JOIN cp_deal_order as e ON e.uid=d.uid left join cp_deal as f on f.deal_id=e.deal_id WHERE a.id=%s and e.`status`=2 %s %s ",$this->table_name,$uid,$sqlwhere,$limit);
+        $sql=sprintf("select count(e.deal_number) as number from %s as a left JOIN zx_role as b on a.gid=b.id left JOIN cp_user as c ON c.username=a.`user` left join cp_user_yaoqingma_list as d ON d.friends=c.id left JOIN cp_deal_order as e ON e.uid=d.uid left join cp_deal as f on f.deal_id=e.deal_id WHERE a.id=%s and e.`status`=2 %s %s ",$this->table_name,$uid,$sqlwhere,$limit);
         return  $this->dao->db->get_one_sql($sql);
     }
 }

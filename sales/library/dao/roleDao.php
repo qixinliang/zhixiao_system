@@ -4,9 +4,9 @@ if (!defined('IS_INITPHP')) exit('Access Denied!');
  * 管理员组Dao
  * @author aaron
  */
-class adminGroupDao extends Dao
+class roleDao extends Dao
 {
-    public $table_name = 'cp_zjingjiren_admin_group';
+    public $table_name = 'zx_role';
 	
 	/**
 	 * 根据管理员组id查详细资料

@@ -16,7 +16,7 @@ class customerController extends baseController{
 		$this->customerService 			= InitPHP::getService('customer');
 		$this->customerRecordService 	= InitPHP::getService('customerRecord');
 		$this->departmentService 		= InitPHP::getService('department');
-		$this->roleService 				= InitPHP::getService('adminGroup');
+		$this->roleService 				= InitPHP::getService('role');
 		$this->authService              = InitPHP::getService('auth');
 	}
 
