@@ -6,6 +6,7 @@ if (!defined('IS_INITPHP')) exit('Access Denied!');
  */
 class bmyjmxService extends Service
 {
+    public $array = array();
     public function __construct()
     {
         parent::__construct();
@@ -41,10 +42,10 @@ class bmyjmxService extends Service
      * @param type $end_date
      * @return type
      */
-    public function arrange_where_url($department_id,$username,$start_date,$end_date){
+    public function arrange_where_url($url,$department_id,$username,$start_date,$end_date){
         $where = ' ';
         //分页地址
-        $url = 'bmyjmx/run';
+        $url = $url;
         $excelUrl = 'bmyjmx/createExcel';
         if($department_id!=''){
             $url=$url.'/department_id/'.$department_id;
@@ -211,4 +212,27 @@ class bmyjmxService extends Service
 			}
 		}
 	}
+	
+
+	/**
+	 * 获取当前部门所有的上级部门
+	 * @param unknown $departmentList
+	 * @param unknown $department_id
+	 */
+	public function digui($departmentList,$department_id){
+	    foreach($departmentList as $k=>$v){
+	        if($v['department_id'] == $department_id){
+	            if($v['p_dpt_id']=='1'){
+	                $this->array[] = $v['department_name'];
+	            }else{
+	                $department_id = $v['p_dpt_id'];
+	                $this->array[] = $v['department_name'];
+	                unset($departmentList[$k]);
+	                $this->digui($departmentList, $department_id);
+	            }
+	        }
+	    }
+	    return $this->array;
+	}
+	
 }

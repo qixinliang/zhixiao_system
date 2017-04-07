@@ -41,9 +41,9 @@ class myClientsController extends baseController
             $adminUid=$this->adminService->current_user();
             $uid = $this->adminService->GetToZiXiTongUserId($adminUid['id']);
         }else{
-            $uid = $this->adminService->GetToZiXiTongUserId($user_id);
+//             $uid = $this->adminService->GetToZiXiTongUserId($user_id);
+            $uid = intval($user_id) ? intval($user_id) : '';//把接受过来的user_id 赋值给uid
         }
-        
         if(empty($uid)){
             exit("未获取用户信息！");
         }
@@ -111,7 +111,8 @@ class myClientsController extends baseController
             $adminUid=$this->adminService->current_user();
             $uid = $this->adminService->GetToZiXiTongUserId($adminUid['id']);
         }else{
-            $uid = $this->adminService->GetToZiXiTongUserId($user_id);
+//             $uid = $this->adminService->GetToZiXiTongUserId($user_id);
+            $uid = intval($user_id) ? intval($user_id) : '';//把接受过来的user_id 赋值给uid
         }
         if(empty($uid)){
             exit("未获取用户信息！");
