@@ -42,10 +42,9 @@ class bmyjmxService extends Service
      * @param type $end_date
      * @return type
      */
-    public function arrange_where_url($url,$department_id,$username,$start_date,$end_date){
+    public function arrange_where_url($url,$department_id='',$username='',$start_date='',$end_date='',$city=''){
         $where = ' ';
         //分页地址
-        $url = $url;
         $excelUrl = 'bmyjmx/createExcel';
         if($department_id!=''){
             $url=$url.'/department_id/'.$department_id;
@@ -62,6 +61,9 @@ class bmyjmxService extends Service
             $excelUrl=$excelUrl.'/start_date/'.$start_date.'end_data/'.$end_date;
         }
         
+        if(!empty($city) && isset($city)){
+            $url=$url.'city/'.$city;
+        }
         return array('url'=>$url,'where'=>$where,'excelUrl'=>$excelUrl);
     }
     
