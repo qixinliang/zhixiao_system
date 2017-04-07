@@ -213,21 +213,12 @@ class bmyjmxService extends Service
 		}
 	}
 	
-	
-	public function getDiGuiDepartment($department_id){
-	    print_r($department_id);
-	    $department = $this->departmentDao->getdepartmentInfo($department_id);
-	    
-	    if($department['p_dpt_id']=='1'){
-	         $this->array[] = $department['department_name'];
-	    }else{
-    	    $department2 = $this->departmentDao->getDepartmentName($department['p_dpt_id']);
-    	    $this->array[] = $department2['department_name'];
-    	    $this->getDiGuiDepartment($department2['p_dpt_id']);
-	    }
-	    return $this->array;
-	}
-	
+
+	/**
+	 * 获取当前部门所有的上级部门
+	 * @param unknown $departmentList
+	 * @param unknown $department_id
+	 */
 	public function digui($departmentList,$department_id){
 	    foreach($departmentList as $k=>$v){
 	        if($v['department_id'] == $department_id){
@@ -242,36 +233,6 @@ class bmyjmxService extends Service
 	        }
 	    }
 	    return $this->array;
-	}
-	
-	public function getDepartmentName($department_id){
-	    $info = $this->departmentDao->getDepartmentName($department_id);
-	    if(empty($info['p_dpt_id'])){
-	        return $info['department_name'];
-	    }
-	    if(!empty($info['p_dpt_id'])){
-	        $this->department_name.=$info['department_name'].'-';
-	        $this->getDepartmentName(intval($info['p_dpt_id']));
-	    }
-	    if(!empty($this->department_name)){
-	        $arr = explode('-',$this->department_name);
-	        $tmparr = array();
-	        $str= null;
-	        if(is_array($arr)){
-	            foreach ($arr as $key=>$val){
-	                if(!empty($val)){
-	                    $tmparr[$key]=$val;
-	                }
-	            }
-	            for ($n=count($tmparr); $n>=0; $n--){
-	                if(!empty($tmparr[$n])){
-	                    $str.=$tmparr[$n].'->';
-	                }
-	
-	            }
-	        }
-	        return substr($str, 0,-2);
-	    }
 	}
 	
 }

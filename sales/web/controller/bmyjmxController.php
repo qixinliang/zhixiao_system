@@ -122,15 +122,14 @@ class bmyjmxController extends baseController{
         $arrange_where_url = $this->bmyjmxService->arrange_where_url('bmyjmx/total',$department_id,$username,$start_date,$end_date);
         //获取用户列表
         $user_data = $this->bmyjmxService->getUserDataList($my_department_lsit,$arrange_where_url['where'],$start_date,$end_date);
-        
+        //循环客户列表，获取当前客户的上级部门
         foreach($user_data as $k =>$val){
-            $deparment_list = $this->departmentService->getDepartmentList();
-            $data = $this->bmyjmxService->digui($deparment_list,$val['department_id']);
+            $deparment_list = $this->departmentService->getDepartmentList();//获取所有部门
+            $data = $this->bmyjmxService->digui($deparment_list,$val['department_id']);//递归获取所有部门，并组合
             $this->bmyjmxService->array=array();
             $data = array_reverse($data);
             $user_data[$k]['info'] = $data;
         }
-//         print_r($user_data);
         //分页
         $page = ($page-1)*10 ? ($page-1)*10 : 0;
         $user_data_count = count($user_data);
