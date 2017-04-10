@@ -104,21 +104,21 @@ class adminService extends Service
 		$info = $this->adminDao->get_username($data['user']);//检查在投资系统中是否存在账号
 		if($info){
 			//根据身份证号检查是否一致，如果一致说明是同一人，只在业务系统中开通经纪人账户
-			$userHuifu = $this->adminDao->getUsrNameAndIdNo($data['IdNo']);
-			if($userHuifu){
+// 			$userHuifu = $this->adminDao->getUsrNameAndIdNo($data['IdNo']);
+// 			if($userHuifu){
 				//写入业务系统
 				$data['tuijianren'] = $admin_id;
 				$arr = $this->adminDao->add_save($data);
 				if($arr) return 3;
-			}else{
-				return 4;
-			}
+// 			}else{
+// 				return 4;
+// 			}
 		}else{
 			//如果投资系统中不存在重复账号，但是身份证存在，说明不是同一人，不可以开通业务账号
-			$userHuifu = $this->adminDao->getUsrNameAndIdNo($data['IdNo']);
-			if($userHuifu){
-				return 7;
-			}else{
+// 			$userHuifu = $this->adminDao->getUsrNameAndIdNo($data['IdNo']);
+// 			if($userHuifu){
+// 				return 7;
+// 			}else{
 				/*
 				 * 开通业务系统账号同时开户投资系统账号
 				 */
@@ -164,7 +164,7 @@ class adminService extends Service
 				}else{
 					return 678;
 				}
-			}
+// 			}
 		}
     }
     /**
