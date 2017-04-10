@@ -148,11 +148,14 @@ class adminController extends baseController
 			exit(json_encode(array('status' => 2, 'message' => '角色账号在业务系统中已存在，请更换输入账号！')));
 		}else if($arr == 3){
 			exit(json_encode(array('status' => 3, 'message' => '角色账号添加成功！')));
-		}else if($arr == 4){
-			exit(json_encode(array('status' => 4, 'message' => '投资账号已存在，请输入正确的身份证号及手机号！')));
-		}else if($arr == 7){
-			exit(json_encode(array('status' => 7, 'message' => '身份证在投资系统中已存在！')));
-		}else if($arr == 123){
+		}
+// 		else if($arr == 4){
+// 			exit(json_encode(array('status' => 4, 'message' => '投资账号已存在，请输入正确的身份证号及手机号！')));
+// 		}
+// 		else if($arr == 7){
+// 			exit(json_encode(array('status' => 7, 'message' => '身份证在投资系统中已存在！')));
+// 		}
+		else if($arr == 123){
 			exit(json_encode(array('status' => 123, 'message' => '用户名必须要6-16位字母、数字和下划线！')));
 		}else if($arr == 234){
 			exit(json_encode(array('status' => 234, 'message' => '用户名只能包含数字、字母、下划线，不能使用特殊字符！')));

@@ -92,8 +92,15 @@ class achievementController extends baseController{
 		echo('<pre>');
 	    print_r($dpts);
 		echo('</pre>');
-		exit;
+		die();
 
+		foreach ($dpts as $k1=>$v1){
+		    if($v1['level']=='2'){
+		        $html.='<td rowspan="12">'.$v1['department_name'].'</td>';
+		    }
+		}
+		$html.='</tr>';
+		print_r($html);exit;
 		$this->view->assign('departments',$departments);
 		$this->view->assign('final_data',$finalData);
 		$this->view->display('achievement/total');
