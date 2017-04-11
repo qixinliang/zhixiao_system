@@ -15,7 +15,7 @@ class myClientsDao extends Dao
      */
     public function getInvestFriends($uid,$where){
 //         $sql="select o.uid,d.deal_id,h.UsrName,i.phone,d.title,o.order_money,o.order_time,d.start_date,d.end_date,d.syl,d.expires_type,d.expires,d.full_time,d.deal_id,o.VocherAmt,o.JiaXi from cp_deal d left join cp_deal_order o on d.deal_id = o.deal_id left join cp_user_yaoqingma_list y on o.uid = y.uid left join cp_user_huifu h on h.uid =o.uid left join cp_user_info i on h.uid = i.uid where y.friends = $uid $where";
-        $sql = "select u.id as uid,d.deal_id,h.UsrName,i.phone,d.title,o.order_money,o.order_time,d.start_date,d.end_date,d.syl,d.expires_type,d.expires,d.full_time,d.deal_id,o.VocherAmt,o.JiaXi from cp_deal d left join cp_deal_order o on d.deal_id = o.deal_id left join cp_user_yaoqingma_list y on o.uid = y.uid left join cp_user u on y.uid = u.id left join cp_user_huifu h on u.id =h.uid left join cp_user_info i on h.uid = i.uid where y.friends = $uid $where ;";
+        $sql = "select u.id as uid,d.deal_id,h.UsrName,i.phone,d.title,o.order_money,o.order_time,d.start_date,d.end_date,d.syl,d.expires_type,d.expires,d.full_time,d.deal_id,o.VocherAmt,o.JiaXi from cp_deal d left join cp_deal_order o on d.deal_id = o.deal_id left join cp_user_yaoqingma_list y on o.uid = y.uid left join cp_user u on y.uid = u.id left join cp_user_huifu h on u.id =h.uid left join cp_user_info i on h.uid = i.uid where o.status=2 and y.friends = $uid $where ;";
         return $this->dao->db->get_all_sql($sql);
     }
     
