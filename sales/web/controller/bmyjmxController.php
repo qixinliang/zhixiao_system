@@ -8,7 +8,7 @@ if (!defined('IS_INITPHP')) exit('Access Denied!');
  * @部门业绩明细
  *************************************************************/
 class bmyjmxController extends baseController{
-    public $initphp_list = array('createExcel','getcountlist','total'); //Action白名单
+    public $initphp_list = array('createExcel','total'); //Action白名单
     
     public $tree = array();
     
@@ -24,54 +24,203 @@ class bmyjmxController extends baseController{
     
     public function run(){
 		$this->authService->checkauth('1024');
+		
         $pager= $this->getLibrary('pager'); //分页加载
         $page = $this->controller->get_gp('page') ? $this->controller->get_gp('page') : 1 ; //获取当前页码
-        $start_date = $this->controller->get_gp('start_date'); //获取开始时间
-        $end_date = $this->controller->get_gp('end_date'); //获取结束时间
-        $department_id = $this->controller->get_gp('department_id'); //部门id
+        $startDate = $this->controller->get_gp('start_date'); //获取开始时间
+        $endDate = $this->controller->get_gp('end_date'); //获取结束时间
+        $departmentId = $this->controller->get_gp('department_id'); //部门id
         $username = urldecode($this->controller->get_gp('username')); //获取姓名
         
-        //获取用户id
+        //获取用户
         $user = $this->adminService->current_user();
-        $deparment_list_all = $this->departmentService->getDepartmentList(); //获取所有的部门列表
-        $my_department = $this->bmyjmxService->getMyDepartment($user['department_id']); //获取我的部门信息
-        //根据用户的部门id，获取子部门id
-        $my_department_lsit = $this->GetTree($deparment_list_all,$user['department_id']);
-        $this->tree = array();
-        //拼接where条件，和url链接地址
-        $arrange_where_url = $this->bmyjmxService->arrange_where_url('bmyjmx/run',$department_id,$username,$start_date,$end_date);
-        //获取用户列表
-        $user_data = $this->bmyjmxService->getUserDataList($my_department_lsit,$arrange_where_url['where'],$start_date,$end_date);
         
-//         foreach($user_data as $k =>$val){
-//             $deparment_list = $this->departmentService->getDepartmentList();
-//             $data = $this->bmyjmxService->digui($deparment_list,$val['department_id']);
-//             $this->bmyjmxService->array=array();
-//             $data = array_reverse($data);
-//             $user_data[$k]['info'] = $data; 
-//         }
+        $deparmentList = $this->departmentService->getDepartmentList(); //获取所有的部门列表
+        
+        $myDepartment = $this->bmyjmxService->getMyDepartment($user['department_id']); //获取我当前用户所在的部门信息
+        
+        //根据用户的部门id，获取子部门id
+        $sonDepartment = $this->getTree($deparmentList,$user['department_id']);
+        $this->tree = array();
+        
+        //拼接where条件，和url链接地址
+        $arrangeWhereUrl = $this->arrangeWhereUrl('bmyjmx/run',$departmentId,$username,$startDate,$endDate);
+        
+        //获取当前部门下每个用户的明细
+        $departmentUserDetail = $this->bmyjmxService->getDepartmentUserDetail($sonDepartment,$arrangeWhereUrl['where'],$startDate,$endDate);  
+        
+        //离职用户，离职日期大于检索的开始日子，则不现实当前用户的信息
+        if(isset($startDate) && !empty($startDate)){
+            foreach($departmentUserDetail as $k =>$val){
+                if($val['status']=='0'){
+                    if(strtotime($startDate)>$val['update_time']){
+                        unset($departmentUserDetail[$k]);
+                    }
+                }
+            }
+        }
+        
         //分页
         $page = ($page-1)*10 ? ($page-1)*10 : 0;
-        $user_data_count = count($user_data);
-        $user_data = array_slice($user_data, $page,10);
-        $page_html = $pager->pager($user_data_count, 10,$arrange_where_url['url']); //最后一个参数为true则使用默认样式
+        $departmentUserDetail_count = count($departmentUserDetail);
+        $departmentUserDetail = array_slice($departmentUserDetail, $page,10);
+        $page_html = $pager->pager($departmentUserDetail_count, 10,$arrangeWhereUrl['url']); //最后一个参数为true则使用默认样式
         
         //条件
-        $this->view->assign('start_date', $start_date);
-        $this->view->assign('end_date', $end_date);
-        $this->view->assign('department_id', $department_id);
+        $this->view->assign('start_date', $startDate);
+        $this->view->assign('end_date', $endDate);
+        $this->view->assign('department_id', $departmentId);
         $this->view->assign('username', $username);
-        $this->view->assign('excelUrl',$arrange_where_url['excelUrl']);
+        $this->view->assign('excelUrl',$arrangeWhereUrl['excelUrl']);
+        
         //返回数据
-        $this->view->assign('my_department', $my_department); //返回我的部门信息
-        $this->view->assign('my_department_lsit', $my_department_lsit); //返回我的子部门列表，用作搜索条件
+        $this->view->assign('my_department', $myDepartment); //返回我的部门信息
+        $this->view->assign('my_department_lsit', $sonDepartment); //返回我的子部门列表，用作搜索条件
         $this->view->assign('page_html', $page_html);
-        $this->view->assign('user_data', $user_data);
+        $this->view->assign('user_data', $departmentUserDetail);
         $this->view->display('bmyjmx/run');
     }
     
-    public function GetTree($arr,$pid,$step=0){
+    /**
+     * excel表格导出
+     */
+    public function createExcel(){
+        //创建excel表格
+        $startDate = $this->controller->get_gp('start_date') ? $this->controller->get_gp('start_date') : '' ; //获取开始时间
+        $endDate = $this->controller->get_gp('end_date') ? $this->controller->get_gp('end_date') : '' ; //获取结束时间
+        $departmentId = $this->controller->get_gp('department_id') ? $this->controller->get_gp('department_id') : '' ; //部门id
+        $username = urldecode($this->controller->get_gp('username')) ? urldecode($this->controller->get_gp('username')) : '' ; //获取姓名
         
+        //获取用户id
+        $user = $this->adminService->current_user();
+        
+        $deparmentList = $this->departmentService->getDepartmentList(); //获取所有的部门列表
+        
+        //根据用户的部门id，获取子部门id
+        $sonDepartment = $this->GetTree($deparmentList,$user['department_id']);
+        
+        //拼接where条件，和url链接地址
+        $arrangeWhereUrl = $this->arrangeWhereUrl('bmyjmx/run',$departmentId,$username,$startDate,$endDate);
+        
+        //获取用户列表
+        $departmentUserDetail = $this->bmyjmxService->getDepartmentUserDetail($sonDepartment,$arrangeWhereUrl['where']);
+        $this->createExcelService = InitPHP::getService("createExcel");
+        $this->createExcelService->run($departmentUserDetail);
+    }
+    
+    /**
+     * 部门业绩统计
+     */
+    public function total(){
+        $pager= $this->getLibrary('pager'); //分页加载
+        $page = $this->controller->get_gp('page') ? $this->controller->get_gp('page') : 1 ; //获取当前页码
+        $startDate = $this->controller->get_gp('start_date') ; //获取开始时间
+        $endDate = $this->controller->get_gp('end_date'); //获取结束时间
+        $departmentId = $this->controller->get_gp('department_id'); //部门id
+        $username = urldecode($this->controller->get_gp('username')); //获取姓名
+        $city = urldecode($this->controller->get_gp('city')); 
+        
+        //获取用户id
+        $user = $this->adminService->current_user();
+        $deparmentList = $this->departmentService->getDepartmentList(); //获取所有的部门列表
+        $myDepartment = $this->bmyjmxService->getMyDepartment($user['department_id']); //获取我的部门信息
+        
+        //获取所有pid为1的部门，当做城市部门
+        $cityDepartment = $this->bmyjmxService->getDepartmentList(1);
+        
+        //根据用户的部门id，获取子部门id
+        $sonDepartment = $this->GetTree($deparmentList,$user['department_id']);
+        $this->tree = array();
+        
+        //拼接where条件，和url链接地址
+        $arrangeWhereUrl = $this->arrangeWhereUrl('bmyjmx/total',$departmentId,$username,$startDate,$endDate,$city);
+        
+        //获取用户列表
+        $departmentUserDetail = $this->bmyjmxService->getDepartmentUserDetail($sonDepartment,$arrangeWhereUrl['where'],$startDate,$endDate);
+        
+        //循环客户列表，获取当前客户的上级部门
+        foreach($departmentUserDetail as $k =>$val){
+            $deparment_list = $this->departmentService->getDepartmentList();//获取所有部门
+            $data = $this->bmyjmxService->digui($deparment_list,$val['department_id']);//递归获取所有部门，并组合
+            $this->bmyjmxService->array=array();
+            $data = array_reverse($data);
+            $departmentUserDetail[$k]['info'] = $data;
+        }
+        
+        //判断是否按照地区筛选
+        if(isset($city) && !empty($city)){
+            foreach ($departmentUserDetail as $k=>$v){
+                if($v[info][0] != $city){
+                    unset($departmentUserDetail[$k]);
+                }
+            }
+        }
+        
+        //分页
+        $page = ($page-1)*10 ? ($page-1)*10 : 0;
+        $departmentUserDetail_count = count($departmentUserDetail);
+        $departmentUserDetail = array_slice($departmentUserDetail, $page,10);
+        $page_html = $pager->pager($departmentUserDetail_count, 10,$arrangeWhereUrl['url']); //最后一个参数为true则使用默认样式
+        
+        //条件
+        $this->view->assign('start_date', $startDate);
+        $this->view->assign('end_date', $endDate);
+        $this->view->assign('department_id', $departmentId);
+        $this->view->assign('username', $username);
+        $this->view->assign('excelUrl',$arrangeWhereUrl['excelUrl']);
+        
+        //返回数据
+        $this->view->assign('cityDepartment', $cityDepartment);
+        $this->view->assign('city',$city);
+        $this->view->assign('my_department', $myDepartment); //返回我的部门信息
+        $this->view->assign('my_department_lsit', $sonDepartment); //返回我的子部门列表，用作搜索条件
+        $this->view->assign('page_html', $page_html);
+        $this->view->assign('user_data', $departmentUserDetail);
+        $this->view->display('bmyjtj/run');
+    }
+    
+    /**
+     * 拼接检索条件，和url地址
+     * @param type $departmentId
+     * @param type $username
+     * @param type $startDate
+     * @param type $endDate
+     * @return type
+     */
+    public function arrangeWhereUrl($url,$departmentId='',$username='',$startDate='',$endDate='',$city=''){
+        $where = ' ';
+        //分页地址
+        $excelUrl = 'bmyjmx/createExcel';
+        if($departmentId!=''){
+            $url=$url.'/department_id/'.$departmentId;
+            $excelUrl=$excelUrl.'/department_id/'.$departmentId;
+            $where.= ' and d.department_id = "'.$departmentId.'"';
+        }
+        if($username!=''){
+            $url=$url.'/username/'.$username;
+            $excelUrl=$excelUrl.'/username/'.$username;
+            $where.= " and z.UsrName = '$username'";
+        }
+        if(!empty($startDate) && !empty($endDate)){
+            $url=$url.'/start_date/'.$startDate.'end_data/'.$endDate;
+            $excelUrl=$excelUrl.'/start_date/'.$startDate.'end_data/'.$endDate;
+        }
+    
+        if(!empty($city) && isset($city)){
+            $url=$url.'city/'.$city;
+        }
+        return array('url'=>$url,'where'=>$where,'excelUrl'=>$excelUrl);
+    }
+    
+    /**
+     * 递归循环当前部门下的所有子部门
+     * @param unknown $arr
+     * @param unknown $pid
+     * @param number $step
+     * @return Ambigous <multitype:, string>
+     */
+    public function getTree($arr,$pid,$step=0){
+    
         foreach($arr as $key=>$val) {
             if($val['p_dpt_id'] == $pid) {
                 $flg = str_repeat('―',$step);
@@ -82,101 +231,5 @@ class bmyjmxController extends baseController{
         }
         return $this->tree;
     }
-    
-    
-    public function createExcel(){
-        //创建excel表格
-        $start_date = $this->controller->get_gp('start_date') ? $this->controller->get_gp('start_date') : '' ; //获取开始时间
-        $end_date = $this->controller->get_gp('end_date') ? $this->controller->get_gp('end_date') : '' ; //获取结束时间
-        $department_id = $this->controller->get_gp('department_id') ? $this->controller->get_gp('department_id') : '' ; //部门id
-        $username = urldecode($this->controller->get_gp('username')) ? urldecode($this->controller->get_gp('username')) : '' ; //获取姓名
-        //获取用户id
-        $user = $this->adminService->current_user();
-        $deparment_list_all = $this->departmentService->getDepartmentList(); //获取所有的部门列表
-        //根据用户的部门id，获取子部门id
-        $my_department_lsit = $this->GetTree($deparment_list_all,$user['department_id']);
-        //拼接where条件，和url链接地址
-        $arrange_where_url = $this->bmyjmxService->arrange_where_url('bmyjmx/run',$department_id,$username,$start_date,$end_date);
-        //获取用户列表
-        $user_data = $this->bmyjmxService->getUserDataList($my_department_lsit,$arrange_where_url['where']);
-        $this->createExcelService = InitPHP::getService("createExcel");
-        $this->createExcelService->run($user_data);
-    }
-    
-    //部门业绩统计
-    public function total(){
-        $pager= $this->getLibrary('pager'); //分页加载
-        $page = $this->controller->get_gp('page') ? $this->controller->get_gp('page') : 1 ; //获取当前页码
-        $start_date = $this->controller->get_gp('start_date') ? $this->controller->get_gp('start_date') : '' ; //获取开始时间
-        $end_date = $this->controller->get_gp('end_date') ? $this->controller->get_gp('end_date') : '' ; //获取结束时间
-        $department_id = $this->controller->get_gp('department_id') ? $this->controller->get_gp('department_id') : '' ; //部门id
-        $username = urldecode($this->controller->get_gp('username')) ? urldecode($this->controller->get_gp('username')) : '' ; //获取姓名
-        $city = urldecode($this->controller->get_gp('city')) ? urldecode($this->controller->get_gp('city')) : '' ; 
-        //获取用户id
-        $user = $this->adminService->current_user();
-        $deparment_list_all = $this->departmentService->getDepartmentList(); //获取所有的部门列表
-        $my_department = $this->bmyjmxService->getMyDepartment($user['department_id']); //获取我的部门信息
-        //获取所有pid为1的部门，当做城市部门
-        $cityDepartment = $this->bmyjmxService->getDepartmentList(1);
-        //根据用户的部门id，获取子部门id
-        $my_department_lsit = $this->GetTree($deparment_list_all,$user['department_id']);
-        $this->tree = array();
-        //拼接where条件，和url链接地址
-        $arrange_where_url = $this->bmyjmxService->arrange_where_url('bmyjmx/total',$department_id,$username,$start_date,$end_date,$city);
-        //获取用户列表
-        $user_data = $this->bmyjmxService->getUserDataList($my_department_lsit,$arrange_where_url['where'],$start_date,$end_date);
-        //循环客户列表，获取当前客户的上级部门
-        foreach($user_data as $k =>$val){
-            $deparment_list = $this->departmentService->getDepartmentList();//获取所有部门
-            $data = $this->bmyjmxService->digui($deparment_list,$val['department_id']);//递归获取所有部门，并组合
-            $this->bmyjmxService->array=array();
-            $data = array_reverse($data);
-            $user_data[$k]['info'] = $data;
-        }
-        //判断是否按照地区筛选
-        if(isset($city) && !empty($city)){
-            foreach ($user_data as $k=>$v){
-                if($v[info][0] != $city){
-                    unset($user_data[$k]);
-                }
-            }
-        }
-//         print_r($user_data);exit;
-        //分页
-        $page = ($page-1)*10 ? ($page-1)*10 : 0;
-        $user_data_count = count($user_data);
-        $user_data = array_slice($user_data, $page,10);
-        $page_html = $pager->pager($user_data_count, 10,$arrange_where_url['url']); //最后一个参数为true则使用默认样式
-        
-        //条件
-        $this->view->assign('start_date', $start_date);
-        $this->view->assign('end_date', $end_date);
-        $this->view->assign('department_id', $department_id);
-        $this->view->assign('username', $username);
-        $this->view->assign('excelUrl',$arrange_where_url['excelUrl']);
-        //返回数据
-        $this->view->assign('cityDepartment', $cityDepartment);
-        $this->view->assign('city',$city);
-        $this->view->assign('my_department', $my_department); //返回我的部门信息
-        $this->view->assign('my_department_lsit', $my_department_lsit); //返回我的子部门列表，用作搜索条件
-        $this->view->assign('page_html', $page_html);
-        $this->view->assign('user_data', $user_data);
-        $this->view->display('bmyjtj/run');
-    }
-    
-    public function utf8_array_asort(&$array) {
-        if(!isset($array) || !is_array($array)) {
-            return false;
-        }
-        foreach($array as $k=>$v) {
-            $array[$k] = iconv('UTF-8', 'GB2312',$v);
-        }
-        asort($array);
-        foreach($array as $k=>$v) {
-            $array[$k] = iconv('GB2312', 'UTF-8', $v);
-        }
-        return true;
-    }
-    
     
 }
