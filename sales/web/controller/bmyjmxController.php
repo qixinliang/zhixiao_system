@@ -141,6 +141,7 @@ class bmyjmxController extends baseController{
                 }
             }
         }
+//         print_r($user_data);exit;
         //分页
         $page = ($page-1)*10 ? ($page-1)*10 : 0;
         $user_data_count = count($user_data);
