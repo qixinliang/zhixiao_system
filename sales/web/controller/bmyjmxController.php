@@ -113,6 +113,7 @@ class bmyjmxController extends baseController{
      */
     public function total(){
         $pager= $this->getLibrary('pager'); //分页加载
+        
         $page = $this->controller->get_gp('page') ? $this->controller->get_gp('page') : 1 ; //获取当前页码
         $startDate = $this->controller->get_gp('start_date') ; //获取开始时间
         $endDate = $this->controller->get_gp('end_date'); //获取结束时间
@@ -141,10 +142,21 @@ class bmyjmxController extends baseController{
         //循环客户列表，获取当前客户的上级部门
         foreach($departmentUserDetail as $k =>$val){
             $deparment_list = $this->departmentService->getDepartmentList();//获取所有部门
-            $data = $this->bmyjmxService->digui($deparment_list,$val['department_id']);//递归获取所有部门，并组合
+            $data = $this->bmyjmxService->digui($deparment_list,$val['department_id']);//递归获取所有部门，组合
             $this->bmyjmxService->array=array();
             $data = array_reverse($data);
             $departmentUserDetail[$k]['info'] = $data;
+        }
+        
+        //离职用户，离职日期大于检索的开始日子，则不现实当前用户的信息
+        if(isset($startDate) && !empty($startDate)){
+            foreach($departmentUserDetail as $k =>$val){
+                if($val['status']=='0'){
+                    if(strtotime($startDate)>$val['update_time']){
+                        unset($departmentUserDetail[$k]);
+                    }
+                }
+            }
         }
         
         //判断是否按照地区筛选
