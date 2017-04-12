@@ -26,6 +26,7 @@ class adminDao extends Dao
     /**
      * 根据管理员用户名与密码查详细资料
      * @param $user,$password
+     * @param $status 离职状态 1在职
      */
     public function adminNamePassWord($user,$password)
     {
@@ -48,7 +49,7 @@ class adminDao extends Dao
      */
     public function admin_list($where)
     {
-        $sql=sprintf("select a.*,b.name as gname,d.department_name,b.privilege from %s a left join zx_role b on a.gid=b.id left JOIN zx_department d on d.department_id = a.department_id where a.vaild =1  %s order by id asc",$this->table_name,$where);
+        $sql=sprintf("select a.*,b.name as gname,d.department_name,b.privilege from %s a left join zx_role b on a.gid=b.id left JOIN zx_department d on d.department_id = a.department_id where 1=1 %s order by id asc",$this->table_name,$where);
         return  $this->dao->db->get_all_sql($sql);
     }
     /**
@@ -75,15 +76,18 @@ class adminDao extends Dao
      */
     public function edit_save($data)
     {
+        $time = time();
+        $data['update_time'] = time();
         return $this->dao->db->update_by_field($data, array('id' => $data['id']), $this->table_name); //根据条件更新数据
     }
     /**
      * 删除
      * @param $id
      */
-    public function del($id)
+    public function del($id,$status)
     {
-        return $this->dao->db->update_by_field(array('vaild'=>0),array('id'=>$id), $this->table_name);
+        $time = time();
+        return $this->dao->db->update_by_field(array('status'=>$status,'update_time'=>$time),array('id'=>$id), $this->table_name);
     }
 	
     //根据手机号获取详细信息

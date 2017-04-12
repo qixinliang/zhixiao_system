@@ -224,7 +224,7 @@ class adminService extends Service
     /**
      * 删除
      */
-    public function del($id)
+    public function del($id,$status)
     {
         $this->adminService = InitPHP::getService("admin");//获取Service
         $this->roleService = InitPHP::getService("role");//获取Service
@@ -234,8 +234,14 @@ class adminService extends Service
             return 9;
         }
 
-        $arr = $this->adminDao->del($id);
-	if($arr) return 10;
+        $arr = $this->adminDao->del($id,$status);//先将在职用户变离职
+	    
+        if($status == 0){
+            //将该用户名下所有客户放入客户池
+            $this->customerService = InitPHP::getService("customer");
+            $this->customerService->addCustomer($id);
+        }
+	    if($arr) return 10;
     }
     
     /**
@@ -246,7 +252,7 @@ class adminService extends Service
      * @param type $phone
      * @return string sql语句where条件
      */
-    public function getWhere($part_id,$department_id,$unmae,$phone){
+    public function getWhere($part_id,$department_id,$unmae,$phone,$status){
         //查询条件判断
         $where = ' ';
         if($part_id){
@@ -260,6 +266,9 @@ class adminService extends Service
         }
         if($phone){
             $where.= ' and a.phone = '.$phone;
+        }
+        if(isset($status)){
+            $where.= ' and a.status = '.$status;
         }
         return $where;
     }

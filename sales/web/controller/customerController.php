@@ -84,7 +84,7 @@ class customerController extends baseController{
 				'inviter_dpt_name' 		=> $inviterDptName,
 				'inviter_role_name' 	=> $inviterRoleName,
 				//FIXME,离职的时候把销售的离职日期写到数据库中.
-				'inviter_off_time' 		=> date('Y-m-d H:i:s',time()),
+				'inviter_off_time' 		=> date('Y-m-d H:i:s',$v['inviter_off_time']),
 				'invest_status' 		=> $v['invest_status']
 			);
 			$fList[] = $tmpList;
