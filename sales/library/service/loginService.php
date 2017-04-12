@@ -34,6 +34,7 @@ class loginService extends Service
             $this->adminDao->adminInfoUpdate($admin['id'],$data);//更新管理员登录信息
             return $admin;
         }
+        return false;
     }
 
 }

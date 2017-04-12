@@ -25,13 +25,14 @@ class adminController extends baseController
         $this->authService->checkauth("1013");
         $departmentService = InitPHP::getService("department"); //上级列表
         
-        $part_id = $this->controller->get_gp('part_id') ? $this->controller->get_gp('part_id') : '';    //获取角色id
-        $department_id = $this->controller->get_gp('department_id') ? $this->controller->get_gp('department_id') : '';//获取部门id
-        $unmae = $this->controller->get_gp('uname') ? $this->controller->get_gp('uname') : '';//获取用户姓名
-        $phone = $this->controller->get_gp('phone') ? $this->controller->get_gp('phone') : '';//获取用户手机
-        
+        $part_id = $this->controller->get_gp('part_id');    //获取角色id
+        $department_id = $this->controller->get_gp('department_id');//获取部门id
+        $unmae = $this->controller->get_gp('uname');//获取用户姓名
+        $phone = $this->controller->get_gp('phone');//获取用户手机
+        $status = $this->controller->get_gp('status');//1、在职  0、离职
+
         //根据检索条件，拼接sql语句where条件
-        $where = $this->adminService->getWhere($part_id,$department_id,$unmae,$phone);
+        $where = $this->adminService->getWhere($part_id,$department_id,$unmae,$phone,$status);
         $list = $this->adminService->admin_list($where); //查询列表数据
         $adminList = $this->roleService->adminList(); //获取角色列表
         $list2 = $departmentService->getDepartmentList2();//获取所属部门列表
@@ -243,7 +244,8 @@ class adminController extends baseController
             exit(json_encode(array('status' => 0, 'message' => '您没有权限操作')));
         }
         $id = $this->controller->get_gp('id');
-        $arr= $this->adminService->del($id);
+        $status = $this->controller->get_gp('status');
+        $arr= $this->adminService->del($id,$status);
         if($arr==9)
         {
             exit(json_encode(array('status' => 9, 'message' => '内置管理员无法删除!')));
