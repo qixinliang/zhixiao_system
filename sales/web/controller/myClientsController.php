@@ -164,36 +164,37 @@ class myClientsController extends baseController
 		$this->authService->checkauth('1022');
         //获取用户当前客户id
         
-		$clientId = intval($this->controller->get_gp('clientId')) ? intval($this->controller->get_gp('clientId')) : '' ; //获取当前页码
-        if(!isset($clientId)){
-            $this->view->display('myClient/run');
+		$clientId = intval($this->controller->get_gp('clientId')); //获取当前页码
+        if(!isset($clientId) || empty($clientId)){
+            $this->run();
         }
         
         //根据客户id，获取客户信息
         $clientInfo = $this->myClientsService->getClientInfo($clientId);
+        
         //查询当前客户是否投资
         $clientOrder = $this->myClientsService->getFriednOorder($clientId);
         
-        //根据客户id关联邀码，cp_user_yaoqingma_list，查询用户uid，判断用是否离职
-        $info = $this->myClientsService->getInviterDeparture($clientId);
+        //根据客户id查询邀请人id
+        $inviterId = $this->myClientsService->getInviter($clientId);
+        
+        //根据邀请人id，获取邀请人信息
+        $info = $this->myClientsService->getInviterDeparture($inviterId['friends']);
 		if(!isset($info) || empty($info)){
-        	exit(json_encode(array('status' => -1,'message' => 'Customer info error！')));
+        	$this->run();
 		}
-        if($info['status']=='1'){ //判断邀请人是否离职 1在职 0离职
-            
-            //根据客户id反查询，friendsid，查询用户信息查找原始邀请人信息
-            $originalInviter['inviter_id']   = $info['id'];
-            $originalInviter['inviter_name'] = $info['username'];
-            $originalInviter['create_time']  = $info['add_date'];
-            $originalInviter['investor_cellphone']  = $info['phone'];
-        }else{ //如果离职
-            
-            //查询zx_customer_pool，zx_customer_record 查询原始邀请人，和分配邀请人
-            $originalInviter = $this->myClientsService->getoOriginalInviter($clientId);
+		//根据客户id反查询，friendsid，查询用户信息查找原始邀请人信息
+		$originalInviter['inviter_id']   = $info['id'];
+		$originalInviter['inviter_name'] = $info['username'];
+		$originalInviter['create_time']  = $inviterId['add_date'];
+		$originalInviter['investor_cellphone']  = $info['phone'];
+		
+        if($info['status']=='0'){ //判断邀请人是否离职 1在职 0离职
             
             //查询客户分配后的邀请人信息
             $allocation_inviter = $this->myClientsService->getAllocationInviter($clientId);
             $this->view->assign('allocation_inviter', $allocation_inviter);
+            
         }
        
         $this->view->assign('clientOrder',$clientOrder);

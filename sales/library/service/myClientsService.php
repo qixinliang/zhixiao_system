@@ -96,20 +96,10 @@ class myClientsService extends Service
      * @param int $clientId 客户id
      * @return array
      */
-    public function getInviterDeparture($clientId){
-        $res = $this->myClientsDao->getInviterDeparture($clientId);
-        return $res;
+    public function getInviterDeparture($inviterId){
+        return $this->myClientsDao->getInviterDeparture($inviterId);
     }
-    
-    /**
-     * 查询客户的原始邀请人信息
-     * @param type $clientId
-     * @return type
-     */
-    public function getoOriginalInviter($clientId){
-        return $this->myClientsDao->getoOriginalInviter($clientId);
-    }
-    
+
     /**
      * 查询客户分配后的邀请人信息
      * @param type $clientId
@@ -203,6 +193,15 @@ class myClientsService extends Service
     public function getSalesmanUsername($uid){
         $salesman = $this->myClientsDao->getSalesmanUsername($uid);
         return $salesman['username'];
+    }
+    
+    /**
+     * 根据客户id，获取邀请人id
+     * @param unknown $clientId
+     * @return unknown
+     */
+    public function getInviter($clientId){
+        return $this->myClientsDao->getInviter($clientId);
     }
     
 }
