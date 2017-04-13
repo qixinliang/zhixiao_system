@@ -20,7 +20,7 @@ class myClientsService extends Service
      * @param type $where 查询条件
      * @return type
      */
-    public function getInvestFriends($uid,$where){
+    public function getInvestFriends($uid,$where=null){
         return $this->myClientsDao->getInvestFriends($uid,$where);
     }
     
@@ -32,7 +32,7 @@ class myClientsService extends Service
      * @param type $where 查询条件
      * @return type
      */
-    public function getNoInvestFriends($friendIds,$where){
+    public function getNoInvestFriends($friendIds,$where=null){
         return $this->myClientsDao->getNoInvestFriends($friendIds,$where);
     }
     
@@ -42,7 +42,7 @@ class myClientsService extends Service
      * @param type $where
      * @return array
      */
-    public function getInvestFriendsCount($uid,$where){
+    public function getInvestFriendsCount($uid,$where=null){
         return $this->myClientsDao->getInvestFriendsCount($uid,$where);
     }
     
@@ -52,7 +52,7 @@ class myClientsService extends Service
      * @param type $where
      * @return array
      */
-    public function getNoInvestFriendsCount($id,$where){
+    public function getNoInvestFriendsCount($id,$where=null){
         return $this->myClientsDao->getNoInvestFriendsCount($id,$where);
     }
     
@@ -131,7 +131,7 @@ class myClientsService extends Service
     /**
      * 查询当前客户是否投资
      * @param type $clientId 客户id
-     * @return int 0,1
+     * @return int 0未投资,1投资
      */
     public function getFriednOorder($clientId){
         $info = $this->myClientsDao->getFriednOorder($clientId);
@@ -156,7 +156,7 @@ class myClientsService extends Service
      * @param type $investor_id
      * @return array
      */
-    public function getCustomerRecordOrder($investor_id,$where){
+    public function getCustomerRecordOrder($investor_id,$where=null){
         return $this->myClientsDao->getCustomerRecordOrder($investor_id,$where);
     }
     
@@ -172,32 +172,32 @@ class myClientsService extends Service
     /**
      * 循环取出客户分配表里面，分配给我的客户信息，并和我的客户数据合并
      * @param type $friends
-     * @param type $customer_record_list
+     * @param type $customerRecord_List
      * @param type $arrange_where_url
      * @return type
      */
-    public function mergeData($friends,$customer_record_list,$arrange_where_url){
+    public function mergeData($friends,$customerRecord_List,$where=null){
         foreach ($friends as $k=>$v){
-            foreach($customer_record_list as $k1=>$v1){
+            foreach($customerRecord_List as $k1=>$v1){
                 if($v['uid']==$v1['investor_id']){
-                    unset($customer_record_list[$k1]);
+                    unset($customerRecord_List[$k1]);
                 }
             }
         }
-        foreach($customer_record_list as $k=>$v){
+        foreach($customerRecord_List as $k=>$v){
             //根据客户分配表里面的客户id，查询相关投资几率
-            $customer_record_order = $this->getCustomerRecordOrder($v['investor_id'],$arrange_where_url['where']);
+            $customerRecordOrder = $this->getCustomerRecordOrder($v['investor_id'],$where);
             //循环查询当前客户所归属的业务员
-            foreach ($customer_record_order as $k1=>$v1){
+            foreach ($customerRecordOrder as $k1=>$v1){
                 $salesman = $this->myClientsDao->getSalesmanUsername2($v1['uid']);
-                $customer_record_order[$k1]['salesman'] = $salesman['new_inviter_name'];
+                $customerRecordOrder[$k1]['salesman'] = $salesman['new_inviter_name'];
             }
-            if(is_array($customer_record_order)){
-                $friends = array_merge($friends,$customer_record_order);
+            if(is_array($customerRecordOrder)){
+                $friends = array_merge($friends,$customerRecordOrder);
             }
         }
-        $customer_friends_count = count($customer_record_list);//分配给我的邀请人数量，用于计算客户数量
-        return array('friends'=>$friends,'customer_friends_count'=>$customer_friends_count);
+        $customerFriendsCount = count($customerRecord_List);//分配给我的邀请人数量，用于计算客户数量
+        return array('friends'=>$friends,'customerFriendsCount'=>$customerFriendsCount);
     }
     
     public function getSalesmanUsername($uid){

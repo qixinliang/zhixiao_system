@@ -60,7 +60,7 @@ class myClientsController extends baseController
         $customerRecordList = $this->myClientsService->getCustomerRecordList($uid);
         
         //循环取出客户分配表里面，分配给我的客户信息，并和我的客户数据合并
-        $friendsData = $this->myClientsService->mergeData($friends,$customerRecordList,$arrangeWhereUrl);
+        $friendsData = $this->myClientsService->mergeData($friends,$customerRecordList,$arrangeWhereUrl['where']);
         
         //循环计算年化收益率和查询当前客户，所属业务人员,统计年化收益金额，统计年化投资金额
         $friendsList = $this->teamUtilsService->yongJinJiSuan($friendsData['friends']);
@@ -208,7 +208,7 @@ class myClientsController extends baseController
      * @param string $endDate 结束时间
      * @return  array 拼接的where条件，和url地址
      */
-    public function arrangeWhereUrl($uname='',$phone='',$startDate='',$endDate='',$userId=''){
+    public function arrangeWhereUrl($uname=null,$phone=null,$startDate=null,$endDate=null,$userId=null){
         $where = ' ';
         //分页地址
         $url = 'myClients/run';
