@@ -74,22 +74,12 @@ class myClientsDao extends Dao
     }
     
     /**
-     * 查询当前客户的邀请人是否已经离职，获取邀请人的基本信息
+     * 根据邀请人
      * @param int clentId 客户id 
      * @return array
      */
     public function getInviterDeparture($clientId){
-        $sql = "select z.status,u.id,y.add_date,u.username,i.phone from cp_user_yaoqingma_list y left join cp_user u on y.friends = u.id left join zx_admin z on u.username = z.user left join cp_user_info i on u.id = i.uid where y.uid = $clientId";
-        return $this->dao->db->get_one_sql($sql);
-    }
-    
-    /**
-     * 查询客户的原始邀请人信息
-     * @param type $clientId
-     * @return array
-     */
-    public function getoOriginalInviter($clientId){
-        $sql = "select * from zx_customer_pool where investor_id = $clientId";
+        $sql = "select z.status,u.id,u.username,i.phone from zx_admin z left join cp_user u on z.`user` = u.username left join cp_user_info i on u.id = i.uid where u.id = $clientId";
         return $this->dao->db->get_one_sql($sql);
     }
     
@@ -99,7 +89,7 @@ class myClientsDao extends Dao
      * @return type
      */
     public function getAllocationInviter($clientId){
-        $sql = "select u.id,u.username,r.create_time,i.phone from zx_customer_record r left join cp_user u on r.new_inviter_id = u.id left join cp_user_info i on u.id = i.uid where r.investor_id = $clientId";
+        $sql = "select u.id,u.username,r.create_time,i.phone from zx_customer_record r left join cp_user u on r.new_inviter_id = u.id left join cp_user_info i on u.id = i.uid where r.investor_id = $clientId order by create_time asc";
         return $this->dao->db->get_all_sql($sql);
     }
     /**
@@ -150,6 +140,11 @@ class myClientsDao extends Dao
     
     public function getSalesmanUsername2($clientId){
         $sql="select new_inviter_name from zx_customer_record where principal=1 and investor_id = $clientId";
+        return $this->dao->db->get_one_sql($sql);
+    }
+    
+    public function getInviter($clientId){
+        $sql="select friends,add_date from cp_user_yaoqingma_list where uid = $clientId";
         return $this->dao->db->get_one_sql($sql);
     }
 }

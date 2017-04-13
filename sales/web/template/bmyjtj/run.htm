@@ -55,6 +55,7 @@
         <th>折标金额</th>
         <th>回款</th>
     </tr>
+    <!--{if(is_array($user_data))}-->
     <!--{foreach($user_data as $k=>$v)}-->
     <tr>
         <td><!--{$v['info'][1]}--></td>
@@ -69,11 +70,23 @@
         <td><!--{$v['huikuan']}--></td>
     </tr>
     <!--{/foreach}-->
+    <!--{else}-->
+    <tr>
+    	<td></td>
+    	<td></td>
+    	<td></td>
+    	<td></td>
+    	<td></td>
+        <td>暂无数据</td>
+    </tr>
+    <!--{/if}-->
   </table>
 </div>
+<!--{if(is_array($user_data))}-->
 <div class="padding border-bottom">  
     <!--{$page_html}-->
 </div> 
+<!--{/if}-->
     <script type="text/javascript">
         jeDate({
             dateCell:"#dateinfo",
