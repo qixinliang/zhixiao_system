@@ -118,7 +118,7 @@ class bmyjmxController extends baseController{
     public function total(){
         $pager= $this->getLibrary('pager'); //分页加载
         
-        $page = $this->controller->get_gp('page') ? $this->controller->get_gp('page') : 1 ; //获取当前页码
+        $page = intval($this->controller->get_gp('page')) ? intval($this->controller->get_gp('page')) : 1 ; //获取当前页码
         $startDate = $this->controller->get_gp('start_date') ; //获取开始时间
         $endDate = $this->controller->get_gp('end_date'); //获取结束时间
         $departmentId = $this->controller->get_gp('department_id'); //部门id
