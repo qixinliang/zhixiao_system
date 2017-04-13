@@ -79,7 +79,7 @@ class myClientsDao extends Dao
      * @return array
      */
     public function getInviterDeparture($clientId){
-        $sql = "select z.department_id,u.id,y.add_date,u.username from cp_user_yaoqingma_list y left join cp_user u on y.friends = u.id left join zx_admin z on u.username = z.`user` where y.uid= $clientId";
+        $sql = "select z.status,u.id,y.add_date,u.username from cp_user_yaoqingma_list y left join cp_user u on y.friends = u.id left join zx_admin z on u.username = z.`user` where y.uid= $clientId";
         return $this->dao->db->get_one_sql($sql);
     }
     

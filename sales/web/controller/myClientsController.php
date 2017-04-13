@@ -177,12 +177,15 @@ class myClientsController extends baseController
         
         //根据客户id关联邀码，cp_user_yaoqingma_list，查询用户uid，判断用是否离职
         $info = $this->myClientsService->getInviterDeparture($clientId);
+		if(!isset($info) || empty($info)){
+        	exit(json_encode(array('status' => -1,'message' => 'Customer info error！')));
+		}
         
-        if($info['departure']=='1'){ //判断邀请人是否离职 1在职 0离职
+        if($info['status']=='1'){ //判断邀请人是否离职 1在职 0离职
             
             //根据客户id反查询，friendsid，查询用户信息查找原始邀请人信息
             $originalInviter['inviter_id']   = $info['id'];
-            $originalInviter['inviter_name'] = $info['add_date'];
+            $originalInviter['inviter_name'] = $info['username'];
             $originalInviter['create_time']  = $info['add_date'];
         }else{ //如果离职
             
