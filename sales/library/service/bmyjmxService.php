@@ -6,7 +6,7 @@ if (!defined('IS_INITPHP')) exit('Access Denied!');
  */
 class bmyjmxService extends Service
 {
-    public $array = array();
+    
     public function __construct()
     {
         parent::__construct();

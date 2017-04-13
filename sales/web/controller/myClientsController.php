@@ -180,13 +180,13 @@ class myClientsController extends baseController
 		if(!isset($info) || empty($info)){
         	exit(json_encode(array('status' => -1,'message' => 'Customer info error！')));
 		}
-        
         if($info['status']=='1'){ //判断邀请人是否离职 1在职 0离职
             
             //根据客户id反查询，friendsid，查询用户信息查找原始邀请人信息
             $originalInviter['inviter_id']   = $info['id'];
             $originalInviter['inviter_name'] = $info['username'];
             $originalInviter['create_time']  = $info['add_date'];
+            $originalInviter['investor_cellphone']  = $info['phone'];
         }else{ //如果离职
             
             //查询zx_customer_pool，zx_customer_record 查询原始邀请人，和分配邀请人
