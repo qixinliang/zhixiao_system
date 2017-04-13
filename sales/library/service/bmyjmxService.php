@@ -30,7 +30,7 @@ class bmyjmxService extends Service
      * @param type $where
      * @return type
      */
-    public function getDepartmentUser($department_id,$where=''){
+    public function getDepartmentUser($department_id=0,$where=''){
         return $this->bmyjmxsDao->getDepartmentUser($department_id,$where);
     }
     
@@ -180,28 +180,6 @@ class bmyjmxService extends Service
 				return $output;
 			}
 		}
-	}
-	
-
-	/**
-	 * 获取当前部门所有的上级部门
-	 * @param unknown $departmentList
-	 * @param unknown $department_id
-	 */
-	public function digui($departmentList,$department_id){
-	    foreach($departmentList as $k=>$v){
-	        if($v['department_id'] == $department_id){
-	            if($v['p_dpt_id']=='1'){
-	                $this->array[] = $v['department_name'];
-	            }else{
-	                $department_id = $v['p_dpt_id'];
-	                $this->array[] = $v['department_name'];
-	                unset($departmentList[$k]);
-	                $this->digui($departmentList, $department_id);
-	            }
-	        }
-	    }
-	    return $this->array;
 	}
 	
 }

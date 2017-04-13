@@ -26,10 +26,11 @@ class bmyjmxController extends baseController{
 		$this->authService->checkauth('1024');
 		
         $pager= $this->getLibrary('pager'); //分页加载
+        
         $page = $this->controller->get_gp('page') ? $this->controller->get_gp('page') : 1 ; //获取当前页码
         $startDate = $this->controller->get_gp('start_date'); //获取开始时间
         $endDate = $this->controller->get_gp('end_date'); //获取结束时间
-        $departmentId = $this->controller->get_gp('department_id'); //部门id
+        $departmentId = intval($this->controller->get_gp('department_id')); //部门id
         $username = urldecode($this->controller->get_gp('username')); //获取姓名
         
         //获取用户
@@ -37,10 +38,12 @@ class bmyjmxController extends baseController{
         
         $deparmentList = $this->departmentService->getDepartmentList(); //获取所有的部门列表
         
-        $myDepartment = $this->bmyjmxService->getMyDepartment($user['department_id']); //获取我当前用户所在的部门信息
+        $userDepartmentId = intval($user['department_id']);
+        
+        $myDepartment = $this->bmyjmxService->getMyDepartment($userDepartmentId); //获取我当前用户所在的部门信息
         
         //根据用户的部门id，获取子部门id
-        $sonDepartment = $this->getTree($deparmentList,$user['department_id']);
+        $sonDepartment = $this->getTree($deparmentList,$userDepartmentId);
         $this->tree = array();
         
         //拼接where条件，和url链接地址
@@ -86,18 +89,18 @@ class bmyjmxController extends baseController{
      */
     public function createExcel(){
         //创建excel表格
-        $startDate = $this->controller->get_gp('start_date') ? $this->controller->get_gp('start_date') : '' ; //获取开始时间
-        $endDate = $this->controller->get_gp('end_date') ? $this->controller->get_gp('end_date') : '' ; //获取结束时间
-        $departmentId = $this->controller->get_gp('department_id') ? $this->controller->get_gp('department_id') : '' ; //部门id
-        $username = urldecode($this->controller->get_gp('username')) ? urldecode($this->controller->get_gp('username')) : '' ; //获取姓名
+        $startDate = $this->controller->get_gp('start_date'); //获取开始时间
+        $endDate = $this->controller->get_gp('end_date'); //获取结束时间
+        $departmentId = $this->controller->get_gp('department_id'); //部门id
+        $username = urldecode($this->controller->get_gp('username')) ; //获取姓名
         
         //获取用户id
         $user = $this->adminService->current_user();
         
         $deparmentList = $this->departmentService->getDepartmentList(); //获取所有的部门列表
-        
+        $userDepartmentId = intval($user['department_id']);
         //根据用户的部门id，获取子部门id
-        $sonDepartment = $this->GetTree($deparmentList,$user['department_id']);
+        $sonDepartment = $this->GetTree($deparmentList,$userDepartmentId);
         
         //拼接where条件，和url链接地址
         $arrangeWhereUrl = $this->arrangeWhereUrl('bmyjmx/run',$departmentId,$username,$startDate,$endDate);
@@ -124,13 +127,14 @@ class bmyjmxController extends baseController{
         //获取用户id
         $user = $this->adminService->current_user();
         $deparmentList = $this->departmentService->getDepartmentList(); //获取所有的部门列表
-        $myDepartment = $this->bmyjmxService->getMyDepartment($user['department_id']); //获取我的部门信息
+        $userDepartmentId = intval($user['department_id']);
+        $myDepartment = $this->bmyjmxService->getMyDepartment($userDepartmentId); //获取我的部门信息
         
         //获取所有pid为1的部门，当做城市部门
         $cityDepartment = $this->bmyjmxService->getDepartmentList(1);
         
         //根据用户的部门id，获取子部门id
-        $sonDepartment = $this->GetTree($deparmentList,$user['department_id']);
+        $sonDepartment = $this->GetTree($deparmentList,$userDepartmentId);
         $this->tree = array();
         
         //拼接where条件，和url链接地址
@@ -142,7 +146,7 @@ class bmyjmxController extends baseController{
         //循环客户列表，获取当前客户的上级部门
         foreach($departmentUserDetail as $k =>$val){
             $deparment_list = $this->departmentService->getDepartmentList();//获取所有部门
-            $data = $this->bmyjmxService->digui($deparment_list,$val['department_id']);//递归获取所有部门，组合
+            $data = $this->digui($deparment_list,intval($val['department_id']));//递归获取所有部门，组合
             $this->bmyjmxService->array=array();
             $data = array_reverse($data);
             $departmentUserDetail[$k]['info'] = $data;
@@ -199,16 +203,16 @@ class bmyjmxController extends baseController{
      * @param type $endDate
      * @return type
      */
-    public function arrangeWhereUrl($url,$departmentId='',$username='',$startDate='',$endDate='',$city=''){
+    public function arrangeWhereUrl($url,$departmentId=null,$username=null,$startDate=null,$endDate=null,$city=null){
         $where = ' ';
         //分页地址
         $excelUrl = 'bmyjmx/createExcel';
-        if($departmentId!=''){
+        if(!empty($departmentId) && isset($departmentId)){
             $url=$url.'/department_id/'.$departmentId;
             $excelUrl=$excelUrl.'/department_id/'.$departmentId;
             $where.= ' and d.department_id = "'.$departmentId.'"';
         }
-        if($username!=''){
+        if(!empty($username) && isset($username)){
             $url=$url.'/username/'.$username;
             $excelUrl=$excelUrl.'/username/'.$username;
             $where.= " and z.UsrName = '$username'";
@@ -238,10 +242,31 @@ class bmyjmxController extends baseController{
                 $flg = str_repeat('―',$step);
                 $val['step'] = $flg;
                 $this->tree[] = $val;
-                $this->GetTree($arr , $val['department_id'],$step+1);
+                $this->GetTree($arr , intval($val['department_id']),$step+1);
             }
         }
         return $this->tree;
     }
     
+    
+    /**
+     * 获取当前部门所有的上级部门
+     * @param unknown $departmentList
+     * @param unknown $department_id
+     */
+    public function digui($departmentList,$department_id){
+        foreach($departmentList as $k=>$v){
+            if($v['department_id'] == $department_id){
+                if($v['p_dpt_id']=='1'){
+                    $this->array[] = $v['department_name'];
+                }else{
+                    $department_id = $v['p_dpt_id'];
+                    $this->array[] = $v['department_name'];
+                    unset($departmentList[$k]);
+                    $this->digui($departmentList, intval($department_id));
+                }
+            }
+        }
+        return $this->array;
+    }
 }

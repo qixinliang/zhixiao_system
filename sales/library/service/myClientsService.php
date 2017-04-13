@@ -90,40 +90,6 @@ class myClientsService extends Service
         return $invest;
     }
     
-    /**
-     * 根据检索条件，拼接where条件，和url链接地址
-     * @param string $uname 用户名称
-     * @param string $phone 手机号
-     * @param string $start_date 开始时间
-     * @param string $end_date 结束时间
-     * @return  array 拼接的where条件，和url地址
-     */
-    public function arrange_where_url($uname='',$phone='',$start_date='',$end_date='',$user_id=''){
-        $where = ' ';
-        //分页地址
-        $url = 'myClients/run';
-        if(!empty($user_id)){
-            $url=$url.'/uid/'.$user_id;
-        }
-        if(!empty($uname)){
-            $url=$url.'/uname/'.$uname;
-            $where.= ' and h.UsrName = "'.$uname.'"';
-        }
-        if(!empty($phone)){
-            $url=$url.'/phone/'.$phone;
-            $where.= ' and i.phone = '.$phone;
-        }
-        if(!empty($start_date)){
-            $url=$url.'/start_date/'.$start_date;
-            $where.= ' and o.order_time >= '.strtotime($start_date);
-        }
-        if(!empty($end_date)){
-            $url=$url.'/end_date/'.$end_date;
-            $where.= ' and o.order_time <= '.strtotime($end_date);
-        }
-        
-        return array('url'=>$url,'where'=>$where);
-    }
     
     /**
      * 根据客户id，查询原邀请人信息状态
@@ -132,11 +98,7 @@ class myClientsService extends Service
      */
     public function getInviterDeparture($clientId){
         $res = $this->myClientsDao->getInviterDeparture($clientId);
-        if(empty($res) ||!isset($res)){
-            return $res = array();
-        }else{
-            return $res;
-        }
+        return $res;
     }
     
     /**
