@@ -171,7 +171,6 @@ class myClientsController extends baseController
         
         //根据客户id，获取客户信息
         $clientInfo = $this->myClientsService->getClientInfo($clientId);
-        
         //查询当前客户是否投资
         $clientOrder = $this->myClientsService->getFriednOorder($clientId);
         

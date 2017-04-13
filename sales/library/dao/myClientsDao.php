@@ -108,7 +108,7 @@ class myClientsDao extends Dao
      * @return type
      */
     public function getClientInfo($clientId){
-        $sql = "select h.UsrName,h.UsrMp,h.IdNo,h.create_time from cp_user u left join cp_user_huifu h on u.id = h.uid where u.id = $clientId";
+        $sql = "select h.UsrName,i.phone ,h.IdNo,h.create_time from cp_user u left join cp_user_huifu h on u.id = h.uid left join cp_user_info i on u.id = i.uid where u.id = $clientId";
         return $this->dao->db->get_one_sql($sql);
     }
     
