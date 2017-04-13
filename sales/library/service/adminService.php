@@ -199,19 +199,10 @@ class adminService extends Service
     {
         if ($data['password'])
         {
-            if (empty($data['password2']))
-            {
-                return 5;
-            }
-            if($data['password']<>$data['password2'])
-            {
-                return 6;
-            }
             $data['password']=md5($data['password']);
         }else{
             unset($data['password']);
         }
-		
 		$user = $this->adminDao->getAdmin($data['user']);
 		if($user)
 		{

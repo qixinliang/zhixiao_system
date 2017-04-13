@@ -210,23 +210,13 @@ class adminController extends baseController
 		$data['UsrName'] = $this->controller->get_gp('UsrName');//用户名
 		//$data['phone'] = $this->controller->get_gp('phone');//手机号
 		$data['password'] = $this->controller->get_gp('password');//密码
-		$data['password2'] = $this->controller->get_gp('password2');//确认密码
+		//$data['password2'] = $this->controller->get_gp('password2');//确认密码
 		$data['level_id'] = $this->controller->get_gp('level_id');
 		$data['gender'] = $this->controller->get_gp('gender');//性别
-		$data['departure'] = $this->controller->get_gp('departure');//在职状态
-		$data['status'] = $this->controller->get_gp('status');//状态
+		$data['status'] = $this->controller->get_gp('status');//在职状态
 		$data['Inthetime'] = $this->controller->get_gp('Inthetime');
-        if($data['departure'] == 0){ //如果离职触发客户池功能
-            //FIXME,调用客户分配服务层中的方法，把数据写入公共池中。
-        }
         $arr = $this->adminService->edit_save($data);
-        if($arr==5)
-        {
-            exit(json_encode(array('status' => 5, 'message' => '未填写确认密码')));
-        }else if($arr==6)
-        {
-            exit(json_encode(array('status' => 6, 'message' => '两次密码输入不同')));
-        }else if($arr==7)
+        if($arr==7)
         {
             exit(json_encode(array('status' => 7, 'message' => '帐号已存在')));
         }else if($arr==8)
