@@ -11,6 +11,7 @@ class bmyjmxController extends baseController{
     public $initphp_list = array('createExcel','total'); //Action白名单
     
     public $tree = array();
+    public $array = array();
     
     public function __construct(){
         parent::__construct();
@@ -147,11 +148,10 @@ class bmyjmxController extends baseController{
         foreach($departmentUserDetail as $k =>$val){
             $deparment_list = $this->departmentService->getDepartmentList();//获取所有部门
             $data = $this->digui($deparment_list,intval($val['department_id']));//递归获取所有部门，组合
-            $this->bmyjmxService->array=array();
+            $this->array = array();
             $data = array_reverse($data);
             $departmentUserDetail[$k]['info'] = $data;
         }
-        
         //离职用户，离职日期大于检索的开始日子，则不现实当前用户的信息
         if(isset($startDate) && !empty($startDate)){
             foreach($departmentUserDetail as $k =>$val){
