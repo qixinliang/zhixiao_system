@@ -9,13 +9,29 @@
 	<base href="<?php echo InitPHP::getConfig('url');?>"/>
     <link rel="stylesheet" href="/static/css/base.css">
     <link rel="stylesheet" href="/static/css/css.css">
-    <script src="/static/js/jquery.js"></script>
+  <link rel="stylesheet" href="/static/css/normalize.css">
+  <link rel="stylesheet" href="/static/css/public.css">
+  <link rel="stylesheet" href="/static/css/structure.css">
+  <script type="text/javascript" src="/static/js/jquery-3.1.1.js"></script>
 </head>
 <body>
+<div class="wrapper">
+<!--{layout:top}-->
+
+<article class="content">
+<!--{layout:left_corp_nav}-->
+
+ <div class="right st_right">
+	<div class="rigth_title">
+	<h2>用户管理</h2>
+
+<div class="rigth_t_btn">
+ <span id="setdep"><i></i><a href="/admin/add">添加用户</a></span>
+       </div>
+	</div>
+
 <div class="panel admin-panel">
-  <div class="panel-head"><strong class="icon-reorder"> 用户列表</strong></div>
   <div class="padding border-bottom">  
-  <a class="button border-yellow" href="/admin/add"><span class="icon-plus-square-o"></span> 添加用户</a>
   <a class="button border-yellow" href="/admin/run/status/1">在职用户</a>
   <a class="button border-yellow" href="/admin/run/status/0">离职用户</a>
   </div> 
@@ -37,6 +53,7 @@
       <input type="submit" class="button border-yellow" value="搜索"> 
       </form>
   </div> 
+  <div class="right_list">
   <table class="table table-hover text-center">
     <tr>
         <th>用户名</th> 
@@ -84,10 +101,10 @@
       <td>
 		  <div class="button-group">
 		  <!--{if($vo['status']==1)}-->
-          		<a type="button" class="button border-main" href="/admin/edit/id/<!--{$vo['id']}-->"><span class="icon-edit"></span>详情</a>
+          		<a type="button" class="button border-main" href="/admin/edit/id/<!--{$vo['id']}-->"><span class="icon-edit"></span>修改</a>
           		<a class="button border-red" href="javascript:void(0)" onclick="del('<!--{$vo['id']}-->',0,this)"><span class="icon-trash-o"></span>变离职	</a>
           <!--{else}-->
-          		<a type="button" class="button border-main" href="/admin/edit/id/<!--{$vo['id']}-->"><span class="icon-edit"></span>详情</a>
+          		<a type="button" class="button border-main" href="/admin/edit/id/<!--{$vo['id']}-->"><span class="icon-edit"></span>修改</a>
           		<a class="button border-red" href="javascript:void(0)" onclick="del('<!--{$vo['id']}-->',1,this)"><span class="icon-trash-o"></span>变在职	</a>
           <!--{/if}-->
 			
@@ -97,6 +114,7 @@
 	</tr>
 	<!--{/foreach}-->
   </table>
+</div>
 </div>
 <script>
 function del(id,status,obj){
@@ -117,4 +135,10 @@ function del(id,status,obj){
 	}
 }
 </script>
+
+</div>
+</article>
+</div>
+<script type="text/javascript" src="/static/js/public.js"></script>
+
 </body></html>
