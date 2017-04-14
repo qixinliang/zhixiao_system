@@ -1,82 +1,63 @@
 <!DOCTYPE html>
-<html lang="zh-cn">
+<html lang="en">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <meta name="renderer" content="webkit">
-    <title>直销管理系统</title>
-	<base href="<?php echo InitPHP::getConfig('url');?>"/>
-    <link rel="stylesheet" href="/static/css/base.css">
-    <link rel="stylesheet" href="/static/css/css.css">
-    <link rel="stylesheet" href="/static/css/simpleTree.css">
-    <script src="/static/js/jquery.js"></script>
-    <script src="/static/js/simpleTree.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>百合贷直销系统-组织结构</title>
+  <link rel="stylesheet" href="/static/css/normalize.css">
+  <link rel="stylesheet" href="/static/css/public.css">
+  <link rel="stylesheet" href="/static/css/structure.css">
+  <script type="text/javascript" src="/static/js/jquery-3.1.1.js"></script>
 </head>
 <body>
-<div class="panel admin-panel">
-  <div class="panel-head"><strong class="icon-reorder">部门列表/拓扑图</strong></div>
-  <div class="padding border-bottom">  
-  <a class="button border-yellow" href="/department/add"><span class="icon-plus-square-o"></span> 新增部门信息</a>
-  </div> 
-  <table class="table table-hover text-center">
-    <tr>
-      <th width="5%">ID</th>     
-      <th>部门名称</th>  
-      <th>状态</th>     
-      <th width="250">操作</th>
-    </tr>
-	
-	<!--{foreach($list as $k => $v)}-->
-    <tr>
-      <td><!--{$v['department_id']}--></td>
-      <td><!--{$v['department_name']}--></td>  
-      <td><!--{if($v['status'] == 0)}-->
-      	启用
-      <!--{else}-->
-      	停用
-      <!--{/if}--></td>
-      <td>
-      <div class="button-group">
-      <a type="button" class="button border-main" href="/department/edit/department_id/<!--{$v['department_id']}-->"><span class="icon-edit"></span>修改</a>
-       <a class="button border-red" href="javascript:void(0)" onclick="del('<!--{$v['department_id']}-->',this)"><span class="icon-trash-o"></span> 删除</a>
-      </div>
-      </td>
-    </tr> 
-	<!--{/foreach}-->
+<div class="wrapper">
+<!--{layout:top}-->
 
+<article class="content">
+  <!--{layout:left_corp_nav}-->
+
+  <!-- 右侧信息列表 -->
+  <div class="right st_right">
+     <div class="rigth_title">
+       <h2>部门管理</h2>
+       <!-- <div class="rigth_t_btn">
+         <span id="setdep"><i></i>新增部门</span>
+         <span>编辑部门</span>
+       </div> -->
+     </div>
+       <div class="right_list">
+         <div class="right_bg"></div>
+         <div class="right_list_box" id="listbox"></div>
+       </div>
+  </div>
+</article>
+</div>
+<!-- 弹出框 -->
+<div class="setModle">
+  <div class="title"><data class="tb_titles">新建部门</data><span id="closeBtn">关闭</span></div>
+  <table>
+    <tr>
+      <td><i>*</i><span class="depname">部门名称:</span></td>
+      <td ><input type="text" name="" value="" id="depname"></td>
+    </tr>
+    <tr>
+      <td><i>*</i><span class="subdep">上级部门:</span></td>
+      <td class="selectlist"><input type="text" name="" value="" id="subdep"><div id="selectlist"></div></td>
+    </tr>
+    <tr>
+      <td><i>*</i><span class="subdep">上级部门ID:</span></td>
+      <td><input type="text" name="" value="" class="subdepnum"></td>
+    </tr>
+    <tr>
+      <td colspan="2"><button class="add_btn">新增部门</button></td>
+    </tr>
   </table>
 </div>
-<script>
-$(function(){
-    $(".st_tree").simpleTree({
-        click:function(a){
-			console.log($(a).attr("ref"));
-            if(!$(a).attr("hasChild")){
-                alert($(a).attr("ref"));
-			}
-        }
-    });
-});
+	
+<div id="d_list" style="display:none"><!--{$list_json}--></div>
 
-function del(id,obj){
-	if(confirm("您确定要删除吗?")){
-		$.ajax({
-			url: '/department/del',
-			type: 'post',
-			dataType:'json',
-			data: {department_id: id},
-			success: function(msg) {
-				if(msg.status == 2){
-					alert("无法删除");
-				}else if(msg.status == 3){
-					alert("越权操作");
-				}else{
-					$(obj).parent().parent().parent().remove();
-				}
-			}
-		});
-	}
-}
-</script>
-</body></html>
+<script type="text/javascript" src="/static/js/public.js"></script>
+<script type="text/javascript" src="/static/js/structure.js"></script>
+</body>
+</html>

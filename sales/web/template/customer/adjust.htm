@@ -9,11 +9,24 @@
 	<base href="<?php echo InitPHP::getConfig('url');?>"/>
     <link rel="stylesheet" href="/static/css/base.css">
     <link rel="stylesheet" href="/static/css/css.css">
-    <script src="/static/js/jquery.js"></script>
+  <link rel="stylesheet" href="/static/css/normalize.css">
+  <link rel="stylesheet" href="/static/css/public.css">
+  <link rel="stylesheet" href="/static/css/structure.css">
+  <script type="text/javascript" src="/static/js/jquery-3.1.1.js"></script>
 </head>
 <body>
-<div class="panel admin-panel margin-top">
-  <div class="panel-head" id="add"><strong><span class="icon-pencil-square-o"></span>客户分配</strong></div>
+
+<div class="wrapper">
+<!--{layout:top}-->
+
+<article class="content">
+<!--{layout:left_customer_nav}-->
+
+ <div class="right st_right">
+    <div class="rigth_title">
+    <h2>客户分配</h2>
+    </div>
+
   <div class="body-content">
 	<form id="form" class="form-x" >
       <div class="form-group">
@@ -28,7 +41,7 @@
       </div>
 	<div class="form-group">
 		<div class="label">
-			<label>请选择新销售：</label>
+			<label>新销售：</label>
 		</div>
         <div class="field" id="power">
             <select name="new_inviter_id" id="new_inviter_id" class="input w50">
@@ -56,7 +69,6 @@
       </div>
     </form>
   </div>
-</div>
 <script type="text/javascript">
 function sub(obj){
 	var new_inviter_id  =  $("#new_inviter_id").val();
@@ -88,5 +100,10 @@ function sub(obj){
 	});
 };
 </script>
+
+</div>
+</article>
+</div>
+<script type="text/javascript" src="/static/js/public.js"></script>
 </body>
 </html>

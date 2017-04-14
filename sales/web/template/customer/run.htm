@@ -9,13 +9,24 @@
 	<base href="<?php echo InitPHP::getConfig('url');?>"/>
     <link rel="stylesheet" href="/static/css/base.css">
     <link rel="stylesheet" href="/static/css/css.css">
-    <link rel="stylesheet" href="/static/css/simpleTree.css">
-    <script src="/static/js/jquery.js"></script>
-    <script src="/static/js/simpleTree.js"></script>
+  <link rel="stylesheet" href="/static/css/normalize.css">
+  <link rel="stylesheet" href="/static/css/public.css">
+  <link rel="stylesheet" href="/static/css/structure.css">
+  <script type="text/javascript" src="/static/js/jquery-3.1.1.js"></script>
 </head>
 <body>
-<div class="panel admin-panel">
-  <div class="panel-head"><strong class="icon-reorder">客户分配</strong></div>
+<div class="wrapper">
+<!--{layout:top}-->
+  
+<article class="content">
+<!--{layout:left_customer_nav}-->
+
+ <div class="right st_right">
+    <div class="rigth_title">
+    <h2>客户池</h2>
+	</div>
+
+
   <div class="padding border-bottom">
       <form action="/customer/run" method="post">
         	员工姓名：
@@ -34,6 +45,8 @@
       	<input type="submit" class="button border-yellow" value="搜索">
       </form>
   </div>
+
+  <div class="right_list">
   <table class="table table-hover text-center">
     <tr>
       <th>客户ID</th>     
@@ -83,7 +96,7 @@
         </tr>
 	<!--{/if}-->
   </table>
-</div>
+  </div>
 
 <!--{if($count)}-->
 <div class="padding border-bottom">
@@ -91,5 +104,9 @@
 </div>
 <!--{/if}-->
 
+</div>
+</article>
+</div>
+<script type="text/javascript" src="/static/js/public.js"></script>
 </body>
 </html>
