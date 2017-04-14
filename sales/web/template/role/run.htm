@@ -9,14 +9,26 @@
 	<base href="<?php echo InitPHP::getConfig('url');?>"/>
     <link rel="stylesheet" href="/static/css/base.css">
     <link rel="stylesheet" href="/static/css/css.css">
-    <script src="/static/js/jquery.js"></script>
+  <link rel="stylesheet" href="/static/css/normalize.css">
+  <link rel="stylesheet" href="/static/css/public.css">
+  <link rel="stylesheet" href="/static/css/structure.css">
+  <script type="text/javascript" src="/static/js/jquery-3.1.1.js"></script>
 </head>
 <body>
-<div class="panel admin-panel">
-  <div class="panel-head"><strong class="icon-reorder"> 角色组列表</strong></div>
-  <div class="padding border-bottom">  
-  <a class="button border-yellow" href="/role/add"><span class="icon-plus-square-o"></span> 添加角色</a>
-  </div> 
+<div class="wrapper">
+  <!--{layout:top}-->
+ <!-- 主体内容 -->
+	<article class="content">
+  <!--{layout:left_corp_nav}-->
+
+	<div class="right st_right">
+     <div class="rigth_title">
+       <h2>角色管理</h2>
+<div class="rigth_t_btn">
+ <span id="setdep"><i></i><a href="/role/add">新增角色</a></span>
+       </div>
+     </div>
+	<div class="right_list">
   <table class="table table-hover text-center">
     <tr>
       <th width="5%">ID</th>     
@@ -46,6 +58,7 @@
 
   </table>
 </div>
+</div>
 <script>
 function del(id,obj){
 	if(confirm("您确定要删除吗?")){
@@ -65,4 +78,9 @@ function del(id,obj){
 	}
 }
 </script>
+</div>
+</article>
+</div>
+
+<script type="text/javascript" src="/static/js/public.js"></script>
 </body></html>
