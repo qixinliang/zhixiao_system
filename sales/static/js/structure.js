@@ -57,8 +57,6 @@ $('#listbox').on('click','i[class^="icons"]',function(e){
 		var dataname = $(this).siblings('data').text();
 		var prevdataname = $(this).parent().parent().prev().find('data').text();
 		var previd = $(this).parent().parent().prev().find('.ids').text();
-		console.log(previd);
-		console.log(prevdataname);
 		var thisClass = $(this).attr('class');
 		var thisparentClass = $(this).parent().attr('class');
     if(thisClass=='icons_3'){ //删除操作
@@ -67,7 +65,21 @@ $('#listbox').on('click','i[class^="icons"]',function(e){
 				if(id!=nxetElement){ //判断子集与父级是否有关联id
 					//设置ajax请求 发送当前id到后端 执行删除
 					  $(this).parent().remove();
-						alert('删除成功!');
+						$.ajax({
+							url: '/department/del',
+        					type: 'post',
+        					dataType:'json',
+        					data: {'department_id':id},
+        					success: function(data) {
+            					if(data.status==1){
+									alert('删除成功！');
+                					window.location.href="/department/run";
+            					}else{
+									alert('删除失败!');
+                					return false;
+            					}
+							}
+    					});
 					}else {
 						alert('部门非空删除失败!');
 					}
@@ -97,16 +109,19 @@ function setModlemsg(btnName,id,previd,dataname,prevdataname,parentClass){
 	$('.subdepnum').val(id);
 	$('#subdep').val(dataname);
 	$('#subdep,.subdepnum').attr('disabled',true);
+
 	if(btnName=='icons_2'){ //如果是修改
-		$('#depname').val(dataname);
+		$('#depname').val(dataname).parent().append('<span id="cur_dep_id" style="display:none">'+id+'</span>');
 		$('#subdep').val(prevdataname).attr('disabled',false);
 		$('.subdepnum').val(previd);
 		$('#selectlist').append(listtree(arr));
+        $('.add_btn').addClass('edit');
 	}
+	/*
 	if(parentClass.indexOf('list1')!=-1){
 		$('#subdep').val('中承集团');
-		$('.subdepnum').val('0');
-	}
+		$('.subdepnum').val('1');
+	}*/
 	$('.setModle').show();
 }
 // 下拉框点击事件
@@ -120,7 +135,44 @@ $('#selectlist').on('click','li[class^="list"]',function(){
 	$('#subdep').val(dataname);
 	$('#selectlist').css('display','none');
 });
+
+$(".add_btn").click(function(){
+	var url='/department/addSave';
+ 	var depname = $('#depname').val();
+ 	var subdep = $('#subdep').val();
+ 	var pDptId = $('#p_dpt_id').val();
+
+ 	var curDepId = $('#cur_dep_id').text();
+
+ 	var data={'p_dpt_id':pDptId,'name':depname};
+
+    var dpt = $(this).attr('class');
+	if(dpt.indexOf('edit') != -1){
+		url='/department/editSave';
+		//当前部门ID
+ 		data={'department_id':curDepId,'p_dpt_id':pDptId,'name':depname};
+	}
+	dropDown(url,data);
+})
+
 //弹窗提交按钮事件
-function dropDown(){
- //ajax 提交事件处理写在这里
+function dropDown(url,data){
+alert(url);
+	$.ajax({
+      		url: url,
+        	type: 'post',
+        	dataType:'json',
+        	data: data,
+        	success: function(data) {
+            	if(data.status==1){
+                	window.location.href="/department/run";
+            	}else{
+                	$("#tipss").html("<font color=\"red\">"+data.message+"</font>");
+                	setTimeout(function() {
+                    	$("#tipss").html('');
+                	}, 3000);
+                	return false;
+            	}
+			}
+    	});
 }

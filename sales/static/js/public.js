@@ -10,6 +10,9 @@ $('#closeBtn').click(function(){
   $('.setModle').css('display','none').find('input').attr('disabled',false).val('');
   $('#selectlist').css('display','none');
   $('.mask').remove();
+  $('#cur_dep_id').remove();
+  $('.add_btn').attr('class','add_btn');
+
 });
 //右侧宽度设置
 var wdWidth = document.body.clientWidth;
