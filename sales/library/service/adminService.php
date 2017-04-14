@@ -64,9 +64,21 @@ class adminService extends Service
     /**
      * 获取用户列表
      */
-    public function admin_list($where="")
+    public function admin_list($where=null,$page=0,$limit=10)
     {
-        return $this->adminDao->admin_list($where);
+        return $this->adminDao->admin_list($where,$page,$limit);
+    }
+    /**
+     * 统计用户列表数据
+     */
+    public function admin_list_count($where=null)
+    {
+        $count = $this->adminDao->admin_list_count($where);
+        if(!empty($count) && isset($count)){
+            return $count['count'];
+        }else{
+            return 0;
+        }
     }
     /*
      *  根据用户名、手机、信箱检测用户是否存在
@@ -235,34 +247,6 @@ class adminService extends Service
 	    if($arr) return 10;
     }
     
-    /**
-     * 根据数据，拼接检索条件
-     * @param type $part_id
-     * @param type $department_id
-     * @param type $unmae
-     * @param type $phone
-     * @return string sql语句where条件
-     */
-    public function getWhere($part_id,$department_id,$unmae,$phone,$status){
-        //查询条件判断
-        $where = ' ';
-        if($part_id){
-            $where.= ' and a.gid = '.$part_id;
-        }
-        if($department_id){
-            $where.= ' and a.department_id = '.$department_id;
-        }
-        if($unmae){
-            $where.= ' and UsrName = "'.$unmae.'"';
-        }
-        if($phone){
-            $where.= ' and a.phone = '.$phone;
-        }
-        if(isset($status)){
-            $where.= ' and a.status = '.$status;
-        }
-        return $where;
-    }
     /************************************************************
      * @copyright(c): 2017年3月28日
      * @Author:  yuwen
