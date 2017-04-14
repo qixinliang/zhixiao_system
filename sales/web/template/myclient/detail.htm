@@ -1,60 +1,74 @@
 <!DOCTYPE html>
-<html lang="zh-cn">
+<html lang="en">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <meta name="renderer" content="webkit">
-    <title>销售管理系统</title>
-	<base href="<?php echo InitPHP::getConfig('url');?>"/>
-    <link rel="stylesheet" href="/static/css/base.css">
-    <link rel="stylesheet" href="/static/css/css.css">
-    <script src="/static/js/jquery.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>百合贷直销系统-销售业绩</title>
+  <link rel="stylesheet" href="/static/css/normalize.css">
+  <link rel="stylesheet" href="/static/css/public.css">
+  <link rel="stylesheet" href="/static/css/results.css">
+  <link href="/static/css/mricode.pagination.css" rel="stylesheet" />
+  <script type="text/javascript" src="/static/js/jquery-3.1.1.js"></script>
+  <script type="text/javascript" src="/static/js/mricode.pagination.js"></script>
 </head>
 <body>
-<div class="panel admin-panel">
-  <div class="panel-head"><strong class="icon-reorder">客户明细</strong></div>
-
-	<div class="padding border-bottom"> 
-		<div>客户姓名：&nbsp;&nbsp;<!--{$clientInfo['UsrName']}--><span style="padding-left: 200px;">注册时间：&nbsp;&nbsp;<?php echo date('Y-m-d H:i:s',$clientInfo['create_time'])?></span></div>
-	</div> 
-
-	<div class="padding border-bottom"> 
-	<div>手&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;机：&nbsp;&nbsp;<!--{$clientInfo['phone']}--><span style="padding-left: 154px;">身份证号：&nbsp;&nbsp;<!--{$clientInfo['IdNo']}--></span></div>
-	</div>
-
-	<div class="padding border-bottom"> 
-		<div>是否投资：&nbsp;&nbsp;<span style="color:red;"><!--{if($clientOrder==1)}-->是<!--{else}-->否<!--{/if}--></span></div>
-	</div>
-
-	<div class="padding border-bottom" style="font-weight:bold"> 
-	业务人员
-	</div>
-	<table class="table table-hover text-center">
-		<tr>
-          <th style="width:10%">ID</th>     
-		  <th style="width:25%">姓名</th>     
-		  <th style="width:25%">手机号</th>  
-		  <th style="width:30%">邀请时间</th>
-		</tr>
-		<tr>
-                  <td>1</td>
-		  <td><!--{$original_inviter['inviter_name']}-->(原始邀请人)</td>      
-		  <td><!--{$original_inviter['investor_cellphone']}--></td>  
-		  <td><?php echo date('Y-m-d H:i:s',$original_inviter['create_time']);?></td>  
-		</tr>
-                <!--{if($allocation_inviter)}-->
-                <!--{foreach($allocation_inviter as $k=>$v)}-->
-                    <tr>
-                        <td><?php echo $k+2;?></td>
-                        <td><!--{$v['username']}--></td>      
-                        <td><!--{$v['phone']}--></td>  
-                        <td><?php echo date('Y-m-d H:i:s',$v['create_time']); ?></td>  
-                    </tr>
-                <!--{/foreach}-->
-                <!--{/if}-->
-	</table>
+<div class="wrapper">
+  <!--{layout:top}-->
+<!-- 主体内容 -->
+<article class="content">
+  <!--{layout:left_results_nav}-->
+  <!-- 右侧信息列表 -->
+  <div class="right">
+     <div class="rigth_title">
+       <h2>我的客户详情</h2>
+     </div>
+       <div class="right_list">
+       <table>
+         <tr>
+         	<td>客户姓名：&nbsp;&nbsp;<!--{$clientInfo['UsrName']}--></td>
+         	<td>注册时间：&nbsp;&nbsp;<?php echo date('Y-m-d H:i:s',$clientInfo['create_time']);?></td>
+         </tr>
+         <tr>
+         	<td>手&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;机：&nbsp;&nbsp;<!--{$clientInfo['phone']}--></td>
+         	<td>身份证号：&nbsp;&nbsp;<!--{$clientInfo['IdNo']}--></td>
+         </tr>
+         <tr>
+         	<td>是否投资：&nbsp;&nbsp;<span style="color:red;"><!--{if($clientOrder==1)}-->是<!--{else}-->否<!--{/if}--></td>
+         </tr>
+         </table>
+         <!-- 表格列表 -->
+         <div class="tablelist">
+           <table>
+			<tr>
+				<th style="width:10%">ID</th>     
+				<th style="width:25%">姓名</th>     
+				<th style="width:25%">手机号</th>  
+				<th style="width:30%">邀请时间</th>
+			</tr>
+			<tr>
+              <td>1</td>
+			  <td><!--{$original_inviter['inviter_name']}-->(原始邀请人)</td>      
+			  <td><!--{$original_inviter['investor_cellphone']}--></td>  
+			  <td><?php echo date('Y-m-d H:i:s',$original_inviter['create_time']);?></td>  
+			</tr>
+             <!--{if($allocation_inviter)}-->
+             <!--{foreach($allocation_inviter as $k=>$v)}-->
+                 <tr>
+                     <td><?php echo $k+2;?></td>
+                     <td><!--{$v['username']}--></td>      
+                     <td><!--{$v['phone']}--></td>  
+                     <td><?php echo date('Y-m-d H:i:s',$v['create_time']); ?></td>  
+                 </tr>
+             <!--{/foreach}-->
+             <!--{/if}-->
+           </table>
+         </div>
+       </div>
+  </div>
+</article>
 </div>
-	
+<script type="text/javascript" src="/static/js/public.js"></script>
+<script type="text/javascript" src="/static/js/results.js"></script>
 </body>
 </html>

@@ -82,7 +82,7 @@ class bmyjmxController extends baseController{
         $this->view->assign('my_department_lsit', $sonDepartment); //返回我的子部门列表，用作搜索条件
         $this->view->assign('page_html', $page_html);
         $this->view->assign('user_data', $departmentUserDetail);
-        $this->view->display('bmyjmx/run1');
+        $this->view->display('bmyjmx/run');
     }
     
     /**
@@ -108,6 +108,7 @@ class bmyjmxController extends baseController{
         
         //获取用户列表
         $departmentUserDetail = $this->bmyjmxService->getDepartmentUserDetail($sonDepartment,$arrangeWhereUrl['where']);
+//         print_r($departmentUserDetail);exit;
         $this->createExcelService = InitPHP::getService("createExcel");
         $this->createExcelService->run($departmentUserDetail);
     }
@@ -139,7 +140,7 @@ class bmyjmxController extends baseController{
         $this->tree = array();
         
         //拼接where条件，和url链接地址
-        $arrangeWhereUrl = $this->arrangeWhereUrl('bmyjmx/total',$departmentId,$username,$startDate,$endDate,$city);
+        $arrangeWhereUrl = $this->arrangeWhereUrl('/bmyjmx/total',$departmentId,$username,$startDate,$endDate,$city);
         
         //获取用户列表
         $departmentUserDetail = $this->bmyjmxService->getDepartmentUserDetail($sonDepartment,$arrangeWhereUrl['where'],$startDate,$endDate);
@@ -206,7 +207,7 @@ class bmyjmxController extends baseController{
     public function arrangeWhereUrl($url,$departmentId=null,$username=null,$startDate=null,$endDate=null,$city=null){
         $where = ' ';
         //分页地址
-        $excelUrl = 'bmyjmx/createExcel';
+        $excelUrl = '/bmyjmx/createExcel';
         if(!empty($departmentId) && isset($departmentId)){
             $url=$url.'/department_id/'.$departmentId;
             $excelUrl=$excelUrl.'/department_id/'.$departmentId;
@@ -223,7 +224,7 @@ class bmyjmxController extends baseController{
         }
     
         if(!empty($city) && isset($city)){
-            $url=$url.'city/'.$city;
+            $url=$url.'/city/'.$city;
         }
         return array('url'=>$url,'where'=>$where,'excelUrl'=>$excelUrl);
     }
