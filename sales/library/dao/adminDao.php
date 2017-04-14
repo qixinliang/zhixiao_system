@@ -193,4 +193,12 @@ class adminDao extends Dao
         $sql=sprintf("select * from zx_admin a left join zx_role b on  a.gid=b.id left join zx_department c on a.department_id=c.department_id where c.department_id=%s",$department_id);
         return  $this->dao->db->get_all_sql($sql);
     }
+
+	public function getLeftUser($id){
+		$sql = sprintf("SELECT * FROM `zx_admin` a 
+			LEFT JOIN `zx_role` b ON a.gid=b.id
+			LEFT JOIN `zx_department` c ON a.department_id=c.department_id
+			WHERE a.id!=%s",$id);
+		return $this->dao->db->get_all_sql($sql);
+	}
 }
