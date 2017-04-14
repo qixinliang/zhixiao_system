@@ -1,18 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-cn">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>百合贷直销系统-销售业绩</title>
-  <link rel="stylesheet" href="/static/css/base.css">
-  <link rel="stylesheet" href="/static/css/css.css">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="renderer" content="webkit">
+    <title>销售管理系统</title>
+    <base href="<?php echo InitPHP::getConfig('url');?>"/>
+    <link rel="stylesheet" href="/static/css/base.css">
+    <link rel="stylesheet" href="/static/css/css.css">
+    <script src="/static/js/jquery.js"></script>
+    <script type="text/javascript" src="/static/jeDate/jedate.js"></script>
+    <style type="text/css">
+        body{font-family:微软雅黑;}
+    </style>
   <link rel="stylesheet" href="/static/css/normalize.css">
   <link rel="stylesheet" href="/static/css/public.css">
-  <link rel="stylesheet" href="/static/css/results.css">
-  <link href="/static/css/mricode.pagination.css" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/css/structure.css">
   <script type="text/javascript" src="/static/js/jquery-3.1.1.js"></script>
-  <script type="text/javascript" src="/static/js/mricode.pagination.js"></script>
+ <script type="text/javascript" src="/static/My97DatePicker/WdatePicker.js"></script>
 </head>
 <body>
 <div class="wrapper">
@@ -21,97 +27,83 @@
 <article class="content">
   <!--{layout:left_results_nav}-->
   <!-- 右侧信息列表 -->
-  <div class="right">
+
+    <div class="right st_right">
      <div class="rigth_title">
        <h2>部门业绩统计</h2>
      </div>
-     <div class="rigth_t_btn" ">
-        <!--{foreach($cityDepartment as $k=>$v)}--> 
-	      <a style="color:red;" href="/bmyjmx/total<!--{if(!empty($v['department_name']))}-->/city/<!--{$v['department_name']}--><!--{/if}-->"> <!--{$v['department_name']}--></a>
-	    <!--{/foreach}-->
-     </div>
-       <div class="right_list">
-         <!-- 搜索 -->
-         <form action="/bmyjmx/run" method="post">
-           	统计日期：	<input type="text" name="start_date" value="<!--{$start_date}-->" id="dateinfo">
-           				<input type="text" name="end_date" value="<!--{$end_date}-->" id="dateinfo2">
-	       	按部门：		<select name="department_id">
-	       					<option value="">请选择</option>
-	       					<!--{foreach($my_department_lsit as $k=>$v)}-->
-		                    	<option value="<!--{$v['department_id']}-->"<!--{if($department_id==$v['department_id'])}-->selected<!--{/if}-->><!--{$v['step']}--><!--{$v['department_name']}--></option>
-		                    <!--{/foreach}-->
-	       				</select>
-       		姓名：		<input type="text" name="username" value="<!--{$username}-->" placeholder="姓名" />
-           <button type="submit" name="button">搜索</button>
-         </div>
-         <div style="padding-top:20px;">
+
+  	<div class="padding border-bottom"> 
+  	<!--{foreach($cityDepartment as $k=>$v)}--> 
+      <a class="button border-yellow" href="/bmyjmx/total<!--{if(!empty($v['department_name']))}-->/city/<!--{$v['department_name']}--><!--{/if}-->" <!--{if($v['department_name']==$city)}-->style="color:#fff;border-color:#f90;background-color:#f90"<!--{/if}-->> <!--{$v['department_name']}--></a>
+    <!--{/foreach}-->
+  </div>
+  <div class="padding border-bottom">
+      <form action="/bmyjmx/total" method="post">
+        统计日期 ： <input type="text" name="start_date" id="dateinfo" style="width: 130px;height: 25px;" value="<!--{$start_date}-->" onClick="WdatePicker()"/> --- 
+
+        <input type="text" name="end_date" id="dateinfo2" style="width: 130px;height: 25px;margin-right: 20px;" value="<!--{$end_date}-->" onClick="WdatePicker()" />
+
+        按部门:	<select name="department_id" style="width:150px;margin-right: 20px;">
+                    <option value="">请选择</option>
+                    <!--{foreach($my_department_lsit as $k=>$v)}-->
+                    <option value="<!--{$v['department_id']}-->"<!--{if($department_id==$v['department_id'])}-->selected<!--{/if}-->><!--{$v['step']}--><!--{$v['department_name']}--></option>
+                    <!--{/foreach}-->
+                </select>
+        姓名 ： <input type="text" name="username" style="width: 160px;height: 25px;margin-right: 30px;" value="<!--{$username}-->" placeholder="姓名">
+      <input type="submit" class="button border-yellow" value="搜索"> 
+      </form>
+      <div style="padding-top:20px;">
           <span><span style="color:red;"><?php echo date('Y年m月',time());?>份，<!--{$my_department['department_name']}--></span> 销售业绩</span>
       </div>
-         </form>
-         <!-- 表格列表 -->
-         <div class="tablelist">
-           <table>
-             <tr>
-		        <th width="5%">大区</th>    
-		        <th>分公司</th>
-		        <th>部门</th> 
-		        <th>团队</th>
-		        <th>员工姓名</th>
-		        <th>职级</th>
-		        <th>入职时间</th>
-		        <th>入金规模</th>
-		        <th>折标金额</th>
-		        <th>回款</th>
-		     </tr>
-             <!--{if(is_array($user_data))}-->
-		    <!--{foreach($user_data as $k=>$v)}-->
-		    <tr>
-		        <td><!--{$v['info'][1]}--></td>
-		        <td><!--{$v['info'][2]}--></td>
-		        <td><!--{$v['info'][3]}--></td>
-		        <td><!--{$v['info'][4]}--></td>
-		        <td><!--{$v['UsrName']}--></td>
-		        <td><!--{$v['name']}--></td>
-		        <td><!--{$v['Inthetime']}--></td>
-		        <td><!--{$v['zonge']}--></td>
-		        <td><!--{$v['nianhuan']}--></td>
-		        <td><!--{$v['huikuan']}--></td>
-		    </tr>
-		    <!--{/foreach}-->
-		    <!--{else}-->
-		    	<tr style="text-align:center">
-			    	<td colspan="10">暂无数据</td>
-			    </tr>
-		    <!--{/if}-->
-           </table>
-         </div>
-         <!--{if(is_array($user_data))}-->
-           <div class="padding border-bottom"><!--{$page_html}--></div>
-         <!--{/if}-->
-       </div>
   </div>
+ <div class="right_list">
+  <table class="table table-hover text-center">
+    <tr>
+        <th width="5%">大区</th>    
+        <th>分公司</th>
+        <th>部门</th> 
+        <th>团队</th>
+        <th>员工姓名</th>
+        <th>职级</th>
+        <th>入职时间</th>
+        <th>入金规模</th>
+        <th>折标金额</th>
+        <th>回款</th>
+    </tr>
+    <!--{if(is_array($user_data))}-->
+    <!--{foreach($user_data as $k=>$v)}-->
+    <tr>
+        <td><!--{$v['info'][1]}--></td>
+        <td><!--{$v['info'][2]}--></td>
+        <td><!--{$v['info'][3]}--></td>
+        <td><!--{$v['info'][4]}--></td>
+        <td><!--{$v['UsrName']}--></td>
+        <td><!--{$v['name']}--></td>
+        <td><!--{$v['Inthetime']}--></td>
+        <td><!--{$v['zonge']}--></td>
+        <td><!--{$v['nianhuan']}--></td>
+        <td><!--{$v['huikuan']}--></td>
+    </tr>
+    <!--{/foreach}-->
+    <!--{else}-->
+    	<tr style="text-align:center">
+	    	<td colspan="13">暂无数据</td>
+	    </tr>
+    <!--{/if}-->
+  </table>
+</div>
+<!--{if(is_array($user_data))}-->
+<div class="padding border-bottom">  
+    <!--{$page_html}-->
+</div> 
+<!--{/if}-->
+
+</div>
 </article>
 </div>
 <script type="text/javascript" src="/static/js/public.js"></script>
-<script type="text/javascript" src="/static/js/results.js"></script>
-<script type="text/javascript" src="/static/jeDate/jedate.js"></script>
-<script type="text/javascript">
-       jeDate({
-           dateCell:"#dateinfo",
-           format:"YYYY-MM-DD",
-           isinitVal:false,
-           isTime:false, //isClear:false,
-           minDate:"2014-09-19",
-           okfun:function(val){alert(val)}
-		});
-	       jeDate({
-	           dateCell:"#dateinfo2",
-	           format:"YYYY-MM-DD",
-	           isinitVal:false,
-	           isTime:false, //isClear:false,
-	           minDate:"2014-09-19",
-	           okfun:function(val){alert(val)}
-		});
-</script>
+
 </body>
 </html>
+
