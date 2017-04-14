@@ -1,0 +1,145 @@
+
+/*右侧*/
+.rigth_title{
+  overflow: hidden;
+  font-size: 14px;
+  border-bottom: 2px solid #79B5F7;
+  color:#3C3C3C;
+}
+.rigth_title h2{
+  float:left;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 50px;
+  padding-left: 10px;
+}
+.rigth_title .rigth_t_btn{
+  float:right;
+  padding:12px;
+}
+.rigth_title .rigth_t_btn span{
+  display: inline-block;
+  background-color:#31BD8C;
+  color:#fff;
+  font-size: 12px;
+  /*padding:8px;*/
+  line-height: 30px;
+  border-radius: 3px;
+  padding: 0 8px;
+  cursor: pointer;
+}
+.rigth_title .rigth_t_btn span:nth-child(1) i{
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  margin:-3px 5px 0 0;
+  vertical-align: middle;
+  background-image: url(../images/icon_2.png);
+}
+.right_bg{
+  height: 82px;
+  background-image: url(../images/right_bg_1.png);
+  background-repeat: no-repeat;
+  margin:30px 0 0 30px;
+}
+.right_list_box{
+  border-left:2px solid #31BD8C;
+  margin-left: 80px;
+}
+.right_list_box ul{
+  list-style: none;
+  font-size: 12px;
+}
+.right_list_box ul li{
+  cursor: pointer;
+}
+.right_list_box .list1{
+   width: 150px;
+   line-height: 30px;
+   background:#31BD8C;
+   border-radius: 3px;
+   position: relative;
+   margin:5px 0 5px 150px;
+   color:#fff;
+   padding-left:15px;
+}
+.right_list_box .list1::before{
+  content:"";
+  display: block;
+  width: 150px;
+  height: 2px;
+  background:#31BD8C;
+  position: absolute;
+  left: -150px;
+  top:50%;
+}
+#listbox>ul :nth-last-child(2)::before{
+  height: 150px;
+  background-color: transparent;
+  border-color:#31BD8C transparent transparent #fff;
+  border-style: solid;
+  border-width: 2px;
+  left: -152px;
+  z-index: 99;
+}
+.right_list_box .list1+ul{
+  margin-left: 170px;
+}
+.right_list_box>ul>ul ul{
+  margin-left: 40px;
+}
+.right_list_box>ul>ul li{
+ line-height: 20px;
+}
+/*.list1>li[class^="list"]{
+  margin-top: 5px;
+  width: 158px;
+  height: 18px;
+  border:1px solid #fff;
+}*/
+.right_list_box li[class^="list"]+ul{
+  display: none;
+}
+li[class^="list"] span{
+  display: none;
+}
+.right_list_box .list2{
+  color:#31BD8C;
+}
+.right_list_box .list2Active{
+  background: #FEF0D3;
+  width: 158px;
+  height: 18px;
+  border:1px solid #FAD4A8
+}
+.right_list_box>ul>.list2Active{
+  width: 150px;
+  height: 30px;
+  background:#31BD8C;
+  border: 0;
+}
+.right_list_box>ul>.list2Active i{
+  margin-top: 6px;
+}
+/*列表小按钮*/
+i[class^="icons"]{
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+}
+.icons_1,.icons_2,.icons_3{
+ background-image: url(../images/icons_1.png);
+ background-size: 100%;
+ background-repeat: no-repeat;
+ background-position: center;
+ float: right;
+ margin:2px 3px 0 0;
+
+}
+.icons_2{
+ background-image: url(../images/icons_2.png);
+}
+.icons_3{
+ background-image: url(../images/icons_3.png);
+}
