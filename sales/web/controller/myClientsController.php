@@ -214,7 +214,7 @@ class myClientsController extends baseController
     public function arrangeWhereUrl($uname=null,$phone=null,$startDate=null,$endDate=null,$userId=null){
         $where = ' ';
         //分页地址
-        $url = 'myClients/run';
+        $url = '/myClients/run';
         if(!empty($userId)){
             $url=$url.'/uid/'.$userId;
         }
