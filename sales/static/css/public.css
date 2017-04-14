@@ -11,7 +11,7 @@ body,h1,h2,ul,li,p,span,a,i{
 }
 a{
   text-decoration: none;
-  color:#fff;
+  /*color:#fff;*/
 }
 ul{
   list-style: none;
@@ -51,6 +51,10 @@ header h1>span{
  margin:0 40px 0 0;
  position: relative;
  line-height: 70px;
+ font-size:16px;
+}
+.top ul>li a{
+ color:#fff;
 }
 .login{
   float: right;
@@ -63,6 +67,7 @@ header h1>span{
   padding: 8px;
   border: 1px solid #9CDDDF;
   border-radius: 5px;
+  color:#fff;
 }
 /*主体内容*/
 .content{
@@ -101,6 +106,7 @@ header h1>span{
   font-size: 14px;
   overflow: hidden;
 }
+
 .left_list>ul>li{
   line-height: 38px;
   padding-left: 35px;
@@ -108,10 +114,14 @@ header h1>span{
   border-right: 3px solid transparent;
   cursor: pointer;
 }
+.left_list>ul>li>a{
+ color:#fff;
+}
 .left_list>ul>li:hover{
   border-left-color: #1E7CF2;
   background-color: #2E3143;
 }
+
 /*右侧顶部*/
 .right{
   background:#E6E9F0;

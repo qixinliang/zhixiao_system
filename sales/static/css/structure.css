@@ -42,6 +42,16 @@
   background-repeat: no-repeat;
   margin:30px 0 0 30px;
 }
+.rootBtn{
+width:20px;
+height:20px;
+margin-left:80px;
+color:#fff;
+cursor:pointer;
+ background-image: url(../images/icons_1.png);
+background-size:100%;
+background-repeat:no-repeat;
+}
 .right_list_box{
   border-left:2px solid #31BD8C;
   margin-left: 80px;
@@ -73,7 +83,7 @@
   left: -150px;
   top:50%;
 }
-#listbox>ul :nth-last-child(2)::before{
+#listbox>ul :last-child::before{
   height: 150px;
   background-color: transparent;
   border-color:#31BD8C transparent transparent #fff;

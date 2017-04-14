@@ -28,9 +28,21 @@ function ArticleFun(){
   for(var i=0;i<menuLi.length;i++){
      var attHref = menuLi[i].firstChild.getAttribute('href');
     if(urls.indexOf(attHref)!=-1){
+      $(menuLi[i]).find('a').css('color','#fdd82d');
       $('<span class="article"></span>').appendTo($(menuLi[i]));
-      $(menuLi[i]).addClass('articlecolor');
+	 /* $(menuLi[i]).style.color='#FDD82D';*/
     }
-  }
+  };
+  var leftList = document.getElementsByClassName('left_list')[0];
+  var lnavLi = leftList.getElementsByTagName('li');
+  console.log(lnavLi.length);
+
+  for(var j=0;j<lnavLi.length;j++){
+    var leftAhref = $(lnavLi[j]).find('a').attr('href');
+    if(urls.indexOf(leftAhref)!=-1){
+     $(lnavLi[j]).css({'border-left-color':'#1e7cf2','background-color':'#2e3143'});
+}
+       
+}
 };
 ArticleFun(); //执行高亮函数
