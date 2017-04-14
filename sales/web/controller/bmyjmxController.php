@@ -82,7 +82,7 @@ class bmyjmxController extends baseController{
         $this->view->assign('my_department_lsit', $sonDepartment); //返回我的子部门列表，用作搜索条件
         $this->view->assign('page_html', $page_html);
         $this->view->assign('user_data', $departmentUserDetail);
-        $this->view->display('bmyjmx/run');
+        $this->view->display('bmyjmx/run1');
     }
     
     /**

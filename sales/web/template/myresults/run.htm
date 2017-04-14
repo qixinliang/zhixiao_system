@@ -1,47 +1,66 @@
 <!DOCTYPE html>
-<html lang="zh-cn">
+<html lang="en">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <meta name="renderer" content="webkit">
-    <title>销售管理系统</title>
-	<base href="<?php echo InitPHP::getConfig('url');?>"/>
-    <link rel="stylesheet" href="/static/css/base.css">
-    <link rel="stylesheet" href="/static/css/css.css">
-    <script src="/static/js/jquery.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>百合贷直销系统-销售业绩</title>
+  <link rel="stylesheet" href="/static/css/normalize.css">
+  <link rel="stylesheet" href="/static/css/public.css">
+  <link rel="stylesheet" href="/static/css/results.css">
+  <link href="/static/css/mricode.pagination.css" rel="stylesheet" />
+  <script type="text/javascript" src="/static/js/jquery-3.1.1.js"></script>
+  <script type="text/javascript" src="/static/js/mricode.pagination.js"></script>
 </head>
 <body>
-<div class="panel admin-panel">
-  <div class="panel-head"><strong class="icon-reorder">我的业绩</strong></div>
-  <div class="padding border-bottom"> 
-  累计客户数量:<!--{$renshucount}--> 人
-  </div> 
-  <div class="padding border-bottom"> 
-  月度个人业绩明细
+<div class="wrapper">
+  <!--{layout:top}-->
+<!-- 主体内容 -->
+<article class="content">
+  <!--{layout:left_results_nav}-->
+  <!-- 右侧信息列表 -->
+  <div class="right">
+     <div class="rigth_title">
+       <h2>我的客户</h2>
+     </div>
+       <div class="right_list">
+       <table>
+         <tr>
+         	<td>累计客户数量：<!--{$renshucount}--> 人</td>
+         </tr>
+         <tr>
+         	<td>月度个人业绩明细</td>
+         </tr>
+         </table>
+         <!-- 表格列表 -->
+         <div class="tablelist">
+           <table>
+             <tr>
+               <th>月份</th>
+               <th>入金规模（万）</th>
+               <th>折标金额（万）</th>
+               <th>回款金额（万）</th>
+               <th>佣金收入（元）</th>
+               <th>新增客户数（人）</th>
+               
+             </tr>
+             <!--{foreach($list as $key=>$vo)}-->
+             <tr>
+               	<td><!--{$key}--></td>
+		        <td><!--{$vo['zonge']}--></td>
+		        <td><!--{$vo['nianhuan']}--></td>
+		        <td><!--{$vo['huikuan']}--></td>
+		        <td></td>
+		        <td><!--{$vo['yaoqingrencount']}--></td>
+             </tr>
+             <!--{/foreach}-->
+           </table>
+         </div>
+       </div>
   </div>
-  
-  <table class="table table-hover text-center">
-    <tr>
-      <th>月份</th>     
-      <th>入金规模（万）</th>  
-      <th>折标金额（万）</th>     
-      <th>回款金额（万）</th>
-      <th>佣金收入（元）</th>
-      <th>新增客户数（人）</th>
-    </tr>
-	
-	<!--{foreach($list as $key=>$vo)}-->
-    <tr>
-      <td><!--{$key}--></td>      
-      <td><!--{$vo['zonge']}--></td>  
-      <td><!--{$vo['nianhuan']}--></td>      
-      <td><!--{$vo['huikuan']}--></td>
-      <td></td>
-      <td><!--{$vo['yaoqingrencount']}--></td>
-    </tr> 
-	<!--{/foreach}-->
-
-  </table>
+</article>
 </div>
-</body></html>
+<script type="text/javascript" src="/static/js/public.js"></script>
+<script type="text/javascript" src="/static/js/results.js"></script>
+</body>
+</html>
