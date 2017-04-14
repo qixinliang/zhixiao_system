@@ -287,4 +287,9 @@ class adminService extends Service
         $adminDao = InitPHP::getDao("admin");//获取上级部门
         return $adminDao->getdepartmentTheUser($department_id);
     }
+	
+	public function getLeftUser($id){
+		$adminDao = InitPHP::getDao('admin');
+		return $adminDao->getLeftUser($id);
+	}
 }
