@@ -1,16 +1,22 @@
-
 // 无限级函数
+var arr = [];
+var jsonData = $("#d_list").text();
+var data = JSON.parse(jsonData);
+for(k in data) {
+	arr.push(data[k]);
+}
+
 function listtree(data, id, list, level) {
-	id = parseInt(id) || 0;
+	id = parseInt(id) || 1;
 	level = parseInt(level) || 1;
 	list = list || '';
 	var k, d, h = '';
 	for(k in data) {
 		d = data[k];
-		if (d.classid == id) {
-			h+= '<li class="list'+level+'"'+'>'+'<span class="ids">'+d.id+
-			'</span>'+'<span class="pid">'+d.classid+'</span>'+'<data>'+d.dataname+'</data>'+'</li>';
-			h+= arguments.callee(data.slice(k), d.id, list, level+1);
+		if (d.p_dpt_id == id) {
+			h+= '<li class="list'+level+'"'+'>'+'<span class="ids">'+d.department_id+
+			'</span>'+'<span class="pid">'+d.p_dpt_id+'</span>'+'<data>'+d.department_name+'</data>'+'</li>';
+			h+= arguments.callee(data.slice(k), d.department_id, list, level+1);
 		}
 	}
 	d = null;
@@ -20,46 +26,9 @@ function listtree(data, id, list, level) {
 	}
 	return list;
 }
-/*测试数据*/
-var data = [
-	{id:0,classid:-1,dataname:'集团总部'},
-  {id:1,classid:0,dataname:'承德'},
-  {id:2,classid:0,dataname:'北京'},
-  {id:3,classid:0,dataname:'廊坊'},
-  //二级承德
-  {id:4,classid:1,dataname:'承德一区'},
-  {id:5,classid:1,dataname:'承德二区'},
-  {id:6,classid:1,dataname:'承德三区'},
-  //三级承德
-  {id:7,classid:4,dataname:'兴隆'},
-  {id:8,classid:4,dataname:'滦平'},
-  {id:9,classid:5,dataname:'兴隆'},
-  {id:10,classid:5,dataname:'滦平'},
-  {id:11,classid:6,dataname:'兴隆'},
-  {id:12,classid:6,dataname:'滦平'},
-  //四级承德
-  {id:13,classid:7,dataname:'兴隆一部'},
-  {id:14,classid:7,dataname:'兴隆二部'},
-  {id:15,classid:7,dataname:'兴隆三部'},
-  //五级承德
-  {id:16,classid:13,dataname:'兴隆一部A团'},
-  {id:17,classid:13,dataname:'兴隆一部B团'},
-  {id:18,classid:13,dataname:'兴隆一部C团'},
-  //二级北京
-  {id:19,classid:2,dataname:'通州'},
-  //三级北京
-  // {id:20,classid:19,dataname:'通州一区'},
-  // {id:21,classid:19,dataname:'通州二区'},
-  //二级廊坊
-  {id:22,classid:3,dataname:'廊坊一区'},
-  {id:23,classid:3,dataname:'廊坊二区'},
-  {id:24,classid:16,dataname:'asdasdasd'},
-  {id:25,classid:24,dataname:'asdasdasd'},
-  {id:26,classid:25,dataname:'asdasdasd'},
 
-];
 /*执行*/
-$('#listbox').append(listtree(data));
+$('#listbox').append(listtree(arr));
 
 
 //离别点击下啦事件
@@ -88,6 +57,7 @@ $('#listbox').on('click','i[class^="icons"]',function(e){
 		var dataname = $(this).siblings('data').text();
 		var prevdataname = $(this).parent().parent().prev().find('data').text();
 		var previd = $(this).parent().parent().prev().find('.ids').text();
+		console.log(previd);
 		console.log(prevdataname);
 		var thisClass = $(this).attr('class');
 		var thisparentClass = $(this).parent().attr('class');
@@ -131,7 +101,7 @@ function setModlemsg(btnName,id,previd,dataname,prevdataname,parentClass){
 		$('#depname').val(dataname);
 		$('#subdep').val(prevdataname).attr('disabled',false);
 		$('.subdepnum').val(previd);
-		$('#selectlist').append(listtree(data));
+		$('#selectlist').append(listtree(arr));
 	}
 	if(parentClass.indexOf('list1')!=-1){
 		$('#subdep').val('中承集团');
