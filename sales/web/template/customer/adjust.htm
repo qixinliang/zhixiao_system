@@ -46,10 +46,16 @@
         <div class="field" id="power">
             <select name="new_inviter_id" id="new_inviter_id" class="input w50">
 				<option value="0">请选择</option>
+				<!--{if(isset($left_inviter_arr) && !empty($left_inviter_arr))}-->
+				<!--{foreach($left_inviter_arr as $v)}-->
+				<option value="<!--{$v['id']}-->"><!--{$v['str']}--></option>
+				<!--{/foreach}-->
+				<!--{else}-->
 				<option value="1">张三</option>
 				<option value="2">李四</option>
 				<option value="3">王五</option>
 				<option value="4">赵六</option>
+				<!--{/if}-->
             </select>
         </div>
 		<div id="reserved">

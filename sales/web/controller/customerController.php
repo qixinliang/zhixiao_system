@@ -5,6 +5,7 @@ if(!defined('IS_INITPHP')) exit('Access Denied!');
  * @客户管理控制器
  */
 class customerController extends baseController{
+	public $adminService 			= NULL;
 	public $departmentService 		= NULL;
 	public $roleService 			= NULL;
 	public $customerService 		= NULL;
@@ -13,6 +14,7 @@ class customerController extends baseController{
 	public $initphp_list = array('run','adjust','adjustSave','record');
 	public function __construct(){
 		parent::__construct();
+		$this->adminService 			= InitPHP::getService('admin');
 		$this->customerService 			= InitPHP::getService('customer');
 		$this->customerRecordService 	= InitPHP::getService('customerRecord');
 		$this->departmentService 		= InitPHP::getService('department');
@@ -158,11 +160,30 @@ class customerController extends baseController{
 		$originInviterId 	= $rows['inviter_id'];
 		$originInviterName 	= $rows['inviter_name'];
 
+		//所有用户信息去除刚才的销售
+		$leftUser = $this->adminService->getLeftUser($originInviterId);
+
+		$leftInviterArr = array();
+		if(isset($leftUser) && !empty($leftUser)){
+			foreach($leftUser as $k => $v){
+				$id = $v['id'];
+
+				//部门-角色-名字
+				$str = $v['department_name'].'-'.$v['name'].'-'.$v['user'];
+				$tmpArr = array(
+					'id'  => $id,
+					'str' => $str,
+				);
+				$leftInviterArr[] = $tmpArr;
+			}
+		}
+
 		//提供给页面的变量
 		$this->view->assign('investor_id',$investorId);
 		$this->view->assign('investor_name',$investorName);
 		$this->view->assign('origin_inviter_id',$originInviterId);
 		$this->view->assign('origin_inviter_name',$originInviterName);
+		$this->view->assign('left_inviter_arr',$leftInviterArr);
 		$this->view->assign('customer_pool_id',$customerPoolId);
 		$this->view->assign('action','adjustSave');
 
