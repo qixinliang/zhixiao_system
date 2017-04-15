@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="renderer" content="webkit">
+    <title>销售管理系统</title>
+	<base href="<?php echo InitPHP::getConfig('url');?>"/>
+    <link rel="stylesheet" href="/static/css/base.css">
+    <link rel="stylesheet" href="/static/css/css.css">
+  <link rel="stylesheet" href="/static/css/normalize.css">
+  <link rel="stylesheet" href="/static/css/public.css">
+  <link rel="stylesheet" href="/static/css/structure.css">
+  <script type="text/javascript" src="/static/js/jquery-3.1.1.js"></script>
+</head>
+<body>
+<div class="wrapper">
+  <!--{layout:top}-->
+ <!-- 主体内容 -->
+	<article class="content">
+  <!--{layout:left_notice_nav}-->
+
+	<div class="right st_right">
+     <div class="rigth_title">
+       <h2>公告管理</h2>
+		<div class="rigth_t_btn">
+ 			<span><i></i><a href="/notice/publish">发布公告</a></span>
+       </div>
+     </div>
+	<div class="right_list">
+  <table class="table table-hover text-center">
+    <tr>
+      <th width="5%">公告ID</th>     
+      <th>标题</th>  
+      <th>内容</th> 
+	  <th>添加时间</th>
+	  <th>更新时间</th>
+      <th width="250">操作</th>
+    </tr>
+	
+	<!--{foreach($notice_list as $key=>$vo)}-->
+    <tr>
+      <td><!--{$vo['notice_id']}--></td> 
+      <td><!--{$vo['title']}--></td>  
+      <td><!--{$vo['content']}--></td>  
+      <td><?php echo date('Y-m-d H:i:s',$vo['create_time']);?></td>
+      <td><?php echo date('Y-m-d H:i:s',$vo['update_time']);?></td>
+	  <td>
+      	<div class="button-group">
+       		<a type="button" class="button border-main" href="/notice/edit/id/<!--{$vo['notice_id']}-->"><span class="icon-edit"></span>修改</a>
+       		<a class="button border-red" href="javascript:void(0)" onclick="del('<!--{$vo['notice_id']}-->',this)"><span class="icon-trash-o"></span> 删除</a>
+      	</div>
+      </td>
+    </tr> 
+	<!--{/foreach}-->
+
+  </table>
+</div>
+</div>
+<script>
+function del(id,obj){
+	if(confirm("您确定要删除吗?")){
+		$.ajax({
+			url: '/notice/del',
+			type: 'post',
+			dataType:'json',
+			data: {id: id},
+			success: function(msg) {
+				console.log(msg);
+				if(msg.status == 1){
+					alert("公告删除成功！");
+					window.location.href='/notice/run';
+				}else{
+					alert("公告删除失败！");
+				}
+			}
+		});
+	}
+}
+</script>
+</div>
+</article>
+</div>
+
+<script type="text/javascript" src="/static/js/public.js"></script>
+</body></html>
