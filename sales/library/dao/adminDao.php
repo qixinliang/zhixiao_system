@@ -208,6 +208,12 @@ class adminDao extends Dao
         $sql=sprintf("select * from zx_admin a left join zx_role b on  a.gid=b.id left join zx_department c on a.department_id=c.department_id where c.department_id=%s",$department_id);
         return  $this->dao->db->get_all_sql($sql);
     }
+	
+	//获取特定的部门ID下有多少用户
+	public function getUserCount($did){
+		$sql = "SELECT count(id) AS count FROM zx_admin WHERE department_id=$did";
+		return $this->dao->db->get_one_sql($sql);
+	}
 
 	public function getLeftUser($id){
 		$sql = sprintf("SELECT * FROM `zx_admin` a 

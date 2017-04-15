@@ -281,4 +281,9 @@ class adminService extends Service
 		$adminDao = InitPHP::getDao('admin');
 		return $adminDao->getLeftUser($id);
 	}
+
+	public function getUserCount($did){
+		$adminDao = InitPHP::getDao('admin');
+		return $adminDao->getUserCount($did);
+	}
 }
