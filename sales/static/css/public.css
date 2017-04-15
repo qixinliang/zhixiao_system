@@ -1,7 +1,6 @@
 body,h1,h2,ul,li,p,span,a,i{
   margin: 0;
   padding:0;
-  text-align:center;
 }
 .wrapper{
   min-width: 1220px;
