@@ -21,8 +21,9 @@ class noticeController extends baseController{
 		if(!isset($rows) || empty($rows)){
 			exit(json_encode(array('status' => -1,'message' => 'notice empty！')));
 		}*/
+	
+		//提供给首页最新的公告用下面的函数
 		$latest = $this->noticeService->getLatestNotice();
-		var_dump($latest);
 
 		$this->view->assign('notice_list',$rows);
 		$this->view->display('notice/run');
