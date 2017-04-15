@@ -43,9 +43,14 @@
         <div class="label">
           <label>公告内容：</label>
         </div>
-        <div class="field">
+		
+        <div class="field" >
+			<!-- 加载编辑器的容器 -->
+			<div id="container" name="content">
+			</div>
+
             <div class="tips2"></div>
-			<textarea name="content" id="content"></textarea>
+			<!--<textarea name="content" id="content"></textarea>-->
         </div>
       </div> 
 
@@ -60,11 +65,24 @@
     </form>
   </div>
 
+
+
+<!-- 配置文件 -->
+<script type="text/javascript" src="/static/ue/js/ueditor.config.js"></script>
+
+<!-- 编辑器源码文件 -->
+<script type="text/javascript" src="/static/ue/js/ueditor.all.js"></script>
+
+<!-- 实例化编辑器 -->
+<script type="text/javascript">
+    var ue = UE.getEditor('container');
+</script>
+
 <script type="text/javascript">
 function sub(obj){
 
 	var title    =  $("#title").val();
-	var content  =  $("#content").val();
+	var content  =  $("#container").html();
 
 	if(title == ""){
 		$(".tips").html("<font color=\"red\">公告标题不可以为空</font>").show();
@@ -101,6 +119,7 @@ function sub(obj){
 </div>
 </article>
 </div>
+
 
 <script type="text/javascript" src="/static/js/public.js"></script>
 </body>

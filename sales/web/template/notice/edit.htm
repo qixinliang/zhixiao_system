@@ -44,8 +44,11 @@
           <label>公告内容：</label>
         </div>
         <div class="field">
+            <!-- 加载编辑器的容器 -->
+            <script id="container" name="content" type="text/plain">
+			<!--{$info['content']}-->
+            </script>
             <div class="tips2"></div>
-			<textarea name="content" id="content"><!--{$info['content']}--></textarea>
         </div>
       </div> 
 
@@ -60,6 +63,16 @@
       </div>
     </form>
   </div>
+<!-- 配置文件 -->
+<script type="text/javascript" src="/static/ue/js/ueditor.config.js"></script>
+
+<!-- 编辑器源码文件 -->
+<script type="text/javascript" src="/static/ue/js/ueditor.all.js"></script>
+
+<!-- 实例化编辑器 -->
+<script type="text/javascript">
+    var ue = UE.getEditor('container');
+</script>
 
 <script type="text/javascript">
 function sub(obj){
