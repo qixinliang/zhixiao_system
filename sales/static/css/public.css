@@ -11,7 +11,7 @@ body,h1,h2,ul,li,p,span,a,i{
 }
 a{
   text-decoration: none;
-  color:#fff;
+  //color:#fff;
 }
 ul{
   list-style: none;
