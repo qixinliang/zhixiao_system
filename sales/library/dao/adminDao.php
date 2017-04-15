@@ -90,6 +90,11 @@ class adminDao extends Dao
         $data['update_time'] = time();
         return $this->dao->db->update_by_field($data, array('id' => $data['id']), $this->table_name); //根据条件更新数据
     }
+
+	//更新用户
+	public function update($data,$id){
+        return $this->dao->db->update_by_field($data, array('id' => $id), $this->table_name);
+	}
     /**
      * 删除
      * @param $id

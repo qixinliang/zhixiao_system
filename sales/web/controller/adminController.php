@@ -7,7 +7,7 @@ if (!defined('IS_INITPHP')) exit('Access Denied!');
  */
 class adminController extends baseController
 {
-    public $initphp_list = array('add','add_save','edit','edit_save','del'); //Action白名单
+    public $initphp_list = array('add','add_save','edit','edit_save','del','modifyPassword'); //Action白名单
 
     public function __construct()
     {
@@ -16,6 +16,39 @@ class adminController extends baseController
         $this->roleService = InitPHP::getService("role");//获取Service
 		$this->authService = InitPHP::getService("auth");//获取权限Service
     }
+
+	//修改密码
+	public function modifyPassword(){
+		$currentUser = $this->adminService->current_user();
+		if(!isset($currentUser) || empty($currentUser)){
+			exit(json_encode(array('status' => -1,'message' => 'current user not exist!')));
+		}
+		$uid = $currentUser['id'];
+		$password = $this->controller->get_gp('password');	
+		$password2 = $this->controller->get_gp('password2');	
+		if(isset($password) && isset($password2)){
+			if($password != $password2){
+				exit(json_encode(array('status' => -1,'message' => '两次密码不一致！')));
+			}
+			$data = array(
+				'password' => md5($password),
+				//FUCK,离职日期里也是用的update_time，
+				//这样每次对用户修改密码如果也修改更新时间，
+				//会把代码弄的太混乱了，暂时注释掉
+				//'update_time' => time(),
+			);
+			$ret = $this->adminService->update($data,$uid);
+
+			if($ret){
+				exit(json_encode(array('status' => 1,'message' => 'update password success！')));
+			}else{
+				exit(json_encode(array('status' => -1,'message' => 'update password failed！')));
+			}
+		}else{
+			$this->view->display('admin/modifyPassword');
+		}
+	}
+
     /**
      * 默认Action
      * @author aaron

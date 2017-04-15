@@ -224,6 +224,11 @@ class adminService extends Service
         $arr = $this->adminDao->edit_save($data);
 		if($arr) return 8;
     }
+
+	//更新用户
+	public function update($data,$id){
+		return $this->adminDao->update($data,$id);
+	}
     /**
      * 删除
      */
