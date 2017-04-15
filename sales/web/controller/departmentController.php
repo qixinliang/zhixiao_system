@@ -7,7 +7,7 @@ if(!defined('IS_INITPHP')) exit('Access Denied!');
 
 class departmentController extends baseController{
 	public $initphp_list = array('add','addSave','edit','editSave','del');
-
+	
 	public function __construct(){
 		parent::__construct();
 		$this->departmentService = InitPHP::getService('department');
@@ -31,6 +31,18 @@ class departmentController extends baseController{
 		//必须要用tree2函数，非tree函数，可以调试看出数组下标的区别。
 		$tree2 = $this->departmentService->generateTree2($list2);
 		$html  = $this->departmentService->exportTree($tree2);
+
+		//取出部门人数
+		foreach($list2 as $k => $v){
+			$did = $v['department_id'];
+			$tmpRet = $adminService->getUserCount($did);
+			$cnt = 0;
+			if(isset($tmpRet) && !empty($tmpRet)){
+				$cnt = $tmpRet['count']; 
+			}
+			$v['user_cnt'] = $cnt;
+			$list2[$k] = $v;
+		}
 
 		$listJson = json_encode($list2);
 		$this->view->assign('gid', $userinfo['gid']);
