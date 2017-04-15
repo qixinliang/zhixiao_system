@@ -138,11 +138,11 @@ class departmentService extends Service{
 	        return $info['department_name'];
 	    }
 	    if(!empty($info['p_dpt_id'])){
-	        $this->department_name.=$info['department_name'].'-';
+	        $this->department_name.=$info['department_name'].'=';
 	        $this->getDepartmentName(intval($info['p_dpt_id']));
 	    }
 	    if(!empty($this->department_name)){
-	        $arr = explode('-',$this->department_name);
+	        $arr = explode('=',$this->department_name);
 	        $tmparr = array();
 	        $str= null;
 	        if(is_array($arr)){
