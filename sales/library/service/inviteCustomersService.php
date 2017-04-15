@@ -30,7 +30,7 @@ class inviteCustomersService extends Service{
 	 * @获取邀请客户列表按时间段查询
 	 *************************************************************/
 	public function getAccessToCustomerThisMonth($uid){
-	    $time = '2016-10-08 13:13:38';//date("Y-m-d H:i:s");
+	    $time = date("Y-m-d H:i:s");
 	    $firstday = date('Y-m-01', strtotime($time)).' 00:00:00';
         $lastday = date('Y-m-d', strtotime("$firstday +1 month -1 day")).' 23:59:59';
         $where = ' and add_date>='.strtotime($firstday).' and add_date<='.strtotime($lastday);
