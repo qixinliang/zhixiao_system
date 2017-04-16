@@ -116,6 +116,11 @@
   </table>
 </div>
 </div>
+<!--{if(is_array($list))}-->
+<div class="padding border-bottom">  
+    <!--{$page_html}-->
+</div> 
+<!--{/if}-->
 <script>
 function del(id,status,obj){
 	if(confirm("您确定要操作吗?")){
@@ -135,7 +140,6 @@ function del(id,status,obj){
 	}
 }
 </script>
-
 </div>
 </article>
 </div>

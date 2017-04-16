@@ -47,10 +47,20 @@ class adminDao extends Dao
      * 获取用户列表
      * @param $data array()
      */
-    public function admin_list($where)
+    public function admin_list($where,$page,$limit)
     {
-        $sql=sprintf("select a.*,b.name as gname,d.department_name,b.privilege from %s a left join zx_role b on a.gid=b.id left JOIN zx_department d on d.department_id = a.department_id where 1=1 %s order by id asc",$this->table_name,$where);
+        $sql=sprintf("select a.*,b.name as gname,d.department_name,b.privilege from %s a left join zx_role b on a.gid=b.id left JOIN zx_department d on d.department_id = a.department_id where 1=1 %s order by id asc limit $page,$limit",$this->table_name,$where);
         return  $this->dao->db->get_all_sql($sql);
+    }
+    
+    /**
+     * 获取用户列表数量
+     * @param $data array()
+     */
+    public function admin_list_count($where)
+    {
+        $sql=sprintf("select count(*) as count from %s a left join zx_role b on a.gid=b.id left JOIN zx_department d on d.department_id = a.department_id where 1=1 %s order by a.id asc",$this->table_name,$where);
+        return  $this->dao->db->get_one_sql($sql);
     }
     /**
      * 检测重复用户
