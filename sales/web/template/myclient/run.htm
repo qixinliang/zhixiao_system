@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>百合贷直销系统-销售业绩</title>
+  <link rel="stylesheet" href="/static/css/base.css">
+  <link rel="stylesheet" href="/static/css/css.css">
+  <link rel="stylesheet" href="/static/css/normalize.css">
+  <link rel="stylesheet" href="/static/css/public.css">
+  <link rel="stylesheet" href="/static/css/results.css">
+  <link href="/static/css/mricode.pagination.css" rel="stylesheet" />
+  <script type="text/javascript" src="/static/js/jquery-3.1.1.js"></script>
+  <script type="text/javascript" src="/static/js/mricode.pagination.js"></script>
+</head>
+<body>
+<div class="wrapper">
+  <!--{layout:top}-->
+<!-- 主体内容 -->
+<article class="content">
+  <!--{layout:left_results_nav}-->
+  <!-- 右侧信息列表 -->
+  <div class="right">
+     <div class="rigth_title">
+       <h2>我的客户</h2>
+     </div>
+     <div class="rigth_title">
+       <a href="/myClients/run<!--{if(!empty($uid))}-->/uid/<!--{$uid}--><!--{/if}-->" style="color:#2C2825;">投资客户</a>
+       <a href="/myClients/noInvest<!--{if(!empty($uid))}-->/uid/<!--{$uid}--><!--{/if}-->" style="color:#2C2825;">未投资客户</a>
+     </div>
+       <div class="right_list">
+         <!-- 搜索 -->
+         <form action="/myClients/run" method="post">
+         <div class="serch">
+           投资人 ：<input type="text" name="uname" value="<!--{$uname}-->" />
+           手机号 ：<input type="text" name="phone" value="<!--{$phone}-->" />
+           投资日期 ：<input type="text" name="start_date" value="<!--{$start_date}-->" id="dateinfo">
+           <input type="text" name="end_date" value="<!--{$end_date}-->" id="dateinfo2">
+           <button type="submit" name="button">搜索</button>
+         </div>
+         </form>
+         <div>
+	          <span>客户数量合计：<span style="color:red;"><!--{$friendsCount}--></span>人   &nbsp;&nbsp;&nbsp;&nbsp;</span>
+	          <span>投资金额合计：<span style="color:red;"><!--{$tzje_count}--></span>元</span>&nbsp;&nbsp;&nbsp;&nbsp;
+	          <span>折标金额合计：<span style="color:red;"><!--{$nhsyl_count}--></span>元</span>
+	      </div>
+         <!-- 表格列表 -->
+         <div class="tablelist">
+           <table>
+             <tr>
+               <th>会员ID</th>
+               <th>项目名称</th>
+               <th>客户姓名</th>
+               <th>手机号</th>
+               <th>投资日期</th>
+               <th>成立日期</th>
+               <th>到期日期</th>
+               <th>投资金额(元)</th>
+               <th>投资利率</th>
+               <th>折标金额(元)</th>
+               <th>代金/加息券</th>
+               <th>当前业务员</th>
+               <th>客户明细</th>
+             </tr>
+             <!--{foreach($friends as $k=>$v)}-->
+             <tr>
+               	<td><!--{$v['uid']}--></td>
+		        <td><!--{$v['title']}--></td>
+		        <td><!--{$v['UsrName']}--></td>
+		        <td><!--{$v['phone']}--></td>
+		        <td><?php echo date('Y-m-d',$v['order_time']);?></td>
+		        <td><?php echo date('Y-m-d',$v['start_date']);?></td>
+		        <td><?php echo date('Y-m-d',$v['deal_end_date']);?></td>
+		        <td><!--{$v['order_money']}--></td>
+		        <td><!--{$v['syl']}-->%</td>
+		        <td><!--{$v['nhsyl']}--></td>
+		        <td>
+		        	<!--{if($v['VocherAmt']!='')}-->
+		        		<!--{$v['VocherAmt']}-->元
+		        	<!--{elseif($v['JiaXi']!='')}-->
+		        		<!--{$v['JiaXi']}-->%
+		        	<!--{/if}-->
+		        </td>
+		        <td><!--{$v['salesman']}--></td>
+               <td><a href="/myClients/detail/clientId/<!--{$v['uid']}-->">查看</a></td>
+             </tr>
+             <!--{/foreach}-->
+           </table>
+         </div>
+           <div class="padding border-bottom"><!--{$page_html}--></div>
+       </div>
+  </div>
+</article>
+</div>
+<script type="text/javascript" src="/static/js/public.js"></script>
+<script type="text/javascript" src="/static/js/results.js"></script>
+<script type="text/javascript" src="/static/jeDate/jedate.js"></script>
+<script type="text/javascript">
+       jeDate({
+           dateCell:"#dateinfo",
+           format:"YYYY-MM-DD",
+           isinitVal:false,
+           isTime:false, //isClear:false,
+           minDate:"2014-09-19",
+           okfun:function(val){alert(val)}
+		});
+	       jeDate({
+	           dateCell:"#dateinfo2",
+	           format:"YYYY-MM-DD",
+	           isinitVal:false,
+	           isTime:false, //isClear:false,
+	           minDate:"2014-09-19",
+	           okfun:function(val){alert(val)}
+		});
+</script>
+</body>
+</html>
