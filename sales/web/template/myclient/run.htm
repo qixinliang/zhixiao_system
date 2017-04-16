@@ -13,7 +13,6 @@
   <link href="/static/css/mricode.pagination.css" rel="stylesheet" />
   <script type="text/javascript" src="/static/js/jquery-3.1.1.js"></script>
   <script type="text/javascript" src="/static/js/mricode.pagination.js"></script>
-  <script type="text/javascript" src="/static/My97DatePicker/WdatePicker.js"></script>
 </head>
 <body>
 <div class="wrapper">
@@ -36,8 +35,8 @@
          <div class="serch">
            投资人 ：<input type="text" name="uname" value="<!--{$uname}-->" />
            手机号 ：<input type="text" name="phone" value="<!--{$phone}-->" />
-           投资日期 ：<input id="dateinfo" type="text" name="start_date" value="<!--{$start_date}-->" onClick="WdatePicker()"/>
-           <input id="dateinfo2" type="text" name="end_date" value="<!--{$end_date}-->" onClick="WdatePicker()" />
+           投资日期 ：<input type="text" name="start_date" value="<!--{$start_date}-->" id="dateinfo">
+           <input type="text" name="end_date" value="<!--{$end_date}-->" id="dateinfo2">
            <button type="submit" name="button">搜索</button>
          </div>
          </form>
@@ -96,5 +95,24 @@
 </div>
 <script type="text/javascript" src="/static/js/public.js"></script>
 <script type="text/javascript" src="/static/js/results.js"></script>
+<script type="text/javascript" src="/static/jeDate/jedate.js"></script>
+<script type="text/javascript">
+       jeDate({
+           dateCell:"#dateinfo",
+           format:"YYYY-MM-DD",
+           isinitVal:false,
+           isTime:false, //isClear:false,
+           minDate:"2014-09-19",
+           okfun:function(val){alert(val)}
+		});
+	       jeDate({
+	           dateCell:"#dateinfo2",
+	           format:"YYYY-MM-DD",
+	           isinitVal:false,
+	           isTime:false, //isClear:false,
+	           minDate:"2014-09-19",
+	           okfun:function(val){alert(val)}
+		});
+</script>
 </body>
 </html>
