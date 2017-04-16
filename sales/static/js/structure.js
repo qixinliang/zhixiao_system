@@ -157,7 +157,6 @@ $(".add_btn").click(function(){
 
 //弹窗提交按钮事件
 function dropDown(url,data){
-alert(url);
 	$.ajax({
       		url: url,
         	type: 'post',
