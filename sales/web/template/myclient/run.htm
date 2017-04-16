@@ -63,6 +63,7 @@
                <th>当前业务员</th>
                <th>客户明细</th>
              </tr>
+             <!--{if(is_array($friends))}-->
              <!--{foreach($friends as $k=>$v)}-->
              <tr>
                 <!--<td>{$v['uid']}</td>-->
@@ -86,9 +87,16 @@
                <td><a href="/myClients/detail/clientId/<!--{$v['uid']}-->">查看</a></td>
              </tr>
              <!--{/foreach}-->
+             <!--{else}-->
+             <tr>
+                <td colspan="12">暂无数据</td>
+		     </tr>
+             <!--{/if}-->
            </table>
          </div>
+         <!--{if(is_array($friends))}-->
            <div class="padding border-bottom"><!--{$page_html}--></div>
+         <!--{/if}-->
        </div>
   </div>
 </article>
