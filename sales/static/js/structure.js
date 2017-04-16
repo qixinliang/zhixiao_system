@@ -30,7 +30,14 @@ function listtree(data, id, list, level) {
 /*执行*/
 $('#listbox').append(listtree(arr));
 
-
+//根级添加部门事件
+$('.rootBtn').click(function(){
+    $('.setModle').show();
+    $('#subdep').val('中创晟业');
+	$('.subdepnum').val('1');
+    $('#selectlist').remove();
+    $('#subdep,.subdepnum').attr('disabled',true);
+});
 //离别点击下啦事件
 $('#listbox li[class^=list]').hover(function(){
    btnIcon(this);
@@ -114,14 +121,22 @@ function setModlemsg(btnName,id,previd,dataname,prevdataname,parentClass){
 		$('#depname').val(dataname).parent().append('<span id="cur_dep_id" style="display:none">'+id+'</span>');
 		$('#subdep').val(prevdataname).attr('disabled',false);
 		$('.subdepnum').val(previd);
+		if($('#selectlist')!=Object){
+			$('<div id="selectlist"></div>').appendTo('.selectlist');
+		}
 		$('#selectlist').append(listtree(arr));
         $('.add_btn').addClass('edit');
-	}
-	/*
-	if(parentClass.indexOf('list1')!=-1){
-		$('#subdep').val('中承集团');
+    	if(parentClass.indexOf('list1')!=-1){
+		$('#subdep').val('中创晟业');
 		$('.subdepnum').val('1');
-	}*/
+		$('#selectlist').remove();
+	}
+	}
+	
+//	if(parentClass.indexOf('list1')!=-1){
+//		$('#subdep').val('中承集团');
+//		$('.subdepnum').val('1');
+//	}
 	$('.setModle').show();
 }
 // 下拉框点击事件
