@@ -28,8 +28,12 @@ class departmentController extends baseController{
 		//必须要用tree2函数，非tree函数，可以调试看出数组下标的区别。
 		$tree2 = $this->departmentService->generateTree2($list2);
 		$html  = $this->departmentService->exportTree($tree2);
+
+		$listJson = json_encode($list2);
+
         $this->view->assign('list', $list2);
         $this->view->assign('html', $html);
+        $this->view->assign('list_json', $listJson);
         $this->view->display("department/run");
 	}
 
@@ -52,7 +56,6 @@ class departmentController extends baseController{
 		$pid 	= $this->controller->get_gp('p_dpt_id');
 		$dName 	= $this->controller->get_gp('name'); 
 		$ret    = $this->departmentService->addNodes($pid,$dName);
-
         if($ret){
             exit(json_encode(array('status' => 1, 'message' => '部门信息添加成功!')));
         }else{
@@ -85,7 +88,22 @@ class departmentController extends baseController{
 	
 	public function editSave(){
 		$this->authService->checkauth('1005');
-        $arr = $this->departmentService->editSave($_POST);
+		//当前部门ID
+		$id = $this->controller->get_gp('department_id');
+		//当前部门名字
+		$dName 	= $this->controller->get_gp('name');
+		//上级部门ID
+		$pid 	= $this->controller->get_gp('p_dpt_id');
+
+		$data = array(
+			'department_id' => $id,
+			'department_name' => $dName,
+			'p_dpt_id' => $pid,
+			'update_time' => time(),
+		);
+
+        $arr = $this->departmentService->editSave($data);
+        //$arr = $this->departmentService->editSave($_POST);
         if($arr){
             exit(json_encode(array('status' => 1, 'message' => '部门信息修改成功!')));
         }
