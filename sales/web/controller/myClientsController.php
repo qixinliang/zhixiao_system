@@ -28,11 +28,11 @@ class myClientsController extends baseController
         $this->teamUtilsService = InitPHP::getService('TeamUtils');
         
         //获取用户检索条件
-        $uname = urldecode($this->controller->get_gp('uname')) ? urldecode($this->controller->get_gp('uname')) : '';    //获取用户名
-        $phone = $this->controller->get_gp('phone') ? $this->controller->get_gp('phone') : '';//手机号
-        $startDate = $this->controller->get_gp('start_date') ? $this->controller->get_gp('start_date') : '';//开始时间
-        $endDate = $this->controller->get_gp('end_date') ? $this->controller->get_gp('end_date') : '';//结束时间
-        $userId = intval($this->controller->get_gp('uid')) ? intval($this->controller->get_gp('uid')) : ''; //获取uid，用户id
+        $uname = urldecode($this->controller->get_gp('uname'));    //获取用户名
+        $phone = $this->controller->get_gp('phone');//手机号
+        $startDate = $this->controller->get_gp('start_date');//开始时间
+        $endDate = $this->controller->get_gp('end_date');//结束时间
+        $userId = intval($this->controller->get_gp('uid')); //获取uid，用户id
         /**
          * 判断当前是否传过来uid，如果传入uid，以传入的uid为准，获取客户列表，否则，自动获取当前登录用户的。
          */
