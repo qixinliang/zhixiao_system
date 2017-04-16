@@ -77,7 +77,8 @@
 }
 .tablelist table td{
   border: 1px solid #E6E9F0;
-  height: 40px;
+	text-align: center;
+	padding:20px 0;
 }
 .tablelist table tr:nth-child(odd){
   background:#F4F4F6;

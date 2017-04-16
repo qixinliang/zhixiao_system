@@ -29,8 +29,10 @@ function ArticleFun(){
      var attHref = menuLi[i].firstChild.getAttribute('href');
     if(urls.indexOf(attHref)!=-1){
       $('<span class="article"></span>').appendTo($(menuLi[i]));
-      $(menuLi[i]).addClass('articlecolor');
+      $(menuLi[i]).style.color='#FDD82D';
     }
   }
 };
 ArticleFun(); //执行高亮函数
+
+

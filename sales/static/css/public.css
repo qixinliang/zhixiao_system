@@ -4,19 +4,19 @@ body,h1,h2,ul,li,p,span,a,i{
 }
 .wrapper{
   min-width: 1220px;
-  font-family: Arial, "Hiragino Sans GB", 微软雅黑, 黑体-简, Helvetica, sans-serif;
+  font-family: Arial, "Hiragino Sans GB", 寰蒋闆呴粦, 榛戜綋-绠�, Helvetica, sans-serif;
   font-weight: 400;
   position: relative;
   overflow: hidden;
 }
 a{
   text-decoration: none;
-  color:#fff;
+  /*color:#fff;*/
 }
 ul{
   list-style: none;
 }
-/*头部*/
+/*澶撮儴*/
 header{
   height:70px;
   width: 100%;
@@ -34,6 +34,11 @@ header h1,nav,.top ul>li{
   /*padding-top:10px;*/
   float: left;
   list-style: none;
+	
+}
+.top ul>li topNav{
+	font-size:16px;
+	color:#fff;
 }
 header h1{
   margin-top:13px;
@@ -63,13 +68,14 @@ header h1>span{
   padding: 8px;
   border: 1px solid #9CDDDF;
   border-radius: 5px;
+ color:#fff;
 }
-/*主体内容*/
+/*涓讳綋鍐呭*/
 .content{
   background: #E6E9F0;
   min-width: 1440px;
 }
-/*左侧*/
+/*宸︿晶*/
 .left,.right{
   float:left;
 }
@@ -77,6 +83,9 @@ header h1>span{
   width: 185px;
   background-color:#333A4B;
   color:#fff;
+}
+.left a{
+	color:#fff;
 }
 .left_title{
   line-height: 50px;
@@ -112,7 +121,7 @@ header h1>span{
   border-left-color: #1E7CF2;
   background-color: #2E3143;
 }
-/*右侧顶部*/
+/*鍙充晶椤堕儴*/
 .right{
   background:#E6E9F0;
   min-height: 688px;
@@ -161,7 +170,7 @@ header h1>span{
   background: #fff;
   overflow: hidden;
 }
-/*弹窗*/
+/*寮圭獥*/
 .setModle{
   width: 570px;
   height: 280px;
@@ -250,7 +259,7 @@ header h1>span{
   color: #1E7CF2;
 }
 
-/*遮罩层*/
+/*閬僵灞�*/
 .mask{
   position: absolute;
   left: 0;
@@ -262,7 +271,7 @@ header h1>span{
   z-index: 101;
 }
 
-/*导航高亮条*/
+/*瀵艰埅楂樹寒鏉�*/
 .article{
   position: absolute;
   left: 0;
