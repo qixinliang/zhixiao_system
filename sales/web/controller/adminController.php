@@ -23,6 +23,8 @@ class adminController extends baseController
     public function run()
     {
         $this->authService->checkauth("1013");
+        $pager= $this->getLibrary('pager'); //分页加载
+        $page = $this->controller->get_gp('page') ? $this->controller->get_gp('page') : 1 ; //获取当前页码
         $departmentService = InitPHP::getService("department"); //上级列表
         
         $part_id = $this->controller->get_gp('part_id');    //获取角色id
@@ -32,19 +34,25 @@ class adminController extends baseController
         $status = $this->controller->get_gp('status');//1、在职  0、离职
 
         //根据检索条件，拼接sql语句where条件
-        $where = $this->adminService->getWhere($part_id,$department_id,$unmae,$phone,$status);
-        $list = $this->adminService->admin_list($where); //查询列表数据
+        $where = $this->getWhere('/admin/run',$part_id,$department_id,$unmae,$phone,$status);
+        $page = ($page-1)*10 ? ($page-1)*10 : 0;//从第几条开始
+        $limit = 10;//每页显示的数量
+        $list = $this->adminService->admin_list($where['where'],$page,$limit); //查询列表数据
+        $list_count = $this->adminService->admin_list_count($where['where']);//统计数量
         $adminList = $this->roleService->adminList(); //获取角色列表
         $list2 = $departmentService->getDepartmentList2();//获取所属部门列表
         $tree2 = $this->_generateTree2($list2);
         $html = $this->_exportTree($tree2,$department_id);
         $list = $this->getToObtainTheSuperior($list);//查找直属负责人
+        
+        $page_html = $pager->pager($list_count, $limit, $where['url'], true);
         //映射检索条件
         $this->view->assign('part', $part_id);
         $this->view->assign('uname', $unmae);
         $this->view->assign('phone', $phone);
         $this->view->assign('html', $html);
         $this->view->assign('list', $list);
+        $this->view->assign('page_html', $page_html);
         $this->view->assign('adminList',$adminList);
         $this->view->display("admin/run");
     }
@@ -267,5 +275,39 @@ class adminController extends baseController
             }
         }
         return $html;
+    }
+    
+    /**
+     * 根据数据，拼接检索条件
+     * @param type $part_id
+     * @param type $department_id
+     * @param type $unmae
+     * @param type $phone
+     * @return string sql语句where条件
+     */
+    public function getWhere($url,$part_id,$department_id,$unmae,$phone,$status){
+        //查询条件判断
+        $where = ' ';
+        if($part_id){
+            $where.= ' and a.gid = '.$part_id;
+            $url.= '/part_id/'.$part_id;
+        }
+        if($department_id){
+            $where.= ' and a.department_id = '.$department_id;
+            $url.= '/department_id/'.$department_id;
+        }
+        if($unmae){
+            $where.= ' and UsrName = "'.$unmae.'"';
+            $url.= '/unmae/'.$unmae;
+        }
+        if($phone){
+            $where.= ' and a.phone = '.$phone;
+            $url.= '/phone/'.$phone;
+        }
+        if(isset($status)){
+            $where.= ' and a.status = '.$status;
+            $url.= '/status/'.$status;
+        }
+        return array('where'=>$where,'url'=>$url);
     }
 }
