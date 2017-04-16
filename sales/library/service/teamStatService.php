@@ -24,11 +24,10 @@ class teamStatService extends Service
         //获取所有的团队经理
         $teamManager = $this->teamStatDao->getTeamManager();
         
-        
         foreach($teamManager as $k=>$v){
             $userDepartmentId = intval($v['department_id']);
             
-            $res = $this->getDepartmentStat($userDepartmentId, $start_time, $end_time);
+            $res = $this->getDepartmentStat($userDepartmentId, $start_time, $end_time,$v['id']);
             
             $teamManager[$k]['rujin'] = $res['ruJinGuiMo'];
             $teamManager[$k]['zhebiao'] = $res['zheBiaoJinE'];
@@ -57,8 +56,6 @@ class teamStatService extends Service
         $department = explode('->', $departmentName);
         $departmentName = end($department);
         
-        
-        
         //获取我所有的子部门
         $sonDepartment = $this->getSonDepartment($deparmentList,$departmentId);
         $this->tree = array();
@@ -69,14 +66,12 @@ class teamStatService extends Service
                 $departmentUser[] = $user;
             }
         }
-        
         //查询客户业绩
         $ruJinGuiMo=0;
         $zheBiaoJinE=0;
         $keHuCount=0;
         foreach($departmentUser as $k1=>$val1){
             foreach ($val1 as $k2=>$val2){
-//                 print_r($val2);exit;
                 $userYeji = $this->myResultsService->getSummaryRanking($val2['id'],$start_time,$end_time);
                 $ruJinGuiMo  += $userYeji['zonge'];
                 $zheBiaoJinE += $userYeji['nianhuan'];

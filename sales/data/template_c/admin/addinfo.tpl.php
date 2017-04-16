@@ -1,4 +1,4 @@
-<?php  if (!defined("IS_INITPHP")) exit("Access Denied!");  /* INITPHP Version 1.0 ,Create on 2017-03-24 14:06:46, compiled from ./web/template/admin/addinfo.htm */ ?>
+<?php  if (!defined("IS_INITPHP")) exit("Access Denied!");  /* INITPHP Version 1.0 ,Create on 2017-04-16 12:56:15, compiled from ./web/template/admin/addinfo.htm */ ?>
 <!DOCTYPE html>
 <html lang="zh-cn">
 <head>
@@ -10,11 +10,23 @@
 	<base href="<?php echo InitPHP::getConfig('url');?>"/>
     <link rel="stylesheet" href="/static/css/base.css">
     <link rel="stylesheet" href="/static/css/css.css">
-    <script src="/static/js/jquery.js"></script>
+  <link rel="stylesheet" href="/static/css/normalize.css">
+  <link rel="stylesheet" href="/static/css/public.css">
+  <link rel="stylesheet" href="/static/css/structure.css">
+  <script type="text/javascript" src="/static/js/jquery-3.1.1.js"></script>
 </head>
 <body>
-<div class="panel admin-panel margin-top">
-  <div class="panel-head" id="add"><strong><span class="icon-pencil-square-o"></span>增加用户</strong></div>
+
+<div class="wrapper">
+<?php include('./data/template_c/top.tpl.php'); ?>
+<article class="content">
+<?php include('./data/template_c/left_corp_nav.tpl.php'); ?>
+
+ <div class="right st_right">
+     <div class="rigth_title">
+       <h2>添加用户</h2>
+     </div>
+
   <div class="body-content">
 	<form id="form" class="form-x" >
 	
@@ -90,27 +102,22 @@
 			<div class="tips_bumen" style="float: left;padding-left: 10px;color: #888;line-height: 42px;"></div>
 		  </div>
 		</div>
-		
-		
 
-     
-    
-     
-	  
-      <div class="form-group">
+
+		
+		<div class="form-group">
         <div class="label">
-          <label>身份证号：</label>
+          <label>入职时间：</label>
         </div>
         <div class="field">
-		  <input name="IdNo" type="text" class="input w50" id="IdNo" value="<?php echo $info['IdNo'];?>" onblur="chekIdNo()"/>       
-          <div class="tips_IdNo" style="float: left;padding-left: 10px;color: #888;line-height: 42px;"></div>
+		  <input name="Inthetime" type="text" class="input w50" id="Inthetime" value="<?php echo $info['Inthetime'];?>" />       
+          <div class="tips_Inthetime" style="float: left;padding-left: 10px;color: #888;line-height: 42px;"></div>
         </div>
       </div> 
-	  
-     
-      
-	  
-	  
+		
+		
+		
+		
 	   <div class="form-group">
         <div class="label">
           <label>级别：</label>
@@ -148,8 +155,8 @@
         </div>
         <div class="field">
           <div class="button-group radio">
-			<input name="status" type="radio" value="1" <?php if ($info['status']==1) { ?> checked="checked" <?php } ?> />正常&nbsp;&nbsp;
-			<input name="status" type="radio" value="0" <?php if ($info['status']==0) { ?> checked="checked" <?php } ?> />禁用
+			<input name="status" type="radio" value="1" <?php if ($info['status']==1) { ?> checked="checked" <?php } ?> />在职&nbsp;&nbsp;
+			<input name="status" type="radio" value="0" <?php if ($info['status']==0) { ?> checked="checked" <?php } ?> />离职
 			<span class="tips" style="padding-left: 10px;color: #888;line-height: 42px;"></span>				
            </div>  
         </div>
@@ -168,14 +175,12 @@
       </div>
     </form>
   </div>
-</div>
 <script type="text/javascript">
 var user = 0, UsrName = 0, IdNo = 0, Phone = 0, password = 0, rpassword = 0;
 function chekUsName()
 {
     var s = $("#user").val();
     var reg = /^\w{6,16}$/;   
-	
     if(reg.test(s)){  
 		$(".tips_user").html("").show();
 		user = 1;
@@ -212,20 +217,6 @@ function chekUsrName()
 	}
 }
 
-function chekIdNo()
-{
-    var s = $("#IdNo").val();
-    var card = /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/;
-	
-    if(card.test(s)){  
-		$(".tips_IdNo").html("").show();
-		IdNo = 1;
-    }else{
-        $(".tips_IdNo").html("<font color=\"red\">身份证号不正确</font>").show();
-		return false;
-	}
-}
-
 function chekPhone()
 {
     var reg = /^13[0-9]{9}$|14[0-9]{9}|15[0-9]{9}$|17[0-9]{9}|18[0-9]{9}$/;
@@ -252,18 +243,13 @@ function chekPassWord()
 
 
 function sub(obj){
-
 	chekUsName();//用户名
 	chekPassWord();//登录密码
 	chekPhone();//手机号
 	chekUsrName();//真实姓名 
 	chekJiaose();//角色类型
 	chekBumen();//所属部门
-	chekIdNo();//身份证号
-	
-	
-	
-	if(user == 1 && UsrName == 1 && IdNo == 1 && Phone == 1 && password == 1)
+	if(user == 1 && UsrName == 1 && Phone == 1 && password == 1)
 	{
 		$.ajax({
 			url: '/admin/<?php echo $action;?>_save',
@@ -284,11 +270,13 @@ function sub(obj){
 			}
 		});
 	}
-	
-
-
 };
 
 </script>
+</div>
+</article>
+</div>
+
+<script type="text/javascript" src="/static/js/public.js"></script>
 </body>
 </html>

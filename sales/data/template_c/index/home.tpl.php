@@ -1,4 +1,4 @@
-<?php  if (!defined("IS_INITPHP")) exit("Access Denied!");  /* INITPHP Version 1.0 ,Create on 2017-03-24 14:18:46, compiled from ./web/template/index/home.htm */ ?>
+<?php  if (!defined("IS_INITPHP")) exit("Access Denied!");  /* INITPHP Version 1.0 ,Create on 2017-04-14 16:27:17, compiled from ./web/template/index/home.htm */ ?>
 <!DOCTYPE html>
 <html lang="zh-cn">
 <head>
@@ -36,39 +36,62 @@
 		欢迎使用百合贷直销业务管理系统
         </div>
         <div class="line codePar">
-            <p>您所在的部门：<?php echo $departmentName;?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;您目前的职位：<?php echo $position;?></p>
+        <p>最近公告：        • 集团下发的最新政策调整通知              2017.01.01                                                                                 更多></p>
+            <p>您所在的部门：<?php echo $departmentName;?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;您目前的职级：<?php echo $position;?></p>
             <p></p>
-            <div class="add"><a href="http://www.baihedai.com"  target="_blank">去百合贷投资</a></div>
-            <?php if ($list['gid']<3) { ?>
-			<div class="add"><a href="/friends/zongjian_add">推荐总监</a></div>
-			<?php } ?>
-			<div class="add"><a href="/friends/jingjiren_add">推荐经纪人</a></div>
-			<div class="add"><a href="/agent/addshow">推荐客户</a></div>
-            <div class="scanCodeY">
-                <div class="codeImg"><div id="code"></div></div>
-                
-                <div class="codeImg" >
-				<p class="frimb5 frifrom">
-                <input type="hidden" class="friftext" id="inviteLinkCopy" value="https://m.baihedai.com/user/register/code/<?php echo $list['phone'];?>">
-                <input type="button" value="复制链接" class="frifbut" id="copy-button">
-                <input type="hidden" id="phone" value="<?php echo $list['phone'];?>" />
-                </p>
-			</div>
-            </div>
         </div>
+        
         <div class="blueTit">
-            今日统计
+            个人管理
         </div>
         <div class="line">
-                <p><span>今日投资（元）：<?php echo $touzizongCout;?></span><span>今日年化投资（元）：<?php echo $znhjye;?></span> </p>
-                <p><span>今日新增经纪人：<?php echo $jingjirenzongshu;?> </span><span>今日新增投资人：<?php echo $renshu;?></span></p>
+                <p><span>累计客户数:<?php echo $UidNumber;?>人</span><span>上月入金规模:<?php echo $getlastMonthzonge;?>元</span></p>
+                <p><span>本月新增客户数:<?php echo $montnumber;?>人 </span><span>上月折标业绩:<?php echo $getlastMonthnianhuan;?>元</span></p>
         </div>
         <div class="blueTit">
-            昨日统计
+            团队管理
         </div>
         <div class="line">
-            <p><span>昨日投资（元）：<?php echo $ztouzizongCout;?></span><span>昨日年化投资（元）：<?php echo $zznhjye;?></span></p>
+            <p><span>累计客户数：    35 人</span><span>团队上月入金规模：    2483737.12元</span></p>
+            <p><span>本月新增客户数：    35 人</span><span>团队上月折标业绩：    245444.00元</span></p>
         </div>
+        
+        
+<div class="blueTit">
+    <?php echo $YearsMonth;?>月份公司销售业绩TOP 5
+</div>
+<div class="line">
+
+<table class="table table-hover text-center">
+<?php if ($checkAmount) { ?>
+	<tr>
+	<th>姓名</th> 
+	<th>部门</th>
+	<th>入金规模 </th>
+	<th>折标业绩（万元）</th>
+	</tr>
+<?php } ?>
+<?php if ($checkAmount) { ?>
+         <?php foreach ($output as $key=>$vo) { ?>
+		<tr>
+		<td><?php echo $vo['UsrName'];?></td>
+		<td><?php echo $vo['gname'];?>-<?php echo $vo['department_name'];?></td>
+		<td><?php echo $vo['zonge'];?> </td>
+		<td><?php echo $vo['nianhuan'];?>(万元)</td>
+		</tr>
+		<?php } ?>
+<?php } else { ?>
+	   <tr>
+	    <td colspan="4">暂无排行数据</td>
+	  </tr>
+<?php } ?>
+</table>
+</div>
+  
+  
+  
+  
+  
     </div>
     <script src="/static/js/ZeroClipboard.js" type="text/javascript"></script>
     <script type="text/javascript">

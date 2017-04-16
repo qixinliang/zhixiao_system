@@ -80,6 +80,26 @@ class TeamUtilsService extends Service{
         rsort($tmparr);
         return $tmparr;
     }    
+    
+    /**
+     * 二维数组显示或隐藏手机号码并排序数组
+     * $data,           数据
+     * $permissions_id  权限id
+     */
+    public function isShowInfo2($data) {
+        $authService = InitPHP::getService("auth");//权限逻辑层引入
+        $tmparr = array();
+        if(empty($data)){
+            return $tmparr;
+        }
+        foreach ($data as $key=>$val){
+            $val['phone']=substr_replace($val['phone'],'****',3,4);
+            $tmparr[$key]=$val;
+        }
+        rsort($tmparr);
+        return $tmparr;
+    }
+    
     /*
      * @合计订单总额数公共方法
      */

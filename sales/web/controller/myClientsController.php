@@ -15,6 +15,8 @@ class myClientsController extends baseController
         $this->adminService = InitPHP::getService("admin");//获取管理员信息
         $this->myClientsService = InitPHP::getService("myClients");
 		$this->authService = InitPHP::getService('auth');
+		$this->TeamUtilsService = InitPHP::getService('TeamUtils');
+		$this->roleService = InitPHP::getService('role');
     }
     
     /**
@@ -74,6 +76,9 @@ class myClientsController extends baseController
         //统计用户的客户数量
         $count = $this->myClientsService->clientCount($uid);
         $friendsCount = $count['count'] + $friendsData['customer_friends_count']; //客户数量总和，是我邀请的客户数量，和分配给我的客户数量相加
+        
+        //隐藏手机号码
+        $friends = $this->TeamUtilsService->isShowInfo2($friends);
         
         //映射条件数据到前台页面
         $this->view->assign('uname', $uname);
@@ -150,6 +155,8 @@ class myClientsController extends baseController
             
             $page_html = $pager->pager($friendsCount['count'], 10, $arrangeWhereUrl['url']); //最后一个参数为true则使用默认样式
             
+            //隐藏手机号码
+            $friends = $this->TeamUtilsService->isShowInfo2($friends);
             //分页
             $this->view->assign('page_html', $page_html);
             //数据列表
@@ -215,10 +222,13 @@ class myClientsController extends baseController
             $this->view->assign('allocation_inviter', $allocation_inviter);
             
         }
-       
+        //隐藏手机号
+        $clientInfo = $this->hiddenPhone($clientInfo);
+        
         $this->view->assign('clientOrder',$clientOrder);
         $this->view->assign('clientInfo', $clientInfo);
         $this->view->assign('original_inviter', $originalInviter);
+        
         /*
          * @判断当前用户是否有权限访问组织结构cai'dan
          */
@@ -263,5 +273,17 @@ class myClientsController extends baseController
         }
     
         return array('url'=>$url,'where'=>$where);
+    }
+    /*
+     * @隐藏手机号码，新 需求需
+     */
+    public function hiddenPhone($array){
+        $tmparr = array();
+        if(!is_array($array)){
+            return $tmparr;
+        }
+        $array['phone']=substr_replace($array['phone'],'****',3,4);
+        $tmparr= $array;
+        return $tmparr;
     }
 }

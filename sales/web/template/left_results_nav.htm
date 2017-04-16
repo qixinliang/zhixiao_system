@@ -8,8 +8,10 @@
        <ul>
          <li class="left_list_nav"><a href="/myResults/run">我的业绩</a></li>
          <li class="left_list_nav"><a href="/myClients/run">我的客户</a></li>
-         <li class="left_list_nav"><a href="/bmyjmx/run">部门业绩明细</a></li>
+         <!--{if($gid !='10' && !empty($gid))}-->
          <li class="left_list_nav"><a href="/bmyjmx/total">部门业绩统计</a></li>
+         <li class="left_list_nav"><a href="/bmyjmx/run">部门业绩明细</a></li>
+         <!--{/if}-->
        </ul>
     </div>
   </div>
