@@ -8,10 +8,12 @@ if (!defined('IS_INITPHP')) exit('Access Denied!');
  * @部门业绩明细
  *************************************************************/
 class bmyjmxController extends baseController{
-    public $initphp_list = array('createExcel','total'); //Action白名单
+    public $initphp_list = array('createExcel','createExcel2','total'); //Action白名单
     
     public $tree = array();
     public $array = array();
+	public $userData = NULL;
+
     
     public function __construct(){
         parent::__construct();
@@ -20,6 +22,7 @@ class bmyjmxController extends baseController{
         $this->departmentService = InitPHP::getService("department");
         $this->myResultsService = InitPHP::getService("myResults");
 		$this->authService = InitPHP::getService('auth');
+        $this->createExcelService = InitPHP::getService("createExcel");
     }
     
     
@@ -123,7 +126,6 @@ class bmyjmxController extends baseController{
         //获取用户列表
         $departmentUserDetail = $this->bmyjmxService->getDepartmentUserDetail($userId,$sonDepartment,$arrangeWhereUrl['where']);
 
-        $this->createExcelService = InitPHP::getService("createExcel");
         $this->createExcelService->run($departmentUserDetail);
     }
     
@@ -199,7 +201,7 @@ class bmyjmxController extends baseController{
         //条件
         $this->view->assign('start_date', $startDate);
         $this->view->assign('end_date', $endDate);
-        $this->view->assign('department_id', $departmentId);
+
         $this->view->assign('username', $username);
         $this->view->assign('excelUrl',$arrangeWhereUrl['excelUrl']);
         $this->view->assign('status', $status);
@@ -211,6 +213,9 @@ class bmyjmxController extends baseController{
         $this->view->assign('my_department_lsit', $sonDepartment); //返回我的子部门列表，用作搜索条件
         $this->view->assign('page_html', $page_html);
         $this->view->assign('user_data', $departmentUserDetail);
+
+		//用于表格导出
+		$this->userData = $departmentUserDetail;
         
         /*
          * @判断当前用户是否有权限访问组织结构cai'dan
@@ -297,4 +302,66 @@ class bmyjmxController extends baseController{
         }
         return $this->array;
     }
+
+	//部门业绩统计表格导出
+	public function createExcel2(){
+
+        $startDate = $this->controller->get_gp('start_date') ; //获取开始时间
+        $endDate = $this->controller->get_gp('end_date'); //获取结束时间
+        $departmentId = $this->controller->get_gp('department_id'); //部门id
+        $username = urldecode($this->controller->get_gp('username')); //获取姓名
+        $city = urldecode($this->controller->get_gp('city')); 
+        $status = $this->controller->get_gp('status'); //搜索状态 1代表搜索
+        
+        //获取用户id
+        $user = $this->adminService->current_user();
+        $userId = $this->adminService->GetToZiXiTongUserId($user['id']);//获取user表里面的userid
+        
+        $deparmentList = $this->departmentService->getDepartmentList(); //获取所有的部门列表
+        $userDepartmentId = intval($user['department_id']);
+        $myDepartment = $this->bmyjmxService->getMyDepartment($userDepartmentId); //获取我的部门信息
+        
+        //获取所有pid为1的部门，当做城市部门
+        $cityDepartment = $this->bmyjmxService->getDepartmentList(1);
+        
+        //根据用户的部门id，获取子部门id
+        $sonDepartment = $this->GetTree($deparmentList,$userDepartmentId);
+        $this->tree = array();
+        
+        //拼接where条件，和url链接地址
+        $arrangeWhereUrl = $this->arrangeWhereUrl('/bmyjmx/total',$departmentId,$username,$startDate,$endDate,$city);
+        
+        //获取用户列表
+        $departmentUserDetail = $this->bmyjmxService->getDepartmentUserDetail($userId,$sonDepartment,$arrangeWhereUrl['where'],$startDate,$endDate);
+        
+        //循环客户列表，获取当前客户的上级部门
+        foreach($departmentUserDetail as $k =>$val){
+            $deparment_list = $this->departmentService->getDepartmentList();//获取所有部门
+            $data = $this->digui($deparment_list,intval($val['department_id']));//递归获取所有部门，组合
+            $this->array = array();
+            $data = array_reverse($data);
+            $departmentUserDetail[$k]['info'] = $data;
+        }
+        //离职用户，离职日期大于检索的开始日子，则不现实当前用户的信息
+        if(isset($startDate) && !empty($startDate)){
+            foreach($departmentUserDetail as $k =>$val){
+                if($val['status']=='0'){
+                    if(strtotime($startDate)>$val['update_time']){
+                        unset($departmentUserDetail[$k]);
+                    }
+                }
+            }
+        }
+        
+        //判断是否按照地区筛选
+        if(isset($city) && !empty($city)){
+            foreach ($departmentUserDetail as $k=>$v){
+                if($v['info'][0] != $city){
+                    unset($departmentUserDetail[$k]);
+                }
+            }
+        }
+			
+        $this->createExcelService->run2($departmentUserDetail);
+	}
 }
