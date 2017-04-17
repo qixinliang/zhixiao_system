@@ -212,7 +212,7 @@ function sub(obj){
 			data: $('#form').serialize(),
 			success: function(data) {
 				if(data.status==3 || data.status==8 || data.status==10 || data.status==678){
-					window.location.href="/admin/run";
+					window.location.href="/admin/run/status/1";
 				}else{
 					$(".tips").html("<font color=\"red\">"+data.message+"</font>");
 					setTimeout(function() {
