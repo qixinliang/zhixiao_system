@@ -7351,7 +7351,7 @@ var fillCharReg = new RegExp(domUtils.fillChar, 'g');
                 return  node.tagName == 'DIV' && node.getAttribute('cdata_tag');
             }
             //给文本或者inline节点套p标签
-            if (me.options.enterTag == 'p') {
+            if (me.options.entertag == 'br') {
 
                 var child = this.body.firstChild, tmpNode;
                 if (!child || child.nodeType == 1 &&
@@ -12932,7 +12932,7 @@ UE.plugins['horizontal'] = function(){
                     var tmp;
                     if(tmp = start.childNodes[range.startOffset - 1]){
                         if(tmp.nodeType == 1 && tmp.tagName == 'HR'){
-                            if(me.options.enterTag == 'p'){
+                            if(me.options.entertag == 'br'){
                                 tmp = me.document.createElement('p');
                                 range.insertNode(tmp);
                                 range.setStart(tmp,0).setCursor();
@@ -16565,7 +16565,7 @@ UE.plugins['enterkey'] = function() {
                     return;
                 }
             }
-            if (tag == 'p') {
+            if (tag == 'br') {
 
 
                 if (!browser.ie) {
