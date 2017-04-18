@@ -9,7 +9,9 @@
    <nav>
      <ul id="menu">
        <li><a href="/index/run">首页</a></li>
-       <li><a href="/department/run/">组织架构</a></li>
+        <!--{if($gid=='1'||$gid=='2'||$gid=='3')}-->
+       		<li><a href="/department/run/">组织架构</a></li>
+ 		<!--{/if}-->
        <li><a href="/myClients/run/">业绩管理</a></li>
        <li><a href="/customer/run/">客户管理</a></li>
        <li><a href="/notice/run/">公告管理</a></li>
