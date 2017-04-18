@@ -100,7 +100,13 @@ class customerController extends baseController{
 		//角色筛选
 		$userGroup = $this->roleService->adminList();
 		$this->view->assign('user_group', $userGroup);
-
+        
+		/*
+		 * @判断当前用户是否有权限访问组织结构cai'dan
+		 */
+		$this->view->assign('gid', $userInfo['gid']);
+		
+		
         $this->view->assign('page',$page);
         $this->view->assign('page_html', $pageHtml);
 		$this->view->assign('list',$fList);
@@ -186,7 +192,15 @@ class customerController extends baseController{
 		$this->view->assign('left_inviter_arr',$leftInviterArr);
 		$this->view->assign('customer_pool_id',$customerPoolId);
 		$this->view->assign('action','adjustSave');
-
+        
+		/*
+		 * @判断当前用户是否有权限访问组织结构cai'dan
+		 */
+		$adminService = InitPHP::getService('admin');
+		$userinfo = $adminService->current_user();
+		$this->view->assign('gid', $userinfo['gid']);
+		
+		
 		$this->view->display('customer/adjust');
 	}
 
@@ -273,7 +287,14 @@ class customerController extends baseController{
 		}
         $this->view->assign('page',$page);
         $this->view->assign('page_html', $pageHtml);
-
+        
+        /*
+         * @判断当前用户是否有权限访问组织结构cai'dan
+         */
+        $adminService = InitPHP::getService('admin');
+        $userinfo = $adminService->current_user();
+        $this->view->assign('gid', $userinfo['gid']);
+        
 		$this->view->assign('records',$fRecords);
 		$this->view->display('customer/record');
 	}
