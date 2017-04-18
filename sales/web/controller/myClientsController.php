@@ -91,6 +91,13 @@ class myClientsController extends baseController
         $this->view->assign('friendsCount', $friendsCount);//客户统计数量
         $this->view->assign('uid',$userId);
         
+        /*
+         * @判断当前用户是否有权限访问组织结构cai'dan
+         */
+        $adminService = InitPHP::getService('admin');
+        $userinfo = $adminService->current_user();
+        $this->view->assign('gid', $userinfo['gid']);
+        
         //数据列表
         $this->view->assign('friends',$friends);
         $this->view->display('myclient/run');
@@ -153,6 +160,12 @@ class myClientsController extends baseController
         $this->view->assign('start_date', $startDate);
         $this->view->assign('end_date', $endDate);
         $this->view->assign('uid',$userId);
+        /*
+         * @判断当前用户是否有权限访问组织结构cai'dan
+         */
+        $adminService = InitPHP::getService('admin');
+        $userinfo = $adminService->current_user();
+        $this->view->assign('gid', $userinfo['gid']);
         
         $this->view->display('myclient/noInvest');
     }
@@ -200,6 +213,13 @@ class myClientsController extends baseController
         $this->view->assign('clientOrder',$clientOrder);
         $this->view->assign('clientInfo', $clientInfo);
         $this->view->assign('original_inviter', $originalInviter);
+        /*
+         * @判断当前用户是否有权限访问组织结构cai'dan
+         */
+        $adminService = InitPHP::getService('admin');
+        $userinfo = $adminService->current_user();
+        $this->view->assign('gid', $userinfo['gid']);
+        
         $this->view->display('myclient/detail');
     }
 

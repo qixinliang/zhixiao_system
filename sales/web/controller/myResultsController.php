@@ -27,6 +27,14 @@ class myResultsController extends baseController{
               $renshucount+= $val['yaoqingrencount'];
            } 
         }
+        
+        /*
+         * @判断当前用户是否有权限访问组织结构cai'dan
+         */
+        $adminService = InitPHP::getService('admin');
+        $userinfo = $adminService->current_user();
+        $this->view->assign('gid', $userinfo['gid']);
+        
         $this->view->assign('renshucount',$renshucount);
         $this->view->assign('list',$res['data']);
         $this->view->display("myresults/run");

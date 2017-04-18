@@ -15,6 +15,9 @@ class departmentController extends baseController{
 	}
 	
 	public function run(){
+	    $adminService = InitPHP::getService('admin');
+	    $userinfo = $adminService->current_user();
+	    
 		$this->authService->checkauth('1001');
 		/*
 		 *list2的数组下标跟对应的
@@ -30,7 +33,7 @@ class departmentController extends baseController{
 		$html  = $this->departmentService->exportTree($tree2);
 
 		$listJson = json_encode($list2);
-
+		$this->view->assign('gid', $userinfo['gid']);
         $this->view->assign('list', $list2);
         $this->view->assign('html', $html);
         $this->view->assign('list_json', $listJson);

@@ -24,7 +24,13 @@ class noticeController extends baseController{
 	
 		//提供给首页最新的公告用下面的函数
 		$latest = $this->noticeService->getLatestNotice();
-
+		/*
+		 * @判断当前用户是否有权限访问组织结构cai'dan
+		 */
+		$adminService = InitPHP::getService('admin');
+		$userinfo = $adminService->current_user();
+		$this->view->assign('gid', $userinfo['gid']);
+		
 		$this->view->assign('notice_list',$rows);
 		$this->view->display('notice/run');
 	}
@@ -34,6 +40,13 @@ class noticeController extends baseController{
 		$title = $this->controller->get_gp('title');
 		$content = $this->controller->get_gp('content');
 		if(empty($title) || empty($content)){
+		    /*
+		     * @判断当前用户是否有权限访问组织结构cai'dan
+		     */
+		    $adminService = InitPHP::getService('admin');
+		    $userinfo = $adminService->current_user();
+		    $this->view->assign('gid', $userinfo['gid']);
+		    
 			$this->view->display('notice/publish');
 		}else{
 			$time = time();
@@ -61,6 +74,13 @@ class noticeController extends baseController{
 			exit(json_encode(array('status' => -1,'message' => 'Notice not Found！')));
 		}	
 		$this->view->assign('info',$info);
+		/*
+		 * @判断当前用户是否有权限访问组织结构cai'dan
+		 */
+		$adminService = InitPHP::getService('admin');
+		$userinfo = $adminService->current_user();
+		$this->view->assign('gid', $userinfo['gid']);
+		
 		$this->view->display('notice/edit');
 	}
 
