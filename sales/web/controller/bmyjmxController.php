@@ -33,9 +33,11 @@ class bmyjmxController extends baseController{
         $endDate = $this->controller->get_gp('end_date'); //获取结束时间
         $departmentId = intval($this->controller->get_gp('department_id')); //部门id
         $username = urldecode($this->controller->get_gp('username')); //获取姓名
+        $status = $this->controller->get_gp('status'); //搜索状态 1代表搜索
         
-        //获取用户
+        //获取登录用户信息
         $user = $this->adminService->current_user();
+        $userId = $this->adminService->GetToZiXiTongUserId($user['id']);//获取user表里面的userid
         
         $deparmentList = $this->departmentService->getDepartmentList(); //获取所有的部门列表
         
@@ -48,10 +50,10 @@ class bmyjmxController extends baseController{
         $this->tree = array();
         
         //拼接where条件，和url链接地址
-        $arrangeWhereUrl = $this->arrangeWhereUrl('bmyjmx/run',$departmentId,$username,$startDate,$endDate);
-        
+        $arrangeWhereUrl = $this->arrangeWhereUrl('/bmyjmx/run',$departmentId,$username,$startDate,$endDate);
+
         //获取当前部门下每个用户的明细
-        $departmentUserDetail = $this->bmyjmxService->getDepartmentUserDetail($sonDepartment,$arrangeWhereUrl['where'],$startDate,$endDate);  
+        $departmentUserDetail = $this->bmyjmxService->getDepartmentUserDetail($userId,$sonDepartment,$arrangeWhereUrl['where'],$startDate,$endDate);  
         
         //离职用户，离职日期大于检索的开始日子，则不现实当前用户的信息
         if(isset($startDate) && !empty($startDate)){
@@ -76,6 +78,7 @@ class bmyjmxController extends baseController{
         $this->view->assign('department_id', $departmentId);
         $this->view->assign('username', $username);
         $this->view->assign('excelUrl',$arrangeWhereUrl['excelUrl']);
+        $this->view->assign('status', $status);
         
         //返回数据
         $this->view->assign('my_department', $myDepartment); //返回我的部门信息
@@ -108,7 +111,7 @@ class bmyjmxController extends baseController{
         
         //获取用户列表
         $departmentUserDetail = $this->bmyjmxService->getDepartmentUserDetail($sonDepartment,$arrangeWhereUrl['where']);
-//         print_r($departmentUserDetail);exit;
+
         $this->createExcelService = InitPHP::getService("createExcel");
         $this->createExcelService->run($departmentUserDetail);
     }
@@ -125,9 +128,12 @@ class bmyjmxController extends baseController{
         $departmentId = $this->controller->get_gp('department_id'); //部门id
         $username = urldecode($this->controller->get_gp('username')); //获取姓名
         $city = urldecode($this->controller->get_gp('city')); 
+        $status = $this->controller->get_gp('status'); //搜索状态 1代表搜索
         
         //获取用户id
         $user = $this->adminService->current_user();
+        $userId = $this->adminService->GetToZiXiTongUserId($user['id']);//获取user表里面的userid
+        
         $deparmentList = $this->departmentService->getDepartmentList(); //获取所有的部门列表
         $userDepartmentId = intval($user['department_id']);
         $myDepartment = $this->bmyjmxService->getMyDepartment($userDepartmentId); //获取我的部门信息
@@ -143,7 +149,7 @@ class bmyjmxController extends baseController{
         $arrangeWhereUrl = $this->arrangeWhereUrl('/bmyjmx/total',$departmentId,$username,$startDate,$endDate,$city);
         
         //获取用户列表
-        $departmentUserDetail = $this->bmyjmxService->getDepartmentUserDetail($sonDepartment,$arrangeWhereUrl['where'],$startDate,$endDate);
+        $departmentUserDetail = $this->bmyjmxService->getDepartmentUserDetail($userId,$sonDepartment,$arrangeWhereUrl['where'],$startDate,$endDate);
         
         //循环客户列表，获取当前客户的上级部门
         foreach($departmentUserDetail as $k =>$val){
@@ -185,6 +191,7 @@ class bmyjmxController extends baseController{
         $this->view->assign('department_id', $departmentId);
         $this->view->assign('username', $username);
         $this->view->assign('excelUrl',$arrangeWhereUrl['excelUrl']);
+        $this->view->assign('status', $status);
         
         //返回数据
         $this->view->assign('cityDepartment', $cityDepartment);
@@ -205,7 +212,7 @@ class bmyjmxController extends baseController{
      * @return type
      */
     public function arrangeWhereUrl($url,$departmentId=null,$username=null,$startDate=null,$endDate=null,$city=null){
-        $where = ' ';
+        $where = '';
         //分页地址
         $excelUrl = '/bmyjmx/createExcel';
         if(!empty($departmentId) && isset($departmentId)){
