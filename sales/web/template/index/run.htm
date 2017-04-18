@@ -40,10 +40,10 @@
     <div class="cement">
        <div class="cenmet_left">
          <i class="iconstyel"></i>
-         <p>最新公告</p><span>|</span><p>集团下发的最新政策调整通知</p>
+         <p>最新公告</p><span>|</span><p><!--{$notice[0]['title']}--></p>
        </div>
        <div class="cenmet_right">
-         <p>2017.01.01</p><span>|</span><a href="">更多>></a>
+         <p><?php echo date("Y-m-d H:i:s",$notice[0]['create_time']); ?></p><span>|</span><a href="/notice/run">更多>></a>
        </div>
     </div>
   <!-- 管理 -->
