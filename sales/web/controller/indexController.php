@@ -8,8 +8,9 @@ class indexController extends baseController
 {
     public function __construct(){
         parent::__construct();
-        $this->adminService = InitPHP::getService("admin");         //获取Service
+        $this->adminService    = InitPHP::getService("admin");         //获取Service
         $this->teamStatService = InitPHP::getService("teamStat");//加载部门统计service
+        $this->noticeService   = InitPHP::getService('notice');
     }
 	public $initphp_list = array('home');
 
@@ -57,6 +58,7 @@ class indexController extends baseController
 	     * 团队精英TOP排行榜
 	     */
 	    $TeamTopList = $this->teamStatService->getTeamTop();
+	    $this->view->assign('TeamTopList', $TeamTopList);
 	    
 	    /**
 	     * 部门管理统计
@@ -76,6 +78,10 @@ class indexController extends baseController
 	    $shangYueStat = $this->teamStatService->getDepartmentStat($userinfo['department_id'],$datey['start'],$datey['end']);
 	    $this->view->assign('shangYueStat', $shangYueStat);
         
+	    
+	    //最新公告
+	    $notice = $this->noticeService->getLatestNotice();
+	    $this->view->assign('notice', $notice);
         
 	    //检查是否有数据
 	    $checkAmount = $this->checkTheAmountOf($output);
@@ -92,7 +98,6 @@ class indexController extends baseController
 	    $this->view->assign('getlastMonthnianhuan', $getlastMonthlist['nianhuan']);
 	    $this->view->assign('gid', $userinfo['gid']);
 	    $this->view->assign('list', $userinfo);
-	    $this->view->assign('TeamTopList', $TeamTopList);
 	    $this->view->assign('title', "百合贷直销系统-首页");
 	    $this->view->display("index/run");
 	}
