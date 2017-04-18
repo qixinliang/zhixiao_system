@@ -9,6 +9,7 @@ class indexController extends baseController
     public function __construct(){
         parent::__construct();
         $this->adminService = InitPHP::getService("admin");         //获取Service
+        $this->teamStatService = InitPHP::getService("teamStat");//加载部门统计service
     }
 	public $initphp_list = array('home');
 
@@ -51,6 +52,31 @@ class indexController extends baseController
 	    $list = $this->getTopranking($YearsMonth);
 	    $list = $this->SortAnArray($list);
 	    $output = array_slice($list, 0,5);//显示前5调数据
+	    
+	    /**
+	     * 团队精英TOP排行榜
+	     */
+	    $TeamTopList = $this->teamStatService->getTeamTop();
+	    
+	    /**
+	     * 部门管理统计
+	     */
+	    //本月新增客户数量
+	    $curClientCount = $this->teamStatService->getDepartmentStat($userinfo['department_id']);
+	    $this->view->assign('curClientCount', $curClientCount['keHuCount']);
+	    
+	    //累计客户数量
+	    $start_time = date('Y-m-d H:i:s',$userinfo['regtime']);//开始时间
+	    $end_time = date('Y-m-d H:i:s',time());//结束时间
+	    $customersCount = $this->teamStatService->getDepartmentStat($userinfo['department_id'],$start_time,$end_time);
+	    $this->view->assign('customersCount', $customersCount['keHuCount']);
+	    
+	    //上月入金规模，折标规模
+	    $datey = $this->getlastMonthDays(date("Y-m-d H:i:s"));
+	    $shangYueStat = $this->teamStatService->getDepartmentStat($userinfo['department_id'],$datey['start'],$datey['end']);
+	    $this->view->assign('shangYueStat', $shangYueStat);
+        
+        
 	    //检查是否有数据
 	    $checkAmount = $this->checkTheAmountOf($output);
 	    $this->view->assign('checkAmount', $checkAmount);
@@ -66,6 +92,7 @@ class indexController extends baseController
 	    $this->view->assign('getlastMonthnianhuan', $getlastMonthlist['nianhuan']);
 	    $this->view->assign('gid', $userinfo['gid']);
 	    $this->view->assign('list', $userinfo);
+	    $this->view->assign('TeamTopList', $TeamTopList);
 	    $this->view->assign('title', "百合贷直销系统-首页");
 	    $this->view->display("index/run");
 	}

@@ -51,7 +51,7 @@ class bmyjmxService extends Service
      * @param unknown $end_date   结束时间
      * @return Ambigous <unknown, type>
      */
-    public function getDepartmentUserDetail($sonDepartment,$where=null,$startDate=null,$endDate=null){
+    public function getDepartmentUserDetail($userId,$sonDepartment,$where=null,$startDate=null,$endDate=null){
         //循环所有的部门，查询所有部门下的user
         $departmentUser = array();
         foreach($sonDepartment as $k=>$v){
@@ -61,6 +61,20 @@ class bmyjmxService extends Service
                 $departmentUser[] = $user;
             }
         }
+        /**
+         * 获取当前登录用户的部门业绩明细
+         */
+        //获取登录用户的信息列表
+        $userData = $this->getUserInfo($userId,$where);
+        //获取当前登录用户的业绩明细
+        $res = $this->myResultsService->getSummaryRanking($userId,$startDate,$endDate);
+        $userData[0]['yaoqingrencount'] = $res['yaoqingrencount'];
+        $userData[0]['zonge'] = $res['zonge'];
+        $userData[0]['nianhuan'] = $res['nianhuan'];
+        $userData[0]['huikuan'] = $res['huikuan'];
+        /**
+         * end
+         */
         //根据用户，循环查询所有的业绩明细
         foreach($departmentUser as $k=>$val){
             foreach ($val as $k1=>$val1){
@@ -72,7 +86,9 @@ class bmyjmxService extends Service
                 $departmentUserData[] = $val1;
             }
         }
-        return $departmentUserData;
+        $departmentUserDatas = array_merge($userData,$departmentUserData);//将登录用户的业绩明细，和部门用户的用户明细列表合并成一个数组
+        
+        return $departmentUserDatas;
     }
 
 	//获取一个部门下的投资明细
@@ -82,7 +98,6 @@ class bmyjmxService extends Service
     	$users = $this->getDepartmentUser($did);
 		if(isset($users) && !empty($users)){
 			foreach($users as $k => $v){
-                //$userYeji = $this->myResultsService->getTopranking($v['id'],$start_date,$end_date);
                 $userYeji = $this->myResultsService->getSummaryRanking($v['id'],$start_date,$end_date);
                 $v['yaoqingrencount'] = $userYeji['yaoqingrencount'];
                 $v['zonge'] = $userYeji['zonge'];
@@ -180,6 +195,15 @@ class bmyjmxService extends Service
 				return $output;
 			}
 		}
+	}
+	
+	/**
+	 * 获取登录用户的详细信息
+	 * @param unknown $userId
+	 * @param string $where
+	 */
+	public function getUserInfo($userId,$where=null){
+	    return $this->bmyjmxsDao->getUserInfo($userId,$where);
 	}
 	
 }

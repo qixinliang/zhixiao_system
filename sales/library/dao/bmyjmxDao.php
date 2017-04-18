@@ -33,4 +33,13 @@ class bmyjmxDao extends Dao
         return $this->dao->db->get_one_sql($sql);
     }
     
+    /**
+     * 获取登录用户的详细信息
+     * @param unknown $userId
+     * @param unknown $where
+     */
+    public function getUserInfo($userId,$where){
+        $sql = "select u.id,z.user,z.gid,z.UsrName,z.phone,g.`name`,z.level_id,d.department_id,d.p_dpt_id,d.department_name,z.Inthetime,z.status,z.update_time from zx_admin z left join zx_department d on z.department_id = d.department_id left join zx_role g on z.gid = g.id left join cp_user u on z.`user` = u.username where u.id= $userId $where";
+        return $this->dao->db->get_all_sql($sql);
+    }
 }
