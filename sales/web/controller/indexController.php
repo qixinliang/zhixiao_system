@@ -100,6 +100,10 @@ class indexController extends baseController
 	    $this->view->assign('getlastMonthnianhuan', $getlastMonthlist['nianhuan']);
 	    $this->view->assign('gid', $userinfo['gid']);
 	    $this->view->assign('list', $userinfo);
+	    
+	    $index='yes';//默认加样式
+	    $this->view->assign('index', $index);
+	    
 	    $this->view->assign('title', "百合贷直销系统-首页");
 	    $this->view->display("index/run");
 	}
@@ -157,6 +161,8 @@ class indexController extends baseController
         $this->view->assign('getlastMonthzonge', $getlastMonthlist['zonge']);
         $this->view->assign('getlastMonthnianhuan', $getlastMonthlist['nianhuan']);
         $this->view->assign('list', $userinfo);
+        $index='yes';//默认加样式
+        $this->view->assign('index', $index);
         $this->view->display("index/home");
     }
     /************************************************************
