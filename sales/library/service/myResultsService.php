@@ -88,7 +88,7 @@ class myResultsService extends Service{
     public function getMonthlyPersonalDetail($uid,$val){
         $myResultsDao = InitPHP::getDao("myResults");
         $useryaoqingmalistDao = InitPHP::getDao("user_yaoqingma_list");
-        $where = ' and a.create_time>='.strtotime($val['start']).' and a.create_time<='.strtotime($val['end']);
+        $where = ' and a.order_time>='.strtotime($val['start']).' and a.order_time<='.strtotime($val['end']);
         //$where=null;
         //获取登录用户自己的订单记录
         $userlist = $myResultsDao->getUserOrderList($uid,$where);
@@ -175,7 +175,7 @@ class myResultsService extends Service{
     public function MonthlyPersonalDetail($uid,$val){
         $myResultsDao = InitPHP::getDao("myResults");
         $useryaoqingmalistDao = InitPHP::getDao("user_yaoqingma_list");
-        $where = ' and a.create_time>='.strtotime($val['start']).' and a.create_time<='.strtotime($val['end']);
+        $where = ' and a.order_time>='.strtotime($val['start']).' and a.order_time<='.strtotime($val['end']);
         //$where=null;
         //获取登录用户自己的订单记录
         $userlist = $myResultsDao->getUserOrderList($uid,$where);
@@ -317,8 +317,8 @@ class myResultsService extends Service{
      *************************************************************/
     public function getYaoQingUserOrderList($uidArr,$val){
         $myResultsDao = InitPHP::getDao("myResults");
-        //$where = ' and a.create_time>='.strtotime($val['start']).' and a.create_time<='.strtotime($val['end']);
-        $where=null;//临时赋值后面删除
+        $where = ' and a.order_time>='.strtotime($val['start']).' and a.order_time<='.strtotime($val['end']);
+        //$where=null;//临时赋值后面删除
         $tmparr = array();
         //循环用户获取用户订单列表
         foreach ($uidArr as $key=>$val){
