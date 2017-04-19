@@ -109,13 +109,20 @@ class myResultsService extends Service{
         $this->myClientsService = InitPHP::getService("myClients");
         $customerRecordList = $this->myClientsService->getCustomerRecordList($uid);
         
-        foreach ($yaoqingUserUidlist as $k=>$v){
-            foreach($customerRecordList as $k1=>$v1){
-                if($v['uid']==$v1['investor_id']){
-                    unset($customerRecordList[$k1]);
+//         foreach ($yaoqingUserUidlist as $k=>$v){
+//             foreach($customerRecordList as $k1=>$v1){
+//                 if($v['uid']==$v1['investor_id']){
+//                     unset($customerRecordList[$k1]);
+//                 }
+//             }
+//         }
+            foreach ($customerRecordList as $k=>$v){
+                foreach ($yaoqingUserUidlist as $k1=>$v1){
+                    if($v['uid']==$v1['investor_id']){
+                        unset($yaoqingUserUidlist[$k1]);
+                    }
                 }
             }
-        }
         if(is_array($customerRecordList)){
             
             //得到分配客户的所有订单
@@ -347,8 +354,8 @@ class myResultsService extends Service{
     
     public function getRecordList($uidArr,$val){
         $myClientsDao = InitPHP::getDao("myClients");
-//         $where = ' and add_date>='.strtotime($val['start']).' and add_date<='.strtotime($val['end']);
-        $where= null;
+        $where = ' and o.order_time>='.strtotime($val['start']).' and o.order_time<='.strtotime($val['end']);
+//         $where= null;
         $tmparr = array();
         //循环用户获取用户订单列表
         foreach ($uidArr as $key=>$val){
