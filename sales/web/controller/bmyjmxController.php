@@ -84,6 +84,8 @@ class bmyjmxController extends baseController{
         $this->view->assign('my_department', $myDepartment); //返回我的部门信息
         $this->view->assign('my_department_lsit', $sonDepartment); //返回我的子部门列表，用作搜索条件
         $this->view->assign('page_html', $page_html);
+        $myClients='yes';//默认加样式
+        $this->view->assign('myClients', $myClients);
         $this->view->assign('user_data', $departmentUserDetail);
         
         /*
@@ -215,7 +217,8 @@ class bmyjmxController extends baseController{
         $adminService = InitPHP::getService('admin');
         $userinfo = $adminService->current_user();
         $this->view->assign('gid', $userinfo['gid']);
-        
+        $myClients='yes';//默认加样式
+        $this->view->assign('myClients', $myClients);
         $this->view->display('bmyjtj/run');
     }
     

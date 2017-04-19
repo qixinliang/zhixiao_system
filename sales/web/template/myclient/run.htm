@@ -27,8 +27,8 @@
        <h2>我的客户</h2>
      </div>
       <div class="padding border-bottom">  
-	      <a class="button border-yellow" href="/myClients/run<!--{if(!empty($uid))}-->/uid/<!--{$uid}--><!--{/if}-->"style="color:#fff;border-color:#f90;background-color:#f90"> 已投资客户</a>
-	      <a class="button border-yellow" href="/myClients/noInvest<!--{if(!empty($uid))}-->/uid/<!--{$uid}--><!--{/if}-->"> 未投资客户 </a>
+	      <a class="button border-main" href="/myClients/run<!--{if(!empty($uid))}-->/uid/<!--{$uid}--><!--{/if}-->"style="color:#fff;border-color:#0ae;background-color:#0ae"> 已投资客户</a>
+	      <a class="button border-main" href="/myClients/noInvest<!--{if(!empty($uid))}-->/uid/<!--{$uid}--><!--{/if}-->"> 未投资客户 </a>
 	  </div>
        <div class="right_list">
          <div class="padding border-bottom">
@@ -37,7 +37,7 @@
 		        手机号 ： <input type="text" name="phone" id="phone" style="width: 160px;height: 25px;margin-right: 30px;" value="<!--{$phone}-->" placeholder="手机号">
 		        投资日期 ： <input type="text" name="start_date" id="start_date" style="width: 130px;height: 25px;" value="<!--{$start_date}-->" placeholder="" onClick="WdatePicker()">  ~
 		        <input type="text" name="end_date" id="end_date" style="width: 130px;height: 25px;"value="<!--{$end_date}-->" placeholder="" onClick="WdatePicker()">
-		      <input type="submit" class="button border-yellow" value="搜索" onClick="return tijiao();"> 
+		      <input type="submit" class="button border-main" value="搜索" onClick="return tijiao();"> 
 		      </form>
 		      <div style="padding-top:10px;">
 		          <span>客户数量合计：<span style="color:red;"><!--{$friendsCount}--></span>人   &nbsp;&nbsp;&nbsp;&nbsp;</span>

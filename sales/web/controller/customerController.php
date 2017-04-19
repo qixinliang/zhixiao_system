@@ -110,6 +110,10 @@ class customerController extends baseController{
         $this->view->assign('page',$page);
         $this->view->assign('page_html', $pageHtml);
 		$this->view->assign('list',$fList);
+		
+		$customer='yes';//默认加样式
+		$this->view->assign('customer', $customer);
+		
 		$this->view->display('customer/run');
 	}
 
@@ -200,7 +204,8 @@ class customerController extends baseController{
 		$userinfo = $adminService->current_user();
 		$this->view->assign('gid', $userinfo['gid']);
 		
-		
+		$customer='yes';//默认加样式
+		$this->view->assign('customer', $customer);
 		$this->view->display('customer/adjust');
 	}
 
@@ -294,7 +299,8 @@ class customerController extends baseController{
         $adminService = InitPHP::getService('admin');
         $userinfo = $adminService->current_user();
         $this->view->assign('gid', $userinfo['gid']);
-        
+        $customer='yes';//默认加样式
+        $this->view->assign('customer', $customer);
 		$this->view->assign('records',$fRecords);
 		$this->view->display('customer/record');
 	}

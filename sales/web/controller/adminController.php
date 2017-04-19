@@ -45,6 +45,7 @@ class adminController extends baseController
 				exit(json_encode(array('status' => -1,'message' => 'update password failed！')));
 			}
 		}else{
+		    $this->view->assign('gid', $currentUser['gid']);
 			$this->view->display('admin/modifyPassword');
 		}
 	}
@@ -80,13 +81,19 @@ class adminController extends baseController
         
         $page_html = $pager->pager($list_count, $limit, $where['url'], true);
         //映射检索条件
+        $userInfo = $this->adminService->current_user();
+        $department='yes';//默认加样式
+        $this->view->assign('department', $department);
         $this->view->assign('part', $part_id);
         $this->view->assign('uname', $unmae);
         $this->view->assign('phone', $phone);
+        $this->view->assign('status', $status);
         $this->view->assign('html', $html);
         $this->view->assign('list', $list);
         $this->view->assign('page_html', $page_html);
         $this->view->assign('adminList',$adminList);
+        $this->view->assign('gid', $userInfo['gid']);
+        
         $this->view->display("admin/run");
     }
     /************************************************************
@@ -148,6 +155,10 @@ class adminController extends baseController
         $this->view->assign('html', $html);
         $this->view->assign('action_name', '添加');
         $this->view->assign('action', 'add');
+        $userInfo = $this->adminService->current_user();
+        $this->view->assign('gid', $userInfo['gid']);
+        $department='yes';//默认加样式
+        $this->view->assign('department', $department);
         $this->view->assign('user_group', $user_group);
         $this->view->display("admin/addinfo");
     }
@@ -231,6 +242,10 @@ class adminController extends baseController
         $this->view->assign('info', $arr['info']);
         $this->view->assign('action_name', '修改');
         $this->view->assign('action', 'edit');
+        $userInfo = $this->adminService->current_user();
+        $this->view->assign('gid', $userInfo['gid']);
+        $department='yes';//默认加样式
+        $this->view->assign('department', $department);
         $this->view->display("admin/editinfo");
     }
     /**

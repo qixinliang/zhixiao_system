@@ -22,20 +22,21 @@
   <div class="right">
      <div class="rigth_title">
        <h2>我的客户详情</h2>
-       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" name="button1" id="button1" value="返回" onclick="history.go(-1);">
+       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input  type="button" name="button1" id="button1" value="返回" 
+       onclick="history.go(-1);" style="color:#fff;background:#0ae;font-size:14px;border:1px solid #0ae;padding:5px 10px;margin-top:10px; border-radius:5px;">
      </div>
        <div class="right_list">
        <table>
          <tr>
-         	<td>客户姓名：&nbsp;&nbsp;<!--{$clientInfo['UsrName']}--></td>
-         	<td>注册时间：&nbsp;&nbsp;<?php echo date('Y-m-d H:i:s',$clientInfo['create_time']);?></td>
+         	<td style="font-weight:bold;padding:8px; ">客户姓名：&nbsp;&nbsp;<!--{$clientInfo['UsrName']}--></td>
+         	<td style="font-weight:bold; padding:8px;">注册时间：&nbsp;&nbsp;<?php echo date('Y-m-d H:i:s',$clientInfo['create_time']);?></td>
          </tr>
          <tr>
-         	<td>手&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;机：&nbsp;&nbsp;<!--{$clientInfo['phone']}--></td>
-         	<td>身份证号：&nbsp;&nbsp;<!--{$clientInfo['IdNo']}--></td>
+         	<td style="font-weight:bold;padding:8px;">手&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;机：&nbsp;&nbsp;<!--{$clientInfo['phone']}--></td>
+         	<td style="font-weight:bold;padding:8px;">身份证号：&nbsp;&nbsp;<!--{$clientInfo['IdNo']}--></td>
          </tr>
          <tr>
-         	<td>是否投资：&nbsp;&nbsp;<span style="color:red;"><!--{if($clientOrder==1)}-->是<!--{else}-->否<!--{/if}--></td>
+         	<td style="font-weight:bold;padding:8px;">是否投资：&nbsp;&nbsp;<span style="color:red;"><!--{if($clientOrder==1)}-->是<!--{else}-->否<!--{/if}--></td>
          </tr>
          </table>
          <!-- 表格列表 -->

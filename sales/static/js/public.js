@@ -17,8 +17,8 @@ $('#closeBtn').click(function(){
 //右侧宽度设置
 var wdWidth = document.body.clientWidth;
 var rHeight = $('.right').height();
-$('.right').css('width',(wdWidth-185-20)+'px');
-$('.left').css('min-height',(rHeight+20)+'px');
+$('.right').css('width',(wdWidth-185)+'px');
+$('.left').css('height',(rHeight+20)+'px');
 
 // 顶部导航高亮
 function ArticleFun(){
@@ -31,18 +31,16 @@ function ArticleFun(){
       $(menuLi[i]).find('a').css('color','#fdd82d');
       $('<span class="article"></span>').appendTo($(menuLi[i]));
 	 /* $(menuLi[i]).style.color='#FDD82D';*/
-    }
-  };
-  var leftList = document.getElementsByClassName('left_list')[0];
-  var lnavLi = leftList.getElementsByTagName('li');
-  console.log(lnavLi.length);
-
-  for(var j=0;j<lnavLi.length;j++){
-    var leftAhref = $(lnavLi[j]).find('a').attr('href');
-    if(urls.indexOf(leftAhref)!=-1){
-     $(lnavLi[j]).css({'border-left-color':'#1e7cf2','background-color':'#2e3143'});
-}
-       
-}
+     }
+   }
+//  var leftList = document.getElementsByClassName('left_list')[0];
+//  var lnavLi = leftList.getElementsByTagName('li');
+//  console.log(lnavLi);
+//  for(var j=0;j<lnavLi.length;j++){
+//    var leftAhref = $(lnavLi[j]).find('a').attr('href');
+//    if(urls.indexOf(leftAhref)!=-1){
+//     $(lnavLi[j]).css({'border-left-color':'#1e7cf2','background-color':'#2e3143'});
+//   }
+//  }
 };
 ArticleFun(); //执行高亮函数

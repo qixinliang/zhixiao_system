@@ -15,7 +15,7 @@ function listtree(data, id, list, level) {
 		d = data[k];
 		if (d.p_dpt_id == id) {
 			h+= '<li class="list'+level+'"'+'>'+'<span class="ids">'+d.department_id+
-			'</span>'+'<span class="pid">'+d.p_dpt_id+'</span>'+'<data>'+d.department_name+'</data>'+'</li>';
+			'</span>'+'<span class="pid">'+d.p_dpt_id+'</span>'+'<data class="dataname">'+d.department_name+'</data>'+'<data class="renshu">'+'['+d.user_cnt+'人]'+'</data>'+'<i class="icon_sj">'+'</i>'+'</li>';
 			h+= arguments.callee(data.slice(k), d.department_id, list, level+1);
 		}
 	}
@@ -38,10 +38,13 @@ $('#listbox li[class^=list]').hover(function(){
   $(this).removeClass('list2Active');
   $('i[class^="icons"]').remove();
 });
+
 //展开事件
 $('#listbox').on('click','li[class^="list"]',function(){
    $(this).next('ul').slideToggle(300);
 });
+
+
 // 增删改按钮添加调用函数
 function btnIcon(element){
 	$(element).addClass('list2Active');
@@ -63,8 +66,8 @@ function btnIcon(element){
 $('#listbox').on('click','i[class^="icons"]',function(e){
 		var id = $(this).siblings('.ids').text();
 		var nxetElement = $($(this).parent().next().find('.pid')[0]).text();
-		var dataname = $(this).siblings('data').text();
-		var prevdataname = $(this).parent().parent().prev().find('data').text();
+		var dataname = $(this).siblings('.dataname').text();
+		var prevdataname = $(this).parent().parent().prev().find('.dataname').text();
 		var previd = $(this).parent().parent().prev().find('.ids').text();
 		var thisClass = $(this).attr('class');
 		var thisparentClass = $(this).parent().attr('class');
@@ -141,7 +144,7 @@ $('#subdep').click(function(){
    $('#selectlist').slideToggle(300);
 });
 $('#selectlist').on('click','li[class^="list"]',function(){
-	var dataname = $(this).find('data').text();
+	var dataname = $(this).find('.dataname').text();
 	var id = $(this).find('.ids').text();
 	$('.subdepnum').val(id);
 	$('#subdep').val(dataname);
