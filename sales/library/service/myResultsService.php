@@ -102,6 +102,40 @@ class myResultsService extends Service{
         $yaoqingUserOrderList = $this->getYaoQingUserOrderList($yaoqingUserUidlist,$val);
         $YaoQingUserarr = $this->calculateData($yaoqingUserOrderList);
         
+        /**
+         * 分配客户统计数据 开始
+         */
+        //获取分配给用户的客户uid列表
+        $this->myClientsService = InitPHP::getService("myClients");
+        $customerRecordList = $this->myClientsService->getCustomerRecordList($uid);
+        
+        foreach ($yaoqingUserUidlist as $k=>$v){
+            foreach($customerRecordList as $k1=>$v1){
+                if($v['uid']==$v1['investor_id']){
+                    unset($customerRecordList[$k1]);
+                }
+            }
+        }
+        if(is_array($customerRecordList)){
+            
+            //得到分配客户的所有订单
+            $investCustomerOrder = $this->getRecordList($customerRecordList,$val);
+            
+            //统计订单总额 年化nianhuan
+            $investCustomerOrderAll = $this->calculateData($investCustomerOrder);
+            
+            //获取分配客户 回款记录
+            $investCustomerRecordList = $this->getUserReceivableOrderList2($customerRecordList,$val);
+            
+            //回款金额计算
+            $investReceivabe = $this->ReceivableOrderMoney($investCustomerRecordList);
+            
+        }
+        
+        /**
+         * 分配客户统计 end
+         */
+        
         //获取邀请客户的回款投资记录
         $yaoqingUserReceivabeOrderList =  $this->getUserReceivableOrderList($yaoqingUserUidlist,$val);
         
@@ -113,15 +147,14 @@ class myResultsService extends Service{
         $UserReceivabeOrderList = $this->getUserReceivableOrderList($data,$val);
         //计算当前用户自己的回款总额
         $UserReceivabe = $this->ReceivableOrderMoney($UserReceivabeOrderList);
-        $zonge = ($Userarr['zonger']+$YaoQingUserarr['zonger']);
-        //$zonge = ($Userarr['zonger']);
-        $nianhuan = ($Userarr['nianhuan']+$YaoQingUserarr['nianhuan']);
-        //$nianhuan = ($Userarr['nianhuan']);
-        $huikuan = ($yaoqingUserReceivabe+$UserReceivabe);
-        //$huikuan = ($UserReceivabe);
+        $zonge = ($Userarr['zonger'] + $YaoQingUserarr['zonger'] + $investCustomerOrderAll['zonger']);
+        $nianhuan = ($Userarr['nianhuan'] + $YaoQingUserarr['nianhuan'] + $investCustomerOrderAll['nianhuan']);
+
+        $huikuan = ($yaoqingUserReceivabe+$UserReceivabe+$investReceivabe);
+
         //获取邀请的客户
         $yaoqingrenNumber = 0;
-        $yaoqingrenNumber = count($yaoqingUserUidlist);
+        $yaoqingrenNumber = count($yaoqingUserUidlist)+count($customerRecordList); //分配给我的客户+邀请客户数量
         return array(
             'yaoqingrencount'=>$yaoqingrenNumber,
             'zonge'=>number_format($zonge,2,".",""),
@@ -253,6 +286,27 @@ class myResultsService extends Service{
         }
         return $tmparr;
     }
+    
+    /************************************************************
+     * @copyright(c): 2017年3月21日
+     * @Author:  yuwen
+     * @Create Time: 下午4:14:52
+     * @qq:32891873
+     * @email:fuyuwen88@126.com
+     * @根据条件查询用户回款记录
+     *************************************************************/
+    public function getUserReceivableOrderList2($array,$val){
+        $where = " and refund_time>='".strtotime($val['start'])."' and refund_time<='".strtotime($val['end'])."'";
+        $where=null;        //临时使用后期删掉
+        $dealRecordDao = InitPHP::getDao("dealRecord");
+        $tmparr = array();
+        foreach ($array as $key=>$val){
+            $uid = intval($val['investor_id']);//邀请的用户uid
+            $arr = $dealRecordDao->getUserReceivableOrderList($uid,$where);
+            $tmparr=array_merge($tmparr,$arr);
+        }
+        return $tmparr;
+    }
     /************************************************************
      * @copyright(c): 2017年3月21日
      * @Author:  yuwen
@@ -289,6 +343,21 @@ class myResultsService extends Service{
         //$yaoqingwhere=null;//这里测试先写死后面删掉就好了
         $yaoqinglistUid = $useryaoqingmalistDao->getUidlist($uid,$yaoqingwhere);
         return $yaoqinglistUid;
+    }
+    
+    public function getRecordList($uidArr,$val){
+        $myClientsDao = InitPHP::getDao("myClients");
+//         $where = ' and add_date>='.strtotime($val['start']).' and add_date<='.strtotime($val['end']);
+        $where= null;
+        $tmparr = array();
+        //循环用户获取用户订单列表
+        foreach ($uidArr as $key=>$val){
+            $uid = intval($val['investor_id']);//分配表的用户uid
+            $yaoqingUserOrderList = $myClientsDao->getCustomerRecordOrder($uid,$where);
+            $tmparr=array_merge($tmparr,$yaoqingUserOrderList);
+            //找到分配表的用户投资的订单
+        }
+        return $tmparr;
     }
     /************************************************************
      * @copyright(c): 2017年2月8日
