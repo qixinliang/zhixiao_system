@@ -355,6 +355,7 @@ class myResultsService extends Service{
     public function getRecordList($uidArr,$val){
         $myClientsDao = InitPHP::getDao("myClients");
         $where = ' and o.order_time>='.strtotime($val['start']).' and o.order_time<='.strtotime($val['end']);
+//         $where= null;
         $tmparr = array();
         //循环用户获取用户订单列表
         foreach ($uidArr as $key=>$val){
