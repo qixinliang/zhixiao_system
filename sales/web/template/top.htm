@@ -8,7 +8,15 @@
    <!-- 导航 -->
    <nav>
      <ul id="menu">
-       <li><a href="/index/run">首页</a></li>
+     	<!--{if($index=='yes')}-->
+     		<li>
+     			<a href="/index/run" style="color: rgb(253, 216, 45);">首页</a>
+     			<span class="article"></span>
+     		</li>
+     		<!--{else}-->
+       		<li><a href="/index/run">首页</a></li>
+    	<!--{/if}-->
+       
         <!--{if($gid=='1'||$gid=='2'||$gid=='3')}-->
         	 <!--{if($department=='yes')}-->
 	       		<li>
