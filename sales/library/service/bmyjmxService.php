@@ -61,6 +61,7 @@ class bmyjmxService extends Service
                 $departmentUser[] = $user;
             }
         }
+       
         /**
          * 获取当前登录用户的部门业绩明细
          */
@@ -72,6 +73,7 @@ class bmyjmxService extends Service
         $userData[0]['zonge'] = $res['zonge'];
         $userData[0]['nianhuan'] = $res['nianhuan'];
         $userData[0]['huikuan'] = $res['huikuan'];
+        
         /**
          * end
          */
