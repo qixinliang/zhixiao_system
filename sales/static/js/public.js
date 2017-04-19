@@ -43,4 +43,4 @@ function ArticleFun(){
 //   }
 //  }
 };
-ArticleFun(); //执行高亮函数
+//ArticleFun(); //执行高亮函数
