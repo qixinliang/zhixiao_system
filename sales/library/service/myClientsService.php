@@ -175,7 +175,7 @@ class myClientsService extends Service
             }
         }
         foreach($customerRecordList as $k=>$v){
-            //根据客户分配表里面的客户id，查询相关投资几率
+            //根据客户分配表里面的客户id，查询相关投资记录
             $customerRecordOrder = $this->getCustomerRecordOrder($v['investor_id'],$where);
             //循环查询当前客户所归属的业务员
             foreach ($customerRecordOrder as $k1=>$v1){

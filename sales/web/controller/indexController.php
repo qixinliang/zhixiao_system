@@ -63,19 +63,21 @@ class indexController extends baseController
 	    /**
 	     * 部门管理统计
 	     */
+	    $userId = intval($userinfo['id']);
+	    $departmentId = intval($userinfo['department_id']);
 	    //本月新增客户数量
-	    $curClientCount = $this->teamStatService->getDepartmentStat($userinfo['department_id']);
+	    $curClientCount = $this->teamStatService->getDepartmentStat($departmentId,null,null,$userId);
 	    $this->view->assign('curClientCount', $curClientCount['keHuCount']);
 	    
 	    //累计客户数量
 	    $start_time = date('Y-m-d H:i:s',$userinfo['regtime']);//开始时间
 	    $end_time = date('Y-m-d H:i:s',time());//结束时间
-	    $customersCount = $this->teamStatService->getDepartmentStat($userinfo['department_id'],$start_time,$end_time);
+	    $customersCount = $this->teamStatService->getDepartmentStat($departmentId,$start_time,$end_time,$userId);
 	    $this->view->assign('customersCount', $customersCount['keHuCount']);
 	    
 	    //上月入金规模，折标规模
 	    $datey = $this->getlastMonthDays(date("Y-m-d H:i:s"));
-	    $shangYueStat = $this->teamStatService->getDepartmentStat($userinfo['department_id'],$datey['start'],$datey['end']);
+	    $shangYueStat = $this->teamStatService->getDepartmentStat($departmentId,$datey['start'],$datey['end'],$userId);
 	    $this->view->assign('shangYueStat', $shangYueStat);
         
 	    
