@@ -110,6 +110,7 @@ class bmyjmxController extends baseController{
         
         //获取用户id
         $user = $this->adminService->current_user();
+        $userId = $this->adminService->GetToZiXiTongUserId($user['id']);//获取user表里面的userid
         
         $deparmentList = $this->departmentService->getDepartmentList(); //获取所有的部门列表
         $userDepartmentId = intval($user['department_id']);
@@ -120,7 +121,7 @@ class bmyjmxController extends baseController{
         $arrangeWhereUrl = $this->arrangeWhereUrl('bmyjmx/run',$departmentId,$username,$startDate,$endDate);
         
         //获取用户列表
-        $departmentUserDetail = $this->bmyjmxService->getDepartmentUserDetail($sonDepartment,$arrangeWhereUrl['where']);
+        $departmentUserDetail = $this->bmyjmxService->getDepartmentUserDetail($userId,$sonDepartment,$arrangeWhereUrl['where']);
 
         $this->createExcelService = InitPHP::getService("createExcel");
         $this->createExcelService->run($departmentUserDetail);
