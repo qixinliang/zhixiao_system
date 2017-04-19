@@ -15,6 +15,7 @@ class departmentController extends baseController{
 	}
 	
 	public function run(){
+	    
 	    $adminService = InitPHP::getService('admin');
 	    $userinfo = $adminService->current_user();
 	    
@@ -49,7 +50,12 @@ class departmentController extends baseController{
         $this->view->assign('list', $list2);
         $this->view->assign('html', $html);
         $this->view->assign('list_json', $listJson);
+        
+        $department='yes';//默认加样式
+        $this->view->assign('department', $department);
+        
         $this->view->display("department/run");
+        
 	}
 
 	public function add(){

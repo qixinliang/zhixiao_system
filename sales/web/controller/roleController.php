@@ -31,6 +31,9 @@ class roleController extends baseController
         $this->view->assign('role_id',$roleId);
         $list = $this->roleService->adminList();
         $this->view->assign('list', $list);
+        $this->view->assign('gid', $userInfo['gid']);
+        $department='yes';//默认加样式
+        $this->view->assign('department', $department);
         $this->view->display("role/run"); //使用模板
     }
     /**
@@ -44,6 +47,10 @@ class roleController extends baseController
         $this->view->assign('action_name', '添加');
         $this->view->assign('action', 'add');
         $this->view->assign('user', $user);
+        $userInfo = $this->adminService->current_user();
+        $this->view->assign('gid', $userInfo['gid']);
+        $department='yes';//默认加样式
+        $this->view->assign('department', $department);
         $this->view->display("role/addinfo"); //使用模板
     }
     /**
@@ -75,6 +82,10 @@ class roleController extends baseController
         $this->view->assign('model_power', $data['model_power']);
         $this->view->assign('action_name', '修改');
         $this->view->assign('action', 'edit');
+        $userInfo = $this->adminService->current_user();
+        $this->view->assign('gid', $userInfo['gid']);
+        $department='yes';//默认加样式
+        $this->view->assign('department', $department);
         $this->view->display("role/editinfo");
     }
     /**

@@ -37,6 +37,9 @@ class myResultsController extends baseController{
         
         $this->view->assign('renshucount',$renshucount);
         $this->view->assign('list',$res['data']);
+        $myClients='yes';//默认加样式
+        $this->view->assign('myClients', $myClients);
+        
         $this->view->display("myresults/run");
     }
 }

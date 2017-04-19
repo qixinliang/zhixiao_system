@@ -10,11 +10,42 @@
      <ul id="menu">
        <li><a href="/index/run">首页</a></li>
         <!--{if($gid=='1'||$gid=='2'||$gid=='3')}-->
-       		<li><a href="/department/run/">组织架构</a></li>
+        	 <!--{if($department=='yes')}-->
+	       		<li>
+	       			<a href="/department/run/" style="color: rgb(253, 216, 45);" >组织架构</a>
+	       			<span class="article"></span>
+	       		</li>
+       		<!--{else}-->
+       			<li><a href="/department/run/">组织架构</a></li>
+       		<!--{/if}-->
  		<!--{/if}-->
-       <li><a href="/myClients/run/">业绩管理</a></li>
-       <li><a href="/customer/run/">客户管理</a></li>
-       <li><a href="/notice/run/">公告管理</a></li>
+ 		
+ 		<!--{if($myClients=='yes')}-->
+ 			<li>
+ 				<a href="/myClients/run/" style="color: rgb(253, 216, 45);" >业绩管理</a>
+ 				<span class="article"></span>
+ 			</li>
+ 		<!--{else}-->
+ 			<li><a href="/myClients/run/">业绩管理</a></li>
+ 		<!--{/if}-->
+       
+       <!--{if($customer=='yes')}-->
+       		<li>
+       			<a href="/customer/run/" style="color: rgb(253, 216, 45);">客户管理</a>
+       			<span class="article"></span>
+       		</li>
+       <!--{else}-->
+       		<li><a href="/customer/run/">客户管理</a></li>
+       <!--{/if}-->
+       
+       <!--{if($notice=='yes')}-->
+       		<li>
+       			<a href="/notice/run/" style="color: rgb(253, 216, 45);">公告管理</a>
+       			<span class="article"></span>
+       		</li>
+       <!--{else}-->
+       		<li><a href="/notice/run/">公告管理</a></li>
+       <!--{/if}-->
      </ul>
    </nav>
    <!-- 登陆退出登陆 -->

@@ -100,6 +100,10 @@ class myClientsController extends baseController
         
         //数据列表
         $this->view->assign('friends',$friends);
+        
+        $myClients='yes';//默认加样式
+        $this->view->assign('myClients', $myClients);
+        
         $this->view->display('myclient/run');
     }
     
@@ -149,6 +153,7 @@ class myClientsController extends baseController
             //分页
             $this->view->assign('page_html', $page_html);
             //数据列表
+            
             $this->view->assign('friends',$friends);
             $this->view->assign('count',$friendsCount['count']);//投资和未投资统计人数
             $this->view->assign('username', $adminUid['user']);
@@ -166,7 +171,8 @@ class myClientsController extends baseController
         $adminService = InitPHP::getService('admin');
         $userinfo = $adminService->current_user();
         $this->view->assign('gid', $userinfo['gid']);
-        
+        $myClients='yes';//默认加样式
+        $this->view->assign('myClients', $myClients);
         $this->view->display('myclient/noInvest');
     }
     
@@ -219,7 +225,8 @@ class myClientsController extends baseController
         $adminService = InitPHP::getService('admin');
         $userinfo = $adminService->current_user();
         $this->view->assign('gid', $userinfo['gid']);
-        
+        $myClients='yes';//默认加样式
+        $this->view->assign('myClients', $myClients);
         $this->view->display('myclient/detail');
     }
 

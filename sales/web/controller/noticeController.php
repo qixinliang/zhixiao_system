@@ -32,6 +32,10 @@ class noticeController extends baseController{
 		$this->view->assign('gid', $userinfo['gid']);
 		
 		$this->view->assign('notice_list',$rows);
+		
+		$notice='yes';//默认加样式
+		$this->view->assign('notice', $notice);
+		
 		$this->view->display('notice/run');
 	}
 	
@@ -46,7 +50,8 @@ class noticeController extends baseController{
 		    $adminService = InitPHP::getService('admin');
 		    $userinfo = $adminService->current_user();
 		    $this->view->assign('gid', $userinfo['gid']);
-		    
+		    $notice='yes';//默认加样式
+		    $this->view->assign('notice', $notice);
 			$this->view->display('notice/publish');
 		}else{
 			$time = time();
@@ -80,7 +85,8 @@ class noticeController extends baseController{
 		$adminService = InitPHP::getService('admin');
 		$userinfo = $adminService->current_user();
 		$this->view->assign('gid', $userinfo['gid']);
-		
+		$notice='yes';//默认加样式
+		$this->view->assign('notice', $notice);
 		$this->view->display('notice/edit');
 	}
 

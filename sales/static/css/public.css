@@ -59,6 +59,7 @@ header h1>span{
 .login{
   float: right;
   line-height: 70px;
+  margin-left:10px;
 }
 .login>a{
   display: inline-block;
@@ -69,6 +70,7 @@ header h1>span{
   border-radius: 5px;
   color:#fff;
 }
+
 /*主体内容*/
 .content{
   background: #E6E9F0;
@@ -251,10 +253,16 @@ header h1>span{
   border-top: 0;
   overflow-y:scroll;
   display: none;
+  cursor:pointer;
 }
 #selectlist>ul ul{
-  padding-left: 8px;
+  padding-left: 15px;
   cursor: pointer;
+	
+}
+#selectlist [class^="list"]{
+	color:#333;
+	padding:5px;
 }
 #selectlist [class^="list"]:hover{
   color: #1E7CF2;
@@ -284,3 +292,11 @@ header h1>span{
 .articlecolor a{
   color:#FDD82D;
 }
+
+/*表格标题8*/
+.ydyjmx{
+ font-size:16px;
+ padding:10px;
+ font-weight: 400;
+}
+
