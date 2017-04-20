@@ -1,1 +1,0 @@
-2017-03-14 07:57:04 [ERROR] : [2017-03-14 07:57:04]msg:Can not find default method : add;file:/home/qixinliang/git/bhd-zhixiao/sales/initphp/initphp.php;line:604;code:throw new exceptionInit($msg, $code);

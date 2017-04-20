@@ -93,6 +93,7 @@ class myResultsService extends Service{
         //获取登录用户自己的订单记录
         $userlist = $myResultsDao->getUserOrderList($uid,$where);
         $Userarr = $this->calculateData($userlist);
+        
         /*
          * 获取被邀请客户的Uid列表
          * uid作为 friends
@@ -113,20 +114,9 @@ class myResultsService extends Service{
         $this->myClientsService = InitPHP::getService("myClients");
         $customerRecordList = $this->myClientsService->getCustomerRecordList($uid);
         
-//         foreach ($yaoqingUserUidlist as $k=>$v){
-//             foreach($customerRecordList as $k1=>$v1){
-//                 if($v['uid']==$v1['investor_id']){
-//                     unset($customerRecordList[$k1]);
-//                 }
-//             }
-//         }
-            foreach ($customerRecordList as $k=>$v){
-                foreach ($yaoqingUserUidlist as $k1=>$v1){
-                    if($v['uid']==$v1['investor_id']){
-                        unset($yaoqingUserUidlist[$k1]);
-                    }
-                }
-            }
+       //去除两个数组中重复的数据
+       $customerRecordList =  $this->getRepeatArray($customerRecordList,$yaoqingUserUidlist);
+
         if(is_array($customerRecordList)){
             
             //得到分配客户的所有订单
@@ -487,5 +477,26 @@ class myResultsService extends Service{
         $firstday = date('Y-m-01', strtotime($date));
         $lastday = date('Y-m-d', strtotime("$firstday +1 month -1 day"));
         return array('start'=>$firstday.' 00:00:00','end'=>$lastday.' 23:59:59');
+    }
+    
+    /**
+     * 循环两个数组，过滤重复的数组
+     * @param unknown $customerRecordList
+     * @param unknown $yaoqingUserUidlist
+     * @return multitype:
+     */
+    public function getRepeatArray($customerRecordList,$yaoqingUserUidlist){
+        $res = array();
+        if(!is_array($customerRecordList) || !is_array($yaoqingUserUidlist)){
+            return $res;
+        }
+        foreach ($customerRecordList as $k=>$v){
+            foreach ($yaoqingUserUidlist as $k1=>$v1){
+                if($v['uid']==$v1['investor_id']){
+                    unset($yaoqingUserUidlist[$k1]);
+                }
+            }
+        }
+        return $res;
     }
 }

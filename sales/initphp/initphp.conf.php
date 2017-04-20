@@ -56,12 +56,12 @@ $InitPHP_conf['dao']['path']  = 'library/dao/'; //后缀
  * 4. 支持多库配置 $InitPHP_conf['db']['default']
  * 5. 详细见文档
  */
-$InitPHP_conf['db']['driver']   = 'mysql'; //选择不同的数据库DB 引擎，一般默认mysqli,或者mysql
+$InitPHP_conf['db']['driver']   = 'mysqli'; //选择不同的数据库DB 引擎，一般默认mysqli,或者mysql
 //default数据库配置 一般使用中 $this->init_db('default')-> 或者 $this->init_db()-> 为默认的模型
 $InitPHP_conf['db']['default']['db_type']                   = 0; //0-单个服务器，1-读写分离，2-随机
 $InitPHP_conf['db']['default'][0]['host']                   = '127.0.0.1'; //主机
 $InitPHP_conf['db']['default'][0]['username']               = 'root'; //数据库用户名
-$InitPHP_conf['db']['default'][0]['password']               = ''; //数据库密码
+$InitPHP_conf['db']['default'][0]['password']               = '123456'; //数据库密码
 $InitPHP_conf['db']['default'][0]['database']               = 'zhixiao'; //数据库
 $InitPHP_conf['db']['default'][0]['charset']                = 'utf8'; //数据库编码   
 $InitPHP_conf['db']['default'][0]['pconnect']               = 0; //是否持久链接

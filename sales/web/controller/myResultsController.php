@@ -4,7 +4,7 @@ if (!defined('IS_INITPHP')) exit('Access Denied!');
  *@我的业绩控制器
  */
 class myResultsController extends baseController{
-    public $initphp_list = array(); //Action白名单
+    public $initphp_list = array('run','createExcel'); //Action白名单
 
 	public $authService  		= NULL;
 	public $adminService 		= NULL;
@@ -16,6 +16,14 @@ class myResultsController extends baseController{
 		$this->adminService    	 = InitPHP::getService('admin');
 		$this->myResultsService  = InitPHP::getService('myResults');
     }
+
+	public function createExcel(){
+        $userinfo = $this->adminService->current_user();
+        $res = $this->myResultsService->ResultsList($userinfo);
+		$createExcelService = InitPHP::getService('createExcel');
+		$createExcelService->run4($res['data']);
+	}
+
     public function run(){
 		$this->authService->checkauth('1019');
         $userinfo = $this->adminService->current_user();

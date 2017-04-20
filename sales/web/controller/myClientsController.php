@@ -7,7 +7,7 @@ if (!defined('IS_INITPHP')) exit('Access Denied!');
  */
 class myClientsController extends baseController
 {
-    public $initphp_list = array('invest','noInvest','detail'); //Action白名单
+    public $initphp_list = array('invest','noInvest','detail','createExcel'); //Action白名单
     
     public function __construct()
     {
@@ -15,6 +15,8 @@ class myClientsController extends baseController
         $this->adminService = InitPHP::getService("admin");//获取管理员信息
         $this->myClientsService = InitPHP::getService("myClients");
 		$this->authService = InitPHP::getService('auth');
+		$this->TeamUtilsService = InitPHP::getService('TeamUtils');
+		$this->roleService = InitPHP::getService('role');
     }
     
     /**
@@ -75,6 +77,9 @@ class myClientsController extends baseController
         //统计用户的客户数量
         $count = $this->myClientsService->clientCount($uid);
         $friendsCount = $count['count'] + $friendsData['customer_friends_count']; //客户数量总和，是我邀请的客户数量，和分配给我的客户数量相加
+        
+        //隐藏手机号码
+        $friends = $this->TeamUtilsService->isShowInfo2($friends);
         
         //映射条件数据到前台页面
         $this->view->assign('uname', $uname);
@@ -151,6 +156,8 @@ class myClientsController extends baseController
             
             $page_html = $pager->pager($friendsCount['count'], 10, $arrangeWhereUrl['url']); //最后一个参数为true则使用默认样式
             
+            //隐藏手机号码
+            $friends = $this->TeamUtilsService->isShowInfo2($friends);
             //分页
             $this->view->assign('page_html', $page_html);
             //数据列表
@@ -216,10 +223,13 @@ class myClientsController extends baseController
             $this->view->assign('allocation_inviter', $allocation_inviter);
             
         }
-       
+        //隐藏手机号
+        $clientInfo = $this->hiddenPhone($clientInfo);
+        
         $this->view->assign('clientOrder',$clientOrder);
         $this->view->assign('clientInfo', $clientInfo);
         $this->view->assign('original_inviter', $originalInviter);
+        
         /*
          * @判断当前用户是否有权限访问组织结构cai'dan
          */
@@ -265,4 +275,62 @@ class myClientsController extends baseController
     
         return array('url'=>$url,'where'=>$where);
     }
+    /*
+     * @隐藏手机号码，新 需求需
+     */
+    public function hiddenPhone($array){
+        $tmparr = array();
+        if(!is_array($array)){
+            return $tmparr;
+        }
+        $array['phone']=substr_replace($array['phone'],'****',3,4);
+        $tmparr= $array;
+        return $tmparr;
+    }
+
+	public function createExcel(){
+        $this->teamUtilsService = InitPHP::getService('TeamUtils');
+        
+        //获取用户检索条件
+        $uname = urldecode($this->controller->get_gp('uname'));    //获取用户名
+        $phone = $this->controller->get_gp('phone');//手机号
+        $startDate = $this->controller->get_gp('start_date');//开始时间
+        $endDate = $this->controller->get_gp('end_date');//结束时间
+        $userId = intval($this->controller->get_gp('uid')); //获取uid，用户id
+        /**
+         * 判断当前是否传过来uid，如果传入uid，以传入的uid为准，获取客户列表，否则，自动获取当前登录用户的。
+         */
+        if(empty($userId)){
+            //获取登陆用户信息
+            $adminUid=$this->adminService->current_user();
+            $uid = $this->adminService->GetToZiXiTongUserId($adminUid['id']);
+        }else{
+            $uid = intval($userId);//把接受过来的user_id 赋值给uid
+        }
+        if(empty($uid)){
+            exit("未获取用户信息！");
+        }
+        //根据检索条件，拼接where条件，和url链接地址
+        $arrangeWhereUrl = $this->arrangeWhereUrl($uname,$phone,$startDate,$endDate,$userId);
+        
+        //查询所有的投资客户
+        $friends = $this->myClientsService->getInvestFriends($uid,$arrangeWhereUrl['where']);
+        
+        //循环查询出我邀请的客户所属的业务人员
+        foreach($friends as $k=>$v){
+            $friends[$k]['salesman'] = $this->myClientsService->getSalesmanUsername($v['uid']);
+        }
+        //查询客户分配记录表里，分配给我的客户id
+        $customerRecordList = $this->myClientsService->getCustomerRecordList($uid);
+        
+        //循环取出客户分配表里面，分配给我的客户信息，并和我的客户数据合并
+        $friendsData = $this->myClientsService->mergeData($friends,$customerRecordList,$arrangeWhereUrl['where']);
+        
+        //循环计算年化收益率和查询当前客户，所属业务人员,统计年化收益金额，统计年化投资金额
+        $friendsList = $this->teamUtilsService->yongJinJiSuan($friendsData['friends']);
+        $data = $friendsList['friends'];
+		$createExcelService = InitPHP::getService("createExcel"); 
+
+		$createExcelService->run3($data);
+	}
 }
