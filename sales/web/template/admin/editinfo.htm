@@ -114,22 +114,22 @@
         </div>
       </div> 
 	  
-	  
-      <div class="form-group">
+	  <!--{if($info['gid']==9 || $info['gid']==10)}-->
+      <div class="form-group" id="indexs">
         <div class="label">
           <label>级别：</label>
         </div>
         <div class="field">
-          <div class="button-group radio">
-			<input name="level_id" type="radio" value="0"  <!--{if($info['level_id']==0)}--> checked="checked" <!--{/if}--> />实习&nbsp;&nbsp;
-			<input name="level_id" type="radio" value="1" <!--{if($info['level_id']==1)}--> checked="checked" <!--{/if}--> />初级&nbsp;&nbsp;
-			<input name="level_id" type="radio" value="2" <!--{if($info['level_id']==2)}--> checked="checked" <!--{/if}--> />中级&nbsp;&nbsp;
-			<input name="level_id" type="radio" value="3" <!--{if($info['level_id']==3)}--> checked="checked" <!--{/if}--> />高级&nbsp;&nbsp;
+          <div class="button-group radio" >
+			<span><input name="level_id" type="radio" value="0"  <!--{if($info['level_id']==0)}--> checked="checked" <!--{/if}--> />实习&nbsp;&nbsp;</span>
+			<span><input name="level_id" type="radio" value="1" <!--{if($info['level_id']==1)}--> checked="checked" <!--{/if}--> />初级&nbsp;&nbsp;</span>
+			<span id="jibiestatus"><input name="level_id" type="radio" value="2" <!--{if($info['level_id']==2)}--> checked="checked" <!--{/if}--> />中级&nbsp;&nbsp;</span>
+			<span><input name="level_id" type="radio" value="3" <!--{if($info['level_id']==3)}--> checked="checked" <!--{/if}--> />高级&nbsp;&nbsp;</span>
 			<span class="tips" style="padding-left: 10px;color: #888;line-height: 42px;"></span>				
            </div>  
         </div>
      </div>
-     
+     <!--{/if}-->
      
      <div class="form-group">
         <div class="label">
@@ -224,6 +224,26 @@ function sub(obj){
 		});
 	}
 };
+
+
+/*
+ * @选择角色设置页面用户级别
+ */
+ var  indexs=0;
+$("#gid option").click(function(){
+	indexs=$(this).val()
+	$('#indexs').css("display","none");
+	if(indexs==9||indexs==10){
+		$('#indexs').css("display","inline");
+		if(indexs==9){
+			$('#jibiestatus').css("display","none");
+		}else if(indexs==10){
+			$('#jibiestatus').css("display","inline");
+		}
+	}
+
+});
+
 </script>
 
 </div>

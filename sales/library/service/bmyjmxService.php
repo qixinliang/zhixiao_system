@@ -111,7 +111,6 @@ class bmyjmxService extends Service
 		return $finalArr;
 	}
 	
-	
 	/**
 	 * 获取登录用户的详细信息
 	 * @param unknown $userId

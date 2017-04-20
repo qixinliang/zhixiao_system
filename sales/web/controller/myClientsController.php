@@ -48,6 +48,7 @@ class myClientsController extends baseController
         if(empty($uid)){
             exit("未获取用户信息！");
         }
+        
         //根据检索条件，拼接where条件，和url链接地址
         $arrangeWhereUrl = $this->arrangeWhereUrl($uname,$phone,$startDate,$endDate,$userId);
         
@@ -56,7 +57,7 @@ class myClientsController extends baseController
         
         //循环查询出我邀请的客户所属的业务人员
         foreach($friends as $k=>$v){
-            $friends[$k]['salesman'] = $this->myClientsService->getSalesmanUsername($v['uid']);
+            $friends[$k]['salesman'] = $this->myClientsService->getSalesmanUsername(intval($v['uid']));
         }
         //查询客户分配记录表里，分配给我的客户id
         $customerRecordList = $this->myClientsService->getCustomerRecordList($uid);
