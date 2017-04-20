@@ -15,29 +15,34 @@ class teamStatService extends Service
         $this->departmentService = InitPHP::getService("department");
         $this->myResultsService  = InitPHP::getService("myResults");
         $this->adminService      = InitPHP::getService("admin");
+        $this->TeamUtilsService  = InitPHP::getService('TeamUtils');
         $this->teamStatDao       = InitPHP::getDao("teamStat");
         $this->bmyjmxDao         = InitPHP::getDao("bmyjmx");
     }
     
     public function getTeamTop($start_time=null,$end_time=null){
+        //查询出所有的部门列表
+        $deparmentList = $this->departmentService->getDepartmentList();//获取所有的部门
         
-        //获取所有的团队经理
-        $teamManager = $this->teamStatDao->getTeamManager();
+        $sonDepartment = $this->TeamUtilsService->getSonDepartment($deparmentList,1);
         
-        foreach($teamManager as $k=>$v){
-            $userDepartmentId = intval($v['department_id']);
-            
-            $res = $this->getDepartmentStat($userDepartmentId, $start_time, $end_time,$v['id']);
-            
-            $teamManager[$k]['rujin'] = $res['ruJinGuiMo'];
-            $teamManager[$k]['zhebiao'] = $res['zheBiaoJinE'];
-            $teamManager[$k]['keHuCount'] = $res['keHuCount'];
-            $teamManager[$k]['departmentName'] = $res['departmentName'];
-        }
+        //递归循环，算出所有部门的level等级
+        $minDepartmentLevel = $this->minDepartment($sonDepartment);
         
-        krsort($teamManager,'rujin');//根据入金规模排序
+        //取出level最小的部门
+        $getMinDepartmentList = $this->getMinDepartmentList($sonDepartment,$minDepartmentLevel);
         
-        return $teamManager;
+        //循环最小的部门，获取每个部门的人数，和业绩 累加，赋值给所属部门，然后排序
+        $deparmentUserList = $this->getDepartmentUserList($getMinDepartmentList);
+        
+        //查询部门的上级部门，重新赋值
+        $departmentUsers  = $this->departmentNameAssignment($deparmentUserList);
+        //数组排序
+        $deparmentUserList = $this->arraySort($departmentUsers);
+
+        $list = array_slice($deparmentUserList, 0, 5);
+       
+        return $list;
     }
     
     /**
@@ -57,7 +62,7 @@ class teamStatService extends Service
         $departmentName = end($department);
         
         //获取我所有的子部门
-        $sonDepartment = $this->getSonDepartment($deparmentList,$departmentId);
+        $sonDepartment = $this->TeamUtilsService->getSonDepartment($deparmentList,$departmentId);
         $this->tree = array();
         
         foreach ($sonDepartment as $k1=>$v1){
@@ -95,22 +100,138 @@ class teamStatService extends Service
     }
     
     /**
-     * 递归循环当前部门下的所有子部门
-     * @param unknown $arr
-     * @param unknown $pid
-     * @param number $step
-     * @return Ambigous <multitype:, string>
+     * 根据level值，获取level最小的部门列表
+     * @param unknown $array
      */
-    public function getSonDepartment($arr,$pid,$step=0){
-    
-        foreach($arr as $key=>$val) {
-            if($val['p_dpt_id'] == $pid) {
-                $flg = str_repeat('―',$step);
-                $val['step'] = $flg;
-                $this->tree[] = $val;
-                $this->getSonDepartment($arr , intval($val['department_id']),$step+1);
+    public function minDepartment($array = array()){
+
+        if(!is_array($array)){
+            return 0;
+        }
+        $levle1=0;
+        foreach($array as $k=> $val){
+            if($val['level'] > $levle1){
+                $levle1 = $val['level'];
             }
         }
-        return $this->tree;
+        return  $levle1;
+    }
+    
+    /**
+     * 根据level值，获取最小部门列表
+     * @param unknown $sonDepartment
+     * @param unknown $minDepartmentLevel
+     */
+    public function getMinDepartmentList($sonDepartment,$minDepartmentLevel){
+        $res = array();
+        if(!is_array($sonDepartment) || empty($minDepartmentLevel)){
+            return $res;
+        }
+        foreach($sonDepartment as $k => $val){
+            if($val['level'] == $minDepartmentLevel){
+                $res[] = $val;
+            }
+        }
+        return $res;
+    }
+    
+    /**
+     * 循环获取部门下所有的部门，获取部门下业绩
+     * @param unknown $getMinDepartmentList
+     * @return multitype:|multitype:unknown
+     */
+    public function getDepartmentUserList($getMinDepartmentList){
+        if(!is_array($getMinDepartmentList)){
+            return array();
+        }
+        foreach($getMinDepartmentList as $k => $val){
+            $userYeji = $this->getUserYeji($val['department_id']);
+            $getMinDepartmentList[$k]['rujin'] = $userYeji['zonge'];
+            $getMinDepartmentList[$k]['zhebiao'] = $userYeji['nianhuan'];
+            $getMinDepartmentList[$k]['yaoqingrencount'] = $userYeji['yaoqingrencount'];
+            
+        }
+        return $getMinDepartmentList;
+    }
+    
+    /**
+     * 根据部门id，获取所有用户，然后查询每个用户的业绩，累加，并返回
+     * @param number $departmentId
+     * @return Ambigous <number, unknown>
+     */
+    public function getUserYeji($departmentId = 0){
+        $ruJinGuiMo  = 0;
+        $zheBiaoJinE = 0;
+        $keHuCount   = 0;
+        $users = $this->bmyjmxDao->getDepartmentUser($departmentId);
+        if(is_array($users)){
+            foreach ($users as $k => $val){
+                $yeji = $this->myResultsService->getSummaryRanking($val['id']);
+                $ruJinGuiMo  += $yeji['zonge'];
+                $zheBiaoJinE += $yeji['nianhuan'];
+                $keHuCount   += $yeji['yaoqingrencount'];
+            }
+        }
+        $department['zonge'] = $ruJinGuiMo;
+        $department['nianhuan'] = $zheBiaoJinE;
+        $department['yaoqingrencount'] = $keHuCount;
+        
+        return $department;
+    }
+    
+    /**
+     * 二维数组进行排序
+     * @param unknown $arrUsers
+     */
+    public function arraySort($arrUsers){
+        
+        if(!is_array($arrUsers))return $arrUsers = array();
+            
+        $sort = array(
+            'direction' => 'SORT_DESC', //排序顺序标志 SORT_DESC 降序；SORT_ASC 升序
+            'field'     => 'rujin',       //排序字段
+        );
+        $arrSort = array();
+        foreach($arrUsers AS $uniqid => $row){
+            foreach($row AS $key=>$value){
+                $arrSort[$key][$uniqid] = $value;
+            }
+        }
+        if($sort['direction']){
+            array_multisort($arrSort[$sort['field']], constant($sort['direction']), $arrUsers);
+        }
+        return $arrUsers;
+    }
+    
+    /**
+     * 循环部门，查询部门上级name，重新赋值
+     * @param unknown $departmentList
+     */
+    public function departmentNameAssignment($departmentList){
+        if(!is_array($departmentList)) return $departmentList = array();
+        foreach($departmentList as $k => $val){
+            $this->departmentService->department_name = null;
+            $departmentName = $this->departmentService->getDepartmentName(intval($val['department_id']));
+            //截取上级部门，拆分开来
+            $name = $this->explodeDepartmentName($departmentName);
+            $departmentList[$k]['department_name'] = $name;
+        }
+        return $departmentList;
+    }
+    
+    /**
+     * 截图部门名称
+     * @param unknown $departmentName
+     */
+    public function explodeDepartmentName($departmentName){
+        //截取他的上级部门，只取到县级部门
+        $explode = explode('->', $departmentName);
+        $name = '';
+        foreach ($explode as $k1 => $val1){
+            if($k1 > 1){
+                $name .= ' '.$val1;
+            }
+        }
+        return $name;
     }
 }
