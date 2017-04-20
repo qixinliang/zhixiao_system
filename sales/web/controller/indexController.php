@@ -58,6 +58,10 @@ class indexController extends baseController
 	     * 团队精英TOP排行榜
 	     */
 	    $TeamTopList = $this->teamStatService->getTeamTop();
+	    $isGolden = $this->checkTheGolden($TeamTopList);
+	    //检查入金是否有金额
+	    $this->view->assign('isGolden', $isGolden);
+	    
 	    $this->view->assign('TeamTopList', $TeamTopList);
 	    
 	    /**
@@ -264,6 +268,27 @@ class indexController extends baseController
         }else{
             return false;
         }
-        
+    }
+    /************************************************************
+     * @copyright(c): 2017年4月20日
+     * @Author:  yuwen
+     * @Create Time: 下午2:27:18
+     * @qq:32891873
+     * @email:fuyuwen88@126.com
+     * @检查首页团队排行榜是否有数据
+     *************************************************************/
+    public function checkTheGolden($array){
+        $amount=0;
+        if(empty($array)){
+            return false;
+        }
+        foreach ($array as $key=>$val){
+            $amount+=$val['rujin'];
+        }
+        if($amount>0){
+            return true;
+        }else{
+            return false;
+        }
     }
 }
