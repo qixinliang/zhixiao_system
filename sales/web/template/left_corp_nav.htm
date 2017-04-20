@@ -6,9 +6,24 @@
     </div>
     <div class="left_list">
        <ul>
-         <li class="left_list_nav"><a href="/department/run">部门管理</a></li>
-         <li class="left_list_nav"><a href="/role/run">角色设置</a></li>
-         <li class="left_list_nav"><a href="/admin/run/status/1">用户管理</a></li>
+       	<!--{if($departmentleftcorpnav=='yes')}-->
+         	<li class="left_list_nav left_artcile"><a href="/department/run">部门管理</a></li>
+         <!--{else}-->
+         	<li class="left_list_nav"><a href="/department/run">部门管理</a></li>
+         <!--{/if}-->
+         
+         <!--{if($roleleftcorpnav=='yes')}-->
+         	<li class="left_list_nav left_artcile" ><a href="/role/run">角色设置</a></li>
+         <!--{else}-->
+         	<li class="left_list_nav" ><a href="/role/run">角色设置</a></li>
+         <!--{/if}-->
+         
+         <!--{if($adminleftcorpnav=='yes')}-->
+         	<li class="left_list_nav left_artcile"><a href="/admin/run/status/1">用户管理</a></li>
+         <!--{else}-->
+         	<li class="left_list_nav"><a href="/admin/run/status/1">用户管理</a></li>
+         <!--{/if}-->
+         
        </ul>
     </div>
   </div>

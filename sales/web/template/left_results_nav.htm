@@ -6,11 +6,29 @@
     </div>
     <div class="left_list">
        <ul>
-         <li class="left_list_nav"><a href="/myResults/run">我的业绩</a></li>
-         <li class="left_list_nav"><a href="/myClients/run">我的客户</a></li>
+       	 <!--{if($myResultsleftcorpnav=='yes')}-->
+         	<li class="left_list_nav left_artcile"><a href="/myResults/run">我的业绩</a></li>
+         <!--{else}-->
+         	<li class="left_list_nav "><a href="/myResults/run">我的业绩</a></li>
+         <!--{/if}-->
+         
+         <!--{if($myClientsleftcorpnav=='yes')}-->
+         	<li class="left_list_nav left_artcile"><a href="/myClients/run">我的客户</a></li>
+         <!--{else}-->
+         	<li class="left_list_nav"><a href="/myClients/run">我的客户</a></li>
+         <!--{/if}-->
+         
          <!--{if($gid !='10' && !empty($gid))}-->
-         <li class="left_list_nav"><a href="/bmyjmx/run">部门业绩明细</a></li>
-         <li class="left_list_nav"><a href="/bmyjmx/total">部门业绩统计</a></li>
+         	<!--{if($bmyjmxleftcorpnav=='yes')}-->
+         		<li class="left_list_nav left_artcile"><a href="/bmyjmx/run">部门业绩明细</a></li>
+         	<!--{else}-->
+         		<li class="left_list_nav"><a href="/bmyjmx/run">部门业绩明细</a></li>
+         	<!--{/if}-->
+         	<!--{if($bmyjmxtotalleftcorpnav=='yes')}-->
+         		<li class="left_list_nav left_artcile"><a href="/bmyjmx/total">部门业绩统计</a></li>
+	         	<!--{else}-->
+	         	<li class="left_list_nav"><a href="/bmyjmx/total">部门业绩统计</a></li>
+         	<!--{/if}-->
          <!--{/if}-->
        </ul>
     </div>

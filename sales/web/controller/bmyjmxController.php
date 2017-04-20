@@ -119,6 +119,10 @@ class bmyjmxController extends baseController{
         $this->view->assign('zongnianhua', $zongnianhua);
         $this->view->assign('zonghuikuan', $zonghuikuan);
         
+        //左侧样式是否显示高亮样式
+        $bmyjmxleftcorpnav = 'yes';
+        $this->view->assign('bmyjmxleftcorpnav', $bmyjmxleftcorpnav);
+        
         $this->view->display('bmyjmx/run');
     }
     
@@ -262,6 +266,10 @@ class bmyjmxController extends baseController{
         $this->view->assign('gid', $userinfo['gid']);
         $myClients='yes';//默认加样式
         $this->view->assign('myClients', $myClients);
+        //左侧样式是否显示高亮样式
+        $bmyjmxtotalleftcorpnav = 'yes';
+        $this->view->assign('bmyjmxtotalleftcorpnav', $bmyjmxtotalleftcorpnav);
+        
         $this->view->display('bmyjtj/run');
     }
     

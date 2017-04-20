@@ -14,7 +14,7 @@ class roleController extends baseController
         parent::__construct();
         $this->roleService = InitPHP::getService("role");       //获取Service
         $this->adminService = InitPHP::getService("admin");                 //获取Service
-	$this->authService = InitPHP::getService("auth");                   //获取权限Service
+	    $this->authService = InitPHP::getService("auth");                   //获取权限Service
     }
     /**
      * 默认Action
@@ -34,6 +34,11 @@ class roleController extends baseController
         $this->view->assign('gid', $userInfo['gid']);
         $department='yes';//默认加样式
         $this->view->assign('department', $department);
+        
+        //左侧样式是否显示高亮样式
+        $roleleftcorpnav = 'yes';
+        $this->view->assign('roleleftcorpnav', $roleleftcorpnav);
+        
         $this->view->display("role/run"); //使用模板
     }
     /**
@@ -51,6 +56,9 @@ class roleController extends baseController
         $this->view->assign('gid', $userInfo['gid']);
         $department='yes';//默认加样式
         $this->view->assign('department', $department);
+        //左侧样式是否显示高亮样式
+        $roleleftcorpnav = 'yes';
+        $this->view->assign('roleleftcorpnav', $roleleftcorpnav);
         $this->view->display("role/addinfo"); //使用模板
     }
     /**
@@ -86,6 +94,9 @@ class roleController extends baseController
         $this->view->assign('gid', $userInfo['gid']);
         $department='yes';//默认加样式
         $this->view->assign('department', $department);
+        //左侧样式是否显示高亮样式
+        $roleleftcorpnav = 'yes';
+        $this->view->assign('roleleftcorpnav', $roleleftcorpnav);
         $this->view->display("role/editinfo");
     }
     /**

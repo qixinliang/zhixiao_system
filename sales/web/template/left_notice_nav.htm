@@ -6,7 +6,11 @@
     </div>
     <div class="left_list">
        <ul>
-         <li class="left_list_nav"><a href="/notice/run">公告管理</a></li>
+       	<!--{if($noticeleftcorpnav=='yes')}-->
+         	<li class="left_list_nav left_artcile"><a href="/notice/run">公告管理</a></li>
+         <!--{else}-->
+         	<li class="left_list_nav"><a href="/notice/run">公告管理</a></li>
+        <!--{/if}-->
        </ul>
     </div>
   </div>

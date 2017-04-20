@@ -6,8 +6,16 @@
     </div>
     <div class="left_list">
        <ul>
-         <li class="left_list_nav"><a href="/customer/run">客户池</a></li>
-         <li class="left_list_nav"><a href="/customer/record">分配记录</a></li>
+       <!--{if($customerleftcorpnav=='yes')}-->
+         	<li class="left_list_nav left_artcile"><a href="/customer/run">客户池</a></li>
+         <!--{else}-->
+         	<li class="left_list_nav"><a href="/customer/run">客户池</a></li>
+        <!--{/if}-->
+        <!--{if($recordcustomerleftcorpnav=='yes')}-->
+        	<li class="left_list_nav left_artcile"><a href="/customer/record">分配记录</a></li>
+         <!--{else}-->
+         	<li class="left_list_nav"><a href="/customer/record">分配记录</a></li>
+        <!--{/if}-->
        </ul>
     </div>
   </div>
