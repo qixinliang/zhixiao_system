@@ -23,6 +23,7 @@ class bmyjmxController extends baseController{
         $this->myResultsService = InitPHP::getService("myResults");
 		$this->authService = InitPHP::getService('auth');
         $this->createExcelService = InitPHP::getService("createExcel");
+        $this->TeamUtilsService = InitPHP::getService('TeamUtils');
     }
     
     
@@ -58,15 +59,12 @@ class bmyjmxController extends baseController{
         //获取当前部门下每个用户的明细
         $departmentUserDetail = $this->bmyjmxService->getDepartmentUserDetail($userId,$sonDepartment,$arrangeWhereUrl['where'],$startDate,$endDate);  
         
+        //手机号隐藏
+        $departmentUserDetail = $this->TeamUtilsService->isShowInfo2($departmentUserDetail);
+        
         //离职用户，离职日期大于检索的开始日子，则不现实当前用户的信息
         if(isset($startDate) && !empty($startDate)){
-            foreach($departmentUserDetail as $k =>$val){
-                if($val['status']=='0'){
-                    if(strtotime($startDate)>$val['update_time']){
-                        unset($departmentUserDetail[$k]);
-                    }
-                }
-            }
+            $departmentUserDetail = $this->dateRetrieve($startDate,$departmentUserDetail);
         }
         
         //分页
@@ -199,24 +197,15 @@ class bmyjmxController extends baseController{
             $data = array_reverse($data);
             $departmentUserDetail[$k]['info'] = $data;
         }
+        
         //离职用户，离职日期大于检索的开始日子，则不现实当前用户的信息
         if(isset($startDate) && !empty($startDate)){
-            foreach($departmentUserDetail as $k =>$val){
-                if($val['status']=='0'){
-                    if(strtotime($startDate)>$val['update_time']){
-                        unset($departmentUserDetail[$k]);
-                    }
-                }
-            }
+            $departmentUserDetail = $this->dateRetrieve($startDate,$departmentUserDetail);
         }
         
         //判断是否按照地区筛选
         if(isset($city) && !empty($city)){
-            foreach ($departmentUserDetail as $k=>$v){
-                if($v['info'][0] != $city){
-                    unset($departmentUserDetail[$k]);
-                }
-            }
+           $departmentUserDetail = $this->cityRetrieve($city,$departmentUserDetail);
         }
         
         //分页
@@ -419,5 +408,37 @@ class bmyjmxController extends baseController{
         }
 			
         $this->createExcelService->run2($departmentUserDetail);
+	}
+	
+	/***
+	 * 离职用户，离职日期大于检索的开始日子，则不现实当前用户的信息
+	 * @param unknown $startDate
+	 * @param unknown $departmentUser
+	 */
+	public function dateRetrieve($startDate,$departmentUser){
+	    if(!is_array($departmentUser)) return  $departmentUser = array();
+	    foreach($departmentUser as $k =>$val){
+	        if($val['status']=='0'){
+	            if(strtotime($startDate)>$val['update_time']){
+	                unset($departmentUser[$k]);
+	            }
+	        }
+	    }
+	    return $departmentUser;
+	}
+	
+	/**
+	 * 根据地区进行循环列表
+	 * @param unknown $city
+	 * @param unknown $departmentUserDetail
+	 */
+	public function cityRetrieve($city,$departmentUserDetail){
+	    if(!is_array($departmentUserDetail)) return  $departmentUserDetail = array();
+	    foreach ($departmentUserDetail as $k=>$v){
+	        if($v['info'][0] != $city){
+	            unset($departmentUserDetail[$k]);
+	        }
+	    }
+	    return $departmentUserDetail;
 	}
 }
