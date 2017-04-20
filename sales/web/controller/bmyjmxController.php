@@ -71,7 +71,6 @@ class bmyjmxController extends baseController{
         $departmentUserDetail_count = count($departmentUserDetail);
         $departmentUserDetail = array_slice($departmentUserDetail, $page,10);
         $page_html = $pager->pager($departmentUserDetail_count, 10,$arrangeWhereUrl['url']); //最后一个参数为true则使用默认样式
-        
         //条件
         $this->view->assign('start_date', $startDate);
         $this->view->assign('end_date', $endDate);
@@ -94,6 +93,30 @@ class bmyjmxController extends baseController{
         $adminService = InitPHP::getService('admin');
         $userinfo = $adminService->current_user();
         $this->view->assign('gid', $userinfo['gid']);
+        
+        /************************************************************
+         * @copyright(c): 2017年4月19日
+         * @Author:  yuwen
+         * @Create Time: 下午9:12:07
+         * @qq:32891873
+         * @email:fuyuwen88@126.com
+         * @增加总额计算，增加新的需求，开会演示增加增加时间2017年4月19日下午9:12:07
+         *************************************************************/
+        $zonge = 0;//总入金
+        $zongnianhua = 0; //总年化
+        $zonghuikuan = 0; //总回款
+        foreach ($departmentUserDetail as $key=>$val){
+            $zonge += $val['zonge'];
+            $zongnianhua +=$val['nianhuan'];
+            $zonghuikuan += $val['huikuan'];
+        }
+        $zonge = number_format($zonge,2,".","");
+        $zongnianhua = number_format($zongnianhua,2,".","");
+        $zonghuikuan = number_format($zonghuikuan,2,".","");
+        
+        $this->view->assign('zonge', $zonge);
+        $this->view->assign('zongnianhua', $zongnianhua);
+        $this->view->assign('zonghuikuan', $zonghuikuan);
         
         $this->view->display('bmyjmx/run');
     }
@@ -202,6 +225,31 @@ class bmyjmxController extends baseController{
         $this->view->assign('username', $username);
         $this->view->assign('excelUrl',$arrangeWhereUrl['excelUrl']);
         $this->view->assign('status', $status);
+        
+        /************************************************************
+         * @copyright(c): 2017年4月19日
+         * @Author:  yuwen
+         * @Create Time: 下午9:12:07
+         * @qq:32891873
+         * @email:fuyuwen88@126.com
+         * @增加总额计算，增加新的需求，开会演示增加增加时间2017年4月19日下午9:12:07
+         *************************************************************/
+        $zonge = 0;//总入金
+        $zongnianhua = 0; //总年化
+        $zonghuikuan = 0; //总回款
+        foreach ($departmentUserDetail as $key=>$val){
+            $zonge += $val['zonge'];
+            $zongnianhua +=$val['nianhuan'];
+            $zonghuikuan += $val['huikuan'];
+        }
+        $zonge = number_format($zonge,2,".","");
+        $zongnianhua = number_format($zongnianhua,2,".","");
+        $zonghuikuan = number_format($zonghuikuan,2,".","");
+        
+        $this->view->assign('zonge', $zonge);
+        $this->view->assign('zongnianhua', $zongnianhua);
+        $this->view->assign('zonghuikuan', $zonghuikuan);
+        
         
         //返回数据
         $this->view->assign('cityDepartment', $cityDepartment);

@@ -16,7 +16,7 @@ class myResultsDao extends Dao{
      * @获取用户投资记录包含投资项目
      *************************************************************/
     public function getUserOrderList($uid,$where){
-        $sql=sprintf("select * from %s as a LEFT JOIN %s as b ON b.deal_id=a.deal_id where a.uid=%s and a.status=2  %s ",$this->table_name,'cp_deal',$uid,$where);
+        $sql=sprintf("select a.*,b.title,b.syl,b.expires_type,b.expires,b.deal_status from %s as a LEFT JOIN %s as b ON b.deal_id=a.deal_id where a.uid=%s and a.status=2  %s ",$this->table_name,'cp_deal',$uid,$where);
         return $this->dao->db->get_all_sql($sql);
     }
 }

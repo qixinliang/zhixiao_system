@@ -111,10 +111,6 @@ class bmyjmxService extends Service
 	
 	public function up($did){
 		$data = $this->getInvestInfoByDepartmentId($did);
-		echo('<pre>');
-		print_r($data);
-		echo('</pre>');
-
 		//把统一部门下的金额计算
 		$rujin = 0;
 		$zhebiao = 0;
@@ -153,8 +149,6 @@ class bmyjmxService extends Service
 			var_dump($departmentId);
 			$pDepartment['invest_info'] = $tmp;
 		}*/
-		var_dump($pDepartment);
-		die('-1111');
 	}
 
 	//把最底层的用户投资数据，往上传递到父节点
@@ -187,11 +181,7 @@ class bmyjmxService extends Service
 			$output = array_merge($tmp,$output);
 			$this->up($departmentId,$output);
 			//如果当前部门ID与根节点或者是传入的统计参数中的部门ID相等
-			var_dump($departmentId);
 			if($departmentId == 9){
-				echo('<pre>');
-				print_r($output);
-				echo('</pre>');
 				return $output;
 			}
 		}

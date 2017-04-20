@@ -98,9 +98,13 @@ class myResultsService extends Service{
          * uid作为 friends
         */
         $yaoqingUserUidlist = $this->getYaoQingRenList($uid,$val);
+        
         //得到邀请用户的全部订单
         $yaoqingUserOrderList = $this->getYaoQingUserOrderList($yaoqingUserUidlist,$val);
         $YaoQingUserarr = $this->calculateData($yaoqingUserOrderList);
+        
+        //计算当月邀请的用户并且邀请的用户当月投资总额大于等于1w的，返回个数
+        //$newUserNumber = $this->computeUserOrderMoney($yaoqingUserOrderList,10000);
         
         /**
          * 分配客户统计数据 开始
@@ -156,9 +160,7 @@ class myResultsService extends Service{
         $UserReceivabe = $this->ReceivableOrderMoney($UserReceivabeOrderList);
         $zonge = ($Userarr['zonger'] + $YaoQingUserarr['zonger'] + $investCustomerOrderAll['zonger']);
         $nianhuan = ($Userarr['nianhuan'] + $YaoQingUserarr['nianhuan'] + $investCustomerOrderAll['nianhuan']);
-
         $huikuan = ($yaoqingUserReceivabe+$UserReceivabe+$investReceivabe);
-
         //获取邀请的客户
         $yaoqingrenNumber = 0;
         $yaoqingrenNumber = count($yaoqingUserUidlist)+count($customerRecordList); //分配给我的客户+邀请客户数量
@@ -187,23 +189,19 @@ class myResultsService extends Service{
         //获取登录用户自己的订单记录
         $userlist = $myResultsDao->getUserOrderList($uid,$where);
         $Userarr = $this->calculateData($userlist);
-        /*
-         * 获取被邀请客户的Uid列表
-         * uid作为 friends
-         */
+        //获取被邀请客户的Uid列表  uid作为 friends
         $yaoqingUserUidlist = $this->getYaoQingRenList($uid,$val);
         //得到邀请用户的全部订单
-        //$yaoqingUserOrderList = $this->getYaoQingUserOrderList($yaoqingUserUidlist,$val);
+        $yaoqingUserOrderList = $this->getYaoQingUserOrderList($yaoqingUserUidlist,$val);
         //$YaoQingUserarr = $this->calculateData($yaoqingUserOrderList);
-        
+        //计算当月邀请的用户并且邀请的用户当月投资总额大于等于1w的，返回个数
+        $newUserNumber = $this->computeUserOrderMoney($yaoqingUserOrderList,10000);
         //获取邀请客户的回款投资记录
         //$yaoqingUserReceivabeOrderList =  $this->getUserReceivableOrderList($yaoqingUserUidlist,$val);
-        
         //计算邀请的用户回款总额度
         //$yaoqingUserReceivabe = $this->ReceivableOrderMoney($yaoqingUserReceivabeOrderList);
-       
         //当前用户自己回款的记录
-        $data[]['uid']=$uid;
+        $data[]['uid'] = $uid;
         $UserReceivabeOrderList = $this->getUserReceivableOrderList($data,$val);
         //计算当前用户自己的回款总额
         $UserReceivabe = $this->ReceivableOrderMoney($UserReceivabeOrderList);
@@ -214,15 +212,97 @@ class myResultsService extends Service{
         //$huikuan = ($yaoqingUserReceivabe+$UserReceivabe);
         $huikuan = ($UserReceivabe);
         //获取邀请的客户
-        
         $yaoqingrenNumber = 0;
         $yaoqingrenNumber = count($yaoqingUserUidlist);
         return array(
             'yaoqingrencount'=>$yaoqingrenNumber,
             'zonge'=>number_format($zonge,2,".",""),
             'nianhuan'=>number_format($nianhuan,2,".",""),
-            'huikuan'=>number_format($huikuan,2,".","")
+            'huikuan'=>number_format($huikuan,2,".",""),
+            'newUserOrderMoney'=>$newUserNumber
         );
+    }
+    /************************************************************
+     * @copyright(c): 2017年4月20日
+     * @Author:  yuwen
+     * @Create Time: 上午10:09:47
+     * @qq:32891873
+     * @email:fuyuwen88@126.com
+     * @计算当月邀请用户并且用户当月投资金额累计金额大于等于1w，返回用户条数
+     * @返回累加后的新用户数 
+     * $maxMoney = 10000;条件是判断用户投资最大金额
+     *************************************************************/
+    public function computeUserOrderMoney($arr,$maxMoney){
+        $num = 0;
+        if(!empty($arr)){
+            //过滤数组内UID相同的记录数组
+            $arrUid = $this-> getUidArray($arr);
+            //用户UID为key值为总额
+            $arr = $this->treatmentUserOrderSumMoney($arrUid);
+            $num = $this->judgeUserGreaterSpecifiedValue($arr,$maxMoney);
+        }
+        return $num;
+    }
+    /************************************************************
+     * @copyright(c): 2017年4月20日
+     * @Author:  yuwen
+     * @Create Time: 上午11:17:35
+     * @qq:32891873
+     * @email:fuyuwen88@126.com
+     * @过滤用户投资大于指定金额的返回个数
+     * $maxMoney = 10000;条件是判断用户投资最大金额
+     *************************************************************/
+    public function judgeUserGreaterSpecifiedValue($arr,$maxMoney){
+        $number = 0;
+        if(empty($arr)){
+            return $number;
+        }
+        foreach ($arr as $a=>$b){
+            if($b>=$maxMoney){
+                $number+=1;
+            }
+        }
+        return intval($number);
+    }
+    
+    /************************************************************
+     * @copyright(c): 2017年4月20日
+     * @Author:  yuwen
+     * @Create Time: 上午11:11:35
+     * @qq:32891873
+     * @email:fuyuwen88@126.com
+     * @处理返回的二维数组每个用户的订单总额
+     * @返回uid的数组后面
+     *************************************************************/
+    public function treatmentUserOrderSumMoney($arr){
+        $arrUid=array();
+        if(!empty($arr)){
+            foreach ($arr as $kk=>$vv){
+                $tnum = 0;
+                foreach ($vv as $keys=>$vasl){
+                    $tnum+=$vasl['order_money'];
+                }
+                $arrUid[$kk]=$tnum;
+            }
+        }
+        return $arrUid;
+    }
+    /************************************************************
+     * @copyright(c): 2017年4月20日
+     * @Author:  yuwen
+     * @Create Time: 上午11:09:20
+     * @qq:32891873
+     * @email:fuyuwen88@126.com
+     * @过滤订单取出uid相同的订单记录
+     *************************************************************/
+    public function getUidArray($arr){
+        $arrUid=array();
+        if(!empty($arr)){
+            foreach($arr as $v) {
+                $arrUid[$v['uid']][] = $v;
+            } 
+        }
+        return $arrUid;
     }
     /************************************************************
      * @copyright(c): 2017年3月21日
@@ -286,8 +366,8 @@ class myResultsService extends Service{
         //$where=null;        //临时使用后期删掉
         $dealRecordDao = InitPHP::getDao("dealRecord");
         $tmparr = array();
-        foreach ($array as $key=>$val){
-            $uid = intval($val['uid']);//邀请的用户uid
+        foreach ($array as $uidkey=>$vuid){
+            $uid = intval($vuid['uid']);//邀请的用户uid
             $arr = $dealRecordDao->getUserReceivableOrderList($uid,$where);
             $tmparr=array_merge($tmparr,$arr);
         }
@@ -307,8 +387,8 @@ class myResultsService extends Service{
         $where=null;        //临时使用后期删掉
         $dealRecordDao = InitPHP::getDao("dealRecord");
         $tmparr = array();
-        foreach ($array as $key=>$val){
-            $uid = intval($val['investor_id']);//邀请的用户uid
+        foreach ($array as $key=>$vinves){
+            $uid = intval($vinves['investor_id']);//邀请的用户uid
             $arr = $dealRecordDao->getUserReceivableOrderList($uid,$where);
             $tmparr=array_merge($tmparr,$arr);
         }
@@ -328,10 +408,11 @@ class myResultsService extends Service{
         //$where=null;//临时赋值后面删除
         $tmparr = array();
         //循环用户获取用户订单列表
-        foreach ($uidArr as $key=>$val){
-            $uid = intval($val['uid']);//邀请的用户uid
-            $yaoqingUserOrderList = $myResultsDao->getUserOrderList($uid,$where);
-            $tmparr=array_merge($tmparr,$yaoqingUserOrderList);
+        foreach ($uidArr as $k=>$v){   
+            $yaoqingUserOrderList = $myResultsDao->getUserOrderList($v['uid'],$where);
+            if(!empty($yaoqingUserOrderList)){
+                $tmparr=array_merge($tmparr,$yaoqingUserOrderList);
+            }
             //找到用户投资的订单
         }
         return $tmparr;
@@ -358,8 +439,8 @@ class myResultsService extends Service{
 //         $where= null;
         $tmparr = array();
         //循环用户获取用户订单列表
-        foreach ($uidArr as $key=>$val){
-            $uid = intval($val['investor_id']);//分配表的用户uid
+        foreach ($uidArr as $kks=>$vvs){
+            $uid = intval($vvs['investor_id']);//分配表的用户uid
             $yaoqingUserOrderList = $myClientsDao->getCustomerRecordOrder($uid,$where);
             $tmparr=array_merge($tmparr,$yaoqingUserOrderList);
             //找到分配表的用户投资的订单

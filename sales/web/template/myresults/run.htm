@@ -21,9 +21,14 @@
   <!-- 右侧信息列表 -->
   <div class="right">
      <div class="rigth_title">
-       <h2>我的业绩&nbsp&nbsp&nbsp&nbsp累计客户数量：<span style="color:red"><!--{$renshucount}--> </span>人</h2>
+       <h2>我的业绩&nbsp&nbsp&nbsp&nbsp</h2>
      </div>
        <div class="right_list">
+        <div style="margin:20px;">累计客户数量：<span style="color:red;"><!--{$renshucount}--> </span>人</div>
+       <div style="border-radius:5px; width:700px;height:150px;margin:0 auto;border:1px solid #ccc;padding:10px;">
+         说明说明-------------------------》
+       </div>
+      
         <h2 class="ydyjmx">月度个人业绩明细</h2>
          </table>
          <!-- 表格列表 -->
@@ -34,8 +39,8 @@
                <th>入金规模（万）</th>
                <th>折标金额（万）</th>
                <th>回款金额（万）</th>
-               <th>佣金收入（元）</th>
-               <th>新增客户数（人）</th>
+               <th>新增注册用户数(人) </th>
+               <th>新增投资客户数（人）</th>
                
              </tr>
              <!--{foreach($list as $key=>$vo)}-->
@@ -44,8 +49,8 @@
 		        <td><!--{$vo['zonge']}--></td>
 		        <td><!--{$vo['nianhuan']}--></td>
 		        <td><!--{$vo['huikuan']}--></td>
-		        <td></td>
 		        <td><!--{$vo['yaoqingrencount']}--></td>
+		        <td><!--{$vo['newUserOrderMoney']}--></td>
              </tr>
              <!--{/foreach}-->
            </table>

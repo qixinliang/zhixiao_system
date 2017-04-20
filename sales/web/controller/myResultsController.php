@@ -27,7 +27,6 @@ class myResultsController extends baseController{
               $renshucount+= $val['yaoqingrencount'];
            } 
         }
-        
         /*
          * @判断当前用户是否有权限访问组织结构cai'dan
          */
