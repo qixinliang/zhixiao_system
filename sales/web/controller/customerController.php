@@ -114,6 +114,12 @@ class customerController extends baseController{
 		$customer='yes';//默认加样式
 		$this->view->assign('customer', $customer);
 		
+		
+		//左侧样式是否显示高亮样式
+		$customerleftcorpnav = 'yes';
+		$this->view->assign('customerleftcorpnav', $customerleftcorpnav);
+		
+		
 		$this->view->display('customer/run');
 	}
 
@@ -206,6 +212,11 @@ class customerController extends baseController{
 		
 		$customer='yes';//默认加样式
 		$this->view->assign('customer', $customer);
+		
+		//左侧样式是否显示高亮样式
+		$customerleftcorpnav = 'yes';
+		$this->view->assign('customerleftcorpnav', $customerleftcorpnav);
+		
 		$this->view->display('customer/adjust');
 	}
 
@@ -302,6 +313,11 @@ class customerController extends baseController{
         $customer='yes';//默认加样式
         $this->view->assign('customer', $customer);
 		$this->view->assign('records',$fRecords);
+		
+		//左侧样式是否显示高亮样式
+		$recordcustomerleftcorpnav = 'yes';
+		$this->view->assign('recordcustomerleftcorpnav', $recordcustomerleftcorpnav);
+		
 		$this->view->display('customer/record');
 	}
 }

@@ -53,6 +53,9 @@ class departmentController extends baseController{
         
         $department='yes';//默认加样式
         $this->view->assign('department', $department);
+        //左侧样式是否显示高亮样式
+        $departmentleftcorpnav = 'yes';
+        $this->view->assign('departmentleftcorpnav', $departmentleftcorpnav);
         
         $this->view->display("department/run");
         
@@ -68,6 +71,14 @@ class departmentController extends baseController{
         $this->view->assign('html', $html);
 		$this->view->assign('action_name','添加');
         $this->view->assign('action', 'add');
+        
+        $department='yes';//默认加样式
+        $this->view->assign('department', $department);
+        
+        //左侧样式是否显示高亮样式
+        $departmentleftcorpnav = 'yes';
+        $this->view->assign('departmentleftcorpnav', $departmentleftcorpnav);
+        
         $this->view->display("department/add"); //使用模板
 	}
 	
@@ -100,7 +111,13 @@ class departmentController extends baseController{
         $list2 	= $this->departmentService->getDepartmentList2();
         $tree2 	= $this->departmentService->generateTree2($list2);
         $html 	= $this->departmentService->exportSelectedTree($tree2,$id);
-
+        
+        $department='yes';//默认加样式
+        $this->view->assign('department', $department);
+        
+        //左侧样式是否显示高亮样式
+        $departmentleftcorpnav = 'yes';
+        $this->view->assign('departmentleftcorpnav', $departmentleftcorpnav);
         $this->view->assign('html', $html);
 		$this->view->assign('data',$data);
 		$this->view->assign('action','editSave');

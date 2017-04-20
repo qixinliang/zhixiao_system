@@ -110,6 +110,15 @@ class myClientsController extends baseController
         $myClients='yes';//默认加样式
         $this->view->assign('myClients', $myClients);
         
+        //左侧样式是否显示高亮样式
+        if(empty($userId)){
+            $myClientsleftcorpnav = 'yes';
+            $this->view->assign('myClientsleftcorpnav', $myClientsleftcorpnav);
+        }else{
+            //左侧样式是否显示高亮样式
+            $bmyjmxleftcorpnav = 'yes';
+            $this->view->assign('bmyjmxleftcorpnav', $bmyjmxleftcorpnav);
+        }
         $this->view->display('myclient/run');
     }
     
@@ -181,6 +190,11 @@ class myClientsController extends baseController
         $this->view->assign('gid', $userinfo['gid']);
         $myClients='yes';//默认加样式
         $this->view->assign('myClients', $myClients);
+        
+        //左侧样式是否显示高亮样式
+        $myClientsleftcorpnav = 'yes';
+        $this->view->assign('myClientsleftcorpnav', $myClientsleftcorpnav);
+        
         $this->view->display('myclient/noInvest');
     }
     
@@ -238,6 +252,11 @@ class myClientsController extends baseController
         $this->view->assign('gid', $userinfo['gid']);
         $myClients='yes';//默认加样式
         $this->view->assign('myClients', $myClients);
+        
+        //左侧样式是否显示高亮样式
+        $myClientsleftcorpnav = 'yes';
+        $this->view->assign('myClientsleftcorpnav', $myClientsleftcorpnav);
+        
         $this->view->display('myclient/detail');
     }
 

@@ -36,6 +36,11 @@ class noticeController extends baseController{
 		$notice='yes';//默认加样式
 		$this->view->assign('notice', $notice);
 		
+		
+		//左侧样式是否显示高亮样式
+		$noticeleftcorpnav = 'yes';
+		$this->view->assign('noticeleftcorpnav', $noticeleftcorpnav);
+		
 		$this->view->display('notice/run');
 	}
 	
@@ -52,6 +57,10 @@ class noticeController extends baseController{
 		    $this->view->assign('gid', $userinfo['gid']);
 		    $notice='yes';//默认加样式
 		    $this->view->assign('notice', $notice);
+		    //左侧样式是否显示高亮样式
+		    $noticeleftcorpnav = 'yes';
+		    $this->view->assign('noticeleftcorpnav', $noticeleftcorpnav);
+		    
 			$this->view->display('notice/publish');
 		}else{
 			$time = time();
@@ -87,6 +96,11 @@ class noticeController extends baseController{
 		$this->view->assign('gid', $userinfo['gid']);
 		$notice='yes';//默认加样式
 		$this->view->assign('notice', $notice);
+		
+		//左侧样式是否显示高亮样式
+		$noticeleftcorpnav = 'yes';
+		$this->view->assign('noticeleftcorpnav', $noticeleftcorpnav);
+		
 		$this->view->display('notice/edit');
 	}
 

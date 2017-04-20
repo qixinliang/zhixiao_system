@@ -94,6 +94,10 @@ class adminController extends baseController
         $this->view->assign('adminList',$adminList);
         $this->view->assign('gid', $userInfo['gid']);
         
+        //左侧样式是否显示高亮样式
+        $adminleftcorpnav = 'yes';
+        $this->view->assign('adminleftcorpnav', $adminleftcorpnav);
+        
         $this->view->display("admin/run");
     }
     /************************************************************
@@ -160,6 +164,9 @@ class adminController extends baseController
         $department='yes';//默认加样式
         $this->view->assign('department', $department);
         $this->view->assign('user_group', $user_group);
+        //左侧样式是否显示高亮样式
+        $adminleftcorpnav = 'yes';
+        $this->view->assign('adminleftcorpnav', $adminleftcorpnav);
         $this->view->display("admin/addinfo");
     }
     /**
@@ -246,6 +253,9 @@ class adminController extends baseController
         $this->view->assign('gid', $userInfo['gid']);
         $department='yes';//默认加样式
         $this->view->assign('department', $department);
+        //左侧样式是否显示高亮样式
+        $adminleftcorpnav = 'yes';
+        $this->view->assign('adminleftcorpnav', $adminleftcorpnav);
         $this->view->display("admin/editinfo");
     }
     /**
