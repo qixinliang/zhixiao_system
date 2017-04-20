@@ -13,6 +13,7 @@ class bmyjmxService extends Service
         $this->bmyjmxsDao = InitPHP::getDao("bmyjmx");
         $this->myResultsService = InitPHP::getService("myResults");
 		$this->departmentDao = InitPHP::getDao('department');
+		$this->adminDao = InitPHP::getDao('admin');
     }
     
     /**
@@ -53,42 +54,24 @@ class bmyjmxService extends Service
      */
     public function getDepartmentUserDetail($userId,$sonDepartment,$where=null,$startDate=null,$endDate=null){
         //循环所有的部门，查询所有部门下的user
-        $departmentUser = array();
-        foreach($sonDepartment as $k=>$v){
-            //获取用户信息，并赋值给user_array
-            $user = $this->getDepartmentUser($v['department_id'],$where);//getDepartmentUser
-            if(!empty($user) && isset($user)){
-                $departmentUser[] = $user;
-            }
-        }
-       
+        
+        $departmentUser = $this->getSonDepartmentUserList($sonDepartment,$where);
+        
         /**
-         * 获取当前登录用户的部门业绩明细
+         * 1.判断当前登录用户gid，如果gid=9，说明是团队经理，需要统计当前团队的所有销售人员
+         * 2.如果>9说明是团队经理以上级别，统计当前登录用户的个人业绩，和其部门的业绩累加
          */
         //获取登录用户的信息列表
         $userData = $this->getUserInfo($userId,$where);
-        //获取当前登录用户的业绩明细
-        $res = $this->myResultsService->getSummaryRanking($userId,$startDate,$endDate);
-        $userData[0]['yaoqingrencount'] = $res['yaoqingrencount'];
-        $userData[0]['zonge'] = $res['zonge'];
-        $userData[0]['nianhuan'] = $res['nianhuan'];
-        $userData[0]['huikuan'] = $res['huikuan'];
+
+        //判断当前登录用户角色，根据当前角色，如果当前用户是团队经理，应该把当前所有团队的数据都获取出来
+        $userData = $this->getUserYeji($userData,$where,$startDate,$endDate);
+
+        //根据用户列表，查询所有用户的业绩明细
+        $departmentUserData = $this->getResultsDetail($departmentUser,$startDate,$endDate);
         
-        /**
-         * end
-         */
-        //根据用户，循环查询所有的业绩明细
-        foreach($departmentUser as $k=>$val){
-            foreach ($val as $k1=>$val1){
-                $userYeji = $this->myResultsService->getSummaryRanking($val1['id'],$startDate,$endDate);
-                $val1['yaoqingrencount'] = $userYeji['yaoqingrencount'];
-                $val1['zonge'] = $userYeji['zonge'];
-                $val1['nianhuan'] = $userYeji['nianhuan'];
-                $val1['huikuan'] = $userYeji['huikuan'];
-                $departmentUserData[] = $val1;
-            }
-        }
-        $departmentUserDatas = array_merge($userData,$departmentUserData);//将登录用户的业绩明细，和部门用户的用户明细列表合并成一个数组
+        //将登录用户的业绩明细，和部门用户的用户明细列表合并成一个数组
+        $departmentUserDatas = array_merge($userData,$departmentUserData);
         
         return $departmentUserDatas;
     }
@@ -120,4 +103,61 @@ class bmyjmxService extends Service
 	    return $this->bmyjmxsDao->getUserInfo($userId,$where);
 	}
 	
+	public function getUserYeji($userData,$where=null, $startDate=null, $endDate=null){
+	    
+	    if (!is_array($userData)) return $userData = array();
+	    if($userData[0]['gid']=='9'){
+	        //查询当前部门下所有的人员
+	        $departmentList = $this->bmyjmxsDao->getDepartmentUser($userData[0]['department_id'],$where);
+	        if(is_array($departmentList)){
+	            $departmentList = $this->getResultsDetail($departmentList, $startDate, $endDate);
+	        }
+	    }
+	    if($userData[0]['gid'] < 9){
+	        //如果gid>9查询当前登录用户的业绩
+	        $departmentList = $this->getResultsDetail($userData, $startDate, $endDate);
+	    }
+	    return $departmentList;
+	}
+	
+	/**
+	 * 根据用户列表，统计用户的业绩
+	 * @param unknown $departmentUser
+	 * @param string $where
+	 * @param string $startDate
+	 * @param string $endDate
+	 * @return array $departmentUserData
+	 */
+	public function getResultsDetail($departmentUser, $startDate=null, $endDate=null){
+	    
+	    $departmentUserData = array();
+	    foreach($departmentUser as $k=>$val){
+	            $userYeji = $this->myResultsService->getSummaryRanking($val['id'],$startDate,$endDate);
+	            $val['yaoqingrencount'] = $userYeji['yaoqingrencount'];
+	            $val['zonge'] = $userYeji['zonge'];
+	            $val['nianhuan'] = $userYeji['nianhuan'];
+	            $val['huikuan'] = $userYeji['huikuan'];
+	            $departmentUserData[] = $val;
+	    }
+	    return $departmentUserData;
+	}
+	
+	/**
+	 * 根据当前子部门，循环查询出子部门所有的用户
+	 * @param unknown $sonDepartment
+	 * @param unknown $where
+	 */
+	public function getSonDepartmentUserList($sonDepartment,$where){
+	    $departmentUser = array();
+	    foreach($sonDepartment as $k=>$v){
+	        //获取用户信息，并赋值给user_array
+	        $user = $this->getDepartmentUser($v['department_id'],$where);//getDepartmentUser
+	        if(!empty($user) && isset($user)){
+	            foreach ($user as $k1 =>$v1){
+	                $departmentUser[] = $v1;
+	            }
+	        }
+	    }
+	    return $departmentUser;
+	}
 }
