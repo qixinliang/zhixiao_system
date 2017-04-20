@@ -90,7 +90,6 @@ class myClientsController extends baseController
         //分页
         $this->view->assign('page_html', $page_html);
         $this->view->assign('username', $adminUid['user']);
-        
         //统计数据
         $this->view->assign('nhsyl_count', $friendsList['nhsyl_count']);//年化收益金额
         $this->view->assign('tzje_count', $friendsList['tzje_count']);//投资金额
@@ -103,13 +102,11 @@ class myClientsController extends baseController
         $adminService = InitPHP::getService('admin');
         $userinfo = $adminService->current_user();
         $this->view->assign('gid', $userinfo['gid']);
-        
         //数据列表
         $this->view->assign('friends',$friends);
         
         $myClients='yes';//默认加样式
         $this->view->assign('myClients', $myClients);
-        
         $this->view->display('myclient/run');
     }
     
