@@ -239,4 +239,24 @@ class TeamUtilsService extends Service{
         }
         return array('friends'=>$friends,'nhsyl_count'=>$nhsyl_count,'tzje_count'=>$tzje_count);
     }
+    
+    /**
+     * 递归循环当前部门下的所有子部门
+     * @param unknown $arr
+     * @param unknown $pid
+     * @param number $step
+     * @return Ambigous <multitype:, string>
+     */
+    public function getSonDepartment($arr,$pid,$step=0){
+        foreach($arr as $key=>$val) {
+            if($val['p_dpt_id'] == $pid) {
+                $flg = str_repeat('―',$step);
+                $val['step'] = $flg;
+                $val['level'] = $step;
+                $this->tree[] = $val;
+                $this->getSonDepartment($arr , intval($val['department_id']),$step+1);
+            }
+        }
+        return $this->tree;
+    }
 }
