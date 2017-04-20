@@ -47,6 +47,13 @@ class myResultsController extends baseController{
         $myClients='yes';//默认加样式
         $this->view->assign('myClients', $myClients);
         
+        
+        
+        //左侧样式是否显示高亮样式
+        $myResultsleftcorpnav = 'yes';
+        $this->view->assign('myResultsleftcorpnav', $myResultsleftcorpnav);
+        
+        
         $this->view->display("myresults/run");
     }
 }
