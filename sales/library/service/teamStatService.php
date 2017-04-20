@@ -88,7 +88,7 @@ class teamStatService extends Service
         if(!empty($userId) && isset($userId)){
             //获取登录用户的信息列表
             $userId = $this->adminService->GetToZiXiTongUserId($userId);
-            $userData = $this->bmyjmxService->getUserInfo($userId);
+//             $userData = $this->bmyjmxService->getUserInfo($userId);
             //获取当前登录用户的业绩明细
             $res = $this->myResultsService->getSummaryRanking($userId,$start_time,$end_time);
             $ruJinGuiMo  += $res['zonge'];
