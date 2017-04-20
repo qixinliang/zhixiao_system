@@ -214,7 +214,11 @@ class teamStatService extends Service
             $departmentName = $this->departmentService->getDepartmentName(intval($val['department_id']));
             //截取上级部门，拆分开来
             $name = $this->explodeDepartmentName($departmentName);
-            $departmentList[$k]['department_name'] = $name;
+            $val['department_name'] = $name;
+            $this->departmentService->department_name = null;
+            $val['rujin'] = number_format($val['rujin'],2,".","");
+            $val['zhebiao'] = number_format($val['zhebiao'],2,".","");
+            $departmentList[$k]=$val;
         }
         return $departmentList;
     }
