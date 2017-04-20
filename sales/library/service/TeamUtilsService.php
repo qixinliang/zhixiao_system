@@ -96,7 +96,6 @@ class TeamUtilsService extends Service{
             $val['phone']=substr_replace($val['phone'],'****',3,4);
             $tmparr[$key]=$val;
         }
-        rsort($tmparr);
         return $tmparr;
     }
     
