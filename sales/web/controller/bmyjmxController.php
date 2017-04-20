@@ -51,7 +51,7 @@ class bmyjmxController extends baseController{
         //根据用户的部门id，获取子部门id
         $sonDepartment = $this->getTree($deparmentList,$userDepartmentId);
         $this->tree = array();
-//         print_r($sonDepartment);exit;
+        
         //拼接where条件，和url链接地址
         $arrangeWhereUrl = $this->arrangeWhereUrl('/bmyjmx/run',$departmentId,$username,$startDate,$endDate);
 

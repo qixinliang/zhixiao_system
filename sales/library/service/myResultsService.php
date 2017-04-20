@@ -94,10 +94,10 @@ class myResultsService extends Service{
         $userlist = $myResultsDao->getUserOrderList($uid,$where);
         $Userarr = $this->calculateData($userlist);
         
-        /*
+        /**
          * 获取被邀请客户的Uid列表
          * uid作为 friends
-        */
+         */
         $yaoqingUserUidlist = $this->getYaoQingRenList($uid,$val);
         //得到邀请用户的全部订单
         $yaoqingUserOrderList = $this->getYaoQingUserOrderList($yaoqingUserUidlist,$val);
@@ -109,7 +109,7 @@ class myResultsService extends Service{
         //获取分配给用户的客户uid列表
         $this->myClientsService = InitPHP::getService("myClients");
         $customerRecordList = $this->myClientsService->getCustomerRecordList($uid);
-        
+
        //去除两个数组中重复的数据
        $customerRecordList =  $this->getRepeatArray($customerRecordList,$yaoqingUserUidlist);
 
@@ -405,17 +405,17 @@ class myResultsService extends Service{
      * @return multitype:
      */
     public function getRepeatArray($customerRecordList,$yaoqingUserUidlist){
-        $res = array();
         if(!is_array($customerRecordList) || !is_array($yaoqingUserUidlist)){
-            return $res;
+            return $yaoqingUserUidlist= array();
         }
+
         foreach ($customerRecordList as $k=>$v){
             foreach ($yaoqingUserUidlist as $k1=>$v1){
-                if($v['uid']==$v1['investor_id']){
-                    unset($yaoqingUserUidlist[$k1]);
+                if($v1['uid']==$v['investor_id']){
+                    unset($customerRecordList[$k]);
                 }
             }
         }
-        return $res;
+        return $customerRecordList;
     }
 }
