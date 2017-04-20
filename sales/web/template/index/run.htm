@@ -163,6 +163,7 @@
          <div class="magement sales_box_1 sales_box_2">
              <div class="magement_title sales"><span><!--{$YearsMonth}-->月</span><h1>团队精英</h1></div>
               <div class="magement_body">
+              <!--{if($isGolden)}-->
                 <table>
                   <tr class="one_tb">
                     <th></th>
@@ -170,24 +171,26 @@
                     <th>入金规模(万元)</th>
                     <th>折标业绩(万元)</th>
                   </tr>
-                  <!--{if($TeamTopList)}-->
-                  <!--{foreach($TeamTopList as $k=>$v)}-->
-                  <tr>
-                     <td>
-                     <?php $k++;?>
-                    	<img src="/static/images/top_<?php echo $k;?>.png" alt="">
-                     </td>
-                     <td><!--{$v['department_name']}--></td>
-                     <td><!--{$v['rujin']}--></td>
-                     <td><!--{$v['zhebiao']}--></td>
-                   </tr>
-                  <!--{/foreach}-->
+	                  <!--{foreach($TeamTopList as $k=>$v)}-->
+	                  <tr>
+	                     <td>
+	                     <?php $k++;?>
+	                    	<img src="/static/images/top_<?php echo $k;?>.png" alt="">
+	                     </td>
+	                     <td><!--{$v['department_name']}--></td>
+	                     <td><!--{$v['rujin']}--></td>
+	                     <td><!--{$v['zhebiao']}--></td>
+	                   </tr>
+	                  <!--{/foreach}-->
+	                  </table>
                   <!--{else}-->
-                  <tr>
-					<td colspan="4">暂无排行数据</td>
-				  </tr>
+                 	 <table>
+	                 <tr>
+					    <td colspan="4">暂无排行数据</td>
+					 </tr>
+		  			</table>
 	              <!--{/if}-->
-                </table>
+                
               </div>
            </div>
            
