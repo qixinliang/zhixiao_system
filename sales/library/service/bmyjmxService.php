@@ -54,7 +54,11 @@ class bmyjmxService extends Service
      */
     public function getDepartmentUserDetail($userId,$sonDepartment,$where=null,$startDate=null,$endDate=null){
         //循环所有的部门，查询所有部门下的user
-        
+		//xd added
+        if(empty($userId)){
+           return array(); 
+        }
+
         $departmentUser = $this->getSonDepartmentUserList($sonDepartment,$where);
         
         /**
@@ -83,7 +87,7 @@ class bmyjmxService extends Service
     	$users = $this->getDepartmentUser($did);
 		if(isset($users) && !empty($users)){
 			foreach($users as $k => $v){
-                $userYeji = $this->myResultsService->getSummaryRanking($v['id'],$start_date,$end_date);
+                $userYeji = $this->myResultsService->getSummaryRanking(intval($v['id']),$start_date,$end_date);
                 $v['yaoqingrencount'] = $userYeji['yaoqingrencount'];
                 $v['zonge'] = $userYeji['zonge'];
                 $v['nianhuan'] = $userYeji['nianhuan'];
@@ -149,9 +153,12 @@ class bmyjmxService extends Service
 	 */
 	public function getSonDepartmentUserList($sonDepartment,$where){
 	    $departmentUser = array();
+	    if(empty($sonDepartment)){
+	        return $departmentUser;
+	    }
 	    foreach($sonDepartment as $k=>$v){
 	        //获取用户信息，并赋值给user_array
-	        $user = $this->getDepartmentUser($v['department_id'],$where);//getDepartmentUser
+	        $user = $this->getDepartmentUser(intval($v['department_id']),$where);//getDepartmentUser
 	        if(!empty($user) && isset($user)){
 	            foreach ($user as $k1 =>$v1){
 	                $departmentUser[] = $v1;
