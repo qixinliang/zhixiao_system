@@ -10,23 +10,21 @@ class departmentController extends baseController{
 	
 	public function __construct(){
 		parent::__construct();
+		$this->adminService      = InitPHP::getService('admin');
+		$this->authService 		 = InitPHP::getService("auth");
 		$this->departmentService = InitPHP::getService('department');
-		$this->authService = InitPHP::getService("auth");
 	}
 	
 	public function run(){
-	    
-	    $adminService = InitPHP::getService('admin');
-	    $userinfo = $adminService->current_user();
-	    
 		$this->authService->checkauth('1001');
+	    $userinfo = $this->adminService->current_user();
 		/*
 		 *list2的数组下标跟对应的
          *department_id是一致的，这样才能创建树
 		 */
-		$list2 = $this->departmentService->getDepartmentList2();	
+		$list2 = $this->departmentService->getDepartmentList2();
 		if(!isset($list2) || empty($list2)){
-    		exit(json_encode(array('status' => -1, 'message' => '未找到任何部门!')));
+    		exit(json_encode(array('status' => -1, 'message' => 'empty departments!')));
 		}
 		
 		//必须要用tree2函数，非tree函数，可以调试看出数组下标的区别。
@@ -36,7 +34,7 @@ class departmentController extends baseController{
 		//取出部门人数
 		foreach($list2 as $k => $v){
 			$did = $v['department_id'];
-			$tmpRet = $adminService->getUserCount($did);
+			$tmpRet = $this->adminService->getUserCount($did);
 			$cnt = 0;
 			if(isset($tmpRet) && !empty($tmpRet)){
 				$cnt = $tmpRet['count']; 
@@ -141,7 +139,6 @@ class departmentController extends baseController{
 		);
 
         $arr = $this->departmentService->editSave($data);
-        //$arr = $this->departmentService->editSave($_POST);
         if($arr){
             exit(json_encode(array('status' => 1, 'message' => '部门信息修改成功!')));
         }
@@ -151,14 +148,10 @@ class departmentController extends baseController{
 		$this->authService->checkauth('1006');
 		$departmentId = $this->controller->get_gp('department_id');
 		$ret = $this->departmentService->del($departmentId);
-        if($ret == 1){
+        if($ret){
             exit(json_encode(array('status' => 1, 'message' => '部门信息删除成功!')));
-        }
-        if($ret == 2){
-            exit(json_encode(array('status' => 2, 'message' => '无法删除!')));
-        }
-        if($ret == 3){
-            exit(json_encode(array('status' => 3, 'message' => '越权操作!')));
-        }
+        }else{
+            exit(json_encode(array('status' => -1, 'message' => '部门信息删除失败!')));
+		}
 	}
 }
