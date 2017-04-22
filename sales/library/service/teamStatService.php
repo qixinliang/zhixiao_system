@@ -66,7 +66,7 @@ class teamStatService extends Service
         $this->tree = array();
         
         foreach ($sonDepartment as $k1=>$v1){
-            $user = $this->bmyjmxDao->getDepartmentUser($v1['department_id']);
+            $user = $this->bmyjmxDao->getDepartmentUser(intval($v1['department_id']));
             if(!empty($user) && isset($user)){
                 $departmentUser[] = $user;
             }
@@ -77,7 +77,7 @@ class teamStatService extends Service
         $keHuCount=0;
         foreach($departmentUser as $k1=>$val1){
             foreach ($val1 as $k2=>$val2){
-                $userYeji = $this->myResultsService->getSummaryRanking($val2['id'],$start_time,$end_time);
+                $userYeji = $this->myResultsService->getSummaryRanking(intval($val2['id']),$start_time,$end_time);
                 $ruJinGuiMo  += $userYeji['zonge'];
                 $zheBiaoJinE += $userYeji['nianhuan'];
                 $keHuCount   += $userYeji['yaoqingrencount'];
@@ -163,10 +163,10 @@ class teamStatService extends Service
         $ruJinGuiMo  = 0;
         $zheBiaoJinE = 0;
         $keHuCount   = 0;
-        $users = $this->bmyjmxDao->getDepartmentUser($departmentId);
+        $users = $this->bmyjmxDao->getDepartmentUser(intval($departmentId));
         if(is_array($users)){
             foreach ($users as $k => $val){
-                $yeji = $this->myResultsService->getSummaryRanking($val['id']);
+                $yeji = $this->myResultsService->getSummaryRanking(intval($val['id']));
                 $ruJinGuiMo  += $yeji['zonge'];
                 $zheBiaoJinE += $yeji['nianhuan'];
                 $keHuCount   += $yeji['yaoqingrencount'];
