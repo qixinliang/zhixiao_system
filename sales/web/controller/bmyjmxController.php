@@ -41,7 +41,7 @@ class bmyjmxController extends baseController{
         
         //获取登录用户信息
         $user = $this->adminService->current_user();
-        $userId = $this->adminService->GetToZiXiTongUserId($user['id']);//获取user表里面的userid
+        $userId = $this->adminService->GetToZiXiTongUserId(intval($user['id']));//获取user表里面的userid
         
         $deparmentList = $this->departmentService->getDepartmentList(); //获取所有的部门列表
         
@@ -57,7 +57,7 @@ class bmyjmxController extends baseController{
         $arrangeWhereUrl = $this->arrangeWhereUrl('/bmyjmx/run',$departmentId,$username,$startDate,$endDate);
 
         //获取当前部门下每个用户的明细
-        $departmentUserDetail = $this->bmyjmxService->getDepartmentUserDetail($userId,$sonDepartment,$arrangeWhereUrl['where'],$startDate,$endDate);  
+        $departmentUserDetail = $this->bmyjmxService->getDepartmentUserDetail(intval($userId),$sonDepartment,$arrangeWhereUrl['where'],$startDate,$endDate);  
         
         //手机号隐藏
         $departmentUserDetail = $this->TeamUtilsService->isShowInfo2($departmentUserDetail);
@@ -71,7 +71,11 @@ class bmyjmxController extends baseController{
         $page = ($page-1)*10 ? ($page-1)*10 : 0;
         $departmentUserDetail_count = count($departmentUserDetail);
         $departmentUserDetail = array_slice($departmentUserDetail, $page,10);
-        $page_html = $pager->pager($departmentUserDetail_count, 10,$arrangeWhereUrl['url']); //最后一个参数为true则使用默认样式
+        if($departmentUserDetail_count>0){
+            $page_html = $pager->pager($departmentUserDetail_count, 10,$arrangeWhereUrl['url']); //最后一个参数为true则使用默认样式
+        }else{
+            $page_html=null;
+        }
         //条件
         $this->view->assign('start_date', $startDate);
         $this->view->assign('end_date', $endDate);
@@ -212,7 +216,11 @@ class bmyjmxController extends baseController{
         $page = ($page-1)*10 ? ($page-1)*10 : 0;
         $departmentUserDetail_count = count($departmentUserDetail);
         $departmentUserDetail = array_slice($departmentUserDetail, $page,10);
-        $page_html = $pager->pager($departmentUserDetail_count, 10,$arrangeWhereUrl['url']); //最后一个参数为true则使用默认样式
+        if($departmentUserDetail_count>0){
+            $page_html = $pager->pager($departmentUserDetail_count, 10,$arrangeWhereUrl['url']); //最后一个参数为true则使用默认样式
+        }else{
+            $page_html=null;
+        }
         
         //条件
         $this->view->assign('start_date', $startDate);
