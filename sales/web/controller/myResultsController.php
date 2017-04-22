@@ -27,33 +27,31 @@ class myResultsController extends baseController{
     public function run(){
 		$this->authService->checkauth('1019');
         $userinfo = $this->adminService->current_user();
+		//非空判断，否则下面的数据库查询会500
+		if(!isset($userinfo) || empty($userinfo)){
+			exit(json_encode(array('status' => -1,'message' => 'not logined')));
+		}
+
+		//获取业绩
         $res = $this->myResultsService->ResultsList($userinfo);
         $renshucount=0;
 
         if(!empty($res['data'])){
            foreach ($res['data'] as $Key=>$val){
               $renshucount+= $val['yaoqingrencount'];
-           } 
+           }
         }
         /*
          * @判断当前用户是否有权限访问组织结构cai'dan
          */
-        $adminService = InitPHP::getService('admin');
-        $userinfo = $adminService->current_user();
+        $myClients='yes';//默认加样式
+        $myResultsleftcorpnav = 'yes';//左侧样式是否显示高亮样式
         $this->view->assign('gid', $userinfo['gid']);
-        
         $this->view->assign('renshucount',$renshucount);
         $this->view->assign('list',$res['data']);
-        $myClients='yes';//默认加样式
         $this->view->assign('myClients', $myClients);
-        
-        
-        
-        //左侧样式是否显示高亮样式
-        $myResultsleftcorpnav = 'yes';
         $this->view->assign('myResultsleftcorpnav', $myResultsleftcorpnav);
-        
-        
+
         $this->view->display("myresults/run");
     }
 }

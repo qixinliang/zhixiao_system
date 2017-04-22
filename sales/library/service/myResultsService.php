@@ -69,7 +69,7 @@ class myResultsService extends Service{
         $adminService = InitPHP::getService("admin");//获取管理员信息
         $data = array();
         $yuefenarr = $this->returnnianfen($userinfo);
-        $uid = $adminService->GetToZiXiTongUserId($userinfo['id']);//获取当前登录的用户uid
+        $uid = $adminService->GetToZiXiTongUserId(intval($userinfo['id']));//获取当前登录的用户uid
         foreach ($yuefenarr as $key=>$val){
             $data[$key] =$this->MonthlyPersonalDetail($uid,$val);
         }
