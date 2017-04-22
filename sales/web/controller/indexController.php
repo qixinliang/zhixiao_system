@@ -99,7 +99,7 @@ class indexController extends baseController
 	    */
 	    $datey = $this->getlastMonthDays(date("Y-m-d H:i:s"));
 	    $myResultsService = InitPHP::getService("myResults");
-	    $getlastMonthlist = $myResultsService->getTopranking($uid,$datey['start'],$datey['end']);
+	    $getlastMonthlist = $myResultsService->getTopranking(intval($uid),$datey['start'],$datey['end']);
 	    $this->view->assign('getlastMonthzonge', $getlastMonthlist['zonge']);
 	    $this->view->assign('getlastMonthnianhuan', $getlastMonthlist['nianhuan']);
 	    $this->view->assign('gid', $userinfo['gid']);
