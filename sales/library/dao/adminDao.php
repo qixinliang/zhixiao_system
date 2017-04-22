@@ -43,9 +43,8 @@ class adminDao extends Dao
         return $this->dao->db->update($id, $data, $this->table_name);
     }
 
-    /**
+    /*
      * 获取用户列表
-     * @param $data array()
      */
     public function admin_list($where,$page,$limit)
     {

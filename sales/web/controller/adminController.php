@@ -1,20 +1,19 @@
 <?php
 if (!defined('IS_INITPHP')) exit('Access Denied!');
 
-/**
+/*
  * 后台管理员控制器
- * @author aaron
  */
-class adminController extends baseController
-{
-    public $initphp_list = array('add','add_save','edit','edit_save','del','modifyPassword'); //Action白名单
+class adminController extends baseController{
+    public $initphp_list = array('add','add_save','edit','edit_save','del','modifyPassword');
 
     public function __construct()
     {
         parent::__construct();
-        $this->adminService = InitPHP::getService("admin");//获取Service
-        $this->roleService = InitPHP::getService("role");//获取Service
-		$this->authService = InitPHP::getService("auth");//获取权限Service
+        $this->adminService 		= InitPHP::getService("admin");
+        $this->roleService 			= InitPHP::getService("role");
+		$this->authService 			= InitPHP::getService("auth");
+        $this->departmentService 	= InitPHP::getService("department");
     }
 
 	//修改密码
@@ -24,8 +23,8 @@ class adminController extends baseController
 			exit(json_encode(array('status' => -1,'message' => 'current user not exist!')));
 		}
 		$uid = $currentUser['id'];
-		$password = $this->controller->get_gp('password');	
-		$password2 = $this->controller->get_gp('password2');	
+		$password = $this->controller->get_gp('password');
+		$password2 = $this->controller->get_gp('password2');
 		if(isset($password) && isset($password2)){
 			if($password != $password2){
 				exit(json_encode(array('status' => -1,'message' => '两次密码不一致！')));
@@ -50,42 +49,42 @@ class adminController extends baseController
 		}
 	}
 
-    /**
-     * 默认Action
-     * @author aaron
-     */
-    public function run()
-    {
+    public function run(){
         $this->authService->checkauth("1013");
-        $pager= $this->getLibrary('pager'); //分页加载
-        $page = $this->controller->get_gp('page') ? $this->controller->get_gp('page') : 1 ; //获取当前页码
-        $departmentService = InitPHP::getService("department"); //上级列表
+        $userInfo = $this->adminService->current_user();
+		if(!isset($userInfo)){
+			exit(json_encode(array('status' => -1,'message' => 'user not found!')));
+		}
+
+        $pager  = $this->getLibrary('pager');
+        $page   = $this->controller->get_gp('page') ? 
+			$this->controller->get_gp('page') : 1 ;
         
-        $part_id = $this->controller->get_gp('part_id');    //获取角色id
-        $department_id = $this->controller->get_gp('department_id');//获取部门id
-        $unmae = $this->controller->get_gp('uname');//获取用户姓名
-        $phone = $this->controller->get_gp('phone');//获取用户手机
+        $roleId = $this->controller->get_gp('role_id');      //角色id
+        $did 	= $this->controller->get_gp('department_id');//部门id
+        $uname 	= $this->controller->get_gp('uname');//用户姓名
+        $phone 	= $this->controller->get_gp('phone');//手机
         $status = $this->controller->get_gp('status');//1、在职  0、离职
 
-        //根据检索条件，拼接sql语句where条件
-        $where = $this->getWhere('/admin/run',$part_id,$department_id,$unmae,$phone,$status);
-        $page = ($page-1)*10 ? ($page-1)*10 : 0;//从第几条开始
-        $limit = 10;//每页显示的数量
-        $list = $this->adminService->admin_list($where['where'],$page,$limit); //查询列表数据
-        $list_count = $this->adminService->admin_list_count($where['where']);//统计数量
-        $adminList = $this->roleService->adminList(); //获取角色列表
-        $list2 = $departmentService->getDepartmentList2();//获取所属部门列表
+        //检索条件
+        $where 	= $this->getWhere('/admin/run',$roleId,$did,$uname,$phone,$status);
+        $page 	= ($page-1)*10 ? ($page-1)*10 : 0;
+        $limit 	= 10;
+        $list 	= $this->adminService->admin_list($where['where'],$page,$limit);
+        $list_count = $this->adminService->admin_list_count($where['where']);
+
+        $adminList = $this->roleService->adminList(); //角色列表
+        $list2 = $this->departmentService->getDepartmentList2();//部门列表
         $tree2 = $this->_generateTree2($list2);
         $html = $this->_exportTree($tree2,$department_id);
         $list = $this->getToObtainTheSuperior($list);//查找直属负责人
         
         $page_html = $pager->pager($list_count, $limit, $where['url'], true);
         //映射检索条件
-        $userInfo = $this->adminService->current_user();
         $department='yes';//默认加样式
         $this->view->assign('department', $department);
-        $this->view->assign('part', $part_id);
-        $this->view->assign('uname', $unmae);
+        $this->view->assign('part', $roleId);
+        $this->view->assign('uname', $uname);
         $this->view->assign('phone', $phone);
         $this->view->assign('status', $status);
         $this->view->assign('html', $html);
@@ -339,11 +338,11 @@ class adminController extends baseController
      * 根据数据，拼接检索条件
      * @param type $part_id
      * @param type $department_id
-     * @param type $unmae
+     * @param type $uname
      * @param type $phone
      * @return string sql语句where条件
      */
-    public function getWhere($url,$part_id,$department_id,$unmae,$phone,$status){
+    public function getWhere($url,$part_id,$department_id,$uname,$phone,$status){
         //查询条件判断
         $where = ' ';
         if($part_id){
@@ -354,9 +353,9 @@ class adminController extends baseController
             $where.= ' and a.department_id = '.$department_id;
             $url.= '/department_id/'.$department_id;
         }
-        if($unmae){
-            $where.= ' and UsrName = "'.$unmae.'"';
-            $url.= '/unmae/'.$unmae;
+        if($uname){
+            $where.= ' and UsrName = "'.$uname.'"';
+            $url.= '/uname/'.$uname;
         }
         if($phone){
             $where.= ' and a.phone = '.$phone;
