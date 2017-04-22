@@ -6,12 +6,20 @@ if (!defined('IS_INITPHP')) exit('Access Denied!');
  */
 class noticeController extends baseController{
 
-	public $initphp_list = array('run','publish','edit','editSave','del');
+	public $initphp_list = array('info','run','publish','edit','editSave','del');
 	public $noticeService = NULL;
 
 	public function __construct(){
 		parent::__construct();
 		$this->noticeService = InitPHP::getService('notice');
+	}
+
+	//公告详情
+	public function info(){
+		$notice_id = $this->controller->get_gp('id');
+		$arr = $this->noticeService->getNoticeInfo($notice_id);
+		$this->view->assign('arr', $arr);
+		$this->view->display('notice/info');
 	}
 
 	//公告列表展示

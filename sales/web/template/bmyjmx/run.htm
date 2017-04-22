@@ -30,7 +30,7 @@
        </div>
      </div>
       <div class="padding border-bottom">
-	      <form action="/bmyjmx/run" method="post">
+  		  <form action="/bmyjmx/run/bmyjmx/<!--{$bmyjmx}-->" method="post">
 	        统计日期 ： <input type="text" name="start_date" id="start_date" style="width: 130px;height: 25px;" value="<!--{$start_date}-->" placeholder="" onClick="WdatePicker()"> ~ 
 	        <input type="text" name="end_date" id="end_date" style="width: 130px;height: 25px;margin-right: 20px;" value="<!--{$end_date}-->" placeholder="" onClick="WdatePicker()">
 	        按部门:	<select name="department_id" style="width:150px;margin-right: 20px;">
@@ -72,7 +72,7 @@
                <th>客户数量</th>
                <th>操作</th>
              </tr>
-             <!--{if(is_array($user_data))}-->
+             <!--{if(!empty($user_data))}-->
              <!--{foreach($user_data as $k=>$v)}-->
 		    <tr>
 		        <td><!--{$v['id']}--></td>
@@ -100,7 +100,7 @@
 		        <td><!--{$v['Inthetime']}--></td>
 		        <td><!--{$v['yaoqingrencount']}--></td>
 		        <td>
-		            <a href="/myClients/run/uid/<!--{$v['id']}-->">客户数据</a>
+					<a href="/myClients/run/uid/<!--{$v['id']}-->/bmyjmx/1">客户数据</a>
 		        </td>
 		    </tr>
 		    <!--{/foreach}-->
