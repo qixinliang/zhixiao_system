@@ -75,9 +75,9 @@ class adminController extends baseController{
 
         $adminList = $this->roleService->adminList(); //角色列表
         $list2 = $this->departmentService->getDepartmentList2();//部门列表
-        $tree2 = $this->_generateTree2($list2);
+        $tree2 = $this->departmentService->generateTree2($list2);
         $html = $this->_exportTree($tree2,$department_id);
-        $list = $this->getToObtainTheSuperior($list);//查找直属负责人
+        $list = $this->getSuperior($list);//查找直属负责人
         
         $page_html = $pager->pager($list_count, $limit, $where['url'], true);
         //映射检索条件
@@ -107,7 +107,7 @@ class adminController extends baseController{
      * @email:fuyuwen88@126.com
      * @获取上级部门
      *************************************************************/
-    public function getToObtainTheSuperior($list){
+    public function getSuperior($list){
         if(empty($list)){
             return array();
         }
@@ -150,10 +150,9 @@ class adminController extends baseController{
     public function add()
     {
         $this->authService->checkauth("1014");
-        $departmentService = InitPHP::getService("department");//上级列表
         $user_group = $this->roleService->adminList();
-        $list2 = $departmentService->getDepartmentList2();
-        $tree2 = $this->_generateTree2($list2);
+        $list2 = $this->departmentService->getDepartmentList2();
+        $tree2 = $this->departmentService->generateTree2($list2);
         $html = $this->_exportTree($tree2);
         $this->view->assign('html', $html);
         $this->view->assign('action_name', '添加');
@@ -238,9 +237,8 @@ class adminController extends baseController{
         $this->authService->checkauth("1016");
         $id = $this->controller->get_gp('id');
         $arr=$this->adminService->edit($id);
-        $departmentService = InitPHP::getService("department");//上级列表
-        $list2 = $departmentService->getDepartmentList2();
-        $tree2 = $this->_generateTree2($list2);
+        $list2 = $this->departmentService->getDepartmentList2();
+        $tree2 = $this->departmentService->generateTree2($list2);
         $department_id = $arr['info']['department_id'];
         $html = $this->_exportTree($tree2,$department_id);
         $this->view->assign('html', $html);
@@ -309,11 +307,6 @@ class adminController extends baseController{
         {
             exit(json_encode(array('status' => 10, 'message' => '删除成功!')));
         }
-    }
-    private function _generateTree2($items){
-        foreach($items as $item)
-            $items[$item['p_dpt_id']]['son'][$item['department_id']] = &$items[$item['department_id']];
-        return isset($items[0]['son']) ? $items[0]['son'] : array();
     }
     
     private function _exportTree($tree,$department_id=0,$deep = 0){
