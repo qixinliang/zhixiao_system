@@ -35,6 +35,7 @@ class myClientsController extends baseController
         $startDate = $this->controller->get_gp('start_date');//开始时间
         $endDate = $this->controller->get_gp('end_date');//结束时间
         $userId = intval($this->controller->get_gp('uid')); //获取uid，用户id
+		$bmyjmx = $this->controller->get_gp('bmyjmx');//获取请求来源
         /**
          * 判断当前是否传过来uid，如果传入uid，以传入的uid为准，获取客户列表，否则，自动获取当前登录用户的。
          */
@@ -44,9 +45,6 @@ class myClientsController extends baseController
             $uid = $this->adminService->GetToZiXiTongUserId($adminUid['id']);
         }else{
             $uid = intval($userId);//把接受过来的user_id 赋值给uid
-        }
-        if(empty($uid)){
-            exit("未获取用户信息！");
         }
         
         //根据检索条件，拼接where条件，和url链接地址
@@ -112,9 +110,10 @@ class myClientsController extends baseController
         if(empty($userId)){
             $myClientsleftcorpnav = 'yes';
             $this->view->assign('myClientsleftcorpnav', $myClientsleftcorpnav);
-        }else{
+        }else if($bmyjmx == 1){
             //左侧样式是否显示高亮样式
             $bmyjmxleftcorpnav = 'yes';
+  			$this->view->assign('bmyjmx', $bmyjmx);
             $this->view->assign('bmyjmxleftcorpnav', $bmyjmxleftcorpnav);
         }
 
@@ -134,6 +133,7 @@ class myClientsController extends baseController
         $phone = $this->controller->get_gp('phone');
         $startDate = $this->controller->get_gp('start_date');
         $endDate = $this->controller->get_gp('end_date');
+ 		$bmyjmx = $this->controller->get_gp('bmyjmx');//获取请求来源
        
         //获取登陆用户信息
         if(empty($userId)){
@@ -142,9 +142,6 @@ class myClientsController extends baseController
             $uid = $this->adminService->GetToZiXiTongUserId($adminUid['id']);
         }else{
             $uid = intval($userId);//把接受过来的user_id 赋值给uid
-        }
-        if(empty($uid)){
-            exit("未获取用户信息！");
         }
         
         //获取分配记录表的客户信息
@@ -189,10 +186,17 @@ class myClientsController extends baseController
         $this->view->assign('gid', $userinfo['gid']);
         $myClients='yes';//默认加样式
         $this->view->assign('myClients', $myClients);
-        
-        //左侧样式是否显示高亮样式
-        $myClientsleftcorpnav = 'yes';
-        $this->view->assign('myClientsleftcorpnav', $myClientsleftcorpnav);
+       
+        if($bmyjmx==1){
+            //左侧样式是否显示高亮样式
+            $bmyjmxleftcorpnav = 'yes';
+            $this->view->assign('bmyjmx', $bmyjmx);
+            $this->view->assign('bmyjmxleftcorpnav', $bmyjmxleftcorpnav);
+        }else{
+            //左侧样式是否显示高亮样式
+            $myClientsleftcorpnav = 'yes';
+            $this->view->assign('myClientsleftcorpnav', $myClientsleftcorpnav);
+        } 
         
         $this->view->display('myclient/noInvest');
     }
@@ -204,6 +208,7 @@ class myClientsController extends baseController
 		$this->authService->checkauth('1022');
         //获取用户当前客户id
         
+		$bmyjmx = $this->controller->get_gp('bmyjmx'); //获取来源
 		$clientId = intval($this->controller->get_gp('clientId')); //获取当前页码
         if(!isset($clientId) || empty($clientId)){
             $this->run();
@@ -253,8 +258,14 @@ class myClientsController extends baseController
         $this->view->assign('myClients', $myClients);
         
         //左侧样式是否显示高亮样式
-        $myClientsleftcorpnav = 'yes';
-        $this->view->assign('myClientsleftcorpnav', $myClientsleftcorpnav);
+        if(empty($bmyjmx)){
+            $myClientsleftcorpnav = 'yes';
+            $this->view->assign('myClientsleftcorpnav', $myClientsleftcorpnav);
+        }else if($bmyjmx==1){
+            //左侧样式是否显示高亮样式
+            $bmyjmxleftcorpnav = 'yes';
+            $this->view->assign('bmyjmxleftcorpnav', $bmyjmxleftcorpnav);
+        }
         
         $this->view->display('myclient/detail');
     }
@@ -325,9 +336,6 @@ class myClientsController extends baseController
         }else{
             $uid = intval($userId);//把接受过来的user_id 赋值给uid
         }
-        if(empty($uid)){
-            exit("未获取用户信息！");
-        }
         //根据检索条件，拼接where条件，和url链接地址
         $arrangeWhereUrl = $this->arrangeWhereUrl($uname,$phone,$startDate,$endDate,$userId);
         
@@ -336,7 +344,7 @@ class myClientsController extends baseController
         
         //循环查询出我邀请的客户所属的业务人员
         foreach($friends as $k=>$v){
-            $friends[$k]['salesman'] = $this->myClientsService->getSalesmanUsername($v['uid']);
+            $friends[$k]['salesman'] = $this->myClientsService->getSalesmanUsername(intval($v['uid']));
         }
         //查询客户分配记录表里，分配给我的客户id
         $customerRecordList = $this->myClientsService->getCustomerRecordList($uid);
