@@ -37,8 +37,8 @@ class myResultsController extends baseController{
         $renshucount=0;
 
         if(!empty($res['data'])){
-           foreach ($res['data'] as $Key=>$val){
-              $renshucount+= $val['yaoqingrencount'];
+           foreach ($res['data'] as $val){
+              $renshucount += $val['yaoqingrencount'];
            }
         }
         /*
