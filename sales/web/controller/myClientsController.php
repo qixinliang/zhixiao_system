@@ -12,11 +12,11 @@ class myClientsController extends baseController
     public function __construct()
     {
         parent::__construct();
-        $this->adminService = InitPHP::getService("admin");
+        $this->adminService 	= InitPHP::getService("admin");
         $this->myClientsService = InitPHP::getService("myClients");
-		$this->authService = InitPHP::getService('auth');
+		$this->authService 		= InitPHP::getService('auth');
 		$this->TeamUtilsService = InitPHP::getService('TeamUtils');
-		$this->roleService = InitPHP::getService('role');
+		$this->roleService 		= InitPHP::getService('role');
     }
     
 	//客户业绩default action
@@ -65,7 +65,7 @@ class myClientsController extends baseController
         $page 			= ($page-1)*10 ? ($page-1)*10 : 0;
         $friendsCount 	= count($friendsList['friends']);
         $friends 		= array_slice($friendsList['friends'], $page,10);
-        $page_html 		= $pager->pager($friendsCount, 10, $arrangeWhereUrl['url']);
+        $page_html 		= $pager->pager($friendsCount, 10, $searchCond['url']);
         
         //隐藏手机号码
         $friends 		= $this->TeamUtilsService->isShowInfo2($friends);
@@ -290,7 +290,6 @@ class myClientsController extends baseController
     }
 
 	public function createExcel(){
-        
         //获取用户检索条件
         $uname = urldecode($this->controller->get_gp('uname'));    //获取用户名
         $phone = $this->controller->get_gp('phone');//手机号
