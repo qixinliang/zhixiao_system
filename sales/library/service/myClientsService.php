@@ -20,9 +20,29 @@ class myClientsService extends Service
      * @param type $where 查询条件
      * @return type
      */
-    public function getInvestFriends($uid,$where=null){
+    public function getInvestFriends($uid,$where){
         return $this->myClientsDao->getInvestFriends($uid,$where);
     }
+
+	//获取我的客户
+	public function getInvestorByUid($uid,$where){
+		//查询所有的投资客户
+        $rows = $this->myClientsDao->getInvestFriends($uid,$where);
+		if(!isset($rows) || empty($rows)){
+			return array();//抛一个空数组给外面
+		}
+		//循环查询出我邀请的客户所属的业务人员
+		foreach($rows as $k => $v){
+			$rows[$k]['salesman'] = $this->getSalesmanUsername(intval($v['uid']));
+		}
+
+		//查询客户分配记录表里，分配给我的客户id
+		$rows1 = $this->getCustomerRecordList($uid);
+	
+		//客户分配表里分配给我的客户及邀请码表里的我的客户数据合并		
+		$fData = $this->mergeData($rows,$rows1,$where);
+		return $fData;
+	}
     
     /**
      * 根据条件查询未投资客户数据列表
@@ -60,34 +80,32 @@ class myClientsService extends Service
      * 获取用户邀请的好友id列表
      * @param int $uid 用户id
      */
-    public function getfriendsIdList($uid,$allocation){
-        $noInvest = null;
-        //根绝当前登录用户，获取邀请过的好友id
-        $friends = $this->myClientsDao->getFriendsIdList($uid);
-        if(empty($friends) || !isset($friends)){
-            return $invest = ''; exit;
+    public function getfriendsIdList($friends,$allocation){
+        $noInvest = '';
+		$tmp = array();
+		//邀请码表里的数据
+        if(isset($friends) && !empty($friends)){
+			foreach($friends as $v){
+				$tmp[] = $v['uid'];
+			}
         }
-        //foreach循环判断用户是否投资
-        foreach ($friends as $k=>$val){
-            //根据邀请过的好友id，查询order表是否为空
-            $friednOorder = $this->myClientsDao->getFriednOorder($val['uid']);
-            if(empty($friednOorder)){
-                $noInvest= ','.$val['uid'];
-            }
-        }
-        //循环分配记录表里面，分配给当前用户的客户信息，判断是否投资
-        if(!empty($allocation)){
-            foreach ($allocation as $k=>$v){
-                $friednOorder = $this->myClientsDao->getFriednOorder($v['investor_id']);
-                if(empty($friednOorder)){
-                    $noInvest.=','.$v['investor_id'];
-                }
-            }
-        }
-        //判断显示类型，1表示未投资，返回未投资用户id，0表示投资，返回投资用户id
-        $noInvest = substr($noInvest, 1);
-        $invest = $noInvest;
-        return $invest;
+		//客户分配池的数据
+		if(isset($allocation) && !empty($allocation)){
+			foreach($allocation as $v){
+				$tmp[] = $v['investor_id'];
+			}
+		}
+		if(isset($tmp) && !empty($tmp)){
+			foreach($tmp as $v){
+				$orderInfo = $this->myClientsDao->getFriednOorder($v);
+				if(!isset($orderInfo) || empty($orderInfo)){
+					$noInvest .= ',' . $v;
+				}
+			}
+        	return substr($noInvest, 1);
+			
+		}
+		return $noInvest;
     }
     
     
@@ -203,5 +221,63 @@ class myClientsService extends Service
     public function getInviter($clientId){
         return $this->myClientsDao->getInviter($clientId);
     }
-    
+
+	/*
+     * generate search condition
+	 */
+	public function genSearchCond($uName='', $phone='', $sDate='',$eDate='',$uid=''){
+		$where 	= ' ';
+		$url 	= '/myClients/run';
+
+		if(isset($uid) && !empty($uid)){
+			$url = $url . '/uid/' . $uid; 
+		}
+
+        if(isset($uName) && !empty($uName)){
+            $url 	= $url.'/uname/'.$uName;
+            $where .= ' and h.UsrName = "' . $uName . '"';
+        }
+
+        if(isset($phone) && !empty($phone)){
+            $url 	= $url.'/phone/'.$phone;
+            $where .= ' and i.phone = '.$phone;
+        }
+
+        if(isset($sDate) && !empty($sDate)){
+            $url    = $url.'/start_date/'.$sDate;
+            $where .= ' and o.order_time >= '.strtotime($sDate);
+        }
+
+        if(isset($sDate) && !empty($eDate)){
+            $url    = $url.'/end_date/'.$endDate;
+            $where .= ' and o.order_time <= '.strtotime($eDate);
+        }
+
+        return ['url' => $url,'where' => $where];
+	}
+
+	//根据UID获取未投资客户的ids
+	public function getNoInvestCustomerIds($uid){
+		//邀请码表里的客户
+        $friends = $this->myClientsDao->getFriendsIdList($uid);
+		//分配给我的客户
+		$allocation = $this->getCustomerRecordList($uid);
+
+		$ids = $this->getfriendsIdList($friends,$allocation);
+		return $ids;
+	}
+	
+	//获取未投资客户
+	public function getNoInvestCustomers($uid,$where){
+		$ids = $this->getNoInvestCustomerIds($uid);	
+		if(!isset($ids) || empty($ids)){
+			return array();
+		}
+		$customers = $this->getNoInvestFriends($ids,$where);
+		if(!empty($customers)){
+			$count = count($customers);	
+			return array('customers' => $customers,'count' => $count);
+		}
+		return array('customers' => $customers,'count' => 0);
+	}
 }

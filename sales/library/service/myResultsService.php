@@ -66,10 +66,11 @@ class myResultsService extends Service{
      * @我的业绩列表
      *************************************************************/
     public function ResultsList($userinfo){
-        $adminService = InitPHP::getService("admin");//获取管理员信息
+        $adminService = InitPHP::getService("admin");
+        $uid = $adminService->GetToZiXiTongUserId(intval($userinfo['id']));
+
         $data = array();
         $yuefenarr = $this->returnnianfen($userinfo);
-        $uid = $adminService->GetToZiXiTongUserId(intval($userinfo['id']));//获取当前登录的用户uid
         foreach ($yuefenarr as $key=>$val){
             $data[$key] =$this->MonthlyPersonalDetail($uid,$val);
         }
@@ -175,7 +176,7 @@ class myResultsService extends Service{
         $myResultsDao = InitPHP::getDao("myResults");
         $useryaoqingmalistDao = InitPHP::getDao("user_yaoqingma_list");
         $where = ' and a.order_time>='.strtotime($val['start']).' and a.order_time<='.strtotime($val['end']);
-        //$where=null;
+
         //获取登录用户自己的订单记录
         $userlist = $myResultsDao->getUserOrderList($uid,$where);
         $Userarr = $this->calculateData($userlist);
@@ -353,7 +354,6 @@ class myResultsService extends Service{
      *************************************************************/
     public function getUserReceivableOrderList($array,$val){
         $where = " and refund_time>='".strtotime($val['start'])."' and refund_time<='".strtotime($val['end'])."'";
-        //$where=null;        //临时使用后期删掉
         $dealRecordDao = InitPHP::getDao("dealRecord");
         $tmparr = array();
         foreach ($array as $uidkey=>$vuid){
@@ -395,7 +395,6 @@ class myResultsService extends Service{
     public function getYaoQingUserOrderList($uidArr,$val){
         $myResultsDao = InitPHP::getDao("myResults");
         $where = ' and a.order_time>='.strtotime($val['start']).' and a.order_time<='.strtotime($val['end']);
-        //$where=null;//临时赋值后面删除
         $tmparr = array();
         //循环用户获取用户订单列表
         foreach ($uidArr as $k=>$v){   
