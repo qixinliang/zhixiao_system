@@ -155,10 +155,15 @@ class adminController extends baseController{
     {
         $this->authService->checkauth("1014");
         $user_group = $this->roleService->adminList();
+		
         $list2 = $this->departmentService->getDepartmentList2();
         $tree2 = $this->departmentService->generateTree2($list2);
         $html = $this->_exportTree($tree2);
         $this->view->assign('html', $html);
+
+		$listJson 	= json_encode($list2);
+		$this->view->assign('list_json', $listJson);
+
         $this->view->assign('action_name', '添加');
         $this->view->assign('action', 'add');
         $userInfo = $this->adminService->current_user();
@@ -246,6 +251,10 @@ class adminController extends baseController{
         $department_id = $arr['info']['department_id'];
         $html = $this->_exportTree($tree2,$department_id);
         $this->view->assign('html', $html);
+
+		$listJson 	= json_encode($list2);
+		$this->view->assign('list_json', $listJson);
+
         $this->view->assign('user_group', $arr['user_group']);
         $this->view->assign('info', $arr['info']);
         $this->view->assign('action_name', '修改');

@@ -12,7 +12,9 @@
   <link rel="stylesheet" href="/static/css/normalize.css">
   <link rel="stylesheet" href="/static/css/public.css">
   <link rel="stylesheet" href="/static/css/structure.css">
+ <link rel="stylesheet" href="/static/css/department.css">
   <script type="text/javascript" src="/static/js/jquery-3.1.1.js"></script>
+  <script type="text/javascript" src="/static/js/department.js"></script>
 </head>
 <body>
 
@@ -95,9 +97,10 @@
 			<label>所属部门：</label>
 		  </div>
 		  <div class="field">
-			<select name=department_id id="department_id" class="input w50">
-                <!--{$html}-->
-			</select>
+      <input type="text" name="dpt_name" id="dpt_name" value="" class="input w50" />
+      <input type="hidden" name="department_id" id="department_id" value="" />
+    <div id="d_list" style="display:none"><!--{$list_json}--></div>
+
 			<div class="tips_bumen" style="float: left;padding-left: 10px;color: #888;line-height: 42px;"></div>
 		  </div>
 		</div>
@@ -296,5 +299,9 @@ function sub(obj){
 </div>
 
 <script type="text/javascript" src="/static/js/public.js"></script>
+    <div id="tcbox">
+        <h1>部门选择 <span id="ctcs_btn">关闭</span></h1>
+        <div class="tcbox_left"></div>
+    </div>
 </body>
 </html>
