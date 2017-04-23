@@ -74,9 +74,13 @@ class adminController extends baseController{
         $list_count = $this->adminService->admin_list_count($where['where']);
 
         $adminList = $this->roleService->adminList(); //角色列表
-        $list2 = $this->departmentService->getDepartmentList2();//部门列表
-        $tree2 = $this->departmentService->generateTree2($list2);
-        $html = $this->_exportTree($tree2,$department_id);
+
+        $list2 		= $this->departmentService->getDepartmentList2();//部门列表
+        $tree2 		= $this->departmentService->generateTree2($list2);
+        $html 		= $this->_exportTree($tree2,$department_id);
+		$listJson 	= json_encode($list2);
+		$this->view->assign('list_json', $listJson);
+
         $list = $this->getSuperior($list);//查找直属负责人
         
         $page_html = $pager->pager($list_count, $limit, $where['url'], true);

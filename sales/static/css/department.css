@@ -1,0 +1,103 @@
+        #tcbox{
+            border:1px solid #333A4B;
+            overflow: hidden;
+            border-radius:5px;
+            width: 500px;
+            height:300px;
+            position:fixed;
+            top:0;
+            bottom:0;
+            left:0;
+            right:0;
+            margin: auto;
+            background:#fff;
+            display:none;
+        }
+        #tcbox>div{
+            float:left;
+            width: 250px;
+            height: 260px;
+            overflow:scroll;
+        }
+        #tcbox h1{
+            height:40px;
+            width: 500px;
+            background: #333A4B;
+            margin: 0;
+            padding: 0;
+            font-size: 16px;
+            color:#fff;
+            line-height: 40px;
+            padding-left:15px;
+        }
+        #tcbox h1 span{
+            float:right;
+            margin-right: 30px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        .tcbox_left{
+            font-size: 12px;
+
+        }
+        .tcbox_left ul{
+            margin: 0;
+            padding: 0;
+            margin-left:10px;
+            color:#333;
+            list-style:none;
+        }
+        .tcbox_left ul li {
+            cursor:pointer;
+            line-height: 22px;
+        }
+        .tcbox_left ul li .ap{
+            display:inline-block;
+            width: 12px;
+            height:12px;
+            background:url(../images/jia.png) no-repeat;
+            margin-right: 5px;
+        }
+        .tcbox_left ul li .ficons{
+            display:inline-block;
+            width: 17px;
+            height:12px;
+            background:url(../images/bi.png) no-repeat;
+        }
+        .tcbox_left>ul ul{
+            margin-left:15px;
+        }
+        .tcbox_left ul li+ul{
+            display: none;
+        }
+
+        .tcbox_left ul li .ids,
+        .tcbox_left ul li .pid{
+            display: none;
+        }
+        .tcbox_left ul li data:hover{
+            background: #FFF1D4;
+            border:1px solid #FDDBAE;
+        }
+        .tcbox_right table{
+            width: 100%;
+            text-align: left;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        .tcbox_right table th{
+           height:30px;
+            line-height: 30px;
+            background:#EFF1F5;
+            color:#666666;
+            padding-left: 25px;
+
+        }
+        .tcbox_right table td{
+           color:#333333;
+            padding-left: 25px;
+            cursor: pointer;
+        }
+        .tcbox_right table tr:first-child~tr:hover{
+            background: #FFF1D4;
+        }

@@ -8,8 +8,8 @@ class indexController extends baseController
 {
     public function __construct(){
         parent::__construct();
-        $this->adminService    = InitPHP::getService("admin");         //获取Service
-        $this->teamStatService = InitPHP::getService("teamStat");//加载部门统计service
+        $this->adminService    = InitPHP::getService("admin");
+        $this->teamStatService = InitPHP::getService("teamStat");
         $this->noticeService   = InitPHP::getService('notice');
     }
 	public $initphp_list = array('home');
