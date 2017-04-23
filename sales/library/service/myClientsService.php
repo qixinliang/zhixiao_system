@@ -155,8 +155,8 @@ class myClientsService extends Service
      * @param type $uid
      * @return type
      */
-    public function getCustomerRecordList($uid){
-        return $this->myClientsDao->getCustomerRecordList($uid);
+    public function getCustomerRecordList($uid,$where=null){
+        return $this->myClientsDao->getCustomerRecordList($uid,$where);
     }
     
     /**

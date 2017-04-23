@@ -107,8 +107,8 @@ class myClientsDao extends Dao
      * @param type $uid
      * @return type
      */
-    public function getCustomerRecordList($uid){
-        $sql="select * from zx_customer_record where principal=1 and new_inviter_id = $uid";
+    public function getCustomerRecordList($uid,$where=null){
+        $sql="select * from zx_customer_record where principal=1 and new_inviter_id = $uid $where";
         return $this->dao->db->get_all_sql($sql);
     }
     

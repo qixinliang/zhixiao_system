@@ -6,7 +6,6 @@ if (!defined('IS_INITPHP')) exit('Access Denied!');
 */
 class teamStatService extends Service
 {
-    public $tree = array();
     
     public function __construct()
     {
@@ -25,6 +24,7 @@ class teamStatService extends Service
         $deparmentList = $this->departmentService->getDepartmentList();//获取所有的部门
         
         $sonDepartment = $this->TeamUtilsService->getSonDepartment($deparmentList,1);
+		$this->TeamUtilsService->tree = array();
         
         //递归循环，算出所有部门的level等级
         $minDepartmentLevel = $this->minDepartment($sonDepartment);
@@ -52,7 +52,16 @@ class teamStatService extends Service
      * @param string $end_time
      * @param number $userId 判断是否需要统计当前登录用户的业绩,如果userid有值，就统计，默认为空 
      */
-    public function getDepartmentStat($departmentId,$start_time=null,$end_time=null,$userId=null){
+    public function getDepartmentStat($departmentId=0,$start_time=null,$end_time=null,$userId=null){
+        $array = array(
+            'ruJinGuiMo'=>0,
+            'zheBiaoJinE'=>0,
+            'keHuCount'=>0,
+            'departmentName'=>0
+        );
+        if($departmentId<=0){
+            return $array;
+        }
         
         $deparmentList = $this->departmentService->getDepartmentList();//获取所有的部门
         
@@ -63,7 +72,7 @@ class teamStatService extends Service
         
         //获取我所有的子部门
         $sonDepartment = $this->TeamUtilsService->getSonDepartment($deparmentList,$departmentId);
-        $this->tree = array();
+        $this->TeamUtilsService->tree = array();
         
         foreach ($sonDepartment as $k1=>$v1){
             $user = $this->bmyjmxDao->getDepartmentUser(intval($v1['department_id']));
@@ -95,8 +104,13 @@ class teamStatService extends Service
             $zheBiaoJinE += $res['nianhuan'];
             $keHuCount   += $res['yaoqingrencount'];
         }
-        
-        return array('ruJinGuiMo'=>$ruJinGuiMo,'zheBiaoJinE'=>$zheBiaoJinE,'keHuCount'=>$keHuCount,'departmentName'=>$departmentName);
+        $array =  array(
+            'ruJinGuiMo'=>$ruJinGuiMo,
+            'zheBiaoJinE'=>$zheBiaoJinE,
+            'keHuCount'=>$keHuCount,
+            'departmentName'=>$departmentName
+        );
+		return $array;
     }
     
     /**

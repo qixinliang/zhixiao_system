@@ -89,7 +89,8 @@ class myResultsService extends Service{
     public function getMonthlyPersonalDetail($uid,$val){
         $myResultsDao = InitPHP::getDao("myResults");
         $useryaoqingmalistDao = InitPHP::getDao("user_yaoqingma_list");
-        $where = ' and a.order_time>='.strtotime($val['start']).' and a.order_time<='.strtotime($val['end']);
+//         $where = ' and a.order_time>='.strtotime($val['start']).' and a.order_time<='.strtotime($val['end']);
+        $where = ' and b.full_time>='.strtotime($val['start']).' and b.full_time<='.strtotime($val['end']);
         //$where=null;
         //获取登录用户自己的订单记录
         $userlist = $myResultsDao->getUserOrderList($uid,$where);
@@ -98,11 +99,14 @@ class myResultsService extends Service{
         /**
          * 获取被邀请客户的Uid列表
          * uid作为 friends
+         * $where 条件，如果传条件，获取当月的邀请客户列表，where为null获取所有的客户数量
          */
-        $yaoqingUserUidlist = $this->getYaoQingRenList($uid,$val);
+        $yaoqingUserUidlist = $this->getYaoQingRenList($uid);
+        
+        $yaoqingUserUidlist2 = $this->getYaoQingRenList($uid,$val);
         
         //得到邀请用户的全部订单
-        $yaoqingUserOrderList = $this->getYaoQingUserOrderList($yaoqingUserUidlist,$val);
+        $yaoqingUserOrderList = $this->getYaoQingUserOrderList2($yaoqingUserUidlist,$val);
         $YaoQingUserarr = $this->calculateData($yaoqingUserOrderList);
         
         //计算当月邀请的用户并且邀请的用户当月投资总额大于等于1w的，返回个数
@@ -114,15 +118,19 @@ class myResultsService extends Service{
         //获取分配给用户的客户uid列表
         $this->myClientsService = InitPHP::getService("myClients");
         $customerRecordList = $this->myClientsService->getCustomerRecordList($uid);
-
+        
+        //根据时间查询分配给我的客户数量
+        $where = ' and create_time>='.strtotime($val['start']).' and create_time<='.strtotime($val['end']);
+        $customerRecordList2 = $this->myClientsService->getCustomerRecordList($uid,$where);
+        
        //去除两个数组中重复的数据
        $customerRecordList =  $this->getRepeatArray($customerRecordList,$yaoqingUserUidlist);
-
+       
         if(is_array($customerRecordList)){
             
             //得到分配客户的所有订单
             $investCustomerOrder = $this->getRecordList($customerRecordList,$val);
-            
+
             //统计订单总额 年化nianhuan
             $investCustomerOrderAll = $this->calculateData($investCustomerOrder);
             
@@ -154,7 +162,7 @@ class myResultsService extends Service{
         $huikuan = ($yaoqingUserReceivabe+$UserReceivabe+$investReceivabe);
         //获取邀请的客户
         $yaoqingrenNumber = 0;
-        $yaoqingrenNumber = count($yaoqingUserUidlist)+count($customerRecordList); //分配给我的客户+邀请客户数量
+        $yaoqingrenNumber = count($yaoqingUserUidlist2)+count($customerRecordList2); //分配给我的客户+邀请客户数量
         return array(
             'yaoqingrencount'=>$yaoqingrenNumber,
             'zonge'=>number_format($zonge,2,".",""),
@@ -162,6 +170,7 @@ class myResultsService extends Service{
             'huikuan'=>number_format($huikuan,2,".","")
         );
     }
+
     /************************************************************
      * @copyright(c): 2017年3月21日
      * @Author:  yuwen
@@ -175,7 +184,7 @@ class myResultsService extends Service{
     public function MonthlyPersonalDetail($uid,$val){
         $myResultsDao = InitPHP::getDao("myResults");
         $useryaoqingmalistDao = InitPHP::getDao("user_yaoqingma_list");
-        $where = ' and a.order_time>='.strtotime($val['start']).' and a.order_time<='.strtotime($val['end']);
+		$where = ' and b.full_time>='.strtotime($val['start']).' and b.full_time<='.strtotime($val['end']);
 
         //获取登录用户自己的订单记录
         $userlist = $myResultsDao->getUserOrderList($uid,$where);
@@ -406,6 +415,28 @@ class myResultsService extends Service{
         }
         return $tmparr;
     }
+
+    /**
+     * 方法是给我的客户列表，和我的部门业绩统计，明细使用，查询条件按照标的状态（5,6）和满标时间（full_time）查询
+     * @param unknown $uid
+     * @param unknown $val
+     */
+    public function getYaoQingUserOrderList2($uidArr,$val){
+        $myResultsDao = InitPHP::getDao("myResults");
+        $where = ' and b.full_time>='.strtotime($val['start']).' and b.full_time<='.strtotime($val['end']);
+        //$where=null;//临时赋值后面删除
+        $tmparr = array();
+        //循环用户获取用户订单列表
+        foreach ($uidArr as $k=>$v){
+            $yaoqingUserOrderList = $myResultsDao->getUserOrderList($v['uid'],$where);
+            if(!empty($yaoqingUserOrderList)){
+                $tmparr=array_merge($tmparr,$yaoqingUserOrderList);
+            }
+            //找到用户投资的订单
+        }
+        return $tmparr;
+    }
+
     /************************************************************
      * @copyright(c): 2017年3月21日
      * @Author:  yuwen
@@ -416,7 +447,9 @@ class myResultsService extends Service{
      *************************************************************/
     public function getYaoQingRenList($uid,$val){
         $useryaoqingmalistDao = InitPHP::getDao("user_yaoqingma_list");
-        $yaoqingwhere = ' and add_date>='.strtotime($val['start']).' and add_date<='.strtotime($val['end']);
+        if(is_array($val) && !empty($val)){
+            $yaoqingwhere = ' and add_date>='.strtotime($val['start']).' and add_date<='.strtotime($val['end']);
+        }
         //$yaoqingwhere=null;//这里测试先写死后面删掉就好了
         $yaoqinglistUid = $useryaoqingmalistDao->getUidlist($uid,$yaoqingwhere);
         return $yaoqinglistUid;
@@ -424,8 +457,7 @@ class myResultsService extends Service{
     
     public function getRecordList($uidArr,$val){
         $myClientsDao = InitPHP::getDao("myClients");
-        $where = ' and o.order_time>='.strtotime($val['start']).' and o.order_time<='.strtotime($val['end']);
-//         $where= null;
+        $where = ' and d.full_time>='.strtotime($val['start']).' and d.full_time<='.strtotime($val['end']);
         $tmparr = array();
         //循环用户获取用户订单列表
         foreach ($uidArr as $kks=>$vvs){
@@ -485,15 +517,19 @@ class myResultsService extends Service{
      * @return multitype:
      */
     public function getRepeatArray($customerRecordList,$yaoqingUserUidlist){
-        if(!is_array($customerRecordList) || !is_array($yaoqingUserUidlist)){
-            return $yaoqingUserUidlist= array();
+        if(!is_array($customerRecordList)){
+            return $customerRecordList= array();
         }
-
+        
         foreach ($customerRecordList as $k=>$v){
-            foreach ($yaoqingUserUidlist as $k1=>$v1){
-                if($v1['uid']==$v['investor_id']){
-                    unset($customerRecordList[$k]);
+            if(!is_array($yaoqingUserUidlist)){
+                foreach ($yaoqingUserUidlist as $k1=>$v1){
+                    if($v1['uid']==$v['investor_id']){
+                        unset($customerRecordList[$k]);
+                    }
                 }
+            }else{
+                return $customerRecordList;
             }
         }
         return $customerRecordList;

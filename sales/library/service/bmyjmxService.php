@@ -136,7 +136,7 @@ class bmyjmxService extends Service
 	    
 	    $departmentUserData = array();
 	    foreach($departmentUser as $k=>$val){
-	            $userYeji = $this->myResultsService->getSummaryRanking($val['id'],$startDate,$endDate);
+	            $userYeji = $this->myResultsService->getSummaryRanking(intval($val['id']),$startDate,$endDate);
 	            $val['yaoqingrencount'] = $userYeji['yaoqingrencount'];
 	            $val['zonge'] = $userYeji['zonge'];
 	            $val['nianhuan'] = $userYeji['nianhuan'];

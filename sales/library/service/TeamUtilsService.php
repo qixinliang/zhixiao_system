@@ -9,6 +9,7 @@ class TeamUtilsService extends Service{
     
     private $touzirenshuliang;     //投资人数量
     private $touzizongedu;         //投资总额度
+	public $tree = array();
     
    /*
     * 数组分页公共方法
