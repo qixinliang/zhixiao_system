@@ -107,69 +107,60 @@ class myClientsController extends baseController
      * 未投资客户
      */
     public function noInvest(){
+		//权限检查
 		$this->authService->checkauth('1021');
-		
-        $pager= $this->getLibrary('pager'); //分页加载
-        $page = $this->controller->get_gp('page') ? $this->controller->get_gp('page') : 1 ; //获取当前页码
-        $userId = intval($this->controller->get_gp('uid')); //获取uid，用户id
-        $uname = urldecode($this->controller->get_gp('uname'));    //获取用户名
-        $phone = $this->controller->get_gp('phone');
-        $startDate = $this->controller->get_gp('start_date');
-        $endDate = $this->controller->get_gp('end_date');
- 		$bmyjmx = $this->controller->get_gp('bmyjmx');//获取请求来源
+	
+		//参数获取
+        $userId 	= intval($this->controller->get_gp('uid'));
+        $uname 		= urldecode($this->controller->get_gp('uname'));
+        $phone 		= $this->controller->get_gp('phone');
+        $startDate 	= $this->controller->get_gp('start_date');
+        $endDate 	= $this->controller->get_gp('end_date');
+ 		$bmyjmx 	= $this->controller->get_gp('bmyjmx');
+
+        $pager 		= $this->getLibrary('pager');
+        $page  		= $this->controller->get_gp('page') ?
+			$this->controller->get_gp('page') : 1;
        
-        //获取登陆用户信息
         if(empty($userId)){
-            //获取登陆用户信息
-            $adminUid=$this->adminService->current_user();
-            $uid = $this->adminService->GetToZiXiTongUserId($adminUid['id']);
+            $userInfo 	= $this->adminService->current_user();
+            $uid 	  	= $this->adminService->GetToZiXiTongUserId(intval($userInfo['id']));
         }else{
-            $uid = intval($userId);//把接受过来的user_id 赋值给uid
+            $uid 		= intval($userId);
         }
         
-        //获取分配记录表的客户信息
-        $allocation = $this->myClientsService->getCustomerRecordList($uid);
-        //获取用户邀请的好友id列表（投资，和未投资）
-        $friendIds = $this->myClientsService->getfriendsIdList($uid,$allocation);
-        if($friendIds!=''){
             
-            //根据检索条件，拼接where条件，和url链接地址
-            $arrangeWhereUrl = $this->arrangeWhereUrl($uname,$phone,$startDate,$endDate,$userId);
+		//检索条件
+        $searchCond 	= $this->myClientsService->genSearchCond(
+			$uname,$phone,$startDate,$endDate,$uid);
+
+		//计算结果
+        $rows 			= $this->myClientsService->getNoInvestCustomers(
+			$uid,$searchCond['where']);
+
+		$friends 		= $rows['customers'];
+		$friendsCount 	= $rows['count'];
             
-            $page = ($page-1)*10 ? ($page-1)*10 : 0;
+       	$page 			= ($page-1)*10 ? ($page-1)*10 : 0;
+        $page_html 		= $pager->pager($friendsCount, 10, $searchCond['url']);
             
-            $friends = $this->myClientsService->getNoInvestFriends($friendIds,$arrangeWhereUrl['where']);//查询所有数据
+        //隐藏手机号码
+		if(isset($friends) && !empty($friends)){
+           	$friends = $this->TeamUtilsService->isShowInfo2($friends);
+		}
             
-            $friendsCount = $this->myClientsService->getNoInvestFriendsCount($friendIds,$arrangeWhereUrl['where']);//统计条数
-            
-            $page_html = $pager->pager($friendsCount['count'], 10, $arrangeWhereUrl['url']); //最后一个参数为true则使用默认样式
-            
-            //隐藏手机号码
-            $friends = $this->TeamUtilsService->isShowInfo2($friends);
-            //分页
-            $this->view->assign('page_html', $page_html);
-            //数据列表
-            
-            $this->view->assign('friends',$friends);
-            $this->view->assign('count',$friendsCount['count']);//投资和未投资统计人数
-            $this->view->assign('username', $adminUid['user']);
-        }
-        
-        //条件数据
+        $this->view->assign('friends',$friends);
+        $this->view->assign('page_html', $page_html);
+        $this->view->assign('count',$friendsCount);
+        $this->view->assign('username', $userInfo['user']);
         $this->view->assign('uname', $uname);
         $this->view->assign('phone', $phone);
         $this->view->assign('start_date', $startDate);
         $this->view->assign('end_date', $endDate);
-        $this->view->assign('uid',$userId);
-        /*
-         * @判断当前用户是否有权限访问组织结构cai'dan
-         */
-        $adminService = InitPHP::getService('admin');
-        $userinfo = $adminService->current_user();
+        $this->view->assign('uid',$uid);
         $this->view->assign('gid', $userinfo['gid']);
         $myClients='yes';//默认加样式
         $this->view->assign('myClients', $myClients);
-       
         if($bmyjmx==1){
             //左侧样式是否显示高亮样式
             $bmyjmxleftcorpnav = 'yes';
