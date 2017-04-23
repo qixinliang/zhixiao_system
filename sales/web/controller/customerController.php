@@ -11,7 +11,7 @@ class customerController extends baseController{
 	public $customerService 		= NULL;
 	public $customerRecordService 	= NULL;
 
-	public $initphp_list = array('run','adjust','adjustSave','record');
+	public $initphp_list = array('run','adjust','adjustSave','record','user');
 	public function __construct(){
 		parent::__construct();
 		$this->adminService 			= InitPHP::getService('admin');
@@ -42,7 +42,7 @@ class customerController extends baseController{
 		}
 
 		$uName 			= urldecode($this->controller->get_gp('user_name'));
-        $uDepartment	= $this->controller->get_gp('user_department');
+        $uDepartment	= $this->controller->get_gp('department_id');
         $uRole 		 	= $this->controller->get_gp('user_role');
         if(!empty($uName)){
             $this->view->assign('uName', $uName);
@@ -96,6 +96,9 @@ class customerController extends baseController{
         $tree2 = $this->departmentService->generateTree2($list2);
         $html  = $this->departmentService->exportSelectedTree($tree2,$uDepartment);
         $this->view->assign('html', $html);
+		
+		$listJson = json_encode($list2);
+		$this->view->assign('list_json',$listJson);
 
 		//角色筛选
 		$userGroup = $this->roleService->adminList();
@@ -193,6 +196,9 @@ class customerController extends baseController{
 				$leftInviterArr[] = $tmpArr;
 			}
 		}
+		$list2 = $this->departmentService->getDepartmentList2();
+		$listJson = json_encode($list2);
+		$this->view->assign('list_json',$listJson);
 
 		//提供给页面的变量
 		$this->view->assign('investor_id',$investorId);
@@ -319,5 +325,38 @@ class customerController extends baseController{
 		$this->view->assign('recordcustomerleftcorpnav', $recordcustomerleftcorpnav);
 		
 		$this->view->display('customer/record');
+	}
+
+	//封装个接口返回ajax
+	public function user(){
+		$did = $this->controller->get_gp('department_id');
+		$ret = $this->adminService->getdepartmentTheUser(intval($did));
+		if(isset($ret) && !empty($ret)){
+			$tmp = array();
+			foreach($ret as $r){
+				$uid = $r['id']; //用户
+				$uName = $r['user'];
+
+				$did = $r['department_id']; //部门ID
+				$dName = $r['department_name'];
+
+				$roleId = $r['gid'];
+				$roleName = $r['name'];
+				$ttt = array(
+					'uid' 		=> $uid,
+					'u_name' 	=> $uName,
+					'did' 		=> $did,
+					'd_name' 	=> $dName,
+					'role_id' 	=> $roleId,
+					'role_name' => $roleName,
+				);
+				$tmp[] = $ttt;
+			}
+			exit(json_encode(array('status' => 200,'value' => $tmp)));
+		}
+		
+	exit( json_encode(array(
+			'status' => 400,
+			'value' => '')));
 	}
 }

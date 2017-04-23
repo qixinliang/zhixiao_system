@@ -59,12 +59,29 @@ $('#tcbox').on('click','.ap',function(){
 
 //数据插入事件
 $('#tcbox').on('click','[class^="list"]>data',function(){
-   $('#dpt_name').val($(this).html());
-   $('#tcbox').css('display','none');
-   $('#department_id').val($(this).siblings('.ids').html());
+  // $('#dpt_name').val($(this).html());
+  // $('#tcbox').css('display','none');
+  // $('#department_id').val($(this).siblings('.ids').html());
   // alert($(this).html());
+  var dpt_id = $(this).siblings('.ids').html();
+       console.log(dpt_id);
+   $.ajax({
+      url:'/customer/user',
+      type:'post',
+      data:{department_id:dpt_id},
+      success:function(data){
+       var user = JSON.parse(data).value[0]; 
+      $('<tr class="user"><td class="user_uid">'+user.uid+'</td><td class="user_name">'+user.u_name+'</td><td>'+user.role_name+'</td></tr>')
+       .appendTo('.tcbox_right>table'); 
+      }
+  });
 });
-
+//人员信息获取
+ $('.tcbox_right>table').on('click','.user',function(){
+       var uid = $(this).find('.user_uid').text();
+       var u_name = $(this).find('.user_name').text();
+       console.log(u_name);
+});
 //焦点弹窗事件
 $('#dpt_name').focus(function(){
     $('#tcbox').css('display','block');
@@ -73,6 +90,6 @@ $('#dpt_name').focus(function(){
 //关闭事件
 $('#ctcs_btn').click(function(){
 	$('#tcbox').css('display','none');
-})
+});
 
 });

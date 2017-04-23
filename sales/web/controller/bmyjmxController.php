@@ -87,6 +87,10 @@ class bmyjmxController extends baseController{
         //返回数据
         $this->view->assign('my_department', $myDepartment); //返回我的部门信息
         $this->view->assign('my_department_lsit', $sonDepartment); //返回我的子部门列表，用作搜索条件
+ 		$list2 = $this->departmentService->getDepartmentList2();
+		$listJson = json_encode($list2);
+		$this->view->assign('list_json',$listJson);
+
         $this->view->assign('page_html', $page_html);
         $myClients='yes';//默认加样式
         $this->view->assign('myClients', $myClients);
@@ -260,6 +264,11 @@ class bmyjmxController extends baseController{
         $this->view->assign('city',$city);
         $this->view->assign('my_department', $myDepartment); //返回我的部门信息
         $this->view->assign('my_department_lsit', $sonDepartment); //返回我的子部门列表，用作搜索条件
+		//部门。。。
+ 		$list2 = $this->departmentService->getDepartmentList2();
+		$listJson = json_encode($list2);
+		$this->view->assign('list_json',$listJson);
+
         $this->view->assign('page_html', $page_html);
         $this->view->assign('user_data', $departmentUserDetail);
 

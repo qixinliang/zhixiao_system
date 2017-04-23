@@ -2,7 +2,7 @@
             border:1px solid #333A4B;
             overflow: hidden;
             border-radius:5px;
-            width: 500px;
+            width: 502px;
             height:300px;
             position:fixed;
             top:0;
@@ -19,6 +19,9 @@
             height: 260px;
             overflow:scroll;
         }
+        .user_uid{
+         display:none;     
+         }
         #tcbox h1{
             height:40px;
             width: 500px;
@@ -97,6 +100,7 @@
            color:#333333;
             padding-left: 25px;
             cursor: pointer;
+            line-height:25px;
         }
         .tcbox_right table tr:first-child~tr:hover{
             background: #FFF1D4;

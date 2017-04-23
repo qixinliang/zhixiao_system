@@ -16,8 +16,10 @@
   <link rel="stylesheet" href="/static/css/normalize.css">
   <link rel="stylesheet" href="/static/css/public.css">
   <link rel="stylesheet" href="/static/css/structure.css">
+    <link rel="stylesheet" href="/static/css/department.css">
   <script type="text/javascript" src="/static/js/jquery-3.1.1.js"></script>
  <script type="text/javascript" src="/static/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="/static/js/department.js"></script>
 </head>
 <body>
 <div class="wrapper">
@@ -44,12 +46,10 @@
 
         <input type="text" name="end_date" id="end_date" style="width: 130px;height: 25px;margin-right: 20px;" value="<!--{$end_date}-->" onClick="WdatePicker()" />
 
-        按部门:	<select name="department_id" style="width:150px;margin-right: 20px;">
-                    <option value="">请选择</option>
-                    <!--{foreach($my_department_lsit as $k=>$v)}-->
-                    <option value="<!--{$v['department_id']}-->"<!--{if($department_id==$v['department_id'])}-->selected<!--{/if}-->><!--{$v['step']}--><!--{$v['department_name']}--></option>
-                    <!--{/foreach}-->
-                </select>
+      	部门：<input type="text" name="dpt_name" id="dpt_name" value="" placeholder="部门" style="width:160px; height:25px; margin-right:30px;" />
+      <input type="hidden" name="department_id" id="department_id" value="" />
+      <div id="d_list" style="display:none"><!--{$list_json}--></div>
+
         姓名 ： <input type="text" name="username" style="width: 160px;height: 25px;margin-right: 30px;" value="<!--{$username}-->" placeholder="姓名">
       <input type="submit" class="button border-main" value="搜索" onClick="return tijiao();"> 
       <input type="hidden" name="status" value='1' />
@@ -108,6 +108,11 @@
 </div>
 </article>
 </div>
+    <div id="tcbox">
+        <h1>部门选择 <span id="ctcs_btn">关闭</span></h1>
+        <div class="tcbox_left"></div>
+    </div>
+
 <script type="text/javascript" src="/static/js/public.js"></script>
 <script type="text/javascript">
 //form表单验证
