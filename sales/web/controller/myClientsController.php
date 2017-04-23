@@ -180,10 +180,9 @@ class myClientsController extends baseController
      */
     public function detail(){
 		$this->authService->checkauth('1022');
-        //获取用户当前客户id
         
-		$bmyjmx = $this->controller->get_gp('bmyjmx'); //获取来源
-		$clientId = intval($this->controller->get_gp('clientId')); //获取当前页码
+		$bmyjmx 	= $this->controller->get_gp('bmyjmx');
+		$clientId 	= intval($this->controller->get_gp('clientId'));
         if(!isset($clientId) || empty($clientId)){
             $this->run();
         }
@@ -225,9 +224,8 @@ class myClientsController extends baseController
         /*
          * @判断当前用户是否有权限访问组织结构cai'dan
          */
-        $adminService = InitPHP::getService('admin');
-        $userinfo = $adminService->current_user();
-        $this->view->assign('gid', $userinfo['gid']);
+        $userInfo = $this->adminService->current_user();
+        $this->view->assign('gid', $userInfo['gid']);
         $myClients='yes';//默认加样式
         $this->view->assign('myClients', $myClients);
         
