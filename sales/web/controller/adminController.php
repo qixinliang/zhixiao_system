@@ -252,8 +252,12 @@ class adminController extends baseController{
         $html = $this->_exportTree($tree2,$department_id);
         $this->view->assign('html', $html);
 
+		//部门默认选中
+		$dptName = $this->departmentService->getDepartmentName2($department_id);
 		$listJson 	= json_encode($list2);
 		$this->view->assign('list_json', $listJson);
+		$this->view->assign('department_id',$department_id);
+		$this->view->assign('department_name',$dptName);
 
         $this->view->assign('user_group', $arr['user_group']);
         $this->view->assign('info', $arr['info']);

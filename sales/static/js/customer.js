@@ -87,11 +87,11 @@ $('#tcbox').on('click','[class^="list"]>data',function(){
        var uid = $(this).find('.user_uid').text();
        var u_name = $(this).find('.user_name').text();
        $('#new_inviter_id').val(uid);
-       $('#new_inviter_name').val(u_name);
+       $('#new_inviter_name').html(u_name);
        $('#tcbox').css('display','none');
 });
 //焦点弹窗事件
-$('#new_inviter_name').focus(function(){
+$('#new_inviter_name').click(function(){
     $('#tcbox').css('display','block');
 });
 

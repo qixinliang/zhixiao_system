@@ -105,3 +105,20 @@
         .tcbox_right table tr:first-child~tr:hover{
             background: #FFF1D4;
         }
+        
+        .tcbox_bumen{
+	     width:250px !important;
+        }
+        
+        .tcbox_bumen h1 span{
+	       float:none !important;
+        	margin-left:130px !important;
+        }
+        #new_inviter_name{
+		    width:155px; 
+		    border:1px solid #ccc;
+		    padding-left:5px;
+		    height:25px; 
+		    margin-right:30px;
+        }
+       

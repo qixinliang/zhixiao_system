@@ -45,23 +45,11 @@
 			<label>新销售：</label>
 		</div>
         <div class="field" id="power">
-      <input type="text" name="new_inviter_name" id="new_inviter_name" value="" placeholder="销售" style="width:160px; height:25px; margin-right:30px;" />
+      <p name="new_inviter_name" id="new_inviter_name">请点击...</p>
       <input type="hidden" name="new_inviter_id" id="new_inviter_id" value="" />
 	<div id="d_list" style="display:none"><!--{$list_json}--></div>
 
-            <!--<select name="new_inviter_id" id="new_inviter_id" class="input w50">
-				<option value="0">请选择</option>
-				<!--{if(isset($left_inviter_arr) && !empty($left_inviter_arr))}-->
-				<!--{foreach($left_inviter_arr as $v)}-->
-				<option value="<!--{$v['id']}-->"><!--{$v['str']}--></option>
-				<!--{/foreach}-->
-				<!--{else}-->
-				<option value="1">张三</option>
-				<option value="2">李四</option>
-				<option value="3">王五</option>
-				<option value="4">赵六</option>
-				<!--{/if}-->
-            </select>-->
+           
         </div>
 			
 		<div id="reserved">
@@ -83,23 +71,19 @@
   </div>
 <script type="text/javascript">
 function sub(obj){
-	/*
-	var new_inviter_id  =  $("#new_inviter_id").val();
-	if(new_inviter_id == ""){
-		$(".tipss").html("<font color=\"red\">新销售人员为空!</font>").show();
-		return;
-	}
-	var myselect = document.getElementById("new_inviter_id");
-	var index = myselect.selectedIndex;
-	var new_inviter_name = myselect.options[index].text;
-	
-	$("#reserved").html("<input name=\"new_inviter_name\" id=\"new_inviter_name\" type=\"hidden\" value="+new_inviter_name+" />");
-*/
+	var c_p_id   = $("#customer_pool_id").val();
+	var inv_id   = $("#investor_id").val(); 
+	var i_name   = $("#investor_name").val(); 
+	var o_i_id 	 = $("#origin_inviter_id").val();
+	var o_i_name = $("#origin_inviter_name").val();
+    var n_i_id 	 = $('#new_inviter_id').val();
+    var n_i_name = $('#new_inviter_name').html();
+
 	$.ajax({
 		url: '/customer/<!--{$action}-->',
 		type: 'post',
-		dataType:'json',
-		data: $('#form').serialize(),
+		dataType: 'json',
+		data:{customer_pool_id:c_p_id,investor_id:inv_id,investor_name:i_name,origin_inviter_id:o_i_id, origin_inviter_name:o_i_name,new_inviter_id:n_i_id,new_inviter_name:n_i_name},
 		success: function(data) {
 			if(data.status==1){
 				window.location.href="/customer/run";
