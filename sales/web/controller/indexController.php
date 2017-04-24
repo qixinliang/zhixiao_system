@@ -8,102 +8,101 @@ class indexController extends baseController
 {
     public function __construct(){
         parent::__construct();
-        $this->adminService    = InitPHP::getService("admin");
-        $this->teamStatService = InitPHP::getService("teamStat");
-        $this->noticeService   = InitPHP::getService('notice');
+        $this->adminService    		= InitPHP::getService("admin");
+        $this->teamStatService 		= InitPHP::getService("teamStat");
+        $this->noticeService   		= InitPHP::getService('notice');
+        $this->departmentService   	= InitPHP::getService('department');
+		$this->roleService 			= InitPHP::getService('role');
+	    $this->icService 			= InitPHP::getService("inviteCustomers");
     }
 	public $initphp_list = array('run');
 
 	public function run(){
-	    $userinfo = $this->adminService->current_user();
-	     
-	    /*
-	     * @所属部门
-	    */
-	    $departmentService = InitPHP::getService("department");
-	    $departmentName = $departmentService->getDepartmentName(intval($userinfo['department_id']));
-	    $this->view->assign('departmentName', $departmentName);
-	    /*
-	     * @所属职位
-	    */
-	    $roleService = InitPHP::getService("role");
-	    $position = $roleService->info(intval($userinfo['gid']));
-	    $this->view->assign('position', $position['name']);
-	    /*
-	     * @邀请客户数量
-	    */
-	    $adminService = InitPHP::getService("admin");
-	    $inviteCustomersService = InitPHP::getService("inviteCustomers");
-	    $uid = $adminService->GetToZiXiTongUserId(intval($userinfo['id']));
-	    $uidList = $inviteCustomersService->getInviteCustomersUidList($uid);
-	    $this->view->assign('UidNumber',count($uidList));//邀请的客户数量
-	    /*
-	     * @本月新增客户数
-	    */
-	    $monthuidList = $inviteCustomersService->getAccessToCustomerThisMonth($uid);
-	    $this->view->assign('montnumber', count($monthuidList));
-	    /*
-	     * @TOP排行榜
-	    */
-	    $YearsMonth = date("Y-m");
-	    $list = $this->getTopranking($YearsMonth);
-	    $list = $this->SortAnArray($list);
-	    $output = array_slice($list, 0,5);//显示前5调数据
-	    
-	    /**
-	     * 团队精英TOP排行榜
-	     */
-	    $TeamTopList = $this->teamStatService->getTeamTop();
-	    $isGolden = $this->checkTheGolden($TeamTopList);
-	    //检查入金是否有金额
-	    $this->view->assign('isGolden', $isGolden);
-	    
-	    $this->view->assign('TeamTopList', $TeamTopList);
-	    
-	    /**
-	     * 部门管理统计
-	     */
-	    $userId = intval($userinfo['id']);
-	    $departmentId = intval($userinfo['department_id']);
-	    //本月新增客户数量
-	    $curClientCount = $this->teamStatService->getDepartmentStat($departmentId,null,null,$userId);
-	    $this->view->assign('curClientCount', $curClientCount['keHuCount']);
-	    
-	    //累计客户数量
-	    $start_time = date('Y-m-d H:i:s',$userinfo['regtime']);//开始时间
-	    $end_time = date('Y-m-d H:i:s',time());//结束时间
-	    $customersCount = $this->teamStatService->getDepartmentStat($departmentId,$start_time,$end_time,$userId);
-	    $this->view->assign('customersCount', $customersCount['keHuCount']);
-	    
-	    //上月入金规模，折标规模
-	    $datey = $this->getlastMonthDays(date("Y-m-d H:i:s"));
-	    $shangYueStat = $this->teamStatService->getDepartmentStat($departmentId,$datey['start'],$datey['end'],$userId);
-	    $this->view->assign('shangYueStat', $shangYueStat);
-        
-	    
-	    //最新公告
-	    $notice = $this->noticeService->getLatestNotice();
-	    $this->view->assign('notice', $notice);
-        
-	    //检查是否有数据
-	    $checkAmount = $this->checkTheAmountOf($output);
+		//用户信息
+		$userInfo = $this->adminService->current_user();
+		if(!isset($userInfo) || empty($userInfo)){
+			exit(json_encode(array('status' => -1,'message' => 'invalid user!')));
+		}
+	
+		//部门.
+		$dptName = $this->departmentService->getDepartmentName(intval($userInfo['department_id']));
+	    $this->view->assign('departmentName', $dptName);
+	
+		//职位.
+		$row 	= $this->roleService->info(intval($userInfo['gid']));
+		$this->view->assign('position',$row['name']);
+
+		//邀请客户数量
+		$uid 	= $this->adminService->GetToZiXiTongUserId(intval($userInfo['id']));
+		$rows   = $this->icService->getInviteCustomersUidList($uid);
+		$cnt    = 0;
+		if(isset($rows) && is_array($rows)){
+			$cnt = count($rows);
+		}
+	    $this->view->assign('UidNumber',$cnt);
+
+		//本月新增客户数
+	    $rows 	= $this->icService->getAccessToCustomerThisMonth($uid);
+		$cnt    = 0;
+		if(isset($rows) && is_array($rows)){
+			$cnt = count($rows);
+		}
+	    $this->view->assign('montnumber', $cnt);
+	
+		//个人业绩排行榜
+	    $curYm 			= date("Y-m");
+	    $list  			= $this->getTopranking($curYm);
+	    $list  			= $this->SortAnArray($list);
+	    $output 		= array_slice($list, 0,5);
+	    $checkAmount 	= $this->checkTheAmountOf($output);
 	    $this->view->assign('checkAmount', $checkAmount);
 	    $this->view->assign('output', $output);
-	    $this->view->assign('YearsMonth', $YearsMonth);
-	    /*
-	     * @个人管理 上月入金规模
-	    */
-	    $datey = $this->getlastMonthDays(date("Y-m-d H:i:s"));
-	    $myResultsService = InitPHP::getService("myResults");
-	    $getlastMonthlist = $myResultsService->getTopranking(intval($uid),$datey['start'],$datey['end']);
+	    $this->view->assign('YearsMonth', $curYm);
+
+	    //个人上月入金规模
+	    $lm = $this->getlastMonthDays(date("Y-m-d H:i:s"));
+	    $myService = InitPHP::getService("myResults");
+	    $getlastMonthlist = $myService->getTopranking(intval($uid),$lm['start'],$lm['end']);
 	    $this->view->assign('getlastMonthzonge', $getlastMonthlist['zonge']);
 	    $this->view->assign('getlastMonthnianhuan', $getlastMonthlist['nianhuan']);
-	    $this->view->assign('gid', $userinfo['gid']);
-	    $this->view->assign('list', $userinfo);
-	    
+	    $this->view->assign('gid', $userInfo['gid']);
+	    $this->view->assign('list', $userInfo);
+
+
+		//团队排行榜
+	    $teamList = $this->teamStatService->getTeamTop();
+	    $isGolden = $this->checkTheGolden($teamList);
+	    $this->view->assign('isGolden', $isGolden);
+	    $this->view->assign('team_list', $teamList);
+
+		//部门相关数据...
+	    $userId 		= intval($userInfo['id']);
+	    $departmentId 	= intval($userInfo['department_id']);
+
+		//1. 新增客户数
+	    $rows = $this->teamStatService->getDepartmentStat($departmentId,null,null,$userId);
+		$cnt  = 0;
+		if(isset($rows)){
+			$cnt = $rows['keHuCount'];
+		}
+	    $this->view->assign('curClientCount', $cnt);
+
+		//2. 累计客户数
+	    $sTime = date('Y-m-d H:i:s',$userInfo['regtime']);
+	    $eTime = date('Y-m-d H:i:s',time());
+	    $customersCount = $this->teamStatService->getDepartmentStat($departmentId,$sTime,$eTime,$userId);
+	    $this->view->assign('customersCount', $customersCount['keHuCount']);
+		
+		//3.上月入金、折标
+	    $lmStat = $this->teamStatService->getDepartmentStat($departmentId,$lm['start'],$lm['end'],$userId);
+	    $this->view->assign('shangYueStat', $lmStat);
+	
+		//最新公告
+	    $notice = $this->noticeService->getLatestNotice();
+	    $this->view->assign('notice', $notice);
+
 	    $index='yes';//默认加样式
 	    $this->view->assign('index', $index);
-	    
 	    $this->view->assign('title', "百合贷直销系统-首页");
 	    $this->view->display("index/run");
 	}
