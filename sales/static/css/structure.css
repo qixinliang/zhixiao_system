@@ -163,12 +163,11 @@ li[class^="list"] span{
 }
 .right_list_box .list2Active{
   background: #FEF0D3;
-  width: 158px;
+  max-width:200px;
   height: 18px;
   border:1px solid #FAD4A8
 }
 .right_list_box>ul>.list2Active{
-  width: 150px;
   height: 30px;
   background:#31BD8C;
   border: 0;

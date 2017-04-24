@@ -17,8 +17,14 @@ $('#closeBtn').click(function(){
 //右侧宽度设置
 var wdWidth = document.body.clientWidth;
 var rHeight = $('.right').height();
+var ulhref = window.location.href;
+var iR = 'index/run';
+var dpR = 'department/run';
 $('.right').css('width',(wdWidth-185)+'px');
 $('.left').css('height',(rHeight+20)+'px');
+if(ulhref.indexOf(iR)!=-1||ulhref.indexOf(dpR)){
+  $('.right').css('width',(wdWidth-205)+'px');
+}
 
 // 顶部导航高亮
 function ArticleFun(){

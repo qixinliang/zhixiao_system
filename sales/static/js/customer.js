@@ -70,10 +70,16 @@ $('#tcbox').on('click','[class^="list"]>data',function(){
       type:'post',
       data:{department_id:dpt_id},
       success:function(data){
-       var user = JSON.parse(data).value[0]; 
-      $('<tr class="user"><td class="user_uid">'+user.uid+'</td><td class="user_name">'+user.u_name+'</td><td>'+user.role_name+'</td></tr>')
-       .appendTo('.tcbox_right>table'); 
-      }
+       var user = JSON.parse(data).value; 
+          $('.user').remove();
+         for(var i=0;i<user.length;i++){   
+           $('<tr class="user">'+
+           '<td class="user_uid">'+user[i].uid+'</td>'+
+           '<td class="user_name">'+user[i].u_name+'</td>'+
+           '<td>'+user[i].role_name+'</td></tr>')
+           .appendTo('.tcbox_right>table');
+          } 
+       }
   });
 });
 //人员信息获取
