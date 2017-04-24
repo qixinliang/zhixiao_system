@@ -12,13 +12,9 @@ class indexController extends baseController
         $this->teamStatService = InitPHP::getService("teamStat");
         $this->noticeService   = InitPHP::getService('notice');
     }
-	public $initphp_list = array('home');
+	public $initphp_list = array('run');
 
-	/**
-	 * 默认action
-	 */
-	public function run()
-	{
+	public function run(){
 	    $userinfo = $this->adminService->current_user();
 	     
 	    /*
@@ -112,63 +108,6 @@ class indexController extends baseController
 	    $this->view->display("index/run");
 	}
 
-    /**
-     * 欢迎页
-     */
-    public function home()
-    {
-        $userinfo = $this->adminService->current_user();
-        /*
-         * @所属部门
-         */
-        $departmentService = InitPHP::getService("department");
-        $departmentName = $departmentService->getDepartmentName(intval($userinfo['department_id']));
-        $this->view->assign('departmentName', $departmentName);
-        /*
-         * @所属职位
-         */
-        $roleService = InitPHP::getService("role");
-        $position = $roleService->info(intval($userinfo['gid']));
-        $this->view->assign('position', $position['name']);
-        /*
-         * @邀请客户数量
-         */
-        $adminService = InitPHP::getService("admin");
-        $inviteCustomersService = InitPHP::getService("inviteCustomers");
-        $uid = $adminService->GetToZiXiTongUserId(intval($userinfo['id']));
-        $uidList = $inviteCustomersService->getInviteCustomersUidList($uid);
-        $this->view->assign('UidNumber',count($uidList));//邀请的客户数量
-        /*
-         * @本月新增客户数
-         */
-        $monthuidList = $inviteCustomersService->getAccessToCustomerThisMonth($uid);
-        $this->view->assign('montnumber', count($monthuidList));
-        /*
-         * @TOP排行榜
-         */
-        $YearsMonth = date("Y-m");
-        $list = $this->getTopranking($YearsMonth);
-        $list = $this->SortAnArray($list);
-        $output = array_slice($list, 0,5);//显示前5调数据
-        //检查是否有数据
-        $checkAmount = $this->checkTheAmountOf($output);
-        $this->view->assign('checkAmount', $checkAmount);
-        $this->view->assign('output', $output);
-        $this->view->assign('YearsMonth', $YearsMonth);
-        /*
-         * @个人管理 上月入金规模
-         */
-        $datey = $this->getlastMonthDays(date("Y-m-d H:i:s"));
-        $myResultsService = InitPHP::getService("myResults");
-        $getlastMonthlist = $myResultsService->getTopranking($uid,$datey['start'],$datey['end']);
-        
-        $this->view->assign('getlastMonthzonge', $getlastMonthlist['zonge']);
-        $this->view->assign('getlastMonthnianhuan', $getlastMonthlist['nianhuan']);
-        $this->view->assign('list', $userinfo);
-        $index='yes';//默认加样式
-        $this->view->assign('index', $index);
-        $this->view->display("index/home");
-    }
     /************************************************************
      * @copyright(c): 2017年3月29日
      * @Author:  yuwen
