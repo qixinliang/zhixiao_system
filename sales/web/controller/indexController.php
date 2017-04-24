@@ -54,8 +54,8 @@ class indexController extends baseController
 	    $list  			= $this->getTopranking($curYm);
 	    $list  			= $this->SortAnArray($list);
 	    $output 		= array_slice($list, 0,5);
-	    $checkAmount 	= $this->checkTheAmountOf($output);
-	    $this->view->assign('checkAmount', $checkAmount);
+	    $check 			= $this->check($output,1);
+	    $this->view->assign('checkAmount', $check);
 	    $this->view->assign('output', $output);
 	    $this->view->assign('YearsMonth', $curYm);
 
@@ -71,7 +71,7 @@ class indexController extends baseController
 
 		//团队排行榜
 	    $teamList = $this->teamStatService->getTeamTop();
-	    $isGolden = $this->checkTheGolden($teamList);
+	    $isGolden = $this->check($teamList,0);
 	    $this->view->assign('isGolden', $isGolden);
 	    $this->view->assign('team_list', $teamList);
 
@@ -168,15 +168,9 @@ class indexController extends baseController
         }
         return $array;
     }
-    /************************************************************
-     * @copyright(c): 2017年3月29日
-     * @Author:  yuwen
-     * @Create Time: 下午8:08:02
-     * @qq:32891873
-     * @email:fuyuwen88@126.com
-     * @获取上个月的时间
-     *************************************************************/
-   public function getlastMonthDays($date){
+
+	//获取上个月的时间 by yuwen
+	public function getlastMonthDays($date){
         $val=array();
         $timestamp=strtotime($date);
         $firstday=date('Y-m-01',strtotime(date('Y',$timestamp).'-'.(date('m',$timestamp)-1).'-01'));
@@ -185,48 +179,33 @@ class indexController extends baseController
         $val['end']=$lastday;
         return $val;
     }
-    /************************************************************
-     * @copyright(c): 2017年3月31日
-     * @Author:  yuwen
-     * @Create Time: 上午11:35:50
-     * @qq:32891873
-     * @email:fuyuwen88@126.com
-     * @检查是否有数据交易金额
-     *************************************************************/
-    public function checkTheAmountOf($array){
-        $amount=0;
-        if(empty($array)){
-            return false;
-        }
-        foreach ($array as $key=>$val){
-            $amount+=$val['zonge'];
-        }
-        if($amount>0){
-            return true;
-        }else{
-            return false;
-        }
-    }
-    /************************************************************
-     * @copyright(c): 2017年4月20日
-     * @Author:  yuwen
-     * @Create Time: 下午2:27:18
-     * @qq:32891873
-     * @email:fuyuwen88@126.com
-     * @检查首页团队排行榜是否有数据
-     *************************************************************/
-    public function checkTheGolden($array){
-        $amount=0;
-        if(empty($array)){
-            return false;
-        }
-        foreach ($array as $key=>$val){
-            $amount+=$val['rujin'];
-        }
-        if($amount>0){
-            return true;
-        }else{
-            return false;
-        }
-    }
+
+	//检测是否有入金及总额的数据
+	public function check($arr,$type){
+		if(!isset($arr) || empty($arr)){
+			return false;
+		}
+		$amount = 0;
+		switch($type){
+			case 0:
+				foreach($arr as $v){
+					$amount += $v['rujin'];
+				}
+				if($amount > 0) {
+					return true;
+				}
+				break;
+			case 1:
+				foreach($arr as $v){
+					$amount += $v['zonge'];
+				}
+				if($amount > 0) {
+					return true;
+				}
+				break;
+			default:
+				break;
+		}
+		return false;
+	}
 }
