@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>百合贷直销系统-销售业绩</title>
+    <link rel="stylesheet" href="/static/css/css.css">
   <link rel="stylesheet" href="/static/css/normalize.css">
   <link rel="stylesheet" href="/static/css/public.css">
   <link rel="stylesheet" href="/static/css/results.css">
@@ -19,7 +20,7 @@
 <article class="content">
   <!--{layout:left_results_nav}-->
   <!-- 右侧信息列表 -->
-  <div class="right">
+  <div class="right st_right">
 
      <div class="rigth_title">
        <h2>我的业绩&nbsp&nbsp&nbsp&nbsp</h2>
@@ -61,6 +62,9 @@
              <!--{/foreach}-->
            </table>
          </div>
+         <!--{if(is_array($list))}-->
+           <div class="padding border-bottom"><!--{$page_html}--></div>
+         <!--{/if}-->
        </div>
   </div>
 </article>

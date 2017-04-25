@@ -32,6 +32,7 @@ class myResultsController extends baseController{
 			exit(json_encode(array('status' => -1,'message' => 'not logined')));
 		}
 
+
 		//获取业绩
         $res = $this->myResultsService->ResultsList($userinfo);
         $renshucount=0;
@@ -41,6 +42,23 @@ class myResultsController extends baseController{
               $renshucount += $val['yaoqingrencount'];
            }
         }
+
+		//分页
+		$pager  = $this->getLibrary('pager');
+        $page   = $this->controller->get_gp('page')? $this->controller->get_gp('page') : 1;
+        $page 	= ($page-1)*10 ? ($page-1)*10 : 0;
+        $count 	= count($res);
+
+		$list = isset($res['data'])? $res['data'] : array();
+		if(isset($list) && !empty($list)){
+        	$list = array_slice($list, $page,10);
+		}
+
+        if($count>0){
+            $pageHtml = $pager->pager($count, 10,'/myResults/run');
+        }else{
+            $pageHtml = '';
+        }
         /*
          * @判断当前用户是否有权限访问组织结构cai'dan
          */
@@ -48,7 +66,9 @@ class myResultsController extends baseController{
         $myResultsleftcorpnav = 'yes';//左侧样式是否显示高亮样式
         $this->view->assign('gid', $userinfo['gid']);
         $this->view->assign('renshucount',$renshucount);
-        $this->view->assign('list',$res['data']);
+        //$this->view->assign('list',$res['data']);
+        $this->view->assign('list',$list);
+		$this->view->assign('page_html',$pageHtml);
         $this->view->assign('myClients', $myClients);
         $this->view->assign('myResultsleftcorpnav', $myResultsleftcorpnav);
 
