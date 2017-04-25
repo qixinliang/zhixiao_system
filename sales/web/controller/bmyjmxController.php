@@ -12,59 +12,57 @@ class bmyjmxController extends baseController{
     
     public $tree = array();
     public $array = array();
-	public $userData = NULL;
 
-    
     public function __construct(){
         parent::__construct();
-        $this->bmyjmxService = InitPHP::getService("bmyjmx");
-        $this->adminService = InitPHP::getService("admin");//获取管理员信息
-        $this->departmentService = InitPHP::getService("department");
-        $this->myResultsService = InitPHP::getService("myResults");
-		$this->authService = InitPHP::getService('auth');
-        $this->createExcelService = InitPHP::getService("createExcel");
-        $this->TeamUtilsService = InitPHP::getService('TeamUtils');
+        $this->bmyjmxService 		= InitPHP::getService("bmyjmx");
+        $this->adminService 		= InitPHP::getService("admin");
+        $this->departmentService 	= InitPHP::getService("department");
+        $this->myResultsService 	= InitPHP::getService("myResults");
+		$this->authService 			= InitPHP::getService('auth');
+        $this->createExcelService 	= InitPHP::getService("createExcel");
+        $this->TeamUtilsService 	= InitPHP::getService('TeamUtils');
     }
     
     
     public function run(){
 		$this->authService->checkauth('1024');
 		
-        $pager= $this->getLibrary('pager'); //分页加载
+		//分页.
+        $pager 	= $this->getLibrary('pager');
+        $page 	= $this->controller->get_gp('page')? $this->controller->get_gp('page') : 1;
+
+		//前端搜索参数.
+        $sDate 			= $this->controller->get_gp('start_date');
+        $eDate 			= $this->controller->get_gp('end_date');
+        $departmentId 	= intval($this->controller->get_gp('department_id'));
+        $username 		= urldecode($this->controller->get_gp('username'));
+        $status 		= $this->controller->get_gp('status');
         
-        $page = $this->controller->get_gp('page') ? $this->controller->get_gp('page') : 1 ; //获取当前页码
-        $startDate = $this->controller->get_gp('start_date'); //获取开始时间
-        $endDate = $this->controller->get_gp('end_date'); //获取结束时间
-        $departmentId = intval($this->controller->get_gp('department_id')); //部门id
-        $username = urldecode($this->controller->get_gp('username')); //获取姓名
-        $status = $this->controller->get_gp('status'); //搜索状态 1代表搜索
-        
-        //获取登录用户信息
-        $user = $this->adminService->current_user();
-        $userId = $this->adminService->GetToZiXiTongUserId(intval($user['id']));//获取user表里面的userid
-        
-        $deparmentList = $this->departmentService->getDepartmentList(); //获取所有的部门列表
-        
-        $userDepartmentId = intval($user['department_id']);
-        
-        $myDepartment = $this->bmyjmxService->getMyDepartment($userDepartmentId); //获取我当前用户所在的部门信息
+        //登录用户信息
+        $user 			= $this->adminService->current_user();
+        $userId 		= $this->adminService->GetToZiXiTongUserId(intval($user['id']));
+        $did 			= intval($user['department_id']);
+
+        $deparmentList 	= $this->departmentService->getDepartmentList();
+        $myDepartment  	= $this->bmyjmxService->getMyDepartment($did);
         
         //根据用户的部门id，获取子部门id
-        $sonDepartment = $this->getTree($deparmentList,$userDepartmentId);
+        $sonDepartment = $this->getTree($deparmentList,$did);
         $this->tree = array();
         
         //拼接where条件，和url链接地址
-        $arrangeWhereUrl = $this->arrangeWhereUrl('/bmyjmx/run',$departmentId,$username,$startDate,$endDate);
+        $arrangeWhereUrl = $this->arrangeWhereUrl('/bmyjmx/run',$departmentId,$username,$sDate,$eDate);
 
         //获取当前部门下每个用户的明细
-        $departmentUserDetail = $this->bmyjmxService->getDepartmentUserDetail(intval($userId),$sonDepartment,$arrangeWhereUrl['where'],$startDate,$endDate);  
+        $departmentUserDetail = $this->bmyjmxService->getDepartmentUserDetail(intval($userId),$sonDepartment,$arrangeWhereUrl['where'],$sDate,$eDate);  
         
         //手机号隐藏
         $departmentUserDetail = $this->TeamUtilsService->isShowInfo2($departmentUserDetail);
         
         //离职用户，离职日期大于检索的开始日子，则不现实当前用户的信息
-        if(isset($startDate) && !empty($startDate)){
-            $departmentUserDetail = $this->dateRetrieve($startDate,$departmentUserDetail);
+        if(isset($sDate) && !empty($sDate)){
+            $departmentUserDetail = $this->dateRetrieve($sDate,$departmentUserDetail);
         }
         
         //分页
@@ -77,8 +75,8 @@ class bmyjmxController extends baseController{
             $page_html=null;
         }
         //条件
-        $this->view->assign('start_date', $startDate);
-        $this->view->assign('end_date', $endDate);
+        $this->view->assign('start_date', $sDate);
+        $this->view->assign('end_date', $eDate);
         $this->view->assign('department_id', $departmentId);
         $this->view->assign('username', $username);
         $this->view->assign('excelUrl',$arrangeWhereUrl['excelUrl']);
@@ -139,8 +137,8 @@ class bmyjmxController extends baseController{
      */
     public function createExcel(){
         //创建excel表格
-        $startDate = $this->controller->get_gp('start_date'); //获取开始时间
-        $endDate = $this->controller->get_gp('end_date'); //获取结束时间
+        $sDate = $this->controller->get_gp('start_date'); //获取开始时间
+        $eDate = $this->controller->get_gp('end_date'); //获取结束时间
         $departmentId = $this->controller->get_gp('department_id'); //部门id
         $username = urldecode($this->controller->get_gp('username')) ; //获取姓名
         
@@ -154,7 +152,7 @@ class bmyjmxController extends baseController{
         $sonDepartment = $this->GetTree($deparmentList,$userDepartmentId);
         
         //拼接where条件，和url链接地址
-        $arrangeWhereUrl = $this->arrangeWhereUrl('bmyjmx/run',$departmentId,$username,$startDate,$endDate);
+        $arrangeWhereUrl = $this->arrangeWhereUrl('bmyjmx/run',$departmentId,$username,$sDate,$eDate);
         
         //获取用户列表
         $departmentUserDetail = $this->bmyjmxService->getDepartmentUserDetail($userId,$sonDepartment,$arrangeWhereUrl['where']);
@@ -169,8 +167,8 @@ class bmyjmxController extends baseController{
         $pager= $this->getLibrary('pager'); //分页加载
         
         $page = intval($this->controller->get_gp('page')) ? intval($this->controller->get_gp('page')) : 1 ; //获取当前页码
-        $startDate = $this->controller->get_gp('start_date') ; //获取开始时间
-        $endDate = $this->controller->get_gp('end_date'); //获取结束时间
+        $sDate = $this->controller->get_gp('start_date') ; //获取开始时间
+        $eDate = $this->controller->get_gp('end_date'); //获取结束时间
         $departmentId = $this->controller->get_gp('department_id'); //部门id
         $username = urldecode($this->controller->get_gp('username')); //获取姓名
         $city = urldecode($this->controller->get_gp('city')); 
@@ -192,10 +190,10 @@ class bmyjmxController extends baseController{
         $this->tree = array();
         
         //拼接where条件，和url链接地址
-        $arrangeWhereUrl = $this->arrangeWhereUrl('/bmyjmx/total',$departmentId,$username,$startDate,$endDate,$city);
+        $arrangeWhereUrl = $this->arrangeWhereUrl('/bmyjmx/total',$departmentId,$username,$sDate,$eDate,$city);
         
         //获取用户列表
-        $departmentUserDetail = $this->bmyjmxService->getDepartmentUserDetail($userId,$sonDepartment,$arrangeWhereUrl['where'],$startDate,$endDate);
+        $departmentUserDetail = $this->bmyjmxService->getDepartmentUserDetail($userId,$sonDepartment,$arrangeWhereUrl['where'],$sDate,$eDate);
         
         //循环客户列表，获取当前客户的上级部门
         foreach($departmentUserDetail as $k =>$val){
@@ -207,8 +205,8 @@ class bmyjmxController extends baseController{
         }
         
         //离职用户，离职日期大于检索的开始日子，则不现实当前用户的信息
-        if(isset($startDate) && !empty($startDate)){
-            $departmentUserDetail = $this->dateRetrieve($startDate,$departmentUserDetail);
+        if(isset($sDate) && !empty($sDate)){
+            $departmentUserDetail = $this->dateRetrieve($sDate,$departmentUserDetail);
         }
         
         //判断是否按照地区筛选
@@ -227,8 +225,8 @@ class bmyjmxController extends baseController{
         }
         
         //条件
-        $this->view->assign('start_date', $startDate);
-        $this->view->assign('end_date', $endDate);
+        $this->view->assign('start_date', $sDate);
+        $this->view->assign('end_date', $eDate);
 
         $this->view->assign('username', $username);
         $this->view->assign('excelUrl',$arrangeWhereUrl['excelUrl']);
@@ -272,9 +270,6 @@ class bmyjmxController extends baseController{
         $this->view->assign('page_html', $page_html);
         $this->view->assign('user_data', $departmentUserDetail);
 
-		//用于表格导出
-		$this->userData = $departmentUserDetail;
-        
         /*
          * @判断当前用户是否有权限访问组织结构cai'dan
          */
@@ -294,11 +289,11 @@ class bmyjmxController extends baseController{
      * 拼接检索条件，和url地址
      * @param type $departmentId
      * @param type $username
-     * @param type $startDate
-     * @param type $endDate
+     * @param type $sDate
+     * @param type $eDate
      * @return type
      */
-    public function arrangeWhereUrl($url,$departmentId=null,$username=null,$startDate=null,$endDate=null,$city=null){
+    public function arrangeWhereUrl($url,$departmentId=null,$username=null,$sDate=null,$eDate=null,$city=null){
         $where = '';
         //分页地址
         $excelUrl = '/bmyjmx/createExcel';
@@ -312,9 +307,9 @@ class bmyjmxController extends baseController{
             $excelUrl=$excelUrl.'/username/'.$username;
             $where.= " and z.UsrName = '$username'";
         }
-        if(!empty($startDate) && !empty($endDate)){
-            $url=$url.'/start_date/'.$startDate.'end_data/'.$endDate;
-            $excelUrl=$excelUrl.'/start_date/'.$startDate.'end_data/'.$endDate;
+        if(!empty($sDate) && !empty($eDate)){
+            $url=$url.'/start_date/'.$sDate.'end_date/'.$eDate;
+            $excelUrl=$excelUrl.'/start_date/'.$sDate.'end_date/'.$eDate;
         }
     
         if(!empty($city) && isset($city)){
@@ -368,8 +363,8 @@ class bmyjmxController extends baseController{
 	//部门业绩统计表格导出
 	public function createExcel2(){
 
-        $startDate = $this->controller->get_gp('start_date') ; //获取开始时间
-        $endDate = $this->controller->get_gp('end_date'); //获取结束时间
+        $sDate = $this->controller->get_gp('start_date') ; //获取开始时间
+        $eDate = $this->controller->get_gp('end_date'); //获取结束时间
         $departmentId = $this->controller->get_gp('department_id'); //部门id
         $username = urldecode($this->controller->get_gp('username')); //获取姓名
         $city = urldecode($this->controller->get_gp('city')); 
@@ -391,10 +386,10 @@ class bmyjmxController extends baseController{
         $this->tree = array();
         
         //拼接where条件，和url链接地址
-        $arrangeWhereUrl = $this->arrangeWhereUrl('/bmyjmx/total',$departmentId,$username,$startDate,$endDate,$city);
+        $arrangeWhereUrl = $this->arrangeWhereUrl('/bmyjmx/total',$departmentId,$username,$sDate,$eDate,$city);
         
         //获取用户列表
-        $departmentUserDetail = $this->bmyjmxService->getDepartmentUserDetail($userId,$sonDepartment,$arrangeWhereUrl['where'],$startDate,$endDate);
+        $departmentUserDetail = $this->bmyjmxService->getDepartmentUserDetail($userId,$sonDepartment,$arrangeWhereUrl['where'],$sDate,$eDate);
         
         //循环客户列表，获取当前客户的上级部门
         foreach($departmentUserDetail as $k =>$val){
@@ -405,10 +400,10 @@ class bmyjmxController extends baseController{
             $departmentUserDetail[$k]['info'] = $data;
         }
         //离职用户，离职日期大于检索的开始日子，则不现实当前用户的信息
-        if(isset($startDate) && !empty($startDate)){
+        if(isset($sDate) && !empty($sDate)){
             foreach($departmentUserDetail as $k =>$val){
                 if($val['status']=='0'){
-                    if(strtotime($startDate)>$val['update_time']){
+                    if(strtotime($sDate)>$val['update_time']){
                         unset($departmentUserDetail[$k]);
                     }
                 }
@@ -429,14 +424,14 @@ class bmyjmxController extends baseController{
 	
 	/***
 	 * 离职用户，离职日期大于检索的开始日子，则不现实当前用户的信息
-	 * @param unknown $startDate
+	 * @param unknown $sDate
 	 * @param unknown $departmentUser
 	 */
-	public function dateRetrieve($startDate,$departmentUser){
+	public function dateRetrieve($sDate,$departmentUser){
 	    if(!is_array($departmentUser)) return  $departmentUser = array();
 	    foreach($departmentUser as $k =>$val){
 	        if($val['status']=='0'){
-	            if(strtotime($startDate)>$val['update_time']){
+	            if(strtotime($sDate)>$val['update_time']){
 	                unset($departmentUser[$k]);
 	            }
 	        }

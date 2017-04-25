@@ -56,7 +56,7 @@ class bmyjmxService extends Service
         //循环所有的部门，查询所有部门下的user
 		//xd added
         if(empty($userId)){
-           return array(); 
+           return array();
         }
 
         $departmentUser = $this->getSonDepartmentUserList($sonDepartment,$where);
