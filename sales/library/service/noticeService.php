@@ -12,8 +12,12 @@ class noticeService extends Service{
 	}
 
 	//公告列表
-	public function getNoticeList(){
-		return $this->noticeDao->getNoticeList();
+	public function getNoticeList($limit,$offset){
+		return $this->noticeDao->getNoticeList($limit,$offset);
+	}
+
+	public function getNoticeCount(){
+		return $this->noticeDao->getNoticeCount();
 	}
 
 	//发布

@@ -38,6 +38,7 @@
       <th width="250">操作</th>
     </tr>
 	
+ <!--{if(isset($notice_list) && !empty($notice_list))}-->
 	<!--{foreach($notice_list as $key=>$vo)}-->
     <tr>
       <td><!--{$vo['notice_id']}--></td> 
@@ -52,10 +53,24 @@
       </td>
     </tr> 
 	<!--{/foreach}-->
+    <!--{else}-->
+        <tr>
+            <td colspan="5">暂无数据</td>
+        </tr>
+    <!--{/if}-->
+
 
   </table>
 </div>
+
+<!--{if($count > 0)}-->
+<div class="padding border-bottom">
+    <!--{$page_html}-->
 </div>
+<!--{/if}-->
+
+</div>
+
 <script>
 function del(id,obj){
 	if(confirm("您确定要删除吗?")){
