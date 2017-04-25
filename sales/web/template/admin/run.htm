@@ -82,9 +82,10 @@
         <th>状态</th>
     <th width="210">操作</th>
     </tr>
+ <!--{if(isset($list) && !empty($list))}-->
    <!--{foreach($list as $key=>$vo)}-->
 	<tr>
-                <td><!--{$vo['user']}--></td>
+        <td><!--{$vo['user']}--></td>
 		<td><!--{$vo['UsrName']}--></td>
 		<td><!--{$vo['phone']}--></td>
 		<td><!--{$vo['department_name']}--></td>
@@ -127,10 +128,15 @@
       </td>
 	</tr>
 	<!--{/foreach}-->
+    <!--{else}-->
+        <tr>
+            <td colspan="11">暂无数据</td>
+        </tr>
+    <!--{/if}-->
   </table>
 </div>
 </div>
-<!--{if(is_array($list))}-->
+<!--{if(is_array($list) && count($list) > 0)}-->
 <div class="padding border-bottom">  
     <!--{$page_html}-->
 </div> 
