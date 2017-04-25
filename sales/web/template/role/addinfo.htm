@@ -148,13 +148,17 @@
 function sub(obj){
 
 	var name  =  $("#name").val();
-	var id    =  $("#id").val();
+	var privilege = parseInt($("#privilege").val());
 
 	if(name == ""){
 		$(".tipss").html("<font color=\"red\">角色名不能为空！</font>").show();
 		return;
 	}
-	
+
+	if(privilege < 0 || privilege > 1000){
+		$(".tipss").html("<font color=\"red\">权重值必须要在0到1000之间！</font>").show();
+		return;
+	}
 	var power = null;
 	$("#power fieldset input[type=checkbox]").each(function(){
 		if(this.checked){
