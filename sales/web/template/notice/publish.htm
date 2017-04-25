@@ -92,13 +92,17 @@
 		var content  =  $("#container").html();
 	
 		if(title == ""){
-			$(".tips").html("<font color=\"red\">公告标题不可以为空</font>").show();
-			return;
+		 	$(".tips").text('公告标题不能为空！').css('color','red');
+			return false;
+		}else{
+		 	$(".tips").text('');
 		}
 	
 		if(content == ""){
-			$(".tips2").html("<font color=\"red\">公告内容不可以为空</font>").show();
-			return;
+			$(".tips2").text('公告内容不能为空！').css('color','red');
+			return false;
+		}else{
+			$(".tips2").text('');
 		}
 		
 		$.ajax({
@@ -121,6 +125,14 @@
 		});
 	
 	};
+
+$('#title').keyup(function(){
+ $('.tips').text('');
+});
+$('#container').keyup(function(){
+  $('.tips2').text('');
+});
+
 </script>
 
 			</div>
