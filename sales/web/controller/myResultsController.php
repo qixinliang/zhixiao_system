@@ -9,19 +9,22 @@ class myResultsController extends baseController{
 	public $authService  		= NULL;
 	public $adminService 		= NULL;
 	public $myResultsService 	= NULL;
+	public $cacheService		= NULL;
 
     public function __construct(){
         parent::__construct();
 		$this->authService  	 = InitPHP::getService('auth');
 		$this->adminService    	 = InitPHP::getService('admin');
 		$this->myResultsService  = InitPHP::getService('myResults');
+		$this->cacheService  	 = InitPHP::getService('cache');
     }
 
+	//从文件缓存中获取数据，并进行数据导出
 	public function createExcel(){
-        $userinfo = $this->adminService->current_user();
-        $res = $this->myResultsService->ResultsList($userinfo);
+		$ret = $this->cacheService->cacheGet('data');
+		$this->cacheService->cacheClear('data');
 		$createExcelService = InitPHP::getService('createExcel');
-		$createExcelService->run4($res['data']);
+		$createExcelService->run4($ret);
 	}
 
     public function run(){
@@ -70,6 +73,10 @@ class myResultsController extends baseController{
 		$this->view->assign('page_html',$pageHtml);
         $this->view->assign('myClients', $myClients);
         $this->view->assign('myResultsleftcorpnav', $myResultsleftcorpnav);
+	
+		//把数据缓存起来，导出的时候在用。
+		$data = ($res['data']);
+		$this->cacheService->cacheSet('data',$data);
 
         $this->view->display("myresults/run");
     }

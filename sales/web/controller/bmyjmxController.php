@@ -22,6 +22,7 @@ class bmyjmxController extends baseController{
 		$this->authService 			= InitPHP::getService('auth');
         $this->createExcelService 	= InitPHP::getService("createExcel");
         $this->TeamUtilsService 	= InitPHP::getService('TeamUtils');
+		$this->cacheService 		= InitPHP::getService('cache');
     }
     
     
@@ -64,6 +65,9 @@ class bmyjmxController extends baseController{
         if(isset($sDate) && !empty($sDate)){
             $departmentUserDetail = $this->dateRetrieve($sDate,$departmentUserDetail);
         }
+
+		//写入缓存
+		$this->cacheService->cacheSet('data2',$departmentUserDetail);
         
         //分页
         $page = ($page-1)*10 ? ($page-1)*10 : 0;
@@ -136,27 +140,8 @@ class bmyjmxController extends baseController{
      * excel表格导出
      */
     public function createExcel(){
-        //创建excel表格
-        $sDate = $this->controller->get_gp('start_date'); //获取开始时间
-        $eDate = $this->controller->get_gp('end_date'); //获取结束时间
-        $departmentId = $this->controller->get_gp('department_id'); //部门id
-        $username = urldecode($this->controller->get_gp('username')) ; //获取姓名
-        
-        //获取用户id
-        $user = $this->adminService->current_user();
-        $userId = $this->adminService->GetToZiXiTongUserId($user['id']);//获取user表里面的userid
-        
-        $deparmentList = $this->departmentService->getDepartmentList(); //获取所有的部门列表
-        $userDepartmentId = intval($user['department_id']);
-        //根据用户的部门id，获取子部门id
-        $sonDepartment = $this->GetTree($deparmentList,$userDepartmentId);
-        
-        //拼接where条件，和url链接地址
-        $arrangeWhereUrl = $this->arrangeWhereUrl('bmyjmx/run',$departmentId,$username,$sDate,$eDate);
-        
-        //获取用户列表
-        $departmentUserDetail = $this->bmyjmxService->getDepartmentUserDetail($userId,$sonDepartment,$arrangeWhereUrl['where']);
-
+		$departmentUserDetail = $this->cacheService->cacheGet('data2');	
+		$this->cacheService->cacheClear('data2');
         $this->createExcelService->run($departmentUserDetail);
     }
     
@@ -213,6 +198,8 @@ class bmyjmxController extends baseController{
         if(isset($city) && !empty($city)){
            $departmentUserDetail = $this->cityRetrieve($city,$departmentUserDetail);
         }
+	
+		$this->cacheService->cacheSet('data3',$departmentUserDetail);
         
         //分页
         $page = ($page-1)*10 ? ($page-1)*10 : 0;
@@ -362,63 +349,8 @@ class bmyjmxController extends baseController{
 
 	//部门业绩统计表格导出
 	public function createExcel2(){
-
-        $sDate = $this->controller->get_gp('start_date') ; //获取开始时间
-        $eDate = $this->controller->get_gp('end_date'); //获取结束时间
-        $departmentId = $this->controller->get_gp('department_id'); //部门id
-        $username = urldecode($this->controller->get_gp('username')); //获取姓名
-        $city = urldecode($this->controller->get_gp('city')); 
-        $status = $this->controller->get_gp('status'); //搜索状态 1代表搜索
-        
-        //获取用户id
-        $user = $this->adminService->current_user();
-        $userId = $this->adminService->GetToZiXiTongUserId($user['id']);//获取user表里面的userid
-        
-        $deparmentList = $this->departmentService->getDepartmentList(); //获取所有的部门列表
-        $userDepartmentId = intval($user['department_id']);
-        $myDepartment = $this->bmyjmxService->getMyDepartment($userDepartmentId); //获取我的部门信息
-        
-        //获取所有pid为1的部门，当做城市部门
-        $cityDepartment = $this->bmyjmxService->getDepartmentList(1);
-        
-        //根据用户的部门id，获取子部门id
-        $sonDepartment = $this->GetTree($deparmentList,$userDepartmentId);
-        $this->tree = array();
-        
-        //拼接where条件，和url链接地址
-        $arrangeWhereUrl = $this->arrangeWhereUrl('/bmyjmx/total',$departmentId,$username,$sDate,$eDate,$city);
-        
-        //获取用户列表
-        $departmentUserDetail = $this->bmyjmxService->getDepartmentUserDetail($userId,$sonDepartment,$arrangeWhereUrl['where'],$sDate,$eDate);
-        
-        //循环客户列表，获取当前客户的上级部门
-        foreach($departmentUserDetail as $k =>$val){
-            $deparment_list = $this->departmentService->getDepartmentList();//获取所有部门
-            $data = $this->digui($deparment_list,intval($val['department_id']));//递归获取所有部门，组合
-            $this->array = array();
-            $data = array_reverse($data);
-            $departmentUserDetail[$k]['info'] = $data;
-        }
-        //离职用户，离职日期大于检索的开始日子，则不现实当前用户的信息
-        if(isset($sDate) && !empty($sDate)){
-            foreach($departmentUserDetail as $k =>$val){
-                if($val['status']=='0'){
-                    if(strtotime($sDate)>$val['update_time']){
-                        unset($departmentUserDetail[$k]);
-                    }
-                }
-            }
-        }
-        
-        //判断是否按照地区筛选
-        if(isset($city) && !empty($city)){
-            foreach ($departmentUserDetail as $k=>$v){
-                if($v['info'][0] != $city){
-                    unset($departmentUserDetail[$k]);
-                }
-            }
-        }
-			
+		$departmentUserDetail = $this->cacheService->cacheGet('data3');
+		$this->cacheService->cacheClear('data3');
         $this->createExcelService->run2($departmentUserDetail);
 	}
 	

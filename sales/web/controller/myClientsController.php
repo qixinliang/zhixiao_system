@@ -17,6 +17,7 @@ class myClientsController extends baseController
 		$this->authService 		= InitPHP::getService('auth');
 		$this->TeamUtilsService = InitPHP::getService('TeamUtils');
 		$this->roleService 		= InitPHP::getService('role');
+		$this->cacheService     = InitPHP::getService('cache');
     }
     
 	//客户业绩default action
@@ -51,6 +52,9 @@ class myClientsController extends baseController
 		$friendsData 	= $this->myClientsService->getInvestorByUid($uid,$searchCond['where']);
         $friendsList 	= $this->TeamUtilsService->yongJinJiSuan($friendsData['friends']);
         $count 			= $this->myClientsService->clientCount($uid);
+		
+		//存入缓存文件
+		$this->cacheService->cacheSet('data1',$friendsList['friends']);
 
 		//客户数量总和，是我邀请的客户数量，和分配给我的客户数量相加
         $friendsCount 	= $count['count'] + $friendsData['customer_friends_count']; 
@@ -239,40 +243,6 @@ class myClientsController extends baseController
         $this->view->display('myclient/detail');
     }
 
-    /**
-     * 根据检索条件，拼接where条件，和url链接地址
-     * @param string $uname 用户名称
-     * @param string $phone 手机号
-     * @param string $startDate 开始时间
-     * @param string $endDate 结束时间
-     * @return  array 拼接的where条件，和url地址
-     */
-    public function arrangeWhereUrl($uname=null,$phone=null,$startDate=null,$endDate=null,$userId=null){
-        $where = ' ';
-        //分页地址
-        $url = '/myClients/run';
-        if(!empty($userId)){
-            $url=$url.'/uid/'.$userId;
-        }
-        if(!empty($uname)){
-            $url=$url.'/uname/'.$uname;
-            $where.= ' and h.UsrName = "'.$uname.'"';
-        }
-        if(!empty($phone)){
-            $url=$url.'/phone/'.$phone;
-            $where.= ' and i.phone = '.$phone;
-        }
-        if(!empty($startDate)){
-            $url=$url.'/start_date/'.$startDate;
-            $where.= ' and o.order_time >= '.strtotime($startDate);
-        }
-        if(!empty($endDate)){
-            $url=$url.'/end_date/'.$endDate;
-            $where.= ' and o.order_time <= '.strtotime($endDate);
-        }
-    
-        return array('url'=>$url,'where'=>$where);
-    }
     /*
      * @隐藏手机号码，新 需求需
      */
@@ -286,44 +256,11 @@ class myClientsController extends baseController
         return $tmparr;
     }
 
+	//从文件缓存中获取数据并进行导出
 	public function createExcel(){
-        //获取用户检索条件
-        $uname = urldecode($this->controller->get_gp('uname'));    //获取用户名
-        $phone = $this->controller->get_gp('phone');//手机号
-        $startDate = $this->controller->get_gp('start_date');//开始时间
-        $endDate = $this->controller->get_gp('end_date');//结束时间
-        $userId = intval($this->controller->get_gp('uid')); //获取uid，用户id
-        /**
-         * 判断当前是否传过来uid，如果传入uid，以传入的uid为准，获取客户列表，否则，自动获取当前登录用户的。
-         */
-        if(empty($userId)){
-            //获取登陆用户信息
-            $adminUid=$this->adminService->current_user();
-            $uid = $this->adminService->GetToZiXiTongUserId($adminUid['id']);
-        }else{
-            $uid = intval($userId);//把接受过来的user_id 赋值给uid
-        }
-        //根据检索条件，拼接where条件，和url链接地址
-        $arrangeWhereUrl = $this->arrangeWhereUrl($uname,$phone,$startDate,$endDate,$userId);
-        
-        //查询所有的投资客户
-        $friends = $this->myClientsService->getInvestFriends($uid,$arrangeWhereUrl['where']);
-        
-        //循环查询出我邀请的客户所属的业务人员
-        foreach($friends as $k=>$v){
-            $friends[$k]['salesman'] = $this->myClientsService->getSalesmanUsername(intval($v['uid']));
-        }
-        //查询客户分配记录表里，分配给我的客户id
-        $customerRecordList = $this->myClientsService->getCustomerRecordList($uid);
-        
-        //循环取出客户分配表里面，分配给我的客户信息，并和我的客户数据合并
-        $friendsData = $this->myClientsService->mergeData($friends,$customerRecordList,$arrangeWhereUrl['where']);
-        
-        //循环计算年化收益率和查询当前客户，所属业务人员,统计年化收益金额，统计年化投资金额
-        $friendsList = $this->TeamUtilsService->yongJinJiSuan($friendsData['friends']);
-        $data = $friendsList['friends'];
 		$createExcelService = InitPHP::getService("createExcel"); 
-
+		$data = $this->cacheService->cacheGet('data1');
+		$this->cacheService->cacheClear('data1');
 		$createExcelService->run3($data);
 	}
 }
