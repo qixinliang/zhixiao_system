@@ -8,9 +8,11 @@ class noticeController extends baseController{
 
 	public $initphp_list = array('info','run','publish','edit','editSave','del');
 	public $noticeService = NULL;
+	public $authService = NULL;
 
 	public function __construct(){
 		parent::__construct();
+		$this->authService = InitPHP::getService('auth');
 		$this->noticeService = InitPHP::getService('notice');
 	}
 
@@ -24,6 +26,7 @@ class noticeController extends baseController{
 
 	//公告列表展示
 	public function run(){
+		$this->authService->checkauth('1029');
 		//增加分页
         $pager = $this->getLibrary('pager');
         $page  = $this->controller->get_gp('page')?
@@ -69,6 +72,7 @@ class noticeController extends baseController{
 	
 	//发布公告
 	public function publish(){
+		$this->authService->checkauth('1030');
 		$title = $this->controller->get_gp('title');
 		$content = $this->controller->get_gp('content');
 		if(empty($title) || empty($content)){
@@ -105,6 +109,7 @@ class noticeController extends baseController{
 
 	//公告修改
 	public function edit(){
+		$this->authService->checkauth('1031');
 		$id = $this->controller->get_gp('id');
 		$info = $this->noticeService->getNoticeInfo($id);
 		if(!isset($info) || empty($info)){
@@ -128,6 +133,7 @@ class noticeController extends baseController{
 	}
 
 	public function editSave(){
+		$this->authService->checkauth('1032');
 		$noticeId = $this->controller->get_gp('notice_id');
 		
 		$title = $this->controller->get_gp('title');
@@ -148,6 +154,7 @@ class noticeController extends baseController{
 
 	//根据ID删除一个公告
 	public function del(){
+		$this->authService->checkauth('1033');
 		$noticeId = $this->controller->get_gp('id');		
 
 		if(!isset($noticeId) || empty($noticeId)){
