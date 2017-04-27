@@ -37,12 +37,11 @@ class myClientsController extends baseController
 		 * 如果传入uid，以传入的uid为准，获取客户列表，
          * 否则，自动获取当前登录用户的。
          */
-        if(empty($userId)){
-            $userInfo 	= $this->adminService->current_user();
-            $uid 	  	= $this->adminService->GetToZiXiTongUserId($userInfo['id']);
-        }else{
+	    $userInfo 	= $this->adminService->current_user();
+        $uid 	  	= $this->adminService->GetToZiXiTongUserId($userInfo['id']);
+        if(!empty($userId)){
             $uid 		= $userId;
-		}
+        }
 		
 		//检索条件
         $searchCond 	= $this->myClientsService->genSearchCond($uname,
@@ -122,13 +121,11 @@ class myClientsController extends baseController
         $page  		= $this->controller->get_gp('page') ?
 			$this->controller->get_gp('page') : 1;
        
-        if(empty($userId)){
-            $userInfo 	= $this->adminService->current_user();
-            $uid 	  	= $this->adminService->GetToZiXiTongUserId(intval($userInfo['id']));
-        }else{
-            $uid 		= intval($userId);
+        $userInfo 	= $this->adminService->current_user();
+        $uid 	  	= $this->adminService->GetToZiXiTongUserId($userInfo['id']);
+        if(!empty($userId)){
+            $uid    = $userId;
         }
-        
             
 		//检索条件
         $searchCond 	= $this->myClientsService->genSearchCond(
@@ -158,7 +155,7 @@ class myClientsController extends baseController
         $this->view->assign('start_date', $startDate);
         $this->view->assign('end_date', $endDate);
         $this->view->assign('uid',$uid);
-        $this->view->assign('gid', $userinfo['gid']);
+        $this->view->assign('gid', $userInfo['gid']);
         $myClients='yes';//默认加样式
         $this->view->assign('myClients', $myClients);
         if($bmyjmx==1){
