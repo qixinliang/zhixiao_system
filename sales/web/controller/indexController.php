@@ -14,6 +14,7 @@ class indexController extends baseController
         $this->departmentService   	= InitPHP::getService('department');
 		$this->roleService 			= InitPHP::getService('role');
 	    $this->icService 			= InitPHP::getService("inviteCustomers");
+	    $this->myService                  = InitPHP::getService("myResults");
     }
 	public $initphp_list = array('run');
 
@@ -34,18 +35,21 @@ class indexController extends baseController
 
 		//邀请客户数量
 		$uid 	= $this->adminService->GetToZiXiTongUserId(intval($userInfo['id']));
-		$rows   = $this->icService->getInviteCustomersUidList($uid);
+
+		$sTime = date('Y-m-d H:i:s',$userInfo['regtime']);
+		$eTime = date('Y-m-d H:i:s',time());
+		$rows = $this->myService->getTopranking(intval($uid),$sTime,$eTime);
 		$cnt    = 0;
 		if(isset($rows) && is_array($rows)){
-			$cnt = count($rows);
+			$cnt = $rows['yaoqingrencount'];
 		}
 	    $this->view->assign('UidNumber',$cnt);
 
 		//本月新增客户数
-	    $rows 	= $this->icService->getAccessToCustomerThisMonth($uid);
+	    $rows = $this->myService->getTopranking(intval($uid));
 		$cnt    = 0;
 		if(isset($rows) && is_array($rows)){
-			$cnt = count($rows);
+			$cnt = $rows['yaoqingrencount'];
 		}
 	    $this->view->assign('montnumber', $cnt);
 	
@@ -61,10 +65,10 @@ class indexController extends baseController
 
 	    //个人上月入金规模
 	    $lm = $this->getlastMonthDays(date("Y-m-d H:i:s"));
-	    $myService = InitPHP::getService("myResults");
-	    $getlastMonthlist = $myService->getTopranking(intval($uid),$lm['start'],$lm['end']);
-	    $this->view->assign('getlastMonthzonge', $getlastMonthlist['zonge']);
-	    $this->view->assign('getlastMonthnianhuan', $getlastMonthlist['nianhuan']);
+	    $getlastMonthlist = $this->myService->getTopranking(intval($uid),$lm['start'],$lm['end']);
+
+	    $this->view->assign('getlastMonthzonge', $getlastMonthlist['zonge']);      //上月入金金额
+	    $this->view->assign('getlastMonthnianhuan', $getlastMonthlist['nianhuan']);//上月折标jine
 	    $this->view->assign('gid', $userInfo['gid']);
 	    $this->view->assign('list', $userInfo);
 
@@ -88,8 +92,7 @@ class indexController extends baseController
 	    $this->view->assign('curClientCount', $cnt);
 
 		//2. 累计客户数
-	    $sTime = date('Y-m-d H:i:s',$userInfo['regtime']);
-	    $eTime = date('Y-m-d H:i:s',time());
+        
 	    $customersCount = $this->teamStatService->getDepartmentStat($departmentId,$sTime,$eTime,$userId);
 	    $this->view->assign('customersCount', $customersCount['keHuCount']);
 		
