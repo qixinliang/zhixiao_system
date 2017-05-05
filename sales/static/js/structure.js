@@ -172,7 +172,9 @@ $(".add_btn").click(function(){
 
 //弹窗提交按钮事件
 function dropDown(url,data){
-	$.ajax({
+    var depname = $('#depname').val();
+    if(depname){
+    	$.ajax({
       		url: url,
         	type: 'post',
         	dataType:'json',
@@ -189,4 +191,8 @@ function dropDown(url,data){
             	}
 			}
     	});
+    }else {
+    	alert('部门名称不能为空！');
+    }
+
 }
