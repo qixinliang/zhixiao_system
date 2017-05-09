@@ -47,11 +47,11 @@ ul,li{ list-style-type:none;}
 .bread li{ float:left;}
 .label label{ font-weight:normal; color:#333;}
 .form-group{ margin-bottom:12px;}
-.button{ padding:10px 15px;}
+.button{ padding:4px 12px;}
 .form-group .field .file{ background:#FFF; border:0px;}
 .form-group .field input[type=radio]{ vertical-align:middle; line-height:35px; margin-right:5px;}
-.form-group .radio { line-height:35px;}
-.table th{ text-align:center;}
+.form-group .radio { line-height:22px;}
+.table th{ text-align:center;padding:0 8px}
 .table td { vertical-align:middle;}
 .tip img{width:100px; height:100px;}
 .clear{ clear:both; overflow:hidden;}
@@ -66,7 +66,7 @@ ul,li{ list-style-type:none;}
 .search{ overflow:hidden;}
 .search li{float:left; margin-right:15px; line-height:35px;}
 
-.button.bg-main.icon-check-square-o{ padding:10px 30px;}
+.button.bg-main.icon-check-square-o{/*  padding:10px 30px; */}
 .button.bg-main.icon-check-square-o:hover{ background:#08bbe1;}
 input[type="checkbox"], input[type="radio"]{ width:15px; height:15px; vertical-align:-3px; margin-right:5px;}
 

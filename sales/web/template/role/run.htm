@@ -45,10 +45,10 @@
       <td>
       <div class="button-group">
       	<!--{if($role_id == 1)}-->
-       		<a type="button" class="button border-main" href="/role/edit/id/<!--{$vo['id']}-->"><span class="icon-edit"></span>修改</a>
+       		<a class="button border-main" href="/role/edit/id/<!--{$vo['id']}-->"><span class="icon-edit"></span>修改</a>
        		<a class="button border-red" href="javascript:void(0)" onclick="del('<!--{$vo['id']}-->',this)"><span class="icon-trash-o"></span> 删除</a>
        <!--{else}-->
-       		<a type="button" class="button border-main" href="javascript:void(0);"><span class="icon-edit"></span>修改</a>
+       		<a  class="button border-main" href="javascript:void(0);"><span class="icon-edit"></span>修改</a>
        		<a class="button border-red" href="javascript:void(0);"><span class="icon-trash-o"></span> 删除</a>
        <!--{/if}-->
       </div>

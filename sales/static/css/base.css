@@ -288,7 +288,7 @@ font-weight:normal;font-style:normal;
 .media.media-x strong{margin-bottom:5px;}
 .media-inline .media{display:inline-block;margin-right:15px;margin-top:0;}
 .media-inline .media:last-child{margin-right:0;}
-.input{font-size:14px;padding:10px;border:solid 1px #ddd; width:100%;line-height:20px;display:block; border-radius:3px; -webkit-appearance:none;}
+.input{font-size:14px;border:solid 1px #ddd; width:100%;line-height:20px;display:block; border-radius:3px; -webkit-appearance:none;}
 .label{padding-bottom:7px;display:block;line-height:20px; color:#202020;}
 .label label{font-weight:bold;}
 .input-file{display:inline-block;position:relative;overflow:hidden;text-align:center;width:auto;color:#333;}
@@ -305,7 +305,7 @@ textarea.input{height:auto;}
 .field-icon-right .icon{position:absolute;right:0;top:0;width:34px;height:34px;text-align:center;line-height:34px;font-size:16px;font-weight:normal;}
 .form-x .form-group:after, .form-inline:after{clear:both;content:" ";display:block;height:0;overflow:hidden;visibility:hidden;}
 @media (min-width:760px){
-.form-x .form-group .label{float:left;width:15%;text-align:right;padding:2px 7px 7px 0;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;}
+.form-x .form-group .label{float:left;width:15%;text-align:right;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;}
 .form-x .form-group .field{float:left;width:85%;}
 .form-x .form-button{margin-left:15%;}
 }
@@ -760,8 +760,8 @@ dd{padding:8px 0 15px 0;}
 .table td{
   border: 1px solid #E6E9F0;
   text-align: center;
-  padding:20px 0;
-  font-size:12px;
+  padding:8px 8px;
+  font-size:14px;
 }
 .table tr:nth-child(odd){
   background:#F4F4F6;
@@ -1089,3 +1089,23 @@ a:focus,a:hover{color:#0ae;} /*链接-悬浮颜色*/
 {color:#333;border-color:#3bc;background-color:#3bc;} /*融合-文本色-边框-背景*/
 .button.border-dot:hover,.button.border-dot:focus,.button.bg-dot:hover,.button.bg-dot:focus
 {color:#fff;border-color:#f00;background-color:#f00;} /*点缀色-文本-边框-背景*/
+.border-main,.border-red {background:#fff}
+.border-main {}
+.detail-a {
+	display:block;
+	border-color: #0ae;
+	background:#fff;
+	border: solid 1px #0ae;
+	border-radius:4px;
+	height:30px;
+	line-height:30px;
+	color:#0ae;
+	margin:0 auto;
+	margin-left:5px;
+	margin-right:5px;
+}
+.detail-a:hover{
+	color: #fff;
+	border-color: #0ae;
+	background-color: #0ae;
+}

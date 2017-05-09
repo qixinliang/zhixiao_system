@@ -1,126 +1,133 @@
 <!DOCTYPE html>
 <html lang="zh-cn">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <meta name="renderer" content="webkit">
-    <title>销售管理系统</title>
-	<base href="<?php echo InitPHP::getConfig('url');?>"/>
-    <link rel="stylesheet" href="/static/css/base.css">
-    <link rel="stylesheet" href="/static/css/css.css">
-  <link rel="stylesheet" href="/static/css/normalize.css">
-  <link rel="stylesheet" href="/static/css/public.css">
-  <link rel="stylesheet" href="/static/css/structure.css">
-  <script type="text/javascript" src="/static/js/jquery-3.1.1.js"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="renderer" content="webkit">
+<title>销售管理系统</title>
+<base href="<?php echo InitPHP::getConfig('url');?>" />
+<link rel="stylesheet" href="/static/css/base.css">
+<link rel="stylesheet" href="/static/css/css.css">
+<link rel="stylesheet" href="/static/css/normalize.css">
+<link rel="stylesheet" href="/static/css/public.css">
+<link rel="stylesheet" href="/static/css/structure.css">
+<script type="text/javascript" src="/static/js/jquery-3.1.1.js"></script>
+<style>
+.label {
+	line-height: 32px;
+}
+</style>
 </head>
 <body>
-<div class="wrapper">
-<!--{layout:top}-->
+	<div class="wrapper">
+		<!--{layout:top}-->
 
-<article class="content">
-<!--{layout:left_notice_nav}-->
+		<article class="content">
+			<!--{layout:left_notice_nav}-->
 
- <div class="right st_right">
-     <div class="rigth_title">
-       <h2>发布公告</h2>
-     </div>
+			<div class="right st_right">
+				<div class="rigth_title">
+					<h2>发布公告</h2>
+				</div>
 
-  <div class="body-content">
-    <form id="form" class="form-x" >
+				<div class="body-content">
+					<form id="form" class="form-x">
 
-      <div class="form-group">
-        <div class="label">
-          <label>公告标题：</label>
-        </div>
-        <div class="field">
-		  <input name="title" type="text" class="input w50" id="title" value="" />
-          <div class="tips"></div>
-        </div>
-      </div> 
+						<div class="form-group">
+							<div class="label">
+								<label>公告标题：</label>
+							</div>
+							<div class="field">
+								<input name="title" type="text" class="input w50" id="title"
+									value="" />
+								<div class="tips"></div>
+							</div>
+						</div>
 
-      <div class="form-group">
-        <div class="label">
-          <label>公告内容：</label>
-        </div>
-		
-        <div class="field" >
-			<!-- 加载编辑器的容器 -->
-			<div id="container" name="content">
-			</div>
+						<div class="form-group">
+							<div class="label">
+								<label>公告内容：</label>
+							</div>
 
-            <div class="tips2"></div>
-			<!--<textarea name="content" id="content"></textarea>-->
-        </div>
-      </div> 
+							<div class="field">
+								<!-- 加载编辑器的容器 -->
+								<div id="container" name="content" style="height:300px;"></div>
 
-     <div class="form-group">
-        <div class="label">
-          <label></label>
-        </div>
-        <div class="field">
-            <button  class="button bg-main icon-check-square-o" type="button" onclick="sub(this)"> 提交</button>
-        </div>
-      </div>
-    </form>
-  </div>
+								<div class="tips2"></div>
+								<!--<textarea name="content" id="content"></textarea>-->
+							</div>
+						</div>
+
+						<div class="form-group">
+							<div class="label">
+								<label></label>
+							</div>
+							<div class="field">
+								<button class="button bg-main icon-check-square-o" type="button"
+									onclick="sub(this)">提交</button>
+							</div>
+						</div>
+					</form>
+				</div>
 
 
 
-<!-- 配置文件 -->
-<script type="text/javascript" src="/static/ue/js/ueditor.config.js"></script>
+				<!-- 配置文件 -->
+				<script type="text/javascript" src="/static/ue/js/ueditor.config.js"></script>
 
-<!-- 编辑器源码文件 -->
-<script type="text/javascript" src="/static/ue/js/ueditor.all.js"></script>
+				<!-- 编辑器源码文件 -->
+				<script type="text/javascript" src="/static/ue/js/ueditor.all.js"></script>
 
-<!-- 实例化编辑器 -->
-<script type="text/javascript">
+				<!-- 实例化编辑器 -->
+				<script type="text/javascript">
     var ue = UE.getEditor('container');
 </script>
 
 <script type="text/javascript">
-function sub(obj){
-
-	var title    =  $("#title").val();
-	var content  =  $("#container").html();
-
-	if(title == ""){
-		$(".tips").html("<font color=\"red\">公告标题不可以为空</font>").show();
-		return;
-	}
-
-	if(content == ""){
-		$(".tips2").html("<font color=\"red\">公告内容不可以为空</font>").show();
-		return;
-	}
+	function sub(obj){
 	
-	$.ajax({
-		url: '/notice/publish',
-		type: 'post',
-		dataType:'json',
-		data: $('#form').serialize(),
-		success: function(data) {
-			if(data.status==1){
-				window.location.href="/notice/run";
-			}else{
-				alert(data.message);
-				$("#tips").html("<font color=\"red\">"+data.message+"</font>");
-				setTimeout(function() {
-					$("#tips").html('');
-				}, 3000);
-				return false;
-			}
+		var title    =  $("#title").val();
+		var content  =  $("#container").html();
+	
+		if(title == ""){
+			$(".tips").html("<font color=\"red\">公告标题不可以为空</font>").show();
+			return;
 		}
-	});
-
-};
+	
+		if(content == ""){
+			$(".tips2").html("<font color=\"red\">公告内容不可以为空</font>").show();
+			return;
+		}
+		
+		$.ajax({
+			url: '/notice/publish',
+			type: 'post',
+			dataType:'json',
+			data: $('#form').serialize(),
+			success: function(data) {
+				if(data.status==1){
+					window.location.href="/notice/run";
+				}else{
+					alert(data.message);
+					$("#tips").html("<font color=\"red\">"+data.message+"</font>");
+					setTimeout(function() {
+						$("#tips").html('');
+					}, 3000);
+					return false;
+				}
+			}
+		});
+	
+	};
 </script>
 
-</div>
-</article>
-</div>
+			</div>
+		</article>
+	</div>
 
 
-<script type="text/javascript" src="/static/js/public.js"></script>
+	<script type="text/javascript" src="/static/js/public.js"></script>
 </body>
 </html>

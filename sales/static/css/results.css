@@ -79,8 +79,8 @@
 .tablelist table td{
   border: 1px solid #E6E9F0;
   text-align: center;
-  padding:20px 0;
-  font-size:12px;
+  padding:8px 0;
+  font-size:14px;
 }
 .tablelist table tr:nth-child(odd){
   background:#F4F4F6;

@@ -47,7 +47,7 @@
   </div> 
   <div class="padding border-bottom">
       <form action="/admin/run" method="post">
-      <select style="width: 160px;height: 25px;margin-right: 30px;" name="role_id">
+      <select style="width: 160px" name="role_id">
           <option value="" >职务</option>
           <!--{foreach($adminList as $k=>$v)}-->
           <option value="<!--{$v['id']}-->" <!--{if($v[id]==$part)}-->selected="selected"<!--{/if}--> >&nbsp;&nbsp;&nbsp;&nbsp;<!--{$v['name']}--></option>
@@ -58,13 +58,13 @@
           <option value=''>所属部门</option>
             <!--{$html}-->
       </select>-->
-      <input type="text" name="dpt_name" id="dpt_name" value="" placeholder="部门" style="width:160px; height:25px; margin-right:30px;" />
+      <input type="text" name="dpt_name" id="dpt_name" value="" placeholder="部门" style="width:160px;" />
       <input type="hidden" name="department_id" id="department_id" value="" />
 	<div id="d_list" style="display:none"><!--{$list_json}--></div>
 
-          <input type="text" name="uname" style="width: 160px;height: 25px;margin-right: 30px;" value="<!--{$uname}-->" placeholder="姓名">
-      <input type="text" name="phone" style="width: 160px;height: 25px;margin-right: 30px;" value="<!--{$phone}-->" placeholder="手机号">
-      <input type="submit" class="button border-main" value="搜索"> 
+          <input type="text" name="uname" style="width: 160px;" value="<!--{$uname}-->" placeholder="姓名">
+      <input type="text" name="phone" style="width: 160px;" value="<!--{$phone}-->" placeholder="手机号">
+      <input type="submit" class="button border-main" value="搜索"  style="width: 80px;"> 
       </form>
   </div> 
   <div class="right_list">
@@ -80,7 +80,7 @@
         <th>入职时间</th>	
         <th>创建时间</th>
         <th>状态</th>
-    <th width="250">操作</th>
+    <th width="210">操作</th>
     </tr>
    <!--{foreach($list as $key=>$vo)}-->
 	<tr>
@@ -115,10 +115,10 @@
       <td>
 		  <div class="button-group">
 		  <!--{if($vo['status']==1)}-->
-          		<a type="button" class="button border-main" href="/admin/edit/id/<!--{$vo['id']}-->"><span class="icon-edit"></span>修改</a>
+          		<a  class="button border-main" href="/admin/edit/id/<!--{$vo['id']}-->"><span class="icon-edit"></span>修改</a>
           		<a class="button border-red" href="javascript:void(0)" onclick="del('<!--{$vo['id']}-->',0,this)"><span class="icon-trash-o"></span>变离职	</a>
           <!--{else}-->
-          		<a type="button" class="button border-main" href="/admin/edit/id/<!--{$vo['id']}-->"><span class="icon-edit"></span>修改</a>
+          		<a class="button border-main" href="/admin/edit/id/<!--{$vo['id']}-->"><span class="icon-edit"></span>修改</a>
           		<a class="button border-red" href="javascript:void(0)" onclick="del('<!--{$vo['id']}-->',1,this)"><span class="icon-trash-o"></span>变在职	</a>
           <!--{/if}-->
 			
