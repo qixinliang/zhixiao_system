@@ -42,12 +42,11 @@ class myResultsController extends baseController{
               $renshucount += $val['yaoqingrencount'];
            }
         }
-
 		//分页
 		$pager  = $this->getLibrary('pager');
         $page   = $this->controller->get_gp('page')? $this->controller->get_gp('page') : 1;
         $page 	= ($page-1)*10 ? ($page-1)*10 : 0;
-        $count 	= count($res);
+        $count 	= count($res['data']);
 
 		$list = isset($res['data'])? $res['data'] : array();
 		if(isset($list) && !empty($list)){
