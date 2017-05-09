@@ -94,7 +94,9 @@ class TeamUtilsService extends Service{
             return $tmparr;
         }
         foreach ($data as $key=>$val){
-            $val['phone']=substr_replace($val['phone'],'****',3,4);
+            if($val['phone']){
+                $val['phone']=substr_replace($val['phone'],'****',3,4);
+            }
             $tmparr[$key]=$val;
         }
         return $tmparr;
