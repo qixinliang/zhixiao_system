@@ -10,9 +10,15 @@ class noticeDao extends Dao{
 	
 	//获取公告列表，并默认按照ID降序
 	//其实应该按照更新时间来逆序
-	public function getNoticeList(){
-		$sql = sprintf('SELECT * FROM %s ORDER BY `notice_id` DESC',$this->tableName);
+	public function getNoticeList($limit = 0,$offset = 10){
+		$sql = sprintf("SELECT * FROM %s ORDER BY `notice_id` DESC limit $limit,$offset",$this->tableName);
 		return $this->dao->db->get_all_sql($sql);
+	}
+
+	//数量
+	public function getNoticeCount(){
+		$sql = sprintf("SELECT count(notice_id) AS count FROM %s",$this->tableName);
+		return $this->dao->db->get_one_sql($sql);
 	}
 
 	//发布公告

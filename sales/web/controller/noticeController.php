@@ -24,11 +24,24 @@ class noticeController extends baseController{
 
 	//公告列表展示
 	public function run(){
-		$rows = $this->noticeService->getNoticeList();
+		//增加分页
+        $pager = $this->getLibrary('pager');
+        $page  = $this->controller->get_gp('page')?
+                $this->controller->get_gp('page') : 1 ;
+        if($page < 1) $page = 1;
+
+        $offset = 10;
+
+        $page   = ($page-1)*$offset? ($page-1)*$offset : 0;
+		$rows = $this->noticeService->getNoticeList($page,$offset);
 		/*
 		if(!isset($rows) || empty($rows)){
 			exit(json_encode(array('status' => -1,'message' => 'notice empty！')));
 		}*/
+
+		$count    =  $this->noticeService->getNoticeCount();
+		$pageHtml = $pager->pager($count['count'],$offset,'/notice/run');
+		$this->view->assign('count',$count['count']);
 	
 		//提供给首页最新的公告用下面的函数
 		$latest = $this->noticeService->getLatestNotice();
@@ -43,6 +56,8 @@ class noticeController extends baseController{
 		
 		$notice='yes';//默认加样式
 		$this->view->assign('notice', $notice);
+        $this->view->assign('page',$page);
+        $this->view->assign('page_html', $pageHtml);
 		
 		
 		//左侧样式是否显示高亮样式
