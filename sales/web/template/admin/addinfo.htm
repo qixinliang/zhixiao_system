@@ -157,7 +157,7 @@ function chekUsName()
     var s = $("#user").val();
     var reg = /^\w{6,16}$/;
     if(reg.test(s)){  
-		$(".tips_user").htl("").show();
+		$(".tips_user").html("").show();
 		user = 1;
     }else{
         $(".tips_user").html("<font color=\"red\">角色名必须要6-16位字母、数字和下划线！</font>").show();

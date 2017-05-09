@@ -109,6 +109,7 @@ class adminService extends Service
         $data['password']=md5($data['password']);
         unset($data['password2']);
 		$data['regtime']  = time();
+		$data['status']   = 1;
 		
 		$admin = $this->adminDao->getAdmin($data['user']);//检查在业务系统中是否重名
 		if($admin) return 2;
@@ -129,7 +130,7 @@ class adminService extends Service
 			}
 
 		}else{
-			//如果直销系统以及投资系统中不存在该用户，则检测手机号在直销系统及投资系统中是否存在
+// 			//如果直销系统以及投资系统中不存在该用户，则检测手机号在直销系统及投资系统中是否存在
 			$userPhoneZx = $this->adminDao->get_phone_zx($data['phone']);//检测直销系统中是否存在
 			$userPhone = $this->adminDao->get_phone($data['phone']);//检测线上投资系统中是否存在
 			
@@ -143,7 +144,7 @@ class adminService extends Service
 			
 			//接口注册投资系统
 			$curl = $this->getLibrary('curl'); 
-			$url = "http://api.baihedai.com.cn/zhiXiaoXiTong/register/?t=".json_encode($data);
+			$url = "http://api.baihedai.com/zhiXiaoXiTong/register/?t=".json_encode($data);
 			$arr = $curl->get($url);
 			if($arr == '123'){
 				$admin = $this->adminDao->getAdmin($data['user']);//根据账户名查数据库是否存在

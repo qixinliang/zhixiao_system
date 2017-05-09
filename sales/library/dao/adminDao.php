@@ -109,6 +109,12 @@ class adminDao extends Dao
     {
         return $this->dao->db->get_one_by_field(array('phone' => $phone),"cp_user_info");
     }
+    
+    //查询当前手机号，是否在直销系统中注册
+    public function get_phone_zx($phone)
+    {
+        return $this->dao->db->get_one_by_field(array('phone' => $phone),"zx_admin");
+    }
 
     //根据信箱获取详细信息
     public function get_email($email)
