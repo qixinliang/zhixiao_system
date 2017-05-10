@@ -116,9 +116,8 @@ class bmyjmxService extends Service
 	        if(is_array($departmentList)){
 	            $departmentList = $this->getResultsDetail($departmentList, $startDate, $endDate);
 	        }
-	    }
-	    if($userData[0]['gid'] < 9){
-	        //如果gid>9查询当前登录用户的业绩
+	    }else{
+	        //如果gid不等于9查询当前登录用户的业绩
 	        $departmentList = $this->getResultsDetail($userData, $startDate, $endDate);
 	    }
 	    return $departmentList;
