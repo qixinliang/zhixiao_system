@@ -41,7 +41,7 @@
        <div class="cenmet_left">
          <i class="iconstyel"></i>
          <p>最新公告</p><span>|</span><p><a href="/notice/info/id/<!--{$notice[0]['notice_id']}-->"><!--{$notice[0]['title']}--></a>
-			<span> <?php echo date("Y-m-d H:i:s",$notice[0]['create_time']); ?></span>
+			<span> <!--{if(isset($notice))}--><?php echo date("Y-m-d H:i:s",$notice[0]['create_time']); ?><!--{/if}--></span>
 		 </p>
        </div>
     </div>
